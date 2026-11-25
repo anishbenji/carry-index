@@ -9,7 +9,7 @@ evergoods:
     status: not_asked
     terms: No reuse without written permission
     terms_url: https://evergoods.us/policies/terms-of-service
-    contact: info@evergoods.us; runs an affiliate programme for gear review sites
+    contact: general address on its contact page (kept in private notes); runs an affiliate programme for gear review sites
 aer:
   name: Aer
   site: https://aersf.com
@@ -19,7 +19,7 @@ aer:
     status: not_asked
     terms: Personal, non-commercial viewing only; no copying or modifying
     terms_url: https://aersf.com/pages/terms-and-conditions
-    contact: hello@aersf.com, given for press on its contact page
+    contact: press address on its contact page (kept in private notes)
 ula-equipment:
   name: ULA Equipment
   site: https://www.ula-equipment.com
@@ -29,7 +29,7 @@ ula-equipment:
     status: not_asked
     terms: Publication prohibited without written permission
     terms_url: https://www.ula-equipment.com/privacy-copyright/
-    contact: peter@ula-equipment.com, named there for permission requests
+    contact: a named staff address for permission requests (kept in private notes)
 ctactical:
   name: Ctactical
   site: https://ctactical.com
@@ -39,7 +39,7 @@ ctactical:
     status: not_asked
     terms: Says nothing about images either way
     terms_url: https://ctactical.com/policies/terms-of-service
-    contact: info@ctactical.com, on its contact page
+    contact: general address on its contact page (kept in private notes)
   country_note: 'About page (https://ctactical.com/pages/about-us), read in full 13 Nov 2026: invites visitors to Saigon and names chuyentactical.com as its website. That Vietnamese store is run by Công ty TNHH Saigon Outdoor Gear, Ho Chi Minh City.'
 matador:
   name: Matador
