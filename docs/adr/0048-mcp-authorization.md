@@ -78,8 +78,12 @@ real MCP client has connected.
   stops floods on the routes it covers before they cost Worker requests. A flood on `/mcp` or `/.well-known/*`
   still spends the shared quota: the Worker's own limit counts only after the request has run, and no edge rule
   covers those paths. If that happens, the owner's app and API fail until the daily reset.
-- **Owner sign-in lockout (closed).** Strangers cannot reach `/authorize` or `/callback`, and the registration
-  cap is separate from anything the owner's flow uses.
+- **Owner sign-in lockout (closed for the browser steps).** Strangers cannot reach `/authorize` or `/callback`.
+- **Fresh Claude connections blocked by the registration cap (reduced, not closed).** A reconnect whose
+  registration matches a stored D1 entry is replayed and never touches the cap. A fresh registration (the first
+  Claude connection, or any time the submitted metadata has no reusable D1 entry) is a replay miss, and PR 9's
+  registration gate checks the daily cap on it before the flow reaches Access. On a day strangers fill the cap,
+  the owner cannot add a fresh connection until the next UTC midnight.
 - **Revoked token at another location (closed locally).** The D1 check serves no revoked grant; tested by putting
   the revoked token's KV records back.
 
