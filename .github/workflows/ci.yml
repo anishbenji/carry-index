@@ -68,10 +68,11 @@ jobs:
         with:
           version: 0.13.6
           enable-cache: false
+      # Exact versions, as uv resolved them on 26 Nov 2026; their own dependencies still resolve at run time.
       - name: Validate the catalogue data
-        run: uv run --no-project --with pyyaml --with jsonschema python tools/validate.py --report "$RUNNER_TEMP/validation-report.md"
+        run: uv run --no-project --with pyyaml==6.0.4 --with jsonschema==4.26.0 python tools/validate.py --report "$RUNNER_TEMP/validation-report.md"
       - name: Validator tests
-        run: uv run --no-project --with pyyaml --with jsonschema python -m unittest discover -s tools -p "test_validate_*.py"
+        run: uv run --no-project --with pyyaml==6.0.4 --with jsonschema==4.26.0 python -m unittest discover -s tools -p "test_validate_*.py"
 
   secret-scan:
     name: secret scan
@@ -97,5 +98,15 @@ jobs:
           echo "${GITLEAKS_SHA256}  $RUNNER_TEMP/$archive" | sha256sum --check --strict
           mkdir "$RUNNER_TEMP/gitleaks"
           tar -xzf "$RUNNER_TEMP/$archive" -C "$RUNNER_TEMP/gitleaks" gitleaks
+      # A change must not be able to quiet the scan: no allow-list or config file of its own, and inline
+      # gitleaks:allow comments are ignored.
+      - name: Refuse gitleaks config files in the checkout
+        run: |
+          for name in .gitleaksignore .gitleaks.toml; do
+            if [ -e "$name" ]; then
+              echo "secret scan: $name is not allowed in this repository" >&2
+              exit 1
+            fi
+          done
       - name: Scan the whole history
-        run: '"$RUNNER_TEMP/gitleaks/gitleaks" git --redact --no-banner --exit-code 1 .'
+        run: '"$RUNNER_TEMP/gitleaks/gitleaks" git --redact --no-banner --ignore-gitleaks-allow --exit-code 1 .'

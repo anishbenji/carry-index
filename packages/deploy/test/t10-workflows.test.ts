@@ -5,11 +5,12 @@
  * `deploy-kit.yml` may name `kit-production`, every action is pinned by a 40-character commit SHA, and every
  * install runs with `--ignore-scripts`.
  */
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 import { parse } from "yaml";
-import { REPO_ROOT } from "./helpers.ts";
+import { REPO_ROOT, tempDir } from "./helpers.ts";
 
 const WORKFLOWS = join(REPO_ROOT, ".github", "workflows");
 
@@ -347,5 +348,64 @@ describe("T10 installs run no package scripts", () => {
       expect(step.with?.["node-version-file"], `${name} ${job}`).toBe(".node-version");
       expect(step.with?.["node-version"], `${name} ${job}`).toBeUndefined();
     }
+  });
+});
+
+describe("T10 the secret scan cannot be silenced from inside a change (security review r1)", () => {
+  const scanJob = (): Job => job("ci.yml", "secret-scan");
+  const runs = (): string[] => (scanJob().steps ?? []).map((step) => step.run ?? "");
+  const scanIndex = (): number => runs().findIndex((run) => /\bgitleaks"? git\b/.test(run));
+  /** The step that refuses gitleaks config files, run with the shell GitHub uses for `run:` on Linux. */
+  const runGuard = (cwd: string): number => {
+    const guard = runs().find((run) => run.includes(".gitleaksignore"));
+    expect(guard).toBeDefined();
+    return (
+      spawnSync("bash", ["--noprofile", "--norc", "-eo", "pipefail", "-c", guard ?? "exit 0"], { cwd }).status ?? -1
+    );
+  };
+
+  test("the scan ignores gitleaks:allow comments", () => {
+    expect(scanIndex()).toBeGreaterThanOrEqual(0);
+    expect(runs()[scanIndex()]).toMatch(/\s--ignore-gitleaks-allow(?:\s|'|$)/);
+  });
+
+  test("a step before the scan refuses .gitleaksignore and .gitleaks.toml", () => {
+    const guard = runs().findIndex((run) => run.includes(".gitleaksignore") && run.includes(".gitleaks.toml"));
+    expect(guard).toBeGreaterThanOrEqual(0);
+    expect(guard).toBeLessThan(scanIndex());
+  });
+
+  test.each([".gitleaksignore", ".gitleaks.toml"])("the guard fails when %s is in the checkout", (name) => {
+    const dir = tempDir("cj-t10-guard-");
+    try {
+      writeFileSync(join(dir.root, name), "synthetic\n");
+      expect(runGuard(dir.root)).not.toBe(0);
+    } finally {
+      dir.cleanup();
+    }
+  });
+
+  test("the guard passes when neither file is there", () => {
+    const dir = tempDir("cj-t10-guard-");
+    try {
+      expect(runGuard(dir.root)).toBe(0);
+    } finally {
+      dir.cleanup();
+    }
+  });
+
+  test("no workflow points gitleaks at another config", () => {
+    for (const f of FILES)
+      expect(f.text, f.name).not.toMatch(/GITLEAKS_CONFIG|--config\b|\s-c\s|--gitleaks-ignore-path|\s-i\s/);
+  });
+});
+
+describe("T10 the validator's PyPI packages are pinned (security review r1)", () => {
+  test("every uv --with names an exact version", () => {
+    const withs = allSteps().flatMap(({ file: name, job: jobName, step }) =>
+      [...(step.run ?? "").matchAll(/--with[=\s]+(\S+)/g)].map((m) => ({ where: `${name} ${jobName}`, spec: m[1] })),
+    );
+    expect(withs.length).toBeGreaterThan(0);
+    for (const { where, spec } of withs) expect(spec, where).toMatch(/^[A-Za-z0-9_.-]+==\d+(?:\.\d+)*$/);
   });
 });
