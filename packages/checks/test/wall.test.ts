@@ -480,3 +480,36 @@ describe("evaluateWall: apps/web/public holds no hidden or linked files", () => 
     expect(evaluateWall(root).ok).toBe(false);
   });
 });
+
+describe("evaluateWall: deploy redirects stay with their own Worker", () => {
+  it("fails when one Worker folder's redirect targets another Worker's generated config", () => {
+    const root = tree({
+      "apps/kit/dist/kit/wrangler.json": GENERATED,
+      "apps/web/src/main.tsx": "",
+      "apps/web/.wrangler/deploy/config.json": '{ "configPath": "../../../kit/dist/kit/wrangler.json" }',
+    });
+    const result = evaluateWall(root);
+    expect(result.ok).toBe(false);
+    expect(result.lines.join("\n")).toMatch(/apps\/web\/\.wrangler\/deploy\/config\.json/);
+  });
+
+  it("passes when each redirect targets its own folder's generated config", () => {
+    const root = tree({
+      "apps/web/dist/public/wrangler.json": GENERATED,
+      "apps/web/.wrangler/deploy/config.json": '{ "configPath": "../../dist/public/wrangler.json" }',
+    });
+    expect(evaluateWall(root).ok).toBe(true);
+  });
+});
+
+describe("evaluateWall: generated configs are validated the way wrangler deploy reads them", () => {
+  it("fails when Wrangler's redirect mode rejects a generated config that the explicit-path read accepts", () => {
+    const generated = JSON.parse(GENERATED) as Record<string, unknown>;
+    const withEnv = JSON.stringify({ ...generated, env: { staging: {} } });
+    const root = tree({
+      "apps/web/dist/public/wrangler.json": withEnv,
+      "apps/web/.wrangler/deploy/config.json": '{ "configPath": "../../dist/public/wrangler.json" }',
+    });
+    expect(evaluateWall(root).ok).toBe(false);
+  });
+});

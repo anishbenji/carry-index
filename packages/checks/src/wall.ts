@@ -323,6 +323,9 @@ function checkDiscovery(root: string, dir: string, checked: ReadonlySet<string>)
       if (target === undefined || !checked.has(target) || symlinkOnPath(root, target)) {
         return [`${redirect}: points outside the configs the wall checked; not passed to Wrangler`];
       }
+      if (!target.startsWith(`${dir}/dist/`)) {
+        return [`${redirect}: points at another Worker's config; a redirect may target only ${dir}/dist/`];
+      }
       allowedTargets.add(target);
     }
   }
@@ -345,6 +348,17 @@ function checkDiscovery(root: string, dir: string, checked: ReadonlySet<string>)
   const rel = insideCheckout(root, canonical);
   if (rel === undefined || !checked.has(rel) || (allowedTargets.size > 0 && !allowedTargets.has(rel))) {
     return [`${dir}: Wrangler would load ${rel ?? "a file outside the checkout"}, a config the wall did not check`];
+  }
+  if (allowedTargets.size > 0) {
+    // `wrangler deploy` with no flags follows the redirect and validates more than an explicit --config read does.
+    try {
+      unstable_readConfig(
+        { script: join(root, dir, "__wall_probe__.js") },
+        { useRedirectIfAvailable: true, hideWarnings: true },
+      );
+    } catch {
+      return [`${dir}: Wrangler rejects ${rel} when it follows the deploy redirect; failing closed`];
+    }
   }
   return [];
 }
