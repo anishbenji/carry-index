@@ -154,9 +154,9 @@ Two things differ from the architecture doc:
 1. Biome's `noRestrictedImports` flags `import type` as well as value imports. So the "types only" ban for `zod`
    and `@cj/schema` in `apps/web` is a checker in `packages/checks`, using TypeScript 7's own parser.
 2. That parser runs only under Node. TypeScript 7's JavaScript API (`typescript/unstable/sync`) fails under Bun
-   with `TypeError: undefined is not an object (evaluating 'stdout._handle.fd')`. The wall and import checks run
-   with `node` (26.13.0). The API is unstable, so `typescript` is pinned exactly. The wall uses Wrangler's
-   `unstable_` and `experimental_` readers, so `wrangler` is pinned exactly too.
+   with `TypeError: undefined is not an object (evaluating 'stdout._handle.fd')`. So the import check runs with
+   `node` (26.13.0); nothing else needs Node. The API is unstable, so `typescript` is pinned exactly. The wall
+   (ADR-0049) uses neither TypeScript's nor Wrangler's unstable APIs.
 
 **Key numbers (local, PR 4, doc at `463dbf8`).**
 
