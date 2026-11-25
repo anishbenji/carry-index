@@ -91,9 +91,20 @@ artifact and generates every Worker config from code. This spike's static config
 what Wrangler would load, was removed from this PR before merge, with its tests.
 
 Until `packages/deploy` lands, `bun run wall` is a small guard: it lists the three checks as
-`pending: packages/deploy (privacy-wall design v2)` and fails if git tracks any `wrangler.*` config (JSON, JSONC
-or TOML), because the new design tracks none. The deploy-time requirements (scan the sealed artifact, assets and
-Worker bundle, for private files and the canary; deploy only the config that was checked) now live in the design.
+`pending: packages/deploy (privacy-wall design v2)` and fails if any file git does not ignore (tracked, or untracked
+and not covered by a .gitignore) is a Wrangler-style config: a JSON, JSONC or TOML file whose name starts
+`wrangler`, any `cloudflare.config.*`, or a `.wrangler/deploy/config.json`. The new design keeps none in the repo.
+
+**What the guard cannot see**, so PR 7 and PR 9 must be checked by hand until `packages/deploy` replaces it:
+
+- Ignored files: the Cloudflare plugin's generated `dist/<worker>/wrangler.json` and `.wrangler/deploy/config.json`
+  are ignored, so a binding that reaches them through a build is invisible.
+- A config under any other name: `cloudflare({ configPath: "cf/public.json" })`, an inline `cloudflare({ config })`
+  in a Vite config, or `wrangler --config <file>` on the command line.
+- Bindings, routes or settings added through the Cloudflare dashboard or API.
+
+A PR that needs a Worker config cannot get a green wall today (any `wrangler.jsonc` fails), which is intended: the
+config comes from `packages/deploy`. Brief 07's instruction to "use exactly `wrangler.jsonc`" conflicts with this.
 
 ## TypeScript 7's parser from Node
 

@@ -1,6 +1,8 @@
+import { execFileSync } from "node:child_process";
 import { describe, expect, it } from "vitest";
 import type { WallCheck } from "../src/wall.ts";
-import { evaluateWall, WALL_CHECKS } from "../src/wall.ts";
+import { evaluateWall, repoFiles, WALL_CHECKS } from "../src/wall.ts";
+import { makeTree } from "./helpers.ts";
 
 const PENDING = "packages/deploy (privacy-wall design v2)";
 
@@ -50,5 +52,28 @@ describe("evaluateWall", () => {
   it("still fails on a tracked config once the checks are implemented", () => {
     const done: WallCheck[] = WALL_CHECKS.map((c) => ({ ...c, status: "implemented" }));
     expect(evaluateWall(["workers/kit/wrangler.jsonc"], done).ok).toBe(false);
+  });
+});
+
+describe("repoFiles", () => {
+  it("lists tracked and untracked files but not git-ignored ones, so an untracked wrangler.jsonc still fails", () => {
+    const t = makeTree({
+      ".gitignore": "dist/\n",
+      "package.json": "{}",
+      "workers/web/wrangler.jsonc": '{ "name": "web" }',
+      "apps/web/dist/web/wrangler.json": "{}",
+    });
+    try {
+      const git = (...args: string[]) => execFileSync("git", args, { cwd: t.root, stdio: "ignore" });
+      git("init", "-q");
+      git("add", "package.json", ".gitignore");
+      const files = repoFiles(t.root);
+      expect(files).toContain("package.json");
+      expect(files).toContain("workers/web/wrangler.jsonc");
+      expect(files).not.toContain("apps/web/dist/web/wrangler.json");
+      expect(evaluateWall(files).ok).toBe(false);
+    } finally {
+      t.cleanup();
+    }
   });
 });
