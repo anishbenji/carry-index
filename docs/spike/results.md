@@ -434,7 +434,7 @@ list, outside this repo.
 8. Size gate (ADR-0017): count inline scripts per page, as `scripts/page-budget.ts` does; budgets unchanged.
 9. Accept that Q2's edge numbers and Q3 (navigation) move into the build.
 10. Accept the ADR-0036 and ADR-0037 amendments.
-11. Do the Access and D1 steps for PR 9's edge test (U4/U5, pending #11): step 4 in the dashboard, step 5 through `deploy-kit.yml`.
+11. Kit edge test (U4/U5, pending #11): it waits for the Kit minimum, with checks 1 and 2 in place, and `deploy-kit.yml` (ADR-0049, your decision #17 5A). PR 9's step 5, which deploys while checks 1 and 2 are pending, does not run. Then: the Access apps and secrets in the dashboard, the gated deploy, and the edge checks.
 12. The one free WAF rule: MCP `/register` and `/token` (recommended), combined with the beacon's `/api/*`, or the beacon only (ADR-0048); then add it (pending #11).
 13. R2: look at the dashboard and report whether it asks for a card (U3, pending #4); until then CI artifacts.
 14. Give the Cloudflare API token so the spike can measure at the edge (U1, pending #2).
