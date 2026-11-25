@@ -68,7 +68,7 @@ composite project that emits declarations only, into its own ignored `.tsbuild/`
 |---|---|---|
 | `typecheck` | `tsc --build` | passes |
 | `lint` | `biome ci .`, then the import ban (`node`, TypeScript 7 parser) | passes |
-| `test` | `vitest run` in every workspace that has tests | 42 tests pass |
+| `test` | `vitest run` in every workspace that has tests | 60 tests pass |
 | `build` | `vite build` in apps/web and apps/kit | passes, no HTML emitted |
 | `wall` | lists the three privacy-wall checks as `pending: <milestone>`; fails if any Wrangler config declares a binding while one is pending (see below) | passes, 0 Wrangler configs, 2 Vite configs |
 | `size` | runs size-limit whenever the root `size-limit` list has targets; without targets, "no pages yet" until `apps/web/dist` holds HTML or JavaScript, then fails | passes: 9.54 kB Brotli of 15 kB |
@@ -123,7 +123,7 @@ All run in the branch checkout. Build and end-to-end runs went through `heavy-ru
 | `/usr/bin/time -p biome ci .` | real 0.50 s, 50 files |
 | `biome lint` on a scratch file with an unawaited promise, an async `forEach` callback and a promise in an `if` | `noFloatingPromises` (1), `noMisusedPromises` (2) and `noUnnecessaryConditions` (1) reported (file removed afterwards) |
 | `biome ci` with `noRestrictedImports` on `zod` and `@cj/schema` under `apps/web` | errors on `import type { Bag } from "@cj/schema"` in both files that use it; override removed |
-| `bun run test` | checks 31, schema 6, pipeline 3, web 2: all pass |
+| `bun run test` | checks 49, schema 6, pipeline 3, web 2: all pass |
 | `heavy-run.sh … bun run build` | exit 0; Vite reports apps/web `main-*.js` 25.06 kB (10.54 kB gzip), apps/kit 24.58 kB (10.32 kB gzip) |
 | `heavy-run.sh … bun run size` (after the build) | exit 0; "Size limit: 15 kB / Size: 9.54 kB brotlied" |
 | `wc -c`, `brotli -c -q 11 … \| wc -c`, `gzip -9 -c … \| wc -c` on each bundle | apps/web: 25,069 B raw, 9,540 B Brotli, 10,439 B gzip; apps/kit: 24,586 B raw, 9,353 B Brotli, 10,220 B gzip |
