@@ -1,0 +1,12 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/schema" },
+    { "path": "packages/pipeline" },
+    { "path": "packages/checks" },
+    { "path": "apps/web" },
+    { "path": "apps/kit" },
+    { "path": "workers/web" },
+    { "path": "workers/kit" }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "carry-index",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "workers/*"
+  ],
+  "scripts": {
+    "typecheck": "tsc --build",
+    "lint": "biome ci . && bun packages/checks/src/cli/imports.ts",
+    "test": "bun run --filter '*' test",
+    "build": "bun run --filter '*' build",
+    "test:e2e": "bun packages/checks/src/cli/e2e.ts",
+    "size": "bun packages/checks/src/cli/size.ts",
+    "wall": "bun packages/checks/src/cli/wall.ts"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.1",
+    "@biomejs/biome": "2.6.9",
+    "@cloudflare/workers-types": "5.20261125.1",
+    "@lhci/cli": "0.16.1",
+    "@playwright/test": "1.65.1",
+    "@size-limit/file": "14.3.0",
+    "browserslist": "4.29.6",
+    "size-limit": "14.3.0",
+    "typescript": "7.0.2",
+    "vitest": "5.1.1",
+    "wrangler": "4.168.0"
+  }
+}
