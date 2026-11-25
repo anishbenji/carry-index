@@ -16,8 +16,9 @@ PR 7 tested only the production workers.dev host pattern. ADR-0045 also covers t
 
 ## Proposed change
 
-Proposed — for the user at the gate: keep ADR-0045 as written. The local result supports host-scoped `noindex`.
-On the first deploy, confirm at the edge that the workers.dev host and a preview host send `noindex` and
-carryjournal.com does not. ADR-0045's fallback (remove the header, turn `workers_dev` off and set
-`preview_urls: true` explicitly) is needed only if the edge disagrees. The merge gate's SEO scope and robots
-checks are unchanged by the spike.
+Proposed — for the user at the gate: keep host-scoped `noindex`. The local result supports it. Since the user's
+26 Nov decision there are no edge previews before merge on Saturday
+([amendment](0045-no-edge-previews.md)), so the first check at the edge runs after the first merge: the
+workers.dev host sends `noindex` and carryjournal.com does not. Preview hosts are checked once previews return in
+Release 1.1. ADR-0045's fallback (remove the header and turn `workers_dev` off) is needed only if the edge
+disagrees.

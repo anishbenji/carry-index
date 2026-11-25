@@ -385,26 +385,20 @@ connecting. The Rate Limiting binding and the WAF rule at the edge.
 **ADR change.** Proposed — for the user at the gate: new [ADR-0048](../adr/0048-mcp-authorization.md), "MCP
 authorization for Kit Watch".
 
-## Privacy wall: guard rail and enforcing check
+## Privacy wall: decided
 
-`bun run wall` reads every Worker config with Wrangler's own readers and fails on any binding while a wall check
-is pending. PR 9 drafts wall check 3: the public Worker may never declare a D1, R2 or KV binding.
+**Decided by the user on 26 Nov 2026: [ADR-0049](../adr/0049-privacy-wall-seal.md), "Privacy wall: seal, not
+scan"** (all eight recommended options of the director's `proposals/privacy-wall-design.md`, USER #17). The deploy
+gate writes each Worker's config from code, seals an allow-listed copy of the site, and runs Wrangler with a fixed
+command, in CI only. The spike's static wall, which scanned for configs Wrangler might load, is deleted from PR #5
+and replaced by the design's tests.
 
-The static wall is a **guard rail**. It cannot prove that a deploy uses the config it checked. The **enforcing
-check** runs at deploy time on what is uploaded: in the CI deploy job (PR 10), build, run `bun run wall` on the
-generated config in the same job, immediately before `wrangler deploy`, and deploy with that generated config (no
-`--config` override, no `--env` the wall did not see). A deploy step that cannot meet this must not run. The full
-requirements are in `docs/spike/toolchain.md` on `spike/04-scaffold`.
-
-**Redesign under review, decision at the gate.** The deploy-time gate is being redesigned in the director's
-`proposals/privacy-wall-design.md` (outside this repo). Until that gate exists and passes, a plain `wrangler
-deploy` is not a privacy gate: PR 9 deploys only its synthetic spike data, and only on the director's explicit
-approval.
-
-Today `bun run wall` fails on PR 7 (empty binding blocks in the generated config; fix on `spike/04-scaffold`) and
-on PR 9 (bindings declared while checks are pending, as expected).
-
-**ADR change.** Proposed — for the user at the gate: recorded in new [ADR-0047](../adr/0047-toolchain.md).
+The same decision recorded five amendments, each accepted: deploys via GitHub Actions and no edge previews before
+merge on Saturday ([ADR-0045](../adr/amendments/0045-github-actions-deploys.md),
+[ADR-0045](../adr/amendments/0045-no-edge-previews.md)), the daily `/performance` rebuild as a scheduled deploy run
+([ADR-0026](../adr/amendments/0026-scheduled-rebuild.md)), the real Kit Watch import waiting for the Kit minimum
+([ADR-0011](../adr/amendments/0011-kit-import.md)), and publish review inside Kit Watch before push
+([ADR-0004](../adr/amendments/0004-publish-review.md)).
 
 ## For the user at the gate
 
@@ -416,13 +410,13 @@ decision list, outside this repo.
 3. N3: confirm inlining the stylesheet while under about 10 KB (ADR-0018).
 4. Q5: accept the build-time CSP, one hash set for every page, no `'unsafe-inline'`.
 5. Accept ADR-0046: the public Worker is assets-only, and the beacon is its own Worker on `carryjournal.com/api/*`.
-6. Accept ADR-0045's amendment: keep host-scoped `noindex` on workers.dev and confirm it at the edge.
-7. Accept ADR-0047, the toolchain, including Node 26 for the wall and import checks (pending #14.1).
+6. Accept ADR-0045's spike amendment: host-scoped `noindex` on workers.dev, confirmed at the edge after merge.
+7. Accept ADR-0047, the toolchain, including Node 26 for the import check (pending #14.1).
 8. Zod in the private Worker through the MCP SDK: amend child rule 6, or write a JSON-RPC handler (pending #14.2).
 9. MCP shape (#16): A, the OAuth routes behind Access (recommended); B, MCP on its own Worker; or C, no MCP in Release 1.
 10. Accept ADR-0048 with that choice, plus a revocation check in a strongly consistent store.
 11. Add the free WAF rate-limiting rule for `/register` and `/authorize` (pending #11).
-12. Accept the ADR-0036 and ADR-0037 amendments, and do the Access and D1 steps for PR 9's edge test (U4/U5, pending #11).
+12. Accept the ADR-0036 and ADR-0037 amendments, and do the Access and D1 steps for PR 9's edge test (U4/U5, pending #11; steps 4 and 5 now go through `deploy-kit.yml`).
 13. R2: look at the dashboard and report whether it asks for a card (U3, pending #4); until then CI artifacts.
 14. Give the Cloudflare API token so the spike can measure at the edge (U1, pending #2).
 15. Approve `@types/bun` and a DOM test environment (pending #13).
@@ -430,4 +424,3 @@ decision list, outside this repo.
 17. Size gate (ADR-0017): count inline scripts per page, as `scripts/page-budget.ts` does; budgets unchanged.
 18. Accept that Q2's edge numbers and Q3 (navigation) move into the build.
 19. N5 needs nothing now: you moved it to after the gate (USER #3); ADR-0020 waits for the build's measurement.
-20. Privacy wall: the deploy-gate redesign in `proposals/privacy-wall-design.md`.

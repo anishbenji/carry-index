@@ -73,3 +73,14 @@ in [`docs/spike/results.md`](../spike/results.md). An amendment leaves its ADR u
 | [Amends 0036](amendments/0036-spike-results.md) | One Kit Watch Worker for the app host and the MCP host | Proposed (spike results, 2026-11-26) |
 | [Amends 0037](amendments/0037-spike-results.md) | How the Worker verifies the Access token; one owner-only policy | Proposed (spike results, 2026-11-26) |
 | [Amends 0045](amendments/0045-spike-results.md) | Host-scoped `noindex` works locally; confirm at the edge | Proposed (spike results, 2026-11-26) |
+
+## Accepted by the user, 26 Nov 2026 (privacy wall and deploy design)
+
+| Record | Decision | Status |
+|---|---|---|
+| [0049](0049-privacy-wall-seal.md) | Privacy wall: seal, not scan | Accepted (user, 2026-11-26) |
+| [Amends 0045](amendments/0045-github-actions-deploys.md) | Deploys run in GitHub Actions, not Workers Builds | Accepted (user, 2026-11-26) |
+| [Amends 0045](amendments/0045-no-edge-previews.md) | No edge previews before merge on Saturday; previews in 1.1 on a separate Worker | Accepted (user, 2026-11-26) |
+| [Amends 0026](amendments/0026-scheduled-rebuild.md) | `/performance` rebuilt by a daily scheduled deploy run | Accepted (user, 2026-11-26) |
+| [Amends 0011](amendments/0011-kit-import.md) | Kit Watch's real import waits for the Kit minimum; may move to 1.1 | Accepted (user, 2026-11-26) |
+| [Amends 0004](amendments/0004-publish-review.md) | A publish is reviewed inside Kit Watch before push; the PR is a second look | Accepted (user, 2026-11-26) |

@@ -3,7 +3,7 @@
 - **Status:** Proposed (spike results, 2026-11-26)
 - **Date:** 2026-11-26
 - **Source:** spike PR 4, `docs/spike/toolchain.md` on `spike/04-scaffold` at `463dbf8`; summary in
-  [`docs/spike/results.md`](../spike/results.md) (Q7, privacy wall)
+  [`docs/spike/results.md`](../spike/results.md) (Q7)
 
 ## Context
 
@@ -38,17 +38,11 @@ arm64).
   and Miniflare embed; the director accepted the mitigation on 25 Nov 2026. Upgrade once both ship `ws` 8.23.0
   or later.
 
-### Privacy wall: guard rail and enforcing check
+### Privacy wall
 
-`bun run wall` reads each Worker config with Wrangler's own readers and fails on any binding while a wall check
-is pending. That static check is a **guard rail**: it cannot prove that a deploy uses the config it checked.
-
-The **enforcing check** runs at deploy time on what is uploaded. The CI deploy job (PR 10) must build, run
-`bun run wall` on the generated config in the same job immediately before `wrangler deploy`, and deploy with that
-generated config: the plugin's `.wrangler/deploy/config.json` redirect, no `--config` override and no `--env`
-the wall did not see. A deploy step that cannot meet this must not run. The full requirements are in
-`docs/spike/toolchain.md`. The deploy-time gate is being redesigned (the director's
-`proposals/privacy-wall-design.md`, outside this repo): redesign under review, decision at the gate.
+The privacy wall and the deploy gate are decided in [ADR-0049](0049-privacy-wall-seal.md) (accepted by the user,
+26 Nov 2026). Once the spike's wall code is deleted, the wall imports neither TypeScript's nor Wrangler's unstable
+APIs; the import check still runs on Node.
 
 ## Consequences
 
