@@ -187,11 +187,12 @@ describe("T10 the build job never sees a credential", () => {
 });
 
 describe("T10 the token is only in the gate step's env", () => {
-  test("the deploy job runs only on main, in environment public-production", () => {
+  test("the deploy job runs only on main, in environment public-production, and not on an apply_triggers run", () => {
     const deploy = job("deploy-public.yml", "deploy");
     const environment = typeof deploy.environment === "string" ? deploy.environment : deploy.environment?.name;
     expect(environment).toBe("public-production");
-    expect(deploy.if?.replace(/\s+/g, " ").trim()).toBe("github.ref == 'refs/heads/main'");
+    // After 8586e55 the gate refuses an upload while preview URLs are on, so an apply_triggers run skips deploy.
+    expect(deploy.if?.replace(/\s+/g, " ").trim()).toBe("github.ref == 'refs/heads/main' && !inputs.apply_triggers");
   });
 
   test("the gate step runs the fixed deploy command line and nothing else", () => {
@@ -571,9 +572,10 @@ describe("T10 no email address in a tracked file (security review, Sol round 1, 
 describe("T10 the one-time triggers job (after 92e548c: versions deploy applies no triggers)", () => {
   const GATE_TRIGGERS = /^node packages\/deploy\/src\/bin\.ts triggers "?\$\{\{ runner\.temp \}\}\/public-site"?$/;
 
-  test("runs only on a manual run from main with apply_triggers on, after build and deploy", () => {
+  test("runs only on a manual run from main with apply_triggers on, after build and without deploy", () => {
     const triggers = job("deploy-public.yml", "triggers");
-    expect([triggers.needs].flat().map(String).sort(byName)).toEqual(["build", "deploy"]);
+    // Triggers come before the first deploy (8586e55: no upload while preview URLs are on).
+    expect([triggers.needs].flat().map(String).sort(byName)).toEqual(["build"]);
     expect(triggers.if?.replace(/\s+/g, " ").trim()).toBe(
       "github.event_name == 'workflow_dispatch' && inputs.apply_triggers && github.ref == 'refs/heads/main'",
     );

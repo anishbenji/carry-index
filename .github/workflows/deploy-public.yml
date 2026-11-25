@@ -3,7 +3,8 @@
 #   deploy    main only, in environment public-production: downloads the build; the gate seals, scans, runs the
 #             dry run, uploads a version with no traffic, checks that version, promotes it, confirms it live, and
 #             rolls back only to a verified previous version.
-#   triggers  once, on a manual run with apply_triggers: the gate applies workers.dev, preview URLs and routes.
+#   triggers  once, on a manual run with apply_triggers, instead of deploy: the gate applies workers.dev and
+#             preview-URL settings (wrangler triggers deploy) and uploads nothing.
 # The Cloudflare token reaches only the two gate steps, through each step's env. The structure is tested by
 # packages/deploy/test/t10-workflows.test.ts; docs/deploy.md is the owner's guide.
 name: deploy-public
@@ -18,7 +19,7 @@ on:
   workflow_dispatch:
     inputs:
       apply_triggers:
-        description: "Once, after the first deploy: also apply workers.dev, preview URLs and routes (wrangler triggers deploy)"
+        description: "Once, before the first deploy: apply workers.dev and preview-URL settings only (wrangler triggers deploy); no upload"
         type: boolean
         default: false
 
@@ -65,7 +66,8 @@ jobs:
 
   deploy:
     needs: build
-    if: github.ref == 'refs/heads/main'
+    # An apply_triggers run only applies triggers: the gate refuses an upload while preview URLs are on.
+    if: github.ref == 'refs/heads/main' && !inputs.apply_triggers
     runs-on: ubuntu-24.04
     # Four Wrangler runs (dry run, upload, promote, rollback) at the gate's 10-minute limit each, plus the API checks.
     timeout-minutes: 50
@@ -99,11 +101,11 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
 
-  # Once, after the first deploy: `wrangler versions deploy` applies none of the config's triggers, so workers.dev
-  # and preview URLs stay as they were until the gate runs `wrangler triggers deploy` on the same sealed config.
-  # Runs only when a manual run on main asks for it, after a successful deploy, in the same environment.
+  # Once, before the first deploy: `wrangler versions deploy` applies none of the config's triggers, and the gate
+  # refuses an upload while preview URLs are on, so the gate first runs `wrangler triggers deploy` on the sealed
+  # config. Runs only when a manual run on main asks for it, instead of deploy, in the same environment.
   triggers:
-    needs: [build, deploy]
+    needs: [build]
     if: github.event_name == 'workflow_dispatch' && inputs.apply_triggers && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
