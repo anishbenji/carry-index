@@ -88,7 +88,7 @@ and `e2e/`.
 | `test` | `vitest run` in every workspace that has tests | 59 tests pass |
 | `build` | `vite build` in apps/web and apps/kit | passes, no HTML emitted |
 | `wall` | lists the three privacy-wall checks as `pending: packages/deploy (privacy-wall design v2)`; fails if any file git does not ignore is a Wrangler-style config, or if the built apps/web contains Zod | passes, 272 files, none a Wrangler config; no Zod in the build |
-| `size` | runs size-limit whenever the root `size-limit` list has targets; without targets, "no pages yet" until `apps/web/dist` holds HTML or JavaScript, then fails; once pages exist, every built page must match a target's glob | passes: 10.45 kB gzip and 9.54 kB Brotli, each of 15 kB |
+| `size` | runs size-limit whenever the root `size-limit` list has targets; without targets, "no pages yet" until `apps/web/dist` holds HTML or JavaScript, then fails; once pages exist, every built page must match a target's glob | passes: largest is Brotli 4 at 10,814 B of 15,000 B |
 | `test:e2e` | "no pages yet" while there is neither a page nor `playwright.config.ts`; fails if one exists without the other (a config with no built pages means the build was skipped); else runs Playwright | passes, no pages and no config |
 
 ## Privacy wall: replaced by design v2
@@ -180,14 +180,15 @@ with "expected 0 to be greater than 0" before `apps/web/src` existed.
 What Cloudflare actually serves for a static asset is **not verified** here. Cloudflare's own account is that it
 recompresses at **Brotli level 4 or gzip level 8**, depending on the visitor's `Accept-Encoding`
 ([blog.cloudflare.com/this-is-brotli-from-origin](https://blog.cloudflare.com/this-is-brotli-from-origin/)).
-size-limit can measure gzip (level 9) and Brotli (quality 11), not Brotli level 4, so the root `size-limit` list
-measures `apps/web/dist/client/assets/*.js` both ways, each against 15 kB (the N2 listing limit, ADR-0017;
-15,000 bytes, since size-limit reads kB as 1,000 bytes), and the larger one gates. That limit is never raised.
+size-limit can measure gzip (level 9) and Brotli (quality 11) but not the edge levels, so `bun run size` measures
+every root `size-limit` target four ways: size-limit's gzip 9 and Brotli 11, then `packages/checks/src/edge.ts`
+at gzip level 8 and Brotli quality 4 (Node's zlib). Each target must stay within its limit at all four, so the
+largest gates. The JavaScript target is `apps/web/dist/client/assets/*.js` against 15 kB (the N2 listing limit,
+ADR-0017; 15,000 bytes, since size-limit reads kB as 1,000 bytes). That limit is never raised.
 
-Measured on the current bundle (`gzip -N -c … | wc -c`, `brotli -c -q N … | wc -c`): 25,069 B raw, gzip level
-8 or 9 10,439 B, Brotli quality 11 9,540 B, **Brotli level 4 10,804 B**. Level 4 is the largest plausible
-served size and is 365 B (3.5%) above what the gate measures, so treat the gate as slightly optimistic until
-PR 7 records the encoding and transfer size the preview URL actually serves.
+Measured on the current bundle by `bun run size`: gzip 9 10.46 kB, Brotli 11 9.59 kB, gzip 8 10,461 B,
+**Brotli 4 10,814 B** (the largest, so it gates). PR 7 should still record the encoding and transfer size the
+preview URL actually serves.
 
 **Solid 2's runtime plus one `render` of one component is already 10.4 to 10.8 kB compressed, over the 8 KB
 content-page budget**, before hydration, a router, any island or the metrics beacon (which N2 counts). It also
