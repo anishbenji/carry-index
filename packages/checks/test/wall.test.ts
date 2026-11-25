@@ -438,6 +438,21 @@ describe("evaluateWall: apps/web/public holds no hidden or linked files", () => 
     expect(evaluateWall(tree({ "apps/web/public/_headers": "/*\n  X-Content-Type-Options: nosniff\n" })).ok).toBe(true);
   });
 
+  it("accepts only the allow-listed files, so a key or any other stray file fails", () => {
+    expect(evaluateWall(tree({ "apps/web/public/_headers": "", "apps/web/public/favicon.svg": "<svg/>" })).ok).toBe(
+      true,
+    );
+    for (const [path, reported] of [
+      ["apps/web/public/server.pem", "apps/web/public/server.pem"],
+      ["apps/web/public/notes.txt", "apps/web/public/notes.txt"],
+      ["apps/web/public/img/a.png", "apps/web/public/img"],
+    ] as const) {
+      const result = evaluateWall(tree({ [path]: "x" }));
+      expect(result.ok, path).toBe(false);
+      expect(result.lines.join("\n"), path).toContain(reported);
+    }
+  });
+
   it("fails on any dotfile or dot-folder, Wrangler local secrets included, naming only the path", () => {
     for (const path of [
       "apps/web/public/.dev.vars",

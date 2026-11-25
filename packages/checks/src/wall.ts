@@ -351,16 +351,18 @@ function checkDiscovery(root: string, dir: string, checked: ReadonlySet<string>)
 
 /** Vite copies apps/web/public into the build as is, past `server.fs.deny`. */
 const PUBLIC_DIR = "apps/web/public";
+/** The only files apps/web/public may hold: Cloudflare's headers file (spike PR 7) and the favicon. */
+const PUBLIC_FILES: ReadonlySet<string> = new Set(["_headers", "favicon.ico", "favicon.svg"]);
 const LOCAL_SECRETS = /^\.dev\.vars(\..*)?$/;
 
 /**
- * Folders whose files end up uploaded: apps/web/public (copied into the build) may hold no dotfile or dot-folder
- * and no symlink; each Worker folder's dist/client may hold no symlink and no Wrangler local-secrets file (the
+ * Folders whose files end up uploaded: apps/web/public (copied into the build) may hold only the allow-listed
+ * files, no folder and no symlink; each Worker folder's dist/client may hold no symlink and no Wrangler local-secrets file (the
  * plugin's own `.assetsignore` is allowed there). Paths only, never contents.
  */
 function uploadFolderProblems(root: string): string[] {
   const problems: string[] = [];
-  const scan = (folder: string, bad: (name: string) => boolean, rule: string): void => {
+  const scan = (folder: string, bad: (name: string, isDirectory: boolean) => boolean, rule: string): void => {
     const link = symlinkOnPath(root, folder);
     if (link) {
       problems.push(`${folder}: ${link} is a symlink; ${rule}`);
@@ -376,13 +378,17 @@ function uploadFolderProblems(root: string): string[] {
       for (const entry of entries) {
         const path = `${rel}/${entry.name}`;
         if (entry.isSymbolicLink()) problems.push(`${path}: symlinks are not allowed here; ${rule}`);
-        else if (bad(entry.name)) problems.push(`${path}: not allowed here; ${rule}`);
+        else if (bad(entry.name, entry.isDirectory())) problems.push(`${path}: not allowed here; ${rule}`);
         else if (entry.isDirectory()) walk(path);
       }
     };
     walk(folder);
   };
-  scan(PUBLIC_DIR, (name) => name.startsWith("."), "apps/web/public is copied into the public build");
+  scan(
+    PUBLIC_DIR,
+    (name, isDirectory) => isDirectory || !PUBLIC_FILES.has(name),
+    `apps/web/public is copied into the public build, so it may hold only ${[...PUBLIC_FILES].join(", ")}`,
+  );
   for (const dir of WORKER_DIRS) {
     scan(`${dir}/dist/client`, (name) => LOCAL_SECRETS.test(name), "dist/client is what Wrangler uploads");
   }
