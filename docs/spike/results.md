@@ -157,7 +157,8 @@ Two things differ from the architecture doc:
    and `@cj/schema` in `apps/web` is a checker in `packages/checks`, using TypeScript 7's own parser.
 2. That parser runs only under Node. TypeScript 7's JavaScript API (`typescript/unstable/sync`) fails under Bun
    with `TypeError: undefined is not an object (evaluating 'stdout._handle.fd')`. So the import check runs with
-   `node` (26.13.0); nothing else needs Node. The API is unstable, so `typescript` is pinned exactly. The wall
+   `node` (26.13.0). Vitest and Vite also run on Node today, through their `node` shebangs, and the interim wall
+   CLI is launched with `node` for type stripping. The API is unstable, so `typescript` is pinned exactly. The wall
    (ADR-0049) uses neither TypeScript's nor Wrangler's unstable APIs.
 
 **Key numbers (local, PR 4, doc at `12e775a`).**
@@ -439,5 +440,6 @@ list, outside this repo.
 
 **Decided overnight by the director under your instruction (26 Nov), yours to reverse:** #13 `@types/bun` 1.4.2 and
 `happy-dom` 21.0.4 approved, dev only; #14.1 Node for the import check; #14.2 child rule 6 allows Zod in the
-private Worker; #15 the two Cicada weights rounded to 800 g and 870 g; #16 MCP shape (ADR-0048). **Decided by you
+private Worker; #15 the two Cicada weights rounded to 800 g and 870 g; keep `wrangler` 4.168.0 beside the Vite plugin's own
+4.164.0; #16 MCP shape (ADR-0048). **Decided by you
 (26 Nov):** the privacy wall and deploy design (#17, ADR-0049). N5 waits for the build's measurement (USER #3).

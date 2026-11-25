@@ -26,11 +26,12 @@ arm64).
 - **Types-only imports in `apps/web`.** Enforced by a checker in `packages/checks` (run by `bun run lint` and by a
   test), not by Biome: Biome's `noRestrictedImports` cannot tell `import type` from a value import. Only
   `import type` counts as types-only; under `verbatimModuleSyntax`, `import { type X }` still emits an import.
-- **Node for the import check only.** The import check parses source with TypeScript 7's own parser, whose
+- **What runs on Node.** The import check parses source with TypeScript 7's own parser, whose
   JavaScript API (`typescript/unstable/sync`) fails under Bun (`TypeError: undefined is not an object
-  (evaluating 'stdout._handle.fd')`). So the import check needs `node` (26.13.0, declared in `.node-version`); nothing
-  else does. The wall (ADR-0049) uses neither TypeScript's nor Wrangler's unstable APIs (the interim wall CLI is
-  launched with `node` only for type stripping, until `packages/deploy` replaces it). CI needs Node as well as Bun. (Decision
+  (evaluating 'stdout._handle.fd')`). So the import check needs `node` (26.13.0, declared in `.node-version`).
+  Vitest and Vite also run on Node today, through their `node` shebangs (running them on Bun is not verified), and
+  the interim wall CLI is launched with `node` for its built-in type stripping. The wall (ADR-0049) uses neither
+  TypeScript's nor Wrangler's unstable APIs. CI needs Node as well as Bun. (Decision
   #14.1, director under the user's overnight instruction, 26 Nov.)
 - **Exact pins.** Every dependency is pinned exactly (child rule 6). For `typescript` it matters more, because
   the import check uses its unstable API: upgrades are their own pull requests and re-run that check's tests.
@@ -56,7 +57,9 @@ The privacy wall and the deploy gate are decided in [ADR-0049](0049-privacy-wall
   `@types/bun` 1.4.2, so `packages/checks/src/runtime.d.ts` can go, and `happy-dom` 21.0.4 as the DOM environment
   for component tests. Both exact, dev only.
 - Two Wrangler versions are installed: 4.168.0 (approved) and 4.164.0, an exact dependency of
-  `@cloudflare/vite-plugin` 1.70.1. Their config schemas are identical today; aligning them is open.
+  `@cloudflare/vite-plugin` 1.70.1. Their config schemas are identical today. The director decided overnight
+  (under the user's instruction) to keep both, rather than downgrade the approved pin; revisit when the plugin
+  updates.
 - Not verified: watch mode, editor behaviour with TypeScript 7, and Vitest or Vite under Bun's runtime.
 
 ## Why
