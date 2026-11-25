@@ -26,3 +26,14 @@ describe("this repository", () => {
     expect(evaluateWall(ROOT).ok).toBe(true);
   });
 });
+
+describe("Vite dev servers", () => {
+  it("bind to loopback only, so the dev WebSocket is not reachable from the network", async () => {
+    for (const app of ["web", "kit"]) {
+      const module = (await import(`../../../apps/${app}/vite.config.ts`)) as {
+        default: { server?: { host?: unknown } };
+      };
+      expect(module.default.server?.host, app).toBe("localhost");
+    }
+  });
+});

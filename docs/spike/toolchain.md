@@ -97,6 +97,16 @@ reads Node's stream internals, so it fails under Bun (`TypeError: undefined is n
 'stdout._handle.fd')`). Those two CLIs therefore run with `node` (26.13.0 strips the TypeScript types). The API
 is marked unstable: pin `typescript` exactly and expect changes on upgrade.
 
+## Development servers stay on loopback
+
+Vite 8.3.8 embeds a `ws` release affected by GHSA-37g9-w4hg-h9qr (a peer that floods the socket can make Node run
+out of memory), and Miniflare pins an affected `ws` for wrangler's inspector. No fixed Vite 8 release exists, so
+versions are unchanged. Both Vite configs set `server.host: "localhost"` (a test in `packages/checks` holds it), so
+the dev server and its WebSocket are reachable only from this machine; do not run `vite --host`. Wrangler 4.168
+binds the dev inspector to `127.0.0.1` unless told otherwise (`config.dev.inspector_ip ?? "127.0.0.1"` in
+`wrangler-dist/cli.js`); do not set `dev.inspector_ip` or pass `--inspector-ip`. Upgrade once Vite and wrangler
+ship `ws` 8.23.0 or later.
+
 ## Commands and results
 
 All run in the branch checkout. Build and end-to-end runs went through `heavy-run.sh`.

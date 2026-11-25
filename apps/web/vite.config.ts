@@ -5,6 +5,8 @@ import { defineConfig } from "vite";
 // switch on when spike PR 7 starts emitting prerendered HTML.
 export default defineConfig({
   plugins: [solid()],
+  // Loopback only: Vite 8.3.8 bundles a ws release open to a reply-flood DoS, and no fixed Vite 8 exists yet.
+  server: { host: "localhost" },
   build: {
     outDir: "dist/client",
     emptyOutDir: true,
