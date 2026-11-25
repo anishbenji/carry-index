@@ -53,3 +53,22 @@ the build's JPEG XL measurement.
 | [0043](0043-media-storage.md) | Only chosen photos and videos are uploaded | B12 | Accepted |
 | [0044](0044-licences.md) | Licences for code, data, drawings and writing | setup 2026-11-25 | Accepted |
 | [0045](0045-pre-launch-deploys.md) | Merges deploy to workers.dev before go-live, not indexed | setup 2026-11-25 | Accepted |
+
+## Proposed at the Thursday gate (spike results)
+
+None of these is accepted. Each is for the user to accept or reverse at the gate on 26 Nov 2026; the evidence is
+in [`docs/spike/results.md`](../spike/results.md). An amendment leaves its ADR unchanged until the user decides.
+
+| Record | Proposal | Status |
+|---|---|---|
+| [0046](0046-public-site-delivery.md) | The public Worker is assets-only; the beacon is its own Worker | Proposed (spike results, 2026-11-26) |
+| [0047](0047-toolchain.md) | Toolchain: TypeScript 7, Biome, Vitest, Bun workspaces | Proposed (spike results, 2026-11-26) |
+| [0048](0048-mcp-authorization.md) | MCP authorization for Kit Watch | Proposed (spike results, 2026-11-26) |
+| [Amends 0014](amendments/0014-spike-results.md) | R2 card question: not confirmed; the dashboard look settles it | Proposed (spike results, 2026-11-26) |
+| [Amends 0015](amendments/0015-spike-results.md) | Static first: PR 7's full-hydration numbers; PR 8's pending | Proposed (spike results, 2026-11-26) |
+| [Amends 0018](amendments/0018-spike-results.md) | Inlined CSS and the hash-based CSP: from PR 8 (pending) | Proposed (spike results, 2026-11-26) |
+| [Amends 0020](amendments/0020-spike-results.md) | JPEG XL test deferred to after the gate | Proposed (spike results, 2026-11-26) |
+| [Amends 0029](amendments/0029-spike-results.md) | Source maps: CI artifacts stay the fallback | Proposed (spike results, 2026-11-26) |
+| [Amends 0036](amendments/0036-spike-results.md) | One Kit Watch Worker for the app host and the MCP host | Proposed (spike results, 2026-11-26) |
+| [Amends 0037](amendments/0037-spike-results.md) | How the Worker verifies the Access token; one owner-only policy | Proposed (spike results, 2026-11-26) |
+| [Amends 0045](amendments/0045-spike-results.md) | Host-scoped `noindex` works locally; confirm at the edge | Proposed (spike results, 2026-11-26) |
