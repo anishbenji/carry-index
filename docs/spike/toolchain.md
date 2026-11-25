@@ -73,7 +73,7 @@ composite project that emits declarations only, into its own ignored `.tsbuild/`
 | `build` | `vite build` in apps/web and apps/kit | passes, no HTML emitted |
 | `wall` | lists the three privacy-wall checks as `pending: packages/deploy (privacy-wall design v2)`; fails if git tracks any `wrangler.*` config | passes, 265 tracked files, none a Wrangler config |
 | `size` | runs size-limit whenever the root `size-limit` list has targets; without targets, "no pages yet" until `apps/web/dist` holds HTML or JavaScript, then fails; once pages exist, a target must measure HTML | passes: 10.45 kB gzip and 9.54 kB Brotli, each of 15 kB |
-| `test:e2e` | "no pages yet" until `apps/web/dist` holds HTML; then fails without `playwright.config.ts`, else runs Playwright | passes, no pages |
+| `test:e2e` | "no pages yet" while there is neither a page nor `playwright.config.ts`; fails if one exists without the other (a config with no built pages means the build was skipped); else runs Playwright | passes, no pages and no config |
 
 ## Privacy wall: replaced by design v2
 

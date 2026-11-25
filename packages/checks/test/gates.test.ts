@@ -106,6 +106,12 @@ describe("evaluateE2eGate", () => {
     expect(result.lines.join("\n")).toMatch(/no pages yet/);
   });
 
+  it("fails when Playwright is configured but apps/web has not been built, instead of skipping the runs", () => {
+    const result = evaluateE2eGate(tree({ "package.json": ROOT_PKG, "playwright.config.ts": "export default {};" }));
+    expect(result.kind).toBe("fail");
+    expect(result.lines.join("\n")).toMatch(/build/);
+  });
+
   it("fails once apps/web emits a page and no Playwright config exists", () => {
     const result = evaluateE2eGate(tree({ "package.json": ROOT_PKG, "apps/web/dist/client/index.html": "x" }));
     expect(result.kind).toBe("fail");

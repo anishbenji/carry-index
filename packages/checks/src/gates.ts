@@ -62,14 +62,22 @@ export function evaluateSizeGate(root: string): GateResult {
 }
 
 /**
- * `bun run test:e2e`: passes with a "no pages yet" line until apps/web emits a page, then requires a root
- * playwright.config.ts and runs Playwright.
+ * `bun run test:e2e`: passes with a "no pages yet" line while there is neither a page nor a Playwright config.
+ * Once either exists it needs both: a config without pages means the build was skipped, so it fails rather than
+ * skipping the end-to-end, axe, header and bfcache runs; pages without a config fail too. Then runs Playwright.
  */
 export function evaluateE2eGate(root: string): GateResult {
   const pages = findBuiltPages(root);
+  const configured = existsSync(join(root, "playwright.config.ts"));
+  if (pages.length === 0 && configured) {
+    return {
+      kind: "fail",
+      lines: ["test:e2e: playwright.config.ts exists but apps/web/dist has no pages; run `bun run build` first"],
+    };
+  }
   if (pages.length === 0)
     return { kind: "pass", lines: ["test:e2e: no pages yet (apps/web/dist has no HTML); nothing to test"] };
-  if (!existsSync(join(root, "playwright.config.ts"))) {
+  if (!configured) {
     return {
       kind: "fail",
       lines: [
