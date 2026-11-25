@@ -100,11 +100,13 @@ what Wrangler would load, was removed from this PR before merge, with its tests.
 Until `packages/deploy` lands, `bun run wall` is a small guard: it lists the three checks as
 `pending: packages/deploy (privacy-wall design v2)` and fails if any file git does not ignore (tracked, or untracked
 and not covered by a .gitignore) is a Wrangler-style config: a JSON, JSONC or TOML file whose name starts
-`wrangler`, any `cloudflare.config.*`, or a `.wrangler/deploy/config.json`. The new design keeps none in the repo.
+`wrangler`, any `cloudflare.config.*`, or a `.wrangler/deploy/config.json`. The new design keeps none in the repo. It also
+checks, by existence only, Wrangler's default names (`wrangler.json`, `wrangler.jsonc`, `wrangler.toml`) at the repo
+root and at every workspace root even when git ignores them, because Wrangler reads them regardless.
 
 **What the guard cannot see**, so PR 7 and PR 9 must be checked by hand until `packages/deploy` replaces it:
 
-- Ignored files: the Cloudflare plugin's generated `dist/<worker>/wrangler.json` and `.wrangler/deploy/config.json`
+- Other ignored files: the Cloudflare plugin's generated `dist/<worker>/wrangler.json` and `.wrangler/deploy/config.json`
   are ignored, so a binding that reaches them through a build is invisible.
 - A config under any other name: `cloudflare({ configPath: "cf/public.json" })`, an inline `cloudflare({ config })`
   in a Vite config, or `wrangler --config <file>` on the command line.
