@@ -9,7 +9,7 @@ name only; never use it on the public site.
 - `docs/brief/unified-brief.md`: the plan for both apps, the shared data model, the publish step and Release 1.
   Where it differs from `docs/brief/architecture.md`, it wins.
 - `docs/brief/architecture.md`: the public site plan (rendering, pipeline, quality gates).
-- `docs/brief/decisions.md` and `docs/adr/`: decisions already made. Do not reopen them; a change needs a new
+- `docs/brief/decisions.md` and `docs/adr/` (from PR #1): decisions already made. Do not reopen them; a change needs a new
   ADR the owner accepts.
 
 ## You are in the right folder
@@ -32,8 +32,10 @@ needs moving across. Do not delete the snapshot until it has been.
 
 The repository is public. Private records never enter it.
 
-- No real Kit Watch records, purchases, prices paid, order references, addresses, medicine, or email
-  addresses (the owner's included) in code, tests, fixtures, docs, commit messages, PRs or screenshots.
+- No real Kit Watch records, purchases, prices paid, order references, addresses, medicine, or personal email
+  addresses (the owner's included, and the private forwarding target) in code, tests, fixtures, docs, commit
+  messages, PRs or screenshots. The one exception is the public contact alias on carryjournal.com that the
+  about page shows (ADR-0033).
 - Other people appear as roles ("partner", "friend"), never by name.
 - Fixtures are synthetic. Exports from the old Kit Watch page stay outside this folder.
 - `.gitignore` is an allow-list: everything is ignored unless listed. The local folders `design/`,
@@ -45,10 +47,13 @@ The repository is public. Private records never enter it.
 
 - Solid 2.0.x at exact versions for both apps; never Solid 1 patterns or SolidStart. Check Solid 2 APIs
   against the v2 docs and the skills shipped in `node_modules/solid-js/skills/`.
-- Zod 4 schemas live in `packages/schema` and are used only there and in `packages/pipeline`; `apps/web`
-  imports types only. No Effect in v1.
+- Zod 4 schemas live in `packages/schema`. They run in `packages/pipeline` and in the private Worker (which
+  validates its API inputs and outputs with them); `apps/web` imports types only. No Effect in v1.
+- Every external input (hand-entered specs, airline-checker output, private API requests) is parsed with its
+  schema before use; malformed input stops the build or is rejected, never passed on.
 - TypeScript 7 strict, Biome, Bun workspaces. Exact pins; no new dependency without the owner's OK.
-- Measurements are whole millimetres and grams; every spec has a source link.
+- Measurements are whole millimetres and grams; every spec has a source link. A failed source check is
+  recorded, never dropped.
 - Budgets (ADR-0017), accessibility checks, security headers and the three privacy-wall checks are never
   relaxed to meet a date. Cut scope instead.
 
