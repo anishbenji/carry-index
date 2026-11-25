@@ -14,7 +14,7 @@ Other people are stored as roles (for example "wife", "brother", "friend"), neve
 
 ## Consequences
 
-People appear as roles (for example 'partner', 'sibling', 'friend'). The import converts names to roles and lists any it cannot map for the owner to resolve, never guessing. Names are on the never-public list.
+People appear as roles (for example "wife", "brother", "friend"). The import converts names to roles and lists any it cannot map for the owner to resolve, never guessing. Names are on the never-public list.
 
 ## Why
 

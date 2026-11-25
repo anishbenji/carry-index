@@ -1,8 +1,10 @@
 # Architecture decision records
 
-One record per entry in [`docs/brief/decisions.md`](../brief/decisions.md), in the same order. A decision
+One record per entry in [`docs/brief/decisions.md`](../brief/decisions.md), in the same order, plus two records
+from the 25 Nov setup interview (0044, 0045) whose entries in the log are pending. A decision
 changes only by a new record that supersedes the old one, never by editing it. Records marked provisional are
-confirmed or reversed at the spike's Thursday gate (26 Nov 2026) with measured numbers.
+confirmed or reversed with measured numbers: at the spike's Thursday gate (26 Nov 2026), or, for ADR-0020, with
+the build's JPEG XL measurement.
 
 | ADR | Decision | Entry | Status |
 |---|---|---|---|

@@ -1,6 +1,6 @@
 # ADR-0020: Test JPEG XL against AVIF
 
-- **Status:** Accepted, provisional: confirmed or reversed with the spike's numbers at the Thursday gate (2026-11-26)
+- **Status:** Accepted, provisional: confirmed or reversed with the build's JPEG XL measurement (the owner moved the test after the Thursday gate on 25 Nov; review photos are not needed before milestone 5)
 - **Date:** 2026-11-25
 - **Source:** `docs/brief/decisions.md`, entry "N5: JPEG XL"
 
