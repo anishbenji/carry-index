@@ -388,7 +388,8 @@ in PR 9 at `65c11a6`:
 - Review round 3 also fixed reconnects (old grants are kept), logs (query strings redacted), MCP batches (at most
   10) and Access answers (capped at 64 KB). `bun run test` in `workers/kit`: 14 files, 86 tests pass, real 6.77 s.
 
-Risks now: the sign-in lockout and the cached revoked token are closed locally. The shared Worker quota is reduced,
+Risks now: the sign-in lockout on the browser steps and the cached revoked token are closed locally. A fresh
+Claude registration can still be refused by a full registration cap (reduced, not closed; see ADR-0048). The shared Worker quota is reduced,
 not closed: strangers can still reach `/register`, `/token`, `/mcp` and discovery, and a flood on `/mcp` or
 discovery spends the 100,000 daily requests the app shares.
 
