@@ -38,7 +38,8 @@ python3 tools/extra_reports.py
 python3 tools/airline_fit.py > reports/airline-fit.md
 ```
 
-`validate.py` exits with 1 on any error. Errors block publishing: a broken reference, a listed build with no link out, a launch-critical field (name, price, volume, weight, dimensions) with no check, a pro or con with no source, a maker statement filed as a pro or con, a line from another build that does not name the build, text that names another bag, or text that says a review was not found. Warnings cover stale checks (price after 30 days, other fields after 180).
+`validate.py` exits with 1 on any error. Errors block publishing: a broken reference, a listed build with no link out, a launch-critical field (name, price, volume, weight, dimensions) with no check, a pro or con with no source, a maker statement filed as a pro or con, a line from another build that does not name the build, text that names another bag, or text that says a review was not found. Warnings cover stale checks (price after 30 days, other fields after 180). `my_note` links are checked only where
+`data/my-notes.yaml` exists (the owner's checkout); elsewhere the validator prints that it skipped them.
 
 `tools/migrate/run_all.sh` rebuilds `data/` from the old page. Do not run it once the YAML has been edited by hand: it overwrites edits.
 
