@@ -375,15 +375,18 @@ PR 9's second security review round still found three P1s:
 3. A revoked MCP token can still read at another Cloudflare location until its cached KV record expires (60 s
    or more).
 
-The user decides the shape at the gate (open decision #16). **A (recommended):** put `/authorize`, `/callback` and
-`/register` behind the owner-only Access policy, leaving only `/token` and `/mcp` open. **B:** give MCP its own
-Worker. **C:** take MCP out of Release 1. Until then PR 9 stays local only, with no edge deploy.
+**Decided (#16, director under the user's overnight instruction, 26 Nov; the user may reverse it).** Access with
+the owner-only policy on `/authorize` and `/callback` only. `/register` stays open, because Claude registers
+server-to-server with no browser, but with the callback allow-list, deduplication (an identical registration
+returns the existing client, no new KV write) and its own daily cap. Revocation is checked in D1 before an MCP
+request is served. `/register` moves behind Access only if the edge test shows Claude's registration carries a
+browser session. Risk 1 (the shared Worker quota) is reduced, not closed.
 
 **Not verified.** Access for SaaS at the edge (its real endpoints, claims and PKCE). A real MCP client (Claude)
 connecting. The Rate Limiting binding and the WAF rule at the edge.
 
-**ADR change.** Proposed — for the user at the gate: new [ADR-0048](../adr/0048-mcp-authorization.md), "MCP
-authorization for Kit Watch".
+**ADR change.** New [ADR-0048](../adr/0048-mcp-authorization.md), "MCP authorization for Kit Watch": Accepted by
+the director under the user's overnight instruction; the user may reverse it.
 
 ## Privacy wall: decided
 
