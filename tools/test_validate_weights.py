@@ -36,17 +36,20 @@ class ValidatorWholeGramsTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_fractional_weight_is_rejected(self):
+        # Set the first weight_g and the first metric display weight to a fractional value, whatever whole
+        # number the catalogue holds today; each must be rejected.
         path = os.path.join(self.root, BAG)
         with open(path, encoding='utf-8') as f:
             text = f.read()
-        text, n = re.subn(r'^(  weight_g: )800$', r'\g<1>799.5', text, count=1, flags=re.M)
-        self.assertEqual(n, 1)
+        text, n1 = re.subn(r'^(  weight_g: )\d+$', r'\g<1>799.5', text, count=1, flags=re.M)
+        text, n2 = re.subn(r'^(        g: )\d+$', r'\g<1>798.5', text, count=1, flags=re.M)
+        self.assertEqual((n1, n2), (1, 1))
         with open(path, 'w', encoding='utf-8') as f:
             f.write(text)
         result = self.run_validator()
         self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
         self.assertIn('799.5', result.stdout)
-
+        self.assertIn('798.5', result.stdout)
 
 if __name__ == '__main__':
     unittest.main()
