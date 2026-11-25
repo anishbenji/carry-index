@@ -132,6 +132,16 @@ function gateStepIndex(): number {
   return found[0] ?? -1;
 }
 
+/** The index of the triggers job's single gate step, the step that runs `bin.ts triggers`. */
+function triggersStepIndex(): number {
+  const steps = job("deploy-public.yml", "triggers").steps ?? [];
+  const found = steps.flatMap((step, i) =>
+    step.run !== undefined && /\bbin\.ts triggers\b/.test(step.run) ? [i] : [],
+  );
+  expect(found).toHaveLength(1);
+  return found[0] ?? -1;
+}
+
 const READ_ONLY = { contents: "read" };
 
 describe("T10 the workflow files exist and parse", () => {
@@ -148,7 +158,8 @@ describe("T10 the workflow files exist and parse", () => {
 describe("T10 the build job never sees a credential", () => {
   test("deploy-public.yml has exactly the jobs build and deploy, and deploy needs build", () => {
     const { jobs } = file("deploy-public.yml").workflow;
-    expect(Object.keys(jobs).sort(byName)).toEqual(["build", "deploy"]);
+    // The one-time triggers job (after 92e548c) is the third; it is checked in its own describe below.
+    expect(Object.keys(jobs).sort(byName)).toEqual(["build", "deploy", "triggers"]);
     expect([job("deploy-public.yml", "deploy").needs].flat()).toEqual(["build"]);
   });
 
@@ -199,7 +210,13 @@ describe("T10 the token is only in the gate step's env", () => {
 
   test("no other place in any workflow names a secret, a variable or a Cloudflare credential", () => {
     const gate = `jobs.deploy.steps[${gateStepIndex()}].env`;
-    const allowed = new Set([`${gate}.CLOUDFLARE_API_TOKEN`, `${gate}.CLOUDFLARE_ACCOUNT_ID`]);
+    const trig = `jobs.triggers.steps[${triggersStepIndex()}].env`;
+    const allowed = new Set([
+      `${gate}.CLOUDFLARE_API_TOKEN`,
+      `${gate}.CLOUDFLARE_ACCOUNT_ID`,
+      `${trig}.CLOUDFLARE_API_TOKEN`,
+      `${trig}.CLOUDFLARE_ACCOUNT_ID`,
+    ]);
     for (const f of FILES) {
       const hits = paths(f.workflow, /\bsecrets\b|\bvars\b|CLOUDFLARE_|github\.token|GITHUB_TOKEN/);
       const outside = f.name === "deploy-public.yml" ? hits.filter((hit) => !allowed.has(hit)) : hits;
@@ -213,7 +230,8 @@ describe("T10 the token is only in the gate step's env", () => {
     for (const f of FILES) {
       if (f.name === "deploy-kit.yml") continue;
       const count = f.text.match(/\bsecrets\b/g)?.length ?? 0;
-      expect(count, f.name).toBe(f.name === "deploy-public.yml" ? 1 : 0);
+      // One per gate step: the deploy job's and the triggers job's.
+      expect(count, f.name).toBe(f.name === "deploy-public.yml" ? 2 : 0);
     }
   });
 
@@ -284,7 +302,10 @@ describe("T10 only deploy-kit.yml may name kit-production", () => {
         return env === undefined ? [] : [`${f.name} ${name} ${env}`];
       }),
     );
-    expect(named).toEqual(["deploy-public.yml deploy public-production"]);
+    expect(named).toEqual([
+      "deploy-public.yml deploy public-production",
+      "deploy-public.yml triggers public-production",
+    ]);
   });
 });
 
@@ -544,5 +565,45 @@ describe("T10 no email address in a tracked file (security review, Sol round 1, 
     expect(output).not.toContain("readme.txt");
     expect(output).not.toContain(address);
     expect(output).not.toContain("synthetic.person");
+  });
+});
+
+describe("T10 the one-time triggers job (after 92e548c: versions deploy applies no triggers)", () => {
+  const GATE_TRIGGERS = /^node packages\/deploy\/src\/bin\.ts triggers "?\$\{\{ runner\.temp \}\}\/public-site"?$/;
+
+  test("runs only on a manual run from main with apply_triggers on, after build and deploy", () => {
+    const triggers = job("deploy-public.yml", "triggers");
+    expect([triggers.needs].flat().map(String).sort(byName)).toEqual(["build", "deploy"]);
+    expect(triggers.if?.replace(/\s+/g, " ").trim()).toBe(
+      "github.event_name == 'workflow_dispatch' && inputs.apply_triggers && github.ref == 'refs/heads/main'",
+    );
+  });
+
+  test("its input is one boolean that defaults to false", () => {
+    const dispatch = file("deploy-public.yml").workflow.on?.workflow_dispatch as {
+      inputs?: Record<string, { type?: string; default?: unknown }>;
+    };
+    expect(Object.keys(dispatch.inputs ?? {})).toEqual(["apply_triggers"]);
+    expect(dispatch.inputs?.apply_triggers?.type).toBe("boolean");
+    expect(dispatch.inputs?.apply_triggers?.default).toBe(false);
+  });
+
+  test("its gate step runs the fixed triggers command line with only the token and the account id", () => {
+    const step = job("deploy-public.yml", "triggers").steps?.[triggersStepIndex()];
+    expect(step?.uses).toBeUndefined();
+    expect(step?.run?.trim()).toMatch(GATE_TRIGGERS);
+    expect(step?.env).toStrictEqual({
+      CLOUDFLARE_API_TOKEN: expr("secrets.CLOUDFLARE_API_TOKEN"),
+      CLOUDFLARE_ACCOUNT_ID: expr("vars.CLOUDFLARE_ACCOUNT_ID"),
+    });
+  });
+
+  test("it gates the build's own artifact, downloaded with a digest check, before the gate step", () => {
+    const steps = job("deploy-public.yml", "triggers").steps ?? [];
+    const download = steps.findIndex((step) => step.uses?.startsWith("actions/download-artifact@"));
+    expect(download).toBeGreaterThanOrEqual(0);
+    expect(download).toBeLessThan(triggersStepIndex());
+    expect(steps[download]?.with?.name).toBe("public-site");
+    expect(steps[download]?.with?.["digest-mismatch"]).toBe("error");
   });
 });

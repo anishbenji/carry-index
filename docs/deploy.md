@@ -27,7 +27,7 @@ heavy-job lock (`bin/heavy-run.sh` in the director's reports folder), like any o
 ### `.github/workflows/deploy-public.yml`: build, then deploy
 
 Runs on every push to `main`, once a day at 04:17 UTC (so `/performance` stays current, decision #17), and by hand
-(**Actions → deploy-public → Run workflow**, on `main`). Two jobs:
+(**Actions → deploy-public → Run workflow**, on `main`). Three jobs:
 
 1. **`build`** has no environment and no credentials. It installs with `--ignore-scripts`, runs `bun run build`,
    runs the gate's `check` on `apps/web/dist/client` (check 1 on the schemas, then seal and scan; it spawns
@@ -41,9 +41,25 @@ Runs on every push to `main`, once a day at 04:17 UTC (so `/performance` stays c
    ```
 
    with `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in that step's `env:` only. The gate seals and scans
-   the folder again, runs check 3 (`wrangler deploy --dry-run` must print exactly "No bindings found."), deploys,
-   then reads the live Worker's settings. If they are not what the definition says and this deploy created a
-   version, it rolls back to the previous version and reads the settings again.
+   the folder again, runs the dry run (`wrangler deploy --dry-run` must print exactly "No bindings found."), then
+   **uploads, verifies, then promotes**, so an unchecked version never serves traffic:
+   1. reads the active deployment (the version to return to);
+   2. `wrangler versions upload`: a new version with no traffic;
+   3. checks that exact version's bindings, and the script's tail consumers, through the API;
+   4. reads the active deployment again, and stops if anything else deployed in the meantime;
+   5. `wrangler versions deploy <id>@100%`;
+   6. confirms the new version is the active one and the live settings match.
+
+   If step 6 finds a definite mismatch, the gate rolls back by id to the previous version, only if that version
+   itself checks clean and the new version is still the active one, then checks again. An API error is retried
+   (three tries, a few seconds apart) and never triggers a change.
+3. **`triggers`** runs only on a manual run on `main` with **apply_triggers** ticked, after `deploy` succeeds, in
+   `public-production`. `wrangler versions deploy` applies none of the config's triggers, so this job runs
+   `node packages/deploy/src/bin.ts triggers "$RUNNER_TEMP/public-site"`: the same check 1, seal, scan and dry
+   run, then `wrangler triggers deploy --config <sealed>/wrangler.json`, which turns workers.dev and preview URLs
+   off as the definition says. It uploads and promotes nothing, and then checks the live Worker. The config has
+   no routes, so routes and custom domains attached in the dashboard are left as they are (Wrangler 4.168 publishes
+   routes and domains only when the config lists some).
 
 One deploy runs at a time and a running deploy is never cancelled. If more runs arrive while one is deploying,
 GitHub keeps only the newest waiting run, which is the newest `main`.
@@ -89,8 +105,14 @@ About 20 minutes, once, before the first deploy.
    Do not add either as a repository secret or variable. No repository-level secrets should exist.
 3. **Protect `main`** (U6): require pull requests and the three `ci` checks (`script contract`, `data validator`,
    `secret scan`). They appear in the list once `ci.yml` has run once.
-4. **First deploy:** Actions → deploy-public → Run workflow on `main`. After it succeeds, attach
-   `carryjournal.com` and the `/api/*` route in the dashboard (design section 6).
+4. **First deploy, from GitHub:** Actions → deploy-public → Run workflow → branch `main`, tick
+   **apply_triggers**, Run. `deploy` replaces the placeholder from step 1 with the site, then `triggers` applies
+   `workers_dev: false` and `preview_urls: false` once (the Hello World placeholder has workers.dev on). The token
+   stays in the environment; nothing runs from the Mac. Check afterwards: dashboard → Workers & Pages →
+   `carry-journal` → Settings → Domains & Routes shows workers.dev and Preview URLs disabled. Then attach
+   `carryjournal.com` and the `/api/*` route in the dashboard (design section 6). Later runs leave
+   **apply_triggers** off; tick it again only when the definition's `workers_dev`, `preview_urls` or routes
+   change.
 
 Scheduled workflows run only from the default branch, and GitHub turns them off in a public repository after 60
 days with no activity; re-enable it on the Actions tab if that happens.
@@ -105,16 +127,23 @@ summary line. GitHub emails you when the job fails.
 | `check 1 failed`, `seal failed` or `bundle scan failed` | The build broke a wall rule. Nothing was uploaded | Fix the cause the problem lines name, in a pull request |
 | `headers-missing: "_headers"` or `headers-weak: "_headers"` (with `bundle scan failed`) | The build has no `_headers` file or lacks a required security header (`headers-missing`), or a block weakens one: `'unsafe-inline'` in the CSP, COOP or CORP looser than same-origin, or a `! Name` line removing a required header (`headers-weak`). Nothing was uploaded | Fix `_headers` in `apps/web`, in a pull request. The required list is `REQUIRED_HEADERS` in `packages/deploy/src/headers.ts` |
 | `check 3 failed before upload; nothing was uploaded` | The dry run printed something other than "No bindings found." (a binding appeared, or Wrangler's output changed) | Nothing is live from this run. Find what changed; a Wrangler upgrade needs T6 and the recorded dry-run fixture re-checked |
-| `could not confirm the live Worker's bindings; not rolling back. Check it by hand now` | After the upload, the settings API failed three times in a row (an error status, a malformed reply, or no answer in time: each a `live-api-error`). The gate cannot tell whether the live Worker is wrong, so it does not roll back | Check now: dashboard → Workers & Pages → `carry-journal` → Settings → Bindings must be empty. If it is not, roll back by hand (Deployments → the last good version) and remove the binding. Then re-run the workflow |
-| `check 3 failed on the live Worker; wrangler rollback to … exited with 0`, then `rollback confirmed` | The upload created a version whose live bindings or tail consumers differ from the definition (for example a binding added in the dashboard). The gate rolled back to the previous version and the re-check passed | Nothing is wrong live. Remove the extra binding in the dashboard, then re-run the workflow |
-| `live-after-rollback`, then `the live Worker still does not match after the rollback; it needs attention now` | The rollback ran (see the `wrangler rollback to … exited with` line), but the live Worker still differs, or the re-check could not read it | Act now: dashboard → Workers & Pages → `carry-journal` → Deployments → roll back to the last good version by hand, remove the extra binding, then re-run the workflow |
-| `check 3 failed on the live Worker; not rolling back: the upload created no new version` | The upload created nothing, and the Worker that was already live does not match (a dashboard change, or drift) | The gate leaves it alone, since rolling back would undo the version that was live. Remove the extra binding in the dashboard, then re-run the workflow |
-| `wrangler deploy exited with` a non-zero code, then `the live Worker shows the expected bindings` | The upload failed part way, but what is live is still correct | Re-run the workflow once the cause (often a Cloudflare outage or an expired token) is fixed |
-| any `wrangler … exited with 124` | That Wrangler run was still going after 10 minutes and was killed with its process group. A dry run that times out stops the gate before upload; an upload that times out is rolled back only if it printed a new version id; a rollback that times out is followed by the same re-check | Read the line after it as in the rows above. If it recurs, check Cloudflare's status page before re-running |
+| `could not read the active deployment; nothing was uploaded` | The deployments API failed before the upload | Re-run once Cloudflare answers again |
+| `wrangler versions upload exited with …`, then `no uploaded version to check; nothing was promoted` | The upload failed, or printed no version id (exit 124 means it timed out after 10 minutes) | Nothing changed live. A version may exist with no traffic; it is harmless. Re-run |
+| `could not confirm version … ; it was not promoted` | The uploaded version could not be read through the API, three times | Nothing changed live; the version has no traffic. Re-run |
+| `version … failed check 3; it was not promoted` | The uploaded version has a binding, or the script has a tail consumer, that the definition does not allow | Nothing changed live. Find the cause (a tail consumer added in the dashboard, or a changed definition or Wrangler) and fix it before re-running |
+| `the active deployment changed while version … was checked; it was not promoted` | Something else deployed `carry-journal` between the gate's two reads (the dashboard, or another tool) | Nothing was promoted. Find out what deployed, then re-run |
+| `version … is live and shows the expected bindings` but the job failed | `wrangler versions deploy` exited non-zero, yet the new version is live and correct | Nothing to undo. Read the Wrangler exit line; re-run if needed |
+| `could not confirm the live Worker after promotion; not rolling back. Check it by hand now` | After promotion the API failed three times; the gate cannot tell whether the live Worker is right | Check now: dashboard → Workers & Pages → `carry-journal` → Settings → Bindings must be empty, and the active version must be the one in the log. If not, roll back by hand (Deployments → the last good version) |
+| `version … is not the active one; not rolling back. Check the live Worker now` | After promotion, another version is active (the promotion did not take, or something else deployed) | Check what is active in the dashboard and whether it is clean, then re-run |
+| `wrangler rollback to … exited with 0`, then `rollback confirmed: version … is live and shows the expected bindings` | The promoted version showed a binding or tail consumer that its checked version did not (a change after promotion). The gate went back to the verified previous version | Nothing is wrong live. Remove the extra binding or tail consumer in the dashboard, then re-run |
+| `live-after-rollback`, with `no verified previous version to return to` or `the live Worker still does not match after the rollback` | The live Worker is wrong and the gate could not fix it: there was no previous version (the first deploy), the previous one is not clean itself, or the rollback did not take | Act now: roll back by hand to the last good version in the dashboard, or remove the extra binding; then re-run |
+| `wrangler triggers deploy exited with …` non-zero (triggers job) | Wrangler could not apply workers.dev or preview URL settings (often the token's scope) | Nothing else changed. Read the error, fix the token or set workers.dev and Preview URLs off in the dashboard by hand, then re-run with **apply_triggers** |
+| `the live Worker does not show the expected bindings; nothing was rolled back. Check it by hand now` (triggers job) | Triggers cannot change bindings, so the live Worker was already wrong | Check the bindings in the dashboard and remove the extra one, then run a normal deploy |
+| any `wrangler … exited with 124` | That Wrangler run was still going after 10 minutes and was killed with its process group | Read the next line as in the rows above. If it recurs, check Cloudflare's status page before re-running |
 
-The gate rolls back only on a definite mismatch, and only a version this deploy created; an API error is retried
-(three tries, a few seconds apart) and never rolled back on. The deploy job's 45-minute limit leaves room for the
-three Wrangler runs (dry run, upload, rollback) at their 10-minute limit each.
+The gate changes the live Worker only by promoting a version it has just checked, or by rolling back to a
+previous version it has checked; an API error never leads to a change. The deploy job's 50-minute limit leaves
+room for its four Wrangler runs (dry run, upload, promote, rollback) at their 10-minute limit each.
 
 ## Not yet covered
 

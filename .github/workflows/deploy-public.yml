@@ -1,9 +1,11 @@
-# Deploys the public site (ADR-0049, privacy-wall design v2 sections 3, 7 and 8). Two jobs:
-#   build   no credentials and no environment: builds the site, runs the gate's check on it, uploads it.
-#   deploy  main only, in environment public-production: downloads the build, and the gate seals, scans, runs
-#           check 3 (dry run), deploys, then confirms the live Worker's bindings and rolls back if they differ.
-# The Cloudflare token reaches exactly one step, the gate's deploy, through that step's env. The structure is
-# tested by packages/deploy/test/t10-workflows.test.ts; docs/deploy.md is the owner's guide.
+# Deploys the public site (ADR-0049, privacy-wall design v2 sections 3, 7 and 8). Three jobs:
+#   build     no credentials and no environment: builds the site, runs the gate's check on it, uploads it.
+#   deploy    main only, in environment public-production: downloads the build; the gate seals, scans, runs the
+#             dry run, uploads a version with no traffic, checks that version, promotes it, confirms it live, and
+#             rolls back only to a verified previous version.
+#   triggers  once, on a manual run with apply_triggers: the gate applies workers.dev, preview URLs and routes.
+# The Cloudflare token reaches only the two gate steps, through each step's env. The structure is tested by
+# packages/deploy/test/t10-workflows.test.ts; docs/deploy.md is the owner's guide.
 name: deploy-public
 
 on:
@@ -14,6 +16,11 @@ on:
     - cron: "17 4 * * *"
   # First deploys, and redeploys by hand; the deploy job still runs only on main.
   workflow_dispatch:
+    inputs:
+      apply_triggers:
+        description: "Once, after the first deploy: also apply workers.dev, preview URLs and routes (wrangler triggers deploy)"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -60,8 +67,8 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
-    # Three Wrangler runs (dry run, upload, rollback) at the gate's 10-minute limit each, plus the live checks.
-    timeout-minutes: 45
+    # Four Wrangler runs (dry run, upload, promote, rollback) at the gate's 10-minute limit each, plus the API checks.
+    timeout-minutes: 50
     environment: public-production
     permissions:
       contents: read
@@ -86,8 +93,46 @@ jobs:
           name: public-site
           path: ${{ runner.temp }}/public-site
           digest-mismatch: error
-      - name: Deploy through the gate (seal, scan, check 3, deploy, live check with rollback)
+      - name: Deploy through the gate (seal, scan, dry run, upload, verify, promote, live check)
         run: node packages/deploy/src/bin.ts deploy "${{ runner.temp }}/public-site"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+
+  # Once, after the first deploy: `wrangler versions deploy` applies none of the config's triggers, so workers.dev
+  # and preview URLs stay as they were until the gate runs `wrangler triggers deploy` on the same sealed config.
+  # Runs only when a manual run on main asks for it, after a successful deploy, in the same environment.
+  triggers:
+    needs: [build, deploy]
+    if: github.event_name == 'workflow_dispatch' && inputs.apply_triggers && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: public-production
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: 1.4.2
+          no-cache: true
+      - name: Install (frozen lockfile, no package scripts)
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Download the checked site
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: public-site
+          path: ${{ runner.temp }}/public-site
+          digest-mismatch: error
+      - name: Apply triggers through the gate (seal, scan, dry run, triggers deploy, live check)
+        run: node packages/deploy/src/bin.ts triggers "${{ runner.temp }}/public-site"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
