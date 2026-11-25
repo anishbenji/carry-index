@@ -68,7 +68,7 @@ composite project that emits declarations only, into its own ignored `.tsbuild/`
 |---|---|---|
 | `typecheck` | `tsc --build` | passes |
 | `lint` | `biome ci .`, then the import ban (`node`, TypeScript 7 parser) | passes |
-| `test` | `vitest run` in every workspace that has tests | 67 tests pass |
+| `test` | `vitest run` in every workspace that has tests | 78 tests pass |
 | `build` | `vite build` in apps/web and apps/kit | passes, no HTML emitted |
 | `wall` | lists the three privacy-wall checks as `pending: <milestone>`; fails if any Wrangler config declares a binding while one is pending (see below) | passes, 0 Wrangler configs, 2 Vite configs |
 | `size` | runs size-limit whenever the root `size-limit` list has targets; without targets, "no pages yet" until `apps/web/dist` holds HTML or JavaScript, then fails | passes: 9.54 kB Brotli of 15 kB |
@@ -101,12 +101,45 @@ a parser of ours:
   `persistState`, `inspectorPort`, `remoteBindings` and `assetsOnly` fails: `config`, `configPath`,
   `auxiliaryWorkers`, `experimental` (its prerender Worker carries a config), `tunnel` and any option added
   later, as do options it cannot read.
+- **Assets.** Every `assets.directory` (top level, `previews`, each environment) must resolve, from the config's
+  folder, to that folder's own `dist/client`, with no symlink on the way; `pages_build_output_dir` fails.
+- **What gets uploaded.** `apps/web/public` (copied into the build) may hold no dotfile, dot-folder or symlink;
+  each Worker folder's `dist/client` may hold no symlink and no `.dev.vars*` (the plugin's `.assetsignore` is
+  allowed). `apps/kit` sets `publicDir: false`.
+- **No contents in output.** Messages name a path and the rule broken, never Wrangler's diagnostics (which quote
+  the file). A deploy redirect and every path it names are checked without Wrangler first (plain JSON, no symlink,
+  inside the checkout, among the checked configs), and Wrangler's own discovery runs only when every path check
+  has passed.
 
-The wall cannot prove that a deploy uses the config it checked. **Requirement for the CI deploy workflow
-(PR 10):** build, then run `bun run wall` on the generated config in the same job, immediately before
-`wrangler deploy`, and deploy with that generated config (the plugin's `.wrangler/deploy/config.json`
-redirect, no `--config` override and no `--env` the wall did not see). A deploy step that cannot meet this must
-not run.
+The wall is a guard rail over the working tree, not the enforcement point; see "Deploy-time privacy checks".
+
+## Deploy-time privacy checks (PR 10 / milestone 3)
+
+The real enforcement is a check of the exact artifact being deployed, in the CI deploy job. Requirements:
+
+1. **Scan the upload artifact.** After the build and immediately before `wrangler deploy`, in the same job, scan
+   `dist/client` (exactly what Wrangler uploads, after applying `.assetsignore`) and fail on: any dotfile or
+   dot-folder other than the plugin's `.assetsignore`; any symlink; `.dev.vars*`, `.env*`, key and certificate
+   files; any file not produced by the build from tracked sources (compare against the build's file list); and
+   the canary record's marker string anywhere in any file.
+2. **Deploy only the config the wall checked.** Run `bun run wall` in the same job on the generated config, then
+   deploy with that config: the plugin's `.wrangler/deploy/config.json` redirect, no `--config`, no `--env` the
+   wall did not judge, no `--assets` or other flag that changes what is uploaded or bound. A deploy step that
+   cannot meet this must not run.
+3. **Check the result.** After deploy, compare the deployed Worker's bindings (`wrangler deployments` or the API)
+   with the checked config, and fail the job on any difference.
+
+Limits of the static wall that the deploy-time check has to cover:
+
+- It reads the working tree at one moment; a later build step, a CI cache or a plugin can change files after it.
+- It cannot see `wrangler` command-line flags (`--config`, `--env`, `--assets`, `--var`), environment variables
+  that change Wrangler's behaviour, or bindings added through the Cloudflare dashboard or API.
+- It judges `dist/client` by name and type only, never by contents, and only the files present when it ran.
+- Wrangler's find-up continues above the checkout; the wall reports such a file only as "outside the checkout".
+- It relies on `unstable_`/`experimental_` Wrangler exports and an unstable TypeScript API, both of which can
+  change on upgrade.
+- Vite config checks see only literal options; a config built by code the wall cannot read fails closed, which
+  can block legitimate changes until the wall learns them.
 
 The wall and import checks parse source with TypeScript 7's own parser. TypeScript 7 has no in-process
 `createSourceFile`; its JavaScript API (`typescript/unstable/sync`) drives the native compiler over a pipe and
@@ -138,6 +171,11 @@ config repeats Vite 8.3.8's defaults (`.env`, `.env.*`, `*.{crt,pem,key,p12,pfx,
 `.yarnrc.yml`, `**/.git/**`) first; a test in `packages/checks` holds the exact list. Re-check that list when
 Vite is upgraded.
 
+Each dev server may read only its own app folder, `packages/schema` and `node_modules` (`server.fs.allow`), and
+`server.cors` is `false`. Checked by hand with `vite --port 5199` in apps/web: `/src/main.tsx`, `/@vite/client`
+and the optimised Solid module returned 200; `/@fs/<checkout>/README.md` and `/@fs/<checkout>/package.json`
+returned 403; a request with `Origin: http://localhost:3000` got no `Access-Control-Allow-Origin` header.
+
 ## Commands and results
 
 All run in the branch checkout. Build and end-to-end runs went through `heavy-run.sh`.
@@ -153,7 +191,7 @@ All run in the branch checkout. Build and end-to-end runs went through `heavy-ru
 | `/usr/bin/time -p biome ci .` | real 0.50 s, 50 files |
 | `biome lint` on a scratch file with an unawaited promise, an async `forEach` callback and a promise in an `if` | `noFloatingPromises` (1), `noMisusedPromises` (2) and `noUnnecessaryConditions` (1) reported (file removed afterwards) |
 | `biome ci` with `noRestrictedImports` on `zod` and `@cj/schema` under `apps/web` | errors on `import type { Bag } from "@cj/schema"` in both files that use it; override removed |
-| `bun run test` | checks 56, schema 6, pipeline 3, web 2: all pass |
+| `bun run test` | checks 67, schema 6, pipeline 3, web 2: all pass |
 | `heavy-run.sh … bun run build` | exit 0; Vite reports apps/web `main-*.js` 25.06 kB (10.54 kB gzip), apps/kit 24.58 kB (10.32 kB gzip) |
 | `heavy-run.sh … bun run size` (after the build) | exit 0; "Size limit: 15 kB / Size: 9.54 kB brotlied" |
 | `wc -c`, `brotli -c -q 11 … \| wc -c`, `gzip -9 -c … \| wc -c` on each bundle | apps/web: 25,069 B raw, 9,540 B Brotli, 10,439 B gzip; apps/kit: 24,586 B raw, 9,353 B Brotli, 10,220 B gzip |
