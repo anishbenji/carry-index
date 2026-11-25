@@ -1,0 +1,534 @@
+# Fabrics. A check lists the page a value was read from. in_uhmwpe_section.draft holds drafted reasons whose wording Anish has not read yet.
+# Fabrics marked not-applicable are on file only so builds of the same bag can be compared.
+ultra-200x:
+  name: ULTRA 200X
+  maker: Challenge Sailcloth
+  family: ULTRA X
+  fibre: UHMWPE
+  construction: UHMWPE and high-tenacity polyester woven face, Ultra cross-ply, 0.75 mil PET film
+  uhmwpe_role: face
+  uhmwpe_content:
+    published: false
+    statement: 'Challenge gives no share. Retailer Extremtextil lists both 43% and 67% UHMWPE on its page. Fabric weight differs by source: 4.6 oz/yd² on Challenge''s UltraWeave page, 3.9 oz/yd² (133 g/m²) at ULA and Extremtextil.'
+    source: https://www.challenge-outdoor.com/ultra-weave
+  in_uhmwpe_section:
+    decision: in
+    reasons: On the page since before the three tests were written down; reasons against the tests still to be written
+    decided: before 2026-11-13
+    draft:
+      test1_role:
+        finding: 'Challenge says UltraWeave is woven from a blend of UHMWPE and high-tenacity polyester, laminated to PET film, so the fibre is in the woven face. Percentage: not published by Challenge; retailer Extremtextil lists both 43% and 67% UHMWPE.'
+        sources:
+        - https://www.challenge-outdoor.com/ultra-weave
+        - https://www.extremtextil.de/en/ultra-200-x-backpack-laminate-with-uhmwpe-133g-sqm/72682
+      test2_positioning:
+        finding: 'Challenge''s UltraWeave and ULTRA pages present the range as UHMWPE fabrics and tie strength to the fibre (its claim: 15 times steel by weight). Its waterproof claim (200 psi) rests on the film, not the fibre; the 200X superlative has no data.'
+        sources:
+        - https://www.challenge-outdoor.com/ultra-weave
+        - https://www.challenge-outdoor.com/ultra
+      test3_experience:
+        finding: 'Maker figures: the Evergoods CTB26 in ULTRA 200X is 1459 g against 1587 g for the 420D nylon CTB26, about 8% lighter. No review on file describes the look or feel of a 200X bag against a nylon one.'
+        sources:
+        - https://evergoods.us/products/civic-travel-bag-ultra
+        - https://evergoods.us/products/civic-travel-bag-26l
+      suggested_decision: in
+      why_here: Challenge weaves UHMWPE into the face itself and rests its strength claims on that fibre; the CTB26 in it weighs less than the nylon version.
+      gaps:
+      - No published UHMWPE share from Challenge; Extremtextil gives two different figures (43% and 67%).
+      - 'Fabric weight conflicts: 4.6 oz/yd² on Challenge''s UltraWeave page against 3.9 oz/yd² at ULA and Extremtextil.'
+      - No review or owner handling on file comparing the feel of a 200X bag with a nylon one.
+      - No nylon-versus-200X weight comparison on file for the Ctactical bags.
+      status: awaiting approval
+      drafted: '2026-11-13'
+  note: Challenge's UltraWeave page writes "Ultra200X".
+  checks:
+  - date: '2026-11-13'
+    source: challenge-outdoor-ultra-weave
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - name_as_written
+    - uhmwpe_role
+  - date: '2026-11-13'
+    source: ula-equipment-fabric
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - uhmwpe_content
+  - date: '2026-11-13'
+    source: extremtextil-72682
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - uhmwpe_content
+ultra-400x:
+  name: ULTRA 400X
+  maker: Challenge Sailcloth
+  family: ULTRA X
+  fibre: UHMWPE
+  construction: UHMWPE and high-tenacity polyester woven face, Ultra cross-ply, 0.75 mil PET film
+  uhmwpe_role: face
+  uhmwpe_content:
+    published: false
+    statement: Challenge names it without a blend or weight. ULA gives 5.25 oz/yd² (178 g/m²); retailer Extremtextil gives a 67/33 UHMWPE and polyester face.
+    source: https://www.challenge-outdoor.com/ultra-weave
+  in_uhmwpe_section:
+    decision: in
+    reasons: On the page since before the three tests were written down; reasons against the tests still to be written
+    decided: before 2026-11-13
+    draft:
+      test1_role:
+        finding: 'Challenge describes Ultra400X as a 400d Ultra-PE face woven with high-tenacity polyester and laminated to PET film. Percentage: not published by Challenge; retailer Extremtextil gives a 67/33 UHMWPE and polyester face.'
+        sources:
+        - https://www.challenge-outdoor.com/ultra-weave
+        - https://www.extremtextil.de/en/ultra-400-x-backpack-laminate-with-uhmwpe-178g-sqm/72683
+      test2_positioning:
+        finding: 'Challenge''s claims: about 20% lighter than other 400d U-PE fabrics, four times their abrasion resistance, and the UHMWPE fibre''s 15-times-steel strength. The 20% baseline is not spelled out.'
+        sources:
+        - https://www.challenge-outdoor.com/ultra-weave
+        - https://www.challenge-outdoor.com/ultra-collection
+      test3_experience:
+        finding: 'Maker figures: Aer''s City Pack Pro 2 24L is 2.57 lb in Ultra against 2.86 lb in Cordura, and its Travel Pack 4 28L 3.28 lb against 3.52 lb. Stranded Variable (review, bag supplied by Aer) describes a light crinkle and a paper-like feel.'
+        sources:
+        - https://aersf.com/products/city-pack-pro-2-ultra-24l
+        - https://aersf.com/products/city-pack-pro-2-24l
+        - https://aersf.com/products/travel-pack-4-ultra-28l
+        - https://aersf.com/products/travel-pack-4-28l
+        - https://www.strandedvariable.com/posts/review-aer-city-pack-pro-2-24l-ultra
+      suggested_decision: in
+      why_here: Challenge builds the face from UHMWPE and rests its weight and abrasion claims on it; Aer's Ultra bags weigh less than their Cordura twins.
+      gaps:
+      - No published UHMWPE share from Challenge; only a retailer's 67/33 figure.
+      - Weight savings on file are modest (about 7 to 10% on Aer's figures); whether that counts as clearly lighter is an editorial call.
+      - Retailer Rushfaster's metric weights for both Aer Ultra bags do not match Aer's own pound figures.
+      status: awaiting approval
+      drafted: '2026-11-13'
+  note: Challenge's UltraWeave page writes "Ultra400X".
+  checks:
+  - date: '2026-11-13'
+    source: challenge-outdoor-ultra-weave
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - name_as_written
+    - uhmwpe_role
+  - date: '2026-11-13'
+    source: ula-equipment-fabric
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - uhmwpe_content
+  - date: '2026-11-13'
+    source: extremtextil-72683
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - uhmwpe_content
+ultra-200tx:
+  name: ULTRA 200TX
+  maker: Challenge Sailcloth
+  family: ULTRA TX
+  fibre: UHMWPE
+  construction: Ultra and polyester woven face, 45° Ultra CrossPly, 0.5 mil RUV film, polyester ripstop backing
+  uhmwpe_role: face
+  uhmwpe_content:
+    published: false
+    statement: No share given. 5.9 oz/yd² (200 g/m²) in Challenge's 2023 fabric guide, which may be out of date.
+    source: https://static1.squarespace.com/static/62018e9b29f2cd0fc23c3a0c/t/63d8117224b90b2859f159a4/1675104626522/2023_EcoPak-Guide_v3.pdf
+  in_uhmwpe_section:
+    decision: in
+    reasons: On the page since before the three tests were written down; reasons against the tests still to be written
+    decided: before 2026-11-13
+    draft:
+      test1_role:
+        finding: 'Challenge''s 2023 fabric guide describes an Ultra and polyester woven face, a 45° Ultra cross-ply, 0.5 mil RUV film and a polyester ripstop backing. Percentage: not published.'
+        sources:
+        - https://static1.squarespace.com/static/62018e9b29f2cd0fc23c3a0c/t/63d8117224b90b2859f159a4/1675104626522/2023_EcoPak-Guide_v3.pdf
+      test2_positioning:
+        finding: No current Challenge page covers 200TX; its TX Ultra page lists only TX50 and TX70, which have polyester faces. How the 2023 guide words its claims is not on file. Bag makers call it a UHMWPE composite (Matador) or UHMWPE and polyester (Tortuga).
+        sources:
+        - https://www.challenge-outdoor.com/tx-ultra
+        - https://www.matadorequipment.com/products/matador-x-carryology-edx-ultra-backpack
+        - https://www.tortugabackpacks.com/products/superlite-backpack
+      test3_experience:
+        finding: Pack Hacker (review) calls the Superlite much lighter than other Tortuga travel packs, with no figures, and the fabric crisp and structured in hand. No nylon-versus-Ultra comparison is on file for the EDX, and the owner's own handling of his EDX is not recorded.
+        sources:
+        - https://www.packhacker.com/travel-gear/tortuga/superlite-backpack/
+      suggested_decision: in
+      why_here: Challenge's guide puts UHMWPE in the woven face and cross-ply; reviewers find Tortuga's Superlite in it much lighter than the brand's other packs.
+      gaps:
+      - Challenge's only description is the 2023 guide, which may be out of date; no current maker page.
+      - Test 2 wording from Challenge itself for the TX range is not on file.
+      - No weights for Tortuga's other packs or earlier nylon EDX builds to put figures on test 3.
+      - Owner's handling of his EDX not written down.
+      status: awaiting approval
+      drafted: '2026-11-13'
+  note: The 2023 guide writes "ULTRA200TX".
+  checks:
+  - date: '2026-11-13'
+    source: challenge-outdoor-2023-ecopak-guide-v3-pdf
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - name_as_written
+    - uhmwpe_role
+    - uhmwpe_content
+ultra-400tx:
+  name: ULTRA 400TX
+  maker: Challenge Sailcloth
+  family: ULTRA TX
+  fibre: UHMWPE
+  construction: Ultra and polyester woven face, 45° Ultra CrossPly, 0.5 mil RUV film, polyester ripstop backing
+  uhmwpe_role: face
+  uhmwpe_content:
+    published: false
+    statement: No share given. 7.2 oz/yd² (244 g/m²) in Challenge's 2023 fabric guide and on ULA's fabric page.
+    source: https://static1.squarespace.com/static/62018e9b29f2cd0fc23c3a0c/t/63d8117224b90b2859f159a4/1675104626522/2023_EcoPak-Guide_v3.pdf
+  in_uhmwpe_section:
+    decision: in
+    reasons: On the page since before the three tests were written down; reasons against the tests still to be written
+    decided: before 2026-11-13
+    draft:
+      test1_role:
+        finding: 'Challenge''s 2023 guide describes a 400d Ultra and polyester woven face with 45° Ultra cross-ply, RUV film and polyester ripstop backing; ULA''s fabric page agrees on 7.2 oz/yd². Percentage: not published.'
+        sources:
+        - https://static1.squarespace.com/static/62018e9b29f2cd0fc23c3a0c/t/63d8117224b90b2859f159a4/1675104626522/2023_EcoPak-Guide_v3.pdf
+        - https://www.ula-equipment.com/fabric
+      test2_positioning:
+        finding: No current Challenge page covers 400TX. ULA, the bag maker, repeats Challenge's 20%-lighter and four-times-abrasion claim for 400TX. Challenge's own TX claims are not on file.
+        sources:
+        - https://www.challenge-outdoor.com/tx-ultra
+        - https://www.ula-equipment.com/fabric
+      test3_experience:
+        finding: 'Maker figures: ULA''s ULTRA Cicada is 799.5 g against 870.3 g for the X50 Cicada, whose X-Pac has a 500D Cordura nylon face, about 8% lighter. No review on file compares the feel.'
+        sources:
+        - https://www.ula-equipment.com/product/ultra-cicada/
+        - https://www.ula-equipment.com/product/x50-cicada/
+      suggested_decision: in
+      why_here: UHMWPE forms the woven face and cross-ply, by Challenge's guide; ULA's Cicada in it is lighter than the X-Pac Cicada.
+      gaps:
+      - Construction rests on the 2023 guide and ULA; no current Challenge page.
+      - Challenge's own positioning for the TX range not on file.
+      - No review or owner handling on file comparing look and feel with the X-Pac Cicada.
+      status: awaiting approval
+      drafted: '2026-11-13'
+  note: The 2023 guide writes "ULTRA400TX". ULA describes the backing as white taffeta.
+  checks:
+  - date: '2026-11-13'
+    source: challenge-outdoor-2023-ecopak-guide-v3-pdf
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - name_as_written
+    - uhmwpe_role
+    - uhmwpe_content
+  - date: '2026-11-13'
+    source: ula-equipment-fabric
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - uhmwpe_content
+ultra-800tx:
+  name: ULTRA 800TX
+  maker: Challenge Sailcloth
+  family: ULTRA TX
+  fibre: UHMWPE
+  construction: Ultra and polyester woven face, 45° Ultra CrossPly, 0.5 mil RUV film, polyester ripstop backing
+  uhmwpe_role: face
+  uhmwpe_content:
+    published: false
+    statement: No share given. 10.85 oz/yd² (367 g/m²) in Challenge's 2023 fabric guide.
+    source: https://static1.squarespace.com/static/62018e9b29f2cd0fc23c3a0c/t/63d8117224b90b2859f159a4/1675104626522/2023_EcoPak-Guide_v3.pdf
+  in_uhmwpe_section:
+    decision: in
+    reasons: Stays in (Anish, 13 Nov 2026). The one-line reason shown on the page is still the draft below.
+    decided: '2026-11-13'
+    draft:
+      test1_role:
+        finding: 'Challenge''s 2023 guide describes an 800d Ultra and polyester woven face with 45° Ultra cross-ply, RUV film and polyester ripstop backing, at 10.85 oz/yd². Percentage: not published.'
+        sources:
+        - https://static1.squarespace.com/static/62018e9b29f2cd0fc23c3a0c/t/63d8117224b90b2859f159a4/1675104626522/2023_EcoPak-Guide_v3.pdf
+      test2_positioning:
+        finding: No evidence on file. No current Challenge page covers 800TX, and the guide's claim wording is not recorded.
+        sources:
+        - https://www.challenge-outdoor.com/tx-ultra
+      test3_experience:
+        finding: Only bag is ULA's Dragonfly, which mixes 400TX and 800TX, so the fabric cannot be isolated. ULA lists the Ultra 30L Dragonfly at 27.4 oz against 28 oz for the X-Pac Dragonfly, a gap of about 22 g. Treeline (review) calls it the lightest travel pack it has tested.
+        sources:
+        - https://www.ula-equipment.com/product/ultra-30l-patchless-dragonfly/
+        - https://www.ula-equipment.com/product/xpac-dragonfly/
+        - https://www.treelinereview.com/gearreviews/ula-ultra-30l-dragonfly-pack-review
+      suggested_decision: undecided
+      why_here: Challenge's guide puts 800d UHMWPE in the woven face, though the only bag in it barely differs in weight from its X-Pac version.
+      gaps:
+      - No current Challenge page; test 2 has no evidence on file.
+      - ULA quotes 8.5 oz/yd² for its 800 option, the plain ULTRA 800 weight, not 10.85 oz/yd²; which 800 fabric ULA uses is unclear.
+      - No bag uses 800TX alone, so test 3 cannot be tested on this fabric.
+      status: 'decision made: in; the wording of the reason is still a draft'
+      drafted: '2026-11-13'
+  note: ULA's Dragonfly page quotes 8.5 oz/yd² for its 800 option, which is the weight Challenge lists for plain ULTRA 800, not ULTRA800TX.
+  checks:
+  - date: '2026-11-13'
+    source: challenge-outdoor-2023-ecopak-guide-v3-pdf
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - name_as_written
+    - uhmwpe_role
+    - uhmwpe_content
+ultra-800:
+  name: ULTRA 800
+  maker: Challenge Sailcloth
+  family: ULTRA
+  fibre: UHMWPE
+  construction: woven-face laminate
+  uhmwpe_role: face
+  uhmwpe_content:
+    published: false
+    statement: No share given. 8.5 oz/yd² (288 g/m²) on Challenge's Ultra collection page.
+    source: https://www.challenge-outdoor.com/ultra-collection
+  in_uhmwpe_section:
+    decision: in
+    reasons: Stays in (Anish, 13 Nov 2026). The one-line reason shown on the page is still the draft below.
+    decided: '2026-11-13'
+    draft:
+      test1_role:
+        finding: 'Challenge''s ULTRA collection page describes an 800d Ultra-PE face blended with high-tenacity polyester, laminated to 0.5 mil RUV film, at 8.5 oz/yd². Percentage: not published.'
+        sources:
+        - https://www.challenge-outdoor.com/ultra-collection
+      test2_positioning:
+        finding: 'Challenge''s claim: doubling the denier of 400d gives ULTRA 800 its strength, with 250+ lb tear and 16,000+ abrasion cycles listed. The collection page says Ultra-PE, never UHMWPE; its ULTRA page names UHMWPE as the fibre.'
+        sources:
+        - https://www.challenge-outdoor.com/ultra-collection
+        - https://www.challenge-outdoor.com/ultra
+      test3_experience:
+        finding: Carryology (hands-on review, 2023) calls the Ultra 800 Dragonfly very light but gives no nylon comparison and lists it at 30 oz. ULA's current X-Pac Dragonfly page gives 28 oz, so the figures on file do not show it lighter.
+        sources:
+        - https://www.carryology.com/reviews-2/ula-ultra-dragonfly-review/
+        - https://www.ula-equipment.com/product/xpac-dragonfly/
+      suggested_decision: undecided
+      why_here: Challenge builds ULTRA 800 on an 800d UHMWPE-blend face and credits its strength to that fibre.
+      gaps:
+      - Weight figures on file are from different years (Carryology 2023 against ULA's undated current page); no same-time comparison.
+      - No look-and-feel comparison with a nylon or X-Pac bag on file.
+      - Which Dragonfly listing uses plain ULTRA 800 today is unclear.
+      status: 'decision made: in; the wording of the reason is still a draft'
+      drafted: '2026-11-13'
+  checks:
+  - date: '2026-11-13'
+    source: challenge-outdoor-ultra-collection
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - uhmwpe_content
+ultra-tx:
+  name: ULTRA TX (weight not stated)
+  maker: Challenge Sailcloth
+  family: ULTRA TX
+  fibre: UHMWPE
+  construction: woven-face laminate
+  uhmwpe_role: face
+  uhmwpe_content:
+    published: false
+    statement: ULA's 30L Dragonfly Pass Thru page says "Challenge ULTRA TX"; its fabric block describes only ULTRA 400TX (7.2 oz/yd²), so 400TX is implied, not stated.
+    source: https://www.ula-equipment.com/product/30l-dragonfly-pass-thru/
+  in_uhmwpe_section:
+    decision: in
+    reasons: On the page since before the three tests were written down; reasons against the tests still to be written
+    decided: before 2026-11-13
+  note: Placeholder until the Pass Thru's fabric weight is confirmed.
+  checks: []
+aluula-graflyte:
+  name: ALUULA Graflyte
+  maker: ALUULA Composites
+  family: ALUULA
+  fibre: UHMWPE
+  construction: Fused without adhesives, by ALUULA's general description of its fabrics; Graflyte is not described separately on ALUULA's technology page
+  uhmwpe_role: fused-film
+  uhmwpe_content:
+    published: true
+    statement: ALUULA says its fabrics are 100% polyethylene. Db lists the bag's main material as 100% polyethylene (ALUULA Graflyte). Trade coverage citing ALUULA reports woven 100% UHMWPE in 52, 78 and 98 g/m².
+    source: https://aluula.com/technology/
+  in_uhmwpe_section:
+    decision: in
+    reasons: On the page since before the three tests were written down; reasons against the tests still to be written
+    decided: before 2026-11-13
+    draft:
+      test1_role:
+        finding: 'ALUULA says its fabrics are 100% polyethylene, fused without adhesives; its pages do not describe Graflyte on its own or use the word UHMWPE. Garage Grown Gear, quoting ALUULA staff, reports 100% UHMWPE. Percentage: 100% polyethylene (published).'
+        sources:
+        - https://aluula.com/technology/
+        - https://aluula.com/materials-outdoor-gear/
+        - https://garagegrowngear.com/blogs/gear-gab/aluula-graflyte-weaving-a-new-future-for-ultralight-fabric
+      test2_positioning:
+        finding: 'ALUULA''s claims rest on the single-polymer, adhesive-free build: stronger than steel for its weight, waterproof, UV-resistant, recyclable. It presents a polyethylene fabric, not one named as UHMWPE, on the pages opened.'
+        sources:
+        - https://aluula.com/technology/
+        - https://aluula.com/materials-outdoor-gear/
+      test3_experience:
+        finding: 'Db''s claim: the Weigh Lighter Hugger 30L, at 520 g, is 54% lighter than the standard Hugger. No hands-on review is on file; T3''s launch piece calls it translucent but the writer had not handled it.'
+        sources:
+        - https://dbjourney.com/en-us/products/weigh-lighter-hugger-backpack-30l-weigh-darker
+        - https://t3.com/active/outdoors/i-thought-i-had-the-perfect-adventure-bag-until-i-saw-dbs-new-weigh-lighter-backpacks
+      suggested_decision: in
+      why_here: ALUULA makes the whole fabric from polyethylene, fused without glue; Db says its bag in it is 54% lighter than the standard Hugger.
+      gaps:
+      - ALUULA's own pages say polyethylene, not UHMWPE; the UHMWPE wording comes from trade coverage quoting ALUULA.
+      - 'Construction conflict: materials.yaml records trade coverage calling it woven; Garage Grown Gear and ALUULA say fused and do not say woven.'
+      - No hands-on review of a Graflyte bag on file; test 3 rests on Db's own claim.
+      - Db does not publish the standard Hugger's weight on the page opened.
+      status: awaiting approval
+      drafted: '2026-11-13'
+  checks:
+  - date: '2026-11-13'
+    source: aluula-composites-technology
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - uhmwpe_role
+    - uhmwpe_content
+  - date: '2026-11-13'
+    source: garage-grown-gear-aluula-graflyte-weaving-a-new-future-for-ult
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - uhmwpe_content
+ultragrid:
+  name: UltraGrid
+  maker: Challenge Sailcloth
+  family: UltraGrid
+  fibre: recycled nylon with an Ultra grid
+  construction: Recycled 210d nylon base with a double 200d Ultra ripstop grid, C0 DWR, 1500 mm PU backing
+  uhmwpe_role: grid-only
+  uhmwpe_content:
+    published: false
+    statement: The Ultra fibre is only the 5 mm grid. 4.3 oz/yd² (146 g/m²) on Challenge's page; 3.9 oz/yd² in its 2023 guide. The page says "Ultra grid" and does not use the word UHMWPE.
+    source: https://www.challenge-outdoor.com/ultra-grid
+  in_uhmwpe_section:
+    decision: not-applicable
+    reasons: 'Used here only as a lining. As a shell it would meet the disqualifier: the Ultra fibre is only a ripstop grid in a nylon weave.'
+    decided: '2026-11-13'
+  checks:
+  - date: '2026-11-13'
+    source: challenge-outdoor-ultra-grid
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - name_as_written
+    - uhmwpe_role
+    - uhmwpe_content
+ecopak-eplx840:
+  name: EcoPak EPLX840
+  maker: Challenge Sailcloth
+  family: ECOPAK
+  fibre: recycled polyester
+  construction: 840d recycled polyester face, 45° CrossPly, 0.5 mil RUV film
+  uhmwpe_role: none
+  uhmwpe_content:
+    published: false
+    statement: No UHMWPE mentioned. 9.85 oz/yd² (334 g/m²).
+    source: https://www.challenge-outdoor.com/eplx-collection
+  in_uhmwpe_section:
+    decision: not-applicable
+    reasons: Used here only as a base panel.
+    decided: '2026-11-13'
+  checks:
+  - date: '2026-11-13'
+    source: challenge-outdoor-eplx-collection
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - name_as_written
+    - uhmwpe_role
+    - uhmwpe_content
+cordura-1680d-ballistic-nylon:
+  name: 1680D CORDURA ballistic nylon
+  maker: CORDURA brand; mill not stated
+  family: nylon
+  uhmwpe_role: none
+  uhmwpe_content: &id001
+    published: false
+    statement: Not sold as a UHMWPE fabric.
+  in_uhmwpe_section: &id002
+    decision: not-applicable
+    reasons: Not a UHMWPE fabric. On file only so builds of the same bag can be compared.
+  note: Name as on Aer's pages.
+nylon-420d-high-tenacity:
+  name: 420d High Tenacity Nylon
+  maker: Not stated
+  family: nylon
+  uhmwpe_role: none
+  uhmwpe_content: *id001
+  in_uhmwpe_section: *id002
+  note: Name as on Evergoods' page, which gives Nylon 6,6 for most colours and Nylon 6 for Solution Dyed Black.
+x-pac-x50:
+  name: X-Pac X50
+  maker: Dimension-Polyant
+  family: X-Pac
+  uhmwpe_role: none
+  uhmwpe_content: *id001
+  in_uhmwpe_section: *id002
+  note: Name as on ULA's X50 Cicada page.
+x-pac-grade-not-stated:
+  name: X-Pac
+  maker: Dimension-Polyant
+  family: X-Pac
+  uhmwpe_role: none
+  uhmwpe_content: *id001
+  in_uhmwpe_section: *id002
+  note: ULA's X-Pac Dragonfly page lists "X-Pac, UltraStretch" without a grade.
+polyester-recycled:
+  name: 100% Polyester (recycled)
+  maker: Not stated
+  family: polyester
+  uhmwpe_role: none
+  uhmwpe_content: *id001
+  in_uhmwpe_section: *id002
+  note: As Db lists the main material of the standard Hugger Backpack 30L.
+axodyne:
+  name: Axodyne
+  maker: ALPAKA (its own name for the fabric; mill not stated)
+  family: Axodyne
+  fibre: UHMWPE
+  construction: 'ALPAKA''s Kickstarter campaign: UHMWPE fibres laid at 0° and 90°, a nylon reinforcing mesh and a TPU film layer. Its "What is Axodyne?" video: two layers, UHMWPE fibres on top as a reinforcing mesh, not a woven fabric, with a TPU coat on the back.'
+  uhmwpe_role: fibre-layer
+  uhmwpe_content:
+    published: false
+    statement: Role as ALPAKA's Kickstarter campaign describes it; its video calls the same layer a reinforcing mesh. No percentage, weight or denier in the campaign or in any of the four ALPAKA videos opened.
+    source: https://www.kickstarter.com/projects/alpaka/momentum-collection-light-on-weight-heavy-on-durability
+  in_uhmwpe_section:
+    decision: in
+    decided: '2026-11-13'
+    reasons: 'Anish''s call, 13 Nov 2026, after reading what ALPAKA''s campaign and videos say. His reasons, given earlier that day: ALPAKA launched it as a step up from its Axoflux fabric and promoted the UHMWPE content, strength, tear resistance and waterproofing; and the Momentum Collection bags, which he owns, are lighter and have the technical look and feel that sets UHMWPE bags apart from nylon ones. The share of UHMWPE is not published. No Axodyne bag is in the data yet.'
+    draft:
+      alpaka_campaign_and_videos:
+      - source: alpaka-kickstarter-momentum-collection
+        says: 'A multi-layer build: UHMWPE fibres laid at 0° and 90°, a nylon reinforcing mesh that gives the grid texture, and a TPU film. Claims it is lighter than nylon and far stronger, and likens the fibre to the one in Dyneema and Ultra. No percentage, weight or denier. Axoflux is not mentioned. No country of manufacture.'
+      - source: alpaka-video-what-is-axodyne
+        says: 'Two layers: UHMWPE fibres on top, described as a reinforcing mesh and not a woven fabric (which is why contents show through), with a TPU coat on the back. Mentions 210D and 600D fabric in passing and contrasts Axodyne with ordinary nylon and polyester. No percentage.'
+      - source: alpaka-video-momentum-kickstarter
+        says: Calls it a single layer composite. Waterproof, abrasion-resistant and light; no construction detail.
+      - source: alpaka-video-momentum-collection-deep-dive
+        says: Waterproof, abrasion-resistant and light; no construction detail.
+      - source: alpaka-video-white-axodyne-deep-dive
+        says: Adds nothing on the fabric.
+      reading: By ALPAKA's account the UHMWPE is a laid grid of fibres inside a laminate with no woven nylon face. That is not the gridstop case the disqualifier describes (UHMWPE threads in an ordinary nylon weave), but ALPAKA itself calls the fibre layer a mesh. Anish ruled it in on 13 Nov 2026.
+      open_points:
+      - 'UHMWPE share: not published anywhere found.'
+      - No ALPAKA material found comparing Axodyne with Axoflux, though Anish recalls the launch doing so.
+      - Anish owns Momentum Collection bags; his handling notes are not recorded yet.
+      status: 'decision made: in; the wording of the reason shown on the page is still to write'
+      drafted: '2026-11-13'
+  checks:
+  - date: '2026-11-13'
+    source: alpaka-kickstarter-momentum-collection
+    basis: page
+    method: Opened by Claude through Firecrawl on 13 Nov 2026
+    fields:
+    - uhmwpe_content
+  - date: '2026-11-13'
+    source: alpaka-video-what-is-axodyne
+    basis: page
+    method: Opened by Claude through Firecrawl on 13 Nov 2026; transcript, not the video itself
+    fields:
+    - uhmwpe_content

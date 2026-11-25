@@ -1,0 +1,15 @@
+{
+  "name": "carry-index-airline-checker",
+  "private": true,
+  "type": "module",
+  "description": "Monthly rotating check of airline cabin-baggage pages for The Carry Index. No AI calls.",
+  "scripts": {
+    "check": "node check.mjs",
+    "check:all": "node check.mjs --all",
+    "test": "node test/extract.test.mjs && node test/units.test.mjs && node test/search.test.mjs",
+    "pending": "node apply.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.65.0"
+  }
+}

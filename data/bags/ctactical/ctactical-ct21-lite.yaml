@@ -1,0 +1,567 @@
+migration:
+  source: Ultra Carry Index page, Rev AE (v20)
+  migrated: '2026-11-13'
+  claims: Anish read every line on 13 Nov 2026, one question at a time; approved lines are the ones he kept as shown. Lines from another build name the build. Old wording and search results are under legacy.claims.
+  photos: model.photos lists every photo the old page used, as its code and footer describe them; permission is none for all
+  sources_search: Claims and spec gaps were searched on 13 Nov 2026; see evidence on each claim and reports/sources-search-2026-11-13.md
+  proposals: Applied on 13 Nov 2026 by tools/migrate/apply_decisions.py, following Anish's rulings of that day.
+  availability: Removed on 13 Nov 2026. Each build links out instead; the old strings stay under legacy.
+model:
+  id: ctactical-ct21-lite
+  legacy_id: ct21l
+  brand: ctactical
+  label: CT21 Lite
+  family: CT21
+  category: backpack
+  use:
+  - edc
+  - travel
+  build_class: structured
+  drawings:
+  - file: drawings/ct21l/sketch/ct21l-sketch-front.svg
+    kind: drawing
+    view: front
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/ct21l/sketch/ct21l-sketch-iso.svg
+    kind: drawing
+    view: three-quarter
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/ct21l/sketch/ct21l-sketch-back.svg
+    kind: drawing
+    view: back
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/ct21l/sketch/ct21l-sketch-side.svg
+    kind: drawing
+    view: side
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  photos:
+  - file: img/maker/8713eea9-CT21LiteUltra200XBlack_1.jpg
+    role: card main
+    view: unknown
+    credit_text: ctactical.com
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: CT21 Lite Ultra200X Black _1'
+    permission: none
+  - file: img/maker/c47fc3b4-CT21LiteUltra200XBlack_1.jpg
+    role: hero strip
+    view: front
+    credit_text: null
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: CT21 Lite Ultra200X Black _1'
+    permission: none
+  - file: img/maker/aec96615-CT21LiteUltra200XBlack_2.jpg
+    role: hero strip
+    view: three-quarter
+    credit_text: null
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: CT21 Lite Ultra200X Black _2'
+    permission: none
+  reviews:
+  - source: reddit-r-manybaggers-read-th-ct21-packs-live-on-the-site-in-ultra-and-oth
+    covers: 'other build: CT21 V3.0-era Slick packs in Ultra, EPX and X-Pac (earlier version)'
+    used_for: []
+  - source: the-brooks-review-p-34836
+    covers: 'CT21 V3.0 Slick, X-Pac X50 with bottle pockets, 21 L, $189 (earlier generation); 19 Mar 2026. Discloses: Bought it himself; site uses affiliate links whenever possible'
+    used_for: []
+  - source: nomads-nation-ctactical-ct14-plus-review
+    covers: 'other build: CT14 Plus in 420D ripstop nylon (different model and fabric)'
+    used_for: []
+  - source: nomads-nation-ctactical-ct21-v3-review
+    covers: 'CT21 V3 (earlier generation), 500D Cordura, 21 L, no built-in bottle pockets; published 28 Sep 2025, updated 7 Nov 2026. Discloses: Unlabelled ''Check Best Price'' redirect links; author promotes his own bag brand (Fyro) on the page; no sample or sponsor statement'
+    used_for: []
+  - source: zelpio-c-tactical-ct21-vs-goruck-gr1
+    covers: 'other build: CT21 V2.0/V3.0 in 500D Cordura; unsigned, hands-on status unclear'
+    used_for: []
+  - source: the-perfect-bag-video-ct21-plus-vs-ct21-lite
+    covers: 'CT21 Lite vs CT21 Plus, the ''upgraded CT21'', posted 12 Aug 2026. Lite: single compartment, two front-panel pockets, laptop and tablet sleeves, zippered side pocket and zippered bottle pocket; he measures it 13 x 18.5 x 6.5 in. No fabric is named for the bags shown. He praises the waxed canvas version and its olive, slate and chestnut colours, so the pair shown may be waxed canvas, not ULTRA. Says orange lining on most colours, blue on slate gray and navy. Discloses: Says he paid for both bags and they were not gifted by CTactical. Channel policy: no payments from bag makers; Amazon affiliate links used, including for the leather handles he added'
+    used_for:
+    - ct21l-pro-5
+    - ct21l-pro-6
+  - source: pangolins-with-packs-chuyen-tactical-ct21-v3-backpack-review
+    covers: 'CT21 v3 Slick with bottle pockets, ECOPAK EPX240, 21 L (earlier generation); 24 May 2026. Discloses: Sample provided by CT for review; promises honest opinions'
+    used_for: []
+  - source: freds-blog-ctactical-ct21-backpack
+    covers: 'CT21 V3.0 Slick ECOPAK EPX400 with bottle pockets, 21 L (earlier generation); 12 Aug 2025. Discloses: Owner post; bought it for $139; no affiliate or sponsor statement'
+    used_for: []
+  - source: fazal-majid-blog-backpacks
+    covers: 'CT21 V3 in Ultra 200TX (earlier generation); page undated, and its loadout lists 2025-era gear, so it is a living page and the 2021-03 date is unconfirmed. Discloses: Nothing stated about affiliates or samples; says these are bags he has owned and used'
+    used_for: []
+  - source: the-perfect-bag-video-ct21-waxed-canvas-project-alchemy
+    covers: 'CT21 21 L ''Heritage'' Project Alchemy group buy in Halley Stevenson waxed canvas with lilac lining he chose, posted 8 Oct 2024; earlier special run, not the Lite. Discloses: He joined the Facebook group buy, so he presumably bought it (payment not stated outright). Channel policy: no payments from bag makers; Amazon affiliate links used'
+    used_for: []
+  sourcing: Based on The Perfect Bag's video of the CT21 Lite, plus Ctactical's own pages.
+variants:
+- id: ct21-lite-ultra200x
+  name: CT21 Lite - ULTRA200X
+  page: ctactical-ct21-lite-ultra200x
+  link:
+    url: https://ctactical.com/products/ct21-lite-ultra200x
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - ultra-200x
+    shell_as_written: Challenge Sailcloth ULTRA200X
+    lining: Challenge Sailcloth UltraGrid - Blue Smoke
+    lining_material: ultragrid
+    base: EcoPak EPLX840 Black
+    base_material: ecopak-eplx840
+  volume_l: 27
+  weight_g: 1150
+  dims_cm:
+    h: 47.5
+    w: 34
+    d: 18.5
+  as_written:
+    weight: 1150 g (2.54 lb)
+    dims: 47.5 x 34 x 18.5 cm (18.7 x 13.4 x 7.3 in)
+  laptop:
+    max_in: 16
+  price:
+    amount: 225
+    currency: USD
+    seller: ctactical
+  release: regular
+  colourways:
+  - name: Black Magic
+  opening: Main compartment opens flat, up to 180°
+  media:
+  - file: img/maker/8713eea9-CT21LiteUltra200XBlack_1.jpg
+    kind: photo
+    view: unknown
+    shows_variant: null
+    credit: ctactical.com
+    source: https://ctactical.com/products/ct21-lite-ultra200x
+    permission: none
+  checks:
+  - date: '2026-11-13'
+    source: ctactical-ct21-lite-ultra200x
+    basis: page
+    method: Page opened and read by Claude through WebFetch; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - laptop
+    - fabric.shell
+    - fabric.lining
+    - fabric.base
+    - colourways
+  - date: '2026-11-13'
+    source: ctactical-ct21-lite-ultra200x
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - opening
+    note: Ctactical's wording; "panel-load" is not on the page
+  - date: '2026-11-13'
+    source: chuyentactical-balo-ct21-lite-ultra200x
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - made_in
+    note: 'The maker''s Vietnamese store lists "Xuất xứ: Việt Nam" (origin: Vietnam). The English ctactical.com page has no origin line.'
+  - date: '2026-11-15'
+    source: ctactical-ct21-lite-ultra200x
+    basis: page
+    method: Search subagent, page opened through WebFetch on 15 Nov 2026
+    fields:
+    - release
+    note: 'Read as a regular catalogue item: no limited, drop or pre-order wording; the page''s only timing phrase is a launch in 2026, now past.'
+  made_in: Vietnam
+  units:
+    weight:
+      metric:
+        g: 1150
+        from: maker
+      imperial:
+        lb: 2.54
+        from: maker
+    dims:
+      metric:
+        cm:
+        - 47.5
+        - 34
+        - 18.5
+        from: maker
+      imperial:
+        in:
+        - 18.7
+        - 13.4
+        - 7.3
+        from: maker
+- id: ct21-lite-ultra400x
+  name: CT21 Lite - ULTRA400X
+  page: ctactical-ct21-lite-ultra400x
+  link:
+    url: https://ctactical.com/products/ct21-lite-ultra400x
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - ultra-400x
+    shell_as_written: Challenge Sailcloth ULTRA400X
+    lining: Challenge Sailcloth UltraGrid - Blue Wave
+    lining_material: ultragrid
+    base: EcoPak EPLX840 Black
+    base_material: ecopak-eplx840
+  volume_l: 27
+  weight_g: 1190
+  dims_cm:
+    h: 47.5
+    w: 34
+    d: 18.5
+  as_written:
+    weight: 1190 g (2.62 lb)
+    dims: 47.5 x 34 x 18.5 cm (18.7 x 13.4 x 7.3 in)
+  laptop:
+    max_in: 16
+  price:
+    amount: 220
+    currency: USD
+    seller: ctactical
+  release: regular
+  colourways:
+  - name: Black Magic
+  opening: Main compartment opens flat, up to 180°
+  checks:
+  - date: '2026-11-13'
+    source: ctactical-ct21-lite-ultra400x
+    basis: page
+    method: Page opened and read by Claude through WebFetch; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - laptop
+    - fabric.shell
+    - fabric.lining
+    - fabric.base
+    - colourways
+  - date: '2026-11-13'
+    source: chuyentactical-balo-ct21-lite-ultra400x
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - made_in
+    note: 'The maker''s Vietnamese store lists "Xuất xứ: Việt Nam" (origin: Vietnam). The English ctactical.com page has no origin line.'
+  - date: '2026-11-13'
+    source: ctactical-ct21-lite-ultra400x
+    basis: page
+    method: Read on the build's own page by a search subagent and again by Claude, both through WebFetch, on 13 Nov 2026
+    fields:
+    - opening
+    note: 'Under "Internal": the main compartment opens flat, up to 180 degrees.'
+  - date: '2026-11-15'
+    source: ctactical-ct21-lite-ultra400x
+    basis: page
+    method: Search subagent, page opened through WebFetch on 15 Nov 2026
+    fields:
+    - release
+    note: 'Read as a regular catalogue item: no limited, drop or pre-order wording; the page''s only timing phrase is a launch in 2026, now past.'
+  made_in: Vietnam
+  units:
+    weight:
+      metric:
+        g: 1190
+        from: maker
+      imperial:
+        lb: 2.62
+        from: maker
+    dims:
+      metric:
+        cm:
+        - 47.5
+        - 34
+        - 18.5
+        from: maker
+      imperial:
+        in:
+        - 18.7
+        - 13.4
+        - 7.3
+        from: maker
+features:
+- id: ct21l-feat-3
+  text: Two zip-expandable bottle pockets, a zipped passport pocket and a luggage pass-through.
+  scope: design
+  sources:
+  - ctactical-ct21-lite-ultra200x
+  - ctactical-ct21-lite-ultra400x
+  applies_to:
+  - ct21-lite-ultra200x
+  - ct21-lite-ultra400x
+  replaces: ct21l-pro-3
+  was_kind: pro
+  status: approved
+  checked: 'Re-read on both CT21 Lite pages on 13 Nov 2026, at Anish''s request: the specification lists say the same. Photos were not looked at; two captions mention the zipped passport pocket, pass-through strap and collapsible bottle pocket.'
+- id: ct21l-feat-4
+  text: 'YKK RCF zippers in #10RC, #8RC and #5RC sizes.'
+  scope: design
+  sources:
+  - ctactical-ct21-lite-ultra200x
+  - ctactical-ct21-lite-ultra400x
+  applies_to:
+  - ct21-lite-ultra200x
+  - ct21-lite-ultra400x
+  replaces: ct21l-pro-4
+  was_kind: pro
+  status: approved
+  checked: 'Re-read on both CT21 Lite pages on 13 Nov 2026, at Anish''s request: the specification lists say the same. Photos were not looked at; two captions mention the zipped passport pocket, pass-through strap and collapsible bottle pocket.'
+- id: ct21l-feat-c1
+  text: Front has a 9.8 x 4.8 cm ID loop panel with an embroidered CTactical logo.
+  scope: design
+  sources:
+  - ctactical-ct21-lite-ultra200x
+  - ctactical-ct21-lite-ultra400x
+  applies_to:
+  - ct21-lite-ultra200x
+  - ct21-lite-ultra400x
+  replaces: ct21l-con-1
+  was_kind: con
+  status: approved
+  checked: 'Re-read on both CT21 Lite pages on 13 Nov 2026, at Anish''s request: the specification lists say the same. Photos were not looked at; two captions mention the zipped passport pocket, pass-through strap and collapsible bottle pocket.'
+claims:
+- id: ct21l-pro-5
+  kind: pro
+  text: Deep air channel and plush padding on the back panel, with comfy straps.
+  voice: reviewers
+  support: one review
+  scope: design
+  basis: sibling
+  sources:
+  - the-perfect-bag-video-ct21-plus-vs-ct21-lite
+  observed_on: []
+  from_build:
+    label: From a video review of the CT21 Lite; its fabric isn't named
+    generation: Same generation (2026 CT21 Lite)
+    size: Same model and size
+    fabric: Not named in the video
+    found: The reviewer shows the current CT21 Lite; back panel and straps are the same across its fabrics.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: the-perfect-bag-video-ct21-plus-vs-ct21-lite
+    about: current CT21 Lite shown beside the Plus; fabric not named (he praises the waxed canvas version); he paid for both bags
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. The Perfect Bag: "Nice deep air channel, lush padding, comfy straps."; The Perfect Bag: "Nice deep air channel, lush padding, comfy straps."'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''ok (on the CT21 Lite heading)''). research/reviews-2026-11-17/merged/ct21l.json points 0, 1.'
+  added_in: reviews-2026-11-17
+- id: ct21l-pro-6
+  kind: pro
+  text: An excellent pick if you want a less fussy, single-compartment bag.
+  voice: reviewers
+  support: one review
+  scope: design
+  basis: sibling
+  sources:
+  - the-perfect-bag-video-ct21-plus-vs-ct21-lite
+  observed_on: []
+  from_build:
+    label: From a video review of the CT21 Lite; its fabric isn't named
+    generation: Same generation (2026 CT21 Lite)
+    size: Same model and size
+    fabric: Not named in the video
+    found: The single-compartment layout is what makes it the Lite, whatever the fabric.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: the-perfect-bag-video-ct21-plus-vs-ct21-lite
+    about: current CT21 Lite shown beside the Plus; fabric not named (he praises the waxed canvas version); he paid for both bags
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. The Perfect Bag: "then the CT21 light is an excellent bag"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''ok (on the CT21 Lite heading)''). research/reviews-2026-11-17/merged/ct21l.json point 23.'
+  added_in: reviews-2026-11-17
+computed:
+- replaces: ct21l-pro-1
+  was: Lightest structured 27 L here at 1 150 g
+  rule: Lowest weight_g among structured bags within a stated volume band (e.g. 24 to 30 L); show only if a CT21 Lite variant is lowest
+  state: Not built. Needs a volume band to compare within; pick the bands first.
+legacy:
+  verdict: Best value-per-gram among the structured builds. Owner enthusiasm is loud; third-party testing is still thin.
+  price_note: ctactical.com · sold out
+  avail: Sold out · restocks
+  origin: Vietnam
+  laptop: 16"
+  fabric: ULTRA 200X / 400X
+  opening: Panel-load, 180°
+  brand: Ctactical
+  src: https://ctactical.com/products/ct21-lite-ultra200x
+  gVar:
+  - g: 1150
+    tag: ULTRA200X
+  - g: 1190
+    tag: ULTRA400X
+  claims:
+  - id: ct21l-pro-1
+    kind: pro
+    text: Lightest structured 27 L here at 1 150 g
+    scope: material
+    basis: unstated
+    sources:
+    - ctactical-ct21-lite-ultra200x
+    - ctactical-ct21-v3-0-backpack-slick-ultra400x-wbp
+    flags:
+    - list-comparison
+    evidence:
+      status: not_found
+      note: Rests on the maker's 1150 g (ULTRA200X) and 27 L figures; no source compares it with other packs. The older CT21 V3.0, near-identical in outer size, was rated 21 L.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ctactical-ct21-lite-ultra200x
+      about: same build (ULTRA200X)
+    - source: ctactical-ct21-v3-0-backpack-slick-ultra400x-wbp
+      about: 'other build: CT21 V3.0 Slick in ULTRA400X (earlier version, 21 L, 1300 g, $184)'
+    outcome:
+    - 'ct21l-pro-1: computed from data. Not built. Needs a volume band to compare within; pick the bands first.'
+  - id: ct21l-pro-2
+    kind: pro
+    text: 400X option costs only ~40 g more
+    scope: material
+    basis: maker
+    sources:
+    - ctactical-ct21-lite-ultra200x
+    - ctactical-ct21-lite-ultra400x
+    outcome:
+    - 'ct21l-pro-2: dropped. It restates data already on the record (weight_g of the two builds).'
+  - id: ct21l-pro-3
+    kind: pro
+    text: Zippered collapsible bottle pockets; passport pocket; pass-through
+    scope: design
+    basis: maker
+    sources:
+    - ctactical-ct21-lite-ultra200x
+    - ctactical-ct21-lite-ultra400x
+    evidence:
+      status: supported
+      note: Both CT21 Lite pages list two zip-expandable external bottle holders, a zippered passport pocket on the back and a luggage pass-through.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ctactical-ct21-lite-ultra200x
+      about: same build (ULTRA200X)
+    - source: ctactical-ct21-lite-ultra400x
+      about: same build (ULTRA400X)
+    outcome:
+    - 'ct21l-pro-3: moved to features (maker statement).'
+  - id: ct21l-pro-4
+    kind: pro
+    text: 'YKK #10/#8 RC zippers at half of US pricing'
+    scope: design
+    basis: maker
+    sources:
+    - ctactical-ct21-lite-ultra200x
+    - ctactical-ct21-lite-ultra400x
+    evidence:
+      status: partly
+      note: 'Maker pages list YKK RCF zippers in #10RC, #8RC and #5RC; nothing supports ''half of US pricing'', which is the site''s own comparison against the $225/$220 prices.'
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ctactical-ct21-lite-ultra200x
+      about: same build (ULTRA200X)
+    - source: ctactical-ct21-lite-ultra400x
+      about: same build (ULTRA400X)
+    outcome:
+    - 'ct21l-pro-4: moved to features (maker statement).'
+  - id: ct21l-con-1
+    kind: con
+    text: Tactical ID-panel styling isn’t for everyone
+    scope: design
+    basis: maker
+    sources:
+    - ctactical-ct21-lite-ultra200x
+    - ctactical-ct21-lite-ultra400x
+    - reddit-r-manybaggers-read-th-ct21-packs-live-on-the-site-in-ultra-and-oth
+    evidence:
+      status: partly
+      note: Maker pages confirm a 9.8 x 4.8 cm front ID loop panel; the taste judgement is unsourced for this build, though V3-era Reddit buyers wanted a less tactical look.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ctactical-ct21-lite-ultra200x
+      about: same build (ULTRA200X)
+    - source: ctactical-ct21-lite-ultra400x
+      about: same build (ULTRA400X)
+    - source: reddit-r-manybaggers-read-th-ct21-packs-live-on-the-site-in-ultra-and-oth
+      about: 'other build: CT21 V3.0-era Slick packs in Ultra, EPX and X-Pac (earlier version)'
+    outcome:
+    - 'ct21l-con-1: moved to features (maker statement).'
+  - id: ct21l-con-2
+    kind: con
+    text: Lighter-duty harness than Evergoods / Able Carry
+    scope: material
+    basis: unstated
+    sources:
+    - the-brooks-review-p-34836
+    - nomads-nation-ctactical-ct14-plus-review
+    - nomads-nation-ctactical-ct21-v3-review
+    - zelpio-c-tactical-ct21-vs-goruck-gr1
+    - reddit-r-manybaggers-read-th-ct21-packs-live-on-the-site-in-ultra-and-oth
+    flags:
+    - names-other-bag
+    evidence:
+      status: not_found
+      note: No source compares this harness with Evergoods or Able Carry. Reviews of older or other builds call straps firm or less plush and rate GORUCK better for load carrying.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: the-brooks-review-p-34836
+      about: 'other build: CT21 V3.0 Slick in X-Pac X50 (earlier version, different fabric)'
+    - source: nomads-nation-ctactical-ct14-plus-review
+      about: 'other build: CT14 Plus in 420D ripstop nylon (different model and fabric)'
+    - source: nomads-nation-ctactical-ct21-v3-review
+      about: 'other build: CT21 V3 in 500D Cordura (earlier version, different fabric)'
+    - source: zelpio-c-tactical-ct21-vs-goruck-gr1
+      about: 'other build: CT21 V2.0/V3.0 in 500D Cordura; unsigned, hands-on status unclear'
+    - source: reddit-r-manybaggers-read-th-ct21-packs-live-on-the-site-in-ultra-and-oth
+      about: 'other build: CT21 V3.0-era Slick packs in Ultra, EPX and X-Pac (earlier version)'
+    outcome:
+    - 'ct21l-con-2: dropped. Names other brands with no source. Older-build reviews conflict: Nomads Nation calls CT21 V3 straps thick and comfortable.'
+  - id: ct21l-con-3
+    kind: con
+    text: Both fabrics currently sold out
+    scope: general
+    basis: maker
+    sources:
+    - ctactical-ct21-lite-ultra200x
+    - ctactical-ct21-lite-ultra400x
+    flags:
+    - state-in-prose
+    evidence:
+      status: supported
+      note: Both the ULTRA200X and ULTRA400X pages showed Sold Out when opened on 2026-11-13.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ctactical-ct21-lite-ultra200x
+      about: same build (ULTRA200X)
+    - source: ctactical-ct21-lite-ultra400x
+      about: same build (ULTRA400X)
+    outcome:
+    - 'ct21l-con-3: dropped. Stock only. The card links out instead of recording stock.'

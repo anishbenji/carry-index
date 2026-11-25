@@ -1,0 +1,916 @@
+migration:
+  source: Ultra Carry Index page, Rev AE (v20)
+  migrated: '2026-11-13'
+  claims: Anish read every line on 13 Nov 2026, one question at a time; approved lines are the ones he kept as shown. Lines from another build name the build. Old wording and search results are under legacy.claims.
+  photos: model.photos lists every photo the old page used, as its code and footer describe them; permission is none for all
+  sources_search: Claims and spec gaps were searched on 13 Nov 2026; see evidence on each claim and reports/sources-search-2026-11-13.md
+  proposals: Applied on 13 Nov 2026 by tools/migrate/apply_decisions.py, following Anish's rulings of that day.
+  availability: Removed on 13 Nov 2026. Each build links out instead; the old strings stay under legacy.
+  removed: 'ULA X-Pac Dragonfly (comparison build) removed 15 Nov 2026, Anish''s call: ULA''s page for it returned Page not found that day, so it may have been pulled.'
+model:
+  id: ula-dragonfly-30l
+  legacy_id: dfly
+  brand: ula-equipment
+  label: Dragonfly 30L
+  family: Dragonfly
+  category: backpack
+  use:
+  - edc
+  - travel
+  build_class: ultralight
+  drawings:
+  - file: drawings/dfly/sketch/dfly-sketch-front.svg
+    kind: drawing
+    view: front
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/dfly/sketch/dfly-sketch-iso.svg
+    kind: drawing
+    view: three-quarter
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/dfly/sketch/dfly-sketch-back.svg
+    kind: drawing
+    view: back
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/dfly/sketch/dfly-sketch-side.svg
+    kind: drawing
+    view: side
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  photos:
+  - file: img/maker/a25ca0e0-ULAUltraDragonfly34L.jpg
+    role: card main
+    view: three-quarter
+    credit_text: ula-equipment.com
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: ULA Ultra Dragonfly 34L (the BAGS entry is the 30L Patchless; view not stated by the page, 34 in file name hints three-quarter)'
+    permission: none
+  - file: img/maker/370510f2-ULDFPassThru-2.jpg
+    role: hero strip
+    view: front
+    credit_text: 'ULA''s 30L Dragonfly Pass Thru (footer: ''same ULTRA build, plus a luggage pass-through'')'
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 30L Dragonfly Pass Thru, same ULTRA build plus luggage pass-through (footer); gVar lists the Pass Thru at 880 g
+    permission: none
+  reviews:
+  - source: treeline-review-ula-ultra-30l-dragonfly-pack-review
+    covers: '30L Ultra Dragonfly, 27.4 oz / 777 g; fabric given only as ''Challenge Ultra'' (grade not stated); about eight months to a year of testing; dated 2026-07-01, modified 2026-10-21. Discloses: ''We are reader-supported and may make a small commission from some qualifying affiliate links.'' Does not say whether the sample was bought or provided.'
+    used_for:
+    - dfly-pro-1
+    - dfly-pro-2
+    - dfly-pro-3
+    - dfly-pro-4
+    - dfly-con-3
+  - source: pack-hacker-dragonfly
+    covers: 30L Dragonfly in X50 X-Pac, earlier generation (not Ultra); 32 oz bottle fits, travel tripod fits, a regular tripod needs the compression straps
+    used_for:
+    - dfly-pro-2-b
+  - source: ula-30l-dragonfly-pass-thru
+    covers: same build (30L Ultra Dragonfly, pass-through version)
+    used_for:
+    - dfly-con-1
+  - source: ula-ultra-dragonfly
+    covers: 'Maker''s 30L Ultra Dragonfly page (variants 400X, 400TX, 800TX, 800); 21 customer reviews dated 2022-10-25 to 2026-03-03; most do not name the fabric; one is X-Pac, one a ''standard DF'', two Ultra 800. Discloses: Maker''s own site; customer reviews moderated by the maker, some marked verified owner.'
+    used_for:
+    - dfly-con-1
+    - dfly-pro-4
+  - source: ula-ultra-30l-patchless-dragonfly
+    covers: not recorded
+    used_for:
+    - dfly-con-1
+    - dfly-con-2
+    - dfly-pro-2
+  - source: reddit-r-onebag-read-through-ula-dragonfly-review-from-an-extremely-avera
+    covers: 30L Dragonfly, fabric not shown on the page; several commenters say the front stretch pocket's zipper opening is too small
+    used_for:
+    - dfly-con-2
+  - source: carryology-ula-ultra-dragonfly-review
+    covers: '30L Ultra Dragonfly in Challenge Ultra 800 (earlier, pre-TX build; 30 oz, US$249.99); Brandon, 2023-01-19. Sibling build. Discloses: Buy links go through an affiliate redirect (ula-equipment.9xrw.net); no disclosure statement or sample source stated in the main content.'
+    used_for:
+    - dfly-con-3-c
+    - dfly-con-4
+  - source: treeline-review-ula-ultra-node-20l-pack-review
+    covers: ULA Ultra Node 20L (a different bag)
+    used_for: []
+  - source: pack-hacker-ultra-36l-dragonfly
+    covers: 36L Ultra Dragonfly (larger size); 48 oz Nalgene and a tripod fit; no hall-of-fame wording
+    used_for: []
+  - source: nomads-nation-ula-dragonfly
+    covers: '30L Dragonfly, orange/black, fabric not named (spec table: materials vary by batch, e.g. X-Pac, Cordura); generation unclear (mentions 2.3 lb older and 1.7 lb newer models); published 2025-08-29, updated 2026-11-11. Not the Ultra build as far as the page shows: label as another fabric. Discloses: No affiliate disclosure statement in the main content, but ''Best Black Friday Deal''/''Check Best Price'' links (redirects via blog.nomadsnation.com) and affiliate-network links for alternatives; does not say how the bag was obtained. Promotes the author''s own bag brand (Fyro, ''The Bag Brand I Founded'') as the first alternative: a competing commercial interest.'
+    used_for: []
+  - source: danny-packs-video-ula-dragonfly-ultra-30l-review
+    covers: '30L Ultra Dragonfly; he says the fabric is Challenge Ultra 400; uploaded 2024-08-14. Discloses: Description has an affiliate disclosure (Amazon Associates and other links). In the video he says he bought the bag himself after a restock; no sponsorship.'
+    used_for:
+    - dfly-pro-3
+    - dfly-pro-4
+  - source: the-mountainborn-video-ula-dragonfly-ultra-30
+    covers: '30L Ultra Dragonfly with patch, Ultra 400TX Black Magic, Fidlock sternum upgrade; a couple of months of use; uploaded 2024-10-25. Discloses: Says the bag was purchased with his own money; no affiliate or sponsorship found.'
+    used_for:
+    - dfly-pro-2-b
+    - dfly-con-1
+    - dfly-con-4
+  - source: pack-and-roam-video-ula-dragonfly-30l-review
+    covers: '30L Ultra Dragonfly, Ultra 400TX Black Magic; about a month of EDC and work travel; uploaded 2024-12-06. Discloses: Description: affiliate links (incl. Amazon Associate) and a general note that he occasionally receives free gear; in the video he says he picked this one up himself.'
+    used_for:
+    - dfly-con-1
+  - source: chase-reeves-video-ula-dragonfly
+    covers: '30L Dragonfly Pass Thru worn as his EDC, shown next to a 36L (not Pass Thru); fabric called ''ultra material'', grade not stated; some segments do not make clear which size is in hand; uploaded 2025-03-23. Discloses: Says ULA sent him the bags and did not pay for the review; paid Nomadix segment (YouTube ''Includes paid promotion''); description affiliate links.'
+    used_for: []
+  - source: nomads-nation-ula-dragonfly-pass-thru-review
+    covers: '30L Ultra Dragonfly Pass-through (30L Dragonfly Pass Thru), Ultra 400 TX; a couple of weeks of commuting/gym use; URL redirects to nomadsnation.com/ula-dragonfly-pass-thru-review/; published 2026-11-10. Discloses: No affiliate disclosure statement; ''Check Best Price'' links; does not say whether the bag was bought or provided. Same publisher as s5 and promotes the site''s own brand (Fyro, ''The Bag Brand We Founded'').'
+    used_for:
+    - dfly-con-4
+  - source: iron-heart-forum-903570
+    covers: 'Thread page loads at topic 875 page 1885; the quoted post (903505, 2025-07-21) is about a 36L Ultra Dragonfly Pass-Through, Ultra fabric: a different size. Discloses: Owner forum post; no disclosures.'
+    used_for: []
+  sourcing: Based on Treeline Review's review of the 30L Ultra Dragonfly, video reviews from The Mountainborn, Pack & Roam and Danny Packs, owner reviews on ULA's site and r/onebag, Nomads Nation's review of the Pass Thru, reviews of earlier builds from Pack Hacker and Carryology, plus ULA's own pages.
+variants:
+- id: 30l-patchless-ultra-dragonfly
+  name: 30L Patchless Ultra Dragonfly
+  page: ula-ultra-30l-patchless-dragonfly
+  link:
+    url: https://www.ula-equipment.com/product/ultra-30l-patchless-dragonfly/
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - ultra-400tx
+    - ultra-800tx
+    shell_as_written: Challenge ULTRA™, ULTRA TX, UltraStretch™
+    other: UltraStretch mesh front and side pockets
+  volume_l: 30
+  dims_cm:
+    h: 47.0
+    w: 27.9
+    d: 17.8
+  laptop:
+    max_in: 15
+    type: sleeve
+  made_in: USA
+  weight_g: 777
+  as_written:
+    weight: 27.4 oz | 777 g
+    dims: 18.5" x 11" x 7" (main body)
+    volume: 1,857 cu in | 30 L
+  opening: Front-loading
+  price:
+    amount: 289.99
+    currency: USD
+    seller: ula-equipment
+  release: regular
+  colourways:
+  - name: ULTRA 400TX Black Magic
+    shell: ultra-400tx
+  - name: ULTRA 400TX White Lightning
+    shell: ultra-400tx
+  - name: ULTRA 800TX White Lightning
+    shell: ultra-800tx
+  media:
+  - file: img/maker/a25ca0e0-ULAUltraDragonfly34L.jpg
+    kind: photo
+    view: unknown
+    shows_variant: null
+    credit: ula-equipment.com
+    source: https://www.ula-equipment.com/product/ultra-30l-patchless-dragonfly/
+    permission: none
+  checks:
+  - date: '2026-11-13'
+    source: ula-ultra-30l-patchless-dragonfly
+    basis: page
+    method: Page opened and read by Claude through WebFetch; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - laptop
+    - fabric.shell
+    - colourways
+  - date: '2026-11-13'
+    source: ula-ultra-30l-patchless-dragonfly
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - opening
+  - date: '2026-11-17'
+    source: ula-ultra-30l-patchless-dragonfly
+    basis: page
+    method: Product page saved by Claude from the Mac on 17 Nov 2026 (research/factcheck-2026-11-17/pages)
+    fields:
+    - made_in
+    note: The product page prints "MADE IN THE U.S.A.". ULA's fabric page says its packs are designed, cut and sewn in Utah.
+  - date: '2026-11-15'
+    source: ula-ultra-30l-patchless-dragonfly
+    basis: page
+    method: Search subagent, page opened through WebFetch on 15 Nov 2026
+    fields:
+    - release
+    note: 'Read as a regular catalogue item: no limited, drop or pre-order wording on the page.'
+  units:
+    weight:
+      metric:
+        g: 777
+        from: maker
+      imperial:
+        lb: 1.71
+        shown: 27.4 oz
+        from: maker
+    dims:
+      metric:
+        cm:
+        - 47.0
+        - 27.9
+        - 17.8
+        from: converted
+      imperial:
+        in:
+        - 18.5
+        - 11
+        - 7
+        from: maker
+- id: 30l-ultra-dragonfly
+  name: 30L Ultra Dragonfly
+  page: ula-ultra-dragonfly
+  link:
+    url: https://www.ula-equipment.com/product/ultra-dragonfly/
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - ultra-400x
+    - ultra-400tx
+    - ultra-800tx
+    - ultra-800
+    shell_as_written: Challenge ULTRA and ULTRA TX, UltraStretch mesh
+    other: Velcro/removable 2" x 3" logo patch
+  volume_l: 30
+  dims_cm:
+    h: 47.0
+    w: 27.9
+    d: 17.8
+  laptop:
+    max_in: 15
+    type: sleeve
+  made_in: USA
+  weight_g: 777
+  as_written:
+    weight: 27.4 oz (777 g)
+    dims: 18.5" x 11" x 7" (main body)
+    volume: 1,857 cu in (30 L)
+  opening: Front-loading
+  price:
+    amount: 289.99
+    currency: USD
+    seller: ula-equipment
+  release: regular
+  colourways:
+  - name: 400X Black
+    shell: ultra-400x
+  - name: ULTRA 400TX Black Magic
+    shell: ultra-400tx
+  - name: ULTRA 400TX White Lightning
+    shell: ultra-400tx
+  - name: ULTRA 800TX Black Magic
+    shell: ultra-800tx
+  - name: ULTRA 800TX White Lightning
+    shell: ultra-800tx
+  - name: ULTRA 800 Black Magic
+    shell: ultra-800
+  - name: ULTRA 800 White Lightning
+    shell: ultra-800
+  checks:
+  - date: '2026-11-13'
+    source: ula-ultra-dragonfly
+    basis: page
+    method: Page opened and read by Claude through WebFetch; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - laptop
+    - fabric.shell
+    - colourways
+  - date: '2026-11-17'
+    source: ula-ultra-dragonfly
+    basis: page
+    method: Product page saved by Claude from the Mac on 17 Nov 2026 (research/factcheck-2026-11-17/pages)
+    fields:
+    - made_in
+    note: The product page prints "MADE IN THE U.S.A.". ULA's fabric page says its packs are designed, cut and sewn in Utah.
+  - date: '2026-11-13'
+    source: ula-ultra-dragonfly
+    basis: page
+    method: Read on the build's own page by a search subagent and again by Claude, both through WebFetch, on 13 Nov 2026
+    fields:
+    - opening
+    note: ULA's description opens with "Front-loading". Five owner reviews on the page describe a clamshell opening.
+  - date: '2026-11-15'
+    source: ula-ultra-dragonfly
+    basis: page
+    method: Search subagent, page opened through WebFetch on 15 Nov 2026
+    fields:
+    - release
+    note: 'Read as a regular catalogue item: no limited, drop or pre-order wording on the page.'
+  units:
+    weight:
+      metric:
+        g: 777
+        from: maker
+      imperial:
+        lb: 1.71
+        shown: 27.4 oz
+        from: maker
+    dims:
+      metric:
+        cm:
+        - 47.0
+        - 27.9
+        - 17.8
+        from: converted
+      imperial:
+        in:
+        - 18.5
+        - 11
+        - 7
+        from: maker
+- id: 30l-dragonfly-pass-thru
+  name: 30L Dragonfly Pass Thru
+  page: ula-30l-dragonfly-pass-thru
+  link:
+    url: https://www.ula-equipment.com/product/30l-dragonfly-pass-thru/
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - ultra-400tx
+    shell_as_written: Challenge ULTRA™ TX
+    other: UltraStretch™ mesh; luggage pass-through sleeve
+  volume_l: 30
+  dims_cm:
+    h: 47.0
+    w: 27.9
+    d: 17.8
+  laptop:
+    max_in: 15
+    type: sleeve
+  made_in: USA
+  weight_g: 880
+  as_written:
+    weight: 31 OZ | 880 GM
+    dims: 18.5" x 11" x 7" (main body)
+    volume: 1,857 CU IN | 30 L
+  opening: Front-loading
+  price:
+    amount: 319.99
+    currency: USD
+    seller: ula-equipment
+  release: regular
+  colourways:
+  - name: Black Magic
+  checks:
+  - date: '2026-11-13'
+    source: ula-30l-dragonfly-pass-thru
+    basis: page
+    method: Page opened and read by Claude through WebFetch; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - laptop
+    - fabric.shell
+    - colourways
+  - date: '2026-11-17'
+    source: ula-30l-dragonfly-pass-thru
+    basis: page
+    method: Product page saved by Claude from the Mac on 17 Nov 2026 (research/factcheck-2026-11-17/pages)
+    fields:
+    - made_in
+    note: The product page prints "MADE IN THE U.S.A.". ULA's fabric page says its packs are designed, cut and sewn in Utah.
+  - date: '2026-11-13'
+    source: ula-30l-dragonfly-pass-thru
+    basis: page
+    method: Read on the build's own page by a search subagent and again by Claude, both through WebFetch, on 13 Nov 2026
+    fields:
+    - opening
+    note: ULA's description calls it a front-loading panel bag. Nothing on the page says clamshell.
+  - date: '2026-11-15'
+    source: ula-30l-dragonfly-pass-thru
+    basis: page
+    method: Search subagent, page opened through WebFetch on 15 Nov 2026
+    fields:
+    - release
+    note: 'Read as a regular catalogue item: no limited, drop or pre-order wording on the page.'
+  - date: '2026-11-15'
+    source: ula-30l-dragonfly-pass-thru
+    basis: page
+    method: Search subagent, page opened through WebFetch on 15 Nov 2026
+    fields:
+    - fabric.shell
+    note: The page names the fabric as Challenge ULTRA TX in its summary and has a fabric section for ULTRA 400TX (400d Ultra PE, 244 gsm).
+  units:
+    weight:
+      metric:
+        g: 880
+        from: maker
+      imperial:
+        lb: 1.94
+        shown: 31 oz
+        from: maker
+    dims:
+      metric:
+        cm:
+        - 47.0
+        - 27.9
+        - 17.8
+        from: converted
+      imperial:
+        in:
+        - 18.5
+        - 11
+        - 7
+        from: maker
+features: []
+claims:
+- id: dfly-pro-1
+  kind: pro
+  text: Treeline calls it the lightest true travel pack it has tested.
+  voice: reviewers
+  support: one review
+  scope: material
+  basis: review
+  sources:
+  - treeline-review-ula-ultra-30l-dragonfly-pack-review
+  observed_on:
+  - 30l-ultra-dragonfly
+  status: approved
+  source_notes:
+  - source: treeline-review-ula-ultra-30l-dragonfly-pack-review
+    about: same build (ULA Ultra 30L Dragonfly, 27.4 oz); the same review notes the ULA Ultra Node is lighter
+  other_builds:
+  - source: carryology-ula-ultra-dragonfly-review
+    about: 30L Ultra Dragonfly in Ultra 800 (pre-TX fabric), listed at 30 oz and $249.99
+  - source: treeline-review-ula-ultra-node-20l-pack-review
+    about: ULA Ultra Node 20L (a different bag)
+  replaces: dfly-pro-1
+  wording_note: Split. Uses Treeline's qualified wording; the review says the Ultra Node is lighter but lacks features.
+- id: dfly-pro-2
+  kind: pro
+  text: The tall mesh side pockets fit a 64 oz water bottle with ease.
+  voice: reviewers
+  support: one review
+  scope: design
+  basis: review
+  sources:
+  - treeline-review-ula-ultra-30l-dragonfly-pack-review
+  - ula-ultra-30l-patchless-dragonfly
+  observed_on:
+  - 30l-ultra-dragonfly
+  - 30l-patchless-ultra-dragonfly
+  status: approved
+  source_notes:
+  - source: ula-ultra-30l-patchless-dragonfly
+    about: same build (30L Ultra Dragonfly, ULTRA 400TX / 800TX)
+  - source: treeline-review-ula-ultra-30l-dragonfly-pack-review
+    about: same build (ULA Ultra 30L Dragonfly); says the side pockets take a 64 oz bottle; no tripod or hall-of-fame wording
+  other_builds:
+  - source: pack-hacker-dragonfly
+    about: 30L Dragonfly in X50 X-Pac, earlier generation (not Ultra); 32 oz bottle fits, travel tripod fits, a regular tripod needs the compression straps
+  - source: carryology-ula-ultra-dragonfly-review
+    about: 30L Ultra Dragonfly in Ultra 800; full-size Nalgene with room to spare, pockets also suggested for a tripod
+  - source: pack-hacker-ultra-36l-dragonfly
+    about: 36L Ultra Dragonfly (larger size); 48 oz Nalgene and a tripod fit; no hall-of-fame wording
+  replaces: dfly-pro-2
+  wording_note: Split. 'Hall of fame' dropped (one reviewer, 2022 X-Pac build). Treeline and ULA's page support 64 oz.
+- id: dfly-pro-2-b
+  kind: pro
+  text: A travel tripod fits a side pocket, but a full-size tripod needs the compression straps.
+  voice: reviewers
+  support: two reviews
+  scope: design
+  basis: sibling
+  sources:
+  - pack-hacker-dragonfly
+  - the-mountainborn-video-ula-dragonfly-ultra-30
+  observed_on:
+  - 30l-ultra-dragonfly
+  from_build:
+    label: Also from a review of the 2022 X-Pac build
+    generation: Earlier build, reviewed in 2022
+    size: Same, 30L
+    fabric: X-Pac X50
+    assigned: 'yes'
+    found: ULA's current page says the side pockets fit 64 oz bottles and does not mention tripods.
+    decided: '2026-11-13'
+  status: approved
+  source_notes:
+  - source: pack-hacker-dragonfly
+    about: 30L Dragonfly in X50 X-Pac, earlier generation (not Ultra); 32 oz bottle fits, travel tripod fits, a regular tripod needs the compression straps
+  - source: the-mountainborn-video-ula-dragonfly-ultra-30
+    about: same build (30L Ultra Dragonfly, ULTRA 400TX); a couple of months of use; bought with his own money
+  replaces: dfly-pro-2
+  wording_note: 'Split from pro-2. ''Full tripods'' was unsupported. Pack Hacker tested the X-Pac build; pocket design, so kept as sibling. 17 Nov 2026: support widened with The Mountainborn (research/reviews-2026-11-17/merged/dfly.json point 4); was ''one review''. The Mountainborn (30L Ultra Dragonfly) carried a tripod in the side pocket under the strap every day for two weeks. Build label changed from ''From a review of the 2022 X-Pac build'' to ''Also from a review of the 2022 X-Pac build'' to fit the wider sources.'
+- id: dfly-pro-3
+  kind: pro
+  text: Just the right amount of organisation.
+  voice: reviewers
+  support: two reviews
+  scope: design
+  basis: review
+  sources:
+  - treeline-review-ula-ultra-30l-dragonfly-pack-review
+  - danny-packs-video-ula-dragonfly-ultra-30l-review
+  observed_on:
+  - 30l-ultra-dragonfly
+  status: approved
+  source_notes:
+  - source: treeline-review-ula-ultra-30l-dragonfly-pack-review
+    about: same build (ULA Ultra 30L Dragonfly)
+  - source: danny-packs-video-ula-dragonfly-ultra-30l-review
+    about: same build (30L Ultra Dragonfly); he bought it himself; affiliate links
+  other_builds:
+  - source: carryology-ula-ultra-dragonfly-review
+    about: 30L Ultra Dragonfly in Ultra 800; describes the pocket set but not in 'just enough' terms; a more qualified view
+  replaces: dfly-pro-3
+  wording_note: 'One reviewer (Treeline), not ''reviewers''. Carryology is more qualified: items sink and it suggests pouches. 17 Nov 2026: support widened with Danny Packs (research/reviews-2026-11-17/merged/dfly.json point 9); was ''one review''. Danny Packs (30L Ultra Dragonfly) says ''it provides the right amount of organization''. Reworded the same day from ''Just enough pockets, in the right places, and easy to reach even when the pack is stuffed.'' to ''Just the right amount of organisation.''. Anish accepted this wording on 17 Nov 2026 (''ok''), so that the line says only what both sources back; easy reach when the pack is stuffed was Treeline Review''s point alone.'
+- id: dfly-pro-4
+  kind: pro
+  text: Comfortable to wear.
+  voice: reviewers
+  support: three reviewers and owners agree
+  scope: design
+  basis: review
+  sources:
+  - treeline-review-ula-ultra-30l-dragonfly-pack-review
+  - danny-packs-video-ula-dragonfly-ultra-30l-review
+  - ula-ultra-dragonfly
+  observed_on:
+  - 30l-ultra-dragonfly
+  status: approved
+  source_notes:
+  - source: treeline-review-ula-ultra-30l-dragonfly-pack-review
+    about: same build; S-straps as on ULA's thru-hiking packs; 25 lb cited as the rated limit (low end, not for heavy packers), tester reported no comfort problems
+  - source: danny-packs-video-ula-dragonfly-ultra-30l-review
+    about: same build (30L Ultra Dragonfly); he bought it himself; affiliate links
+  - source: ula-ultra-dragonfly
+    about: same build (30L Ultra Dragonfly); customer reviews on ULA's own page, most without naming the fabric
+  other_builds:
+  - source: ula-ultra-dragonfly
+    about: 30L Ultra Dragonfly; Harris names the earlier Ultra 800 fabric; Koffler's review is dated 2023-10-11
+  - source: carryology-ula-ultra-dragonfly-review
+    about: 30L Ultra Dragonfly in Ultra 800; praises the straps but wants a little more padding and would keep loads near 20 lb
+  replaces: dfly-pro-4
+  wording_note: 'Reworded at Anish''s request. Treeline''s tester also says his back gets sweaty with this pack and calls that nothing new. Checked on 13 Nov 2026 whether that is a common complaint: Carryology (Ultra 800 build) praises the air-mesh back panel, Pack Hacker''s 2022 review (X-Pac build) calls it good for hot days, Pack Hacker''s 36L review says the pack can get hot, Nomads Nation says nothing, and none of the 21 owner reviews on ULA''s Ultra Dragonfly page mentions heat or sweat. Not shown to be worse than other packs, so it is left off the card. 17 Nov 2026: support widened with Danny Packs, ULA Equipment (research/reviews-2026-11-17/merged/dfly.json point 5); was ''one review''. Danny Packs calls it ''surprisingly comfortable to wear'' and an owner on ULA''s page calls it ''the most comfortable pack I''ve ever worn''. Reworded the same day from ''The S-shaped shoulder straps stayed comfortable through about eight months of testing.'' to ''Comfortable to wear.''. Anish accepted
+    this wording on 17 Nov 2026 (''ok''), so that the line says only what all three sources back; only Treeline Review tested for about eight months. Four sources also call the straps thin and say comfort fades above roughly 25 lb.'
+- id: dfly-con-1
+  kind: con
+  text: 'The zippered front mesh pocket is the exception to the easy access: owners find its opening tight, and close to unusable when the pack is full.'
+  voice: owners
+  support: three reviewers and owners agree
+  scope: design
+  basis: owner-reports
+  sources:
+  - ula-30l-dragonfly-pass-thru
+  - ula-ultra-dragonfly
+  - ula-ultra-30l-patchless-dragonfly
+  - the-mountainborn-video-ula-dragonfly-ultra-30
+  - pack-and-roam-video-ula-dragonfly-30l-review
+  observed_on:
+  - 30l-dragonfly-pass-thru
+  - 30l-ultra-dragonfly
+  status: approved
+  source_notes:
+  - source: ula-30l-dragonfly-pass-thru
+    about: same build (30L Ultra Dragonfly, pass-through version)
+  - source: ula-ultra-dragonfly
+    about: 30L Ultra Dragonfly; Levi's review is dated 2025-05-15; neither states the fabric
+  - source: the-mountainborn-video-ula-dragonfly-ultra-30
+    about: same build (30L Ultra Dragonfly, ULTRA 400TX); a couple of months of use; bought with his own money
+  - source: pack-and-roam-video-ula-dragonfly-30l-review
+    about: same build (30L Ultra Dragonfly, ULTRA 400TX); about a month of use; he bought it himself; affiliate links
+  other_builds:
+  - source: ula-ultra-30l-patchless-dragonfly
+    about: 30L Dragonfly, fabric not stated by the reviewer; the review block on this Ultra page is headed '30L X-Pac Dragonfly', so it may be shared across listings
+  replaces: dfly-con-1
+  wording_note: 'Rewritten at Anish''s request to sit with the pro on easy access. Treeline''s "easy to reach when stuffed" names the top pocket and the outside laptop pocket and says nothing about the front pocket, so the two do not contradict. The "nearly unusable when full" review (June 2025) sits in a review block headed "30L X-Pac Dragonfly" that also holds a review naming ULTRA 800TX, so the heading does not show which build it was. 17 Nov 2026: support widened with The Mountainborn, Pack & Roam (research/reviews-2026-11-17/merged/dfly.json point 0); was ''owner reviews agree''. The Mountainborn could not get shells into the front pocket ''because of this narrow opening'', and Pack & Roam says it gets hard to access when the pack is full. Both tested the ULTRA 400TX build. Taken off the line the same day: Reddit r/onebag, a source read through a mirror site, which the 17 Nov 2026 check does not accept.'
+- id: dfly-con-2
+  kind: con
+  text: The zipper pull cords can come unknotted.
+  voice: owners
+  support: owner reviews agree
+  scope: design
+  basis: owner-reports
+  sources:
+  - ula-ultra-30l-patchless-dragonfly
+  - reddit-r-onebag-read-through-ula-dragonfly-review-from-an-extremely-avera
+  observed_on:
+  - 30l-patchless-ultra-dragonfly
+  status: approved
+  source_notes:
+  - source: ula-ultra-30l-patchless-dragonfly
+    about: same build (reviewer names the 30L Dragonfly ULTRA 800TX)
+  - source: reddit-r-onebag-read-through-ula-dragonfly-review-from-an-extremely-avera
+    about: 30L Dragonfly, fabric not shown; one poster's zipper-pull knots came undone several times, others had no trouble; fixes suggested are flame-sealing and heat-shrink, not split rings
+  replaces: dfly-con-2
+  wording_note: 'At Anish''s call the owner''s fix is left out, and the line was held until the current pulls were confirmed to be knotted cord. The owner review is from October 2024 and names the ULTRA 800TX build; an r/onebag post reports the same. ULA''s pages list "silent" or "quiet" zipper pulls without naming the material. Checked by Claude on 13 Nov 2026 in the browser: ULA''s three-quarter photo of the 30L Dragonfly Pass Thru, uploaded January 2025 (after the complaint), shows knotted cord pulls on the main zipper. The photos on the Patchless and Ultra listings date from 2022 and 2024, so they do not show it either way. Released on that evidence.'
+- id: dfly-con-3
+  kind: con
+  text: Not suited to heavy packers or those who want maximum organisation.
+  voice: reviewers
+  support: one review
+  scope: design
+  basis: review
+  sources:
+  - treeline-review-ula-ultra-30l-dragonfly-pack-review
+  observed_on:
+  - 30l-ultra-dragonfly
+  status: approved
+  source_notes:
+  - source: treeline-review-ula-ultra-30l-dragonfly-pack-review
+    about: same build (ULA Ultra 30L Dragonfly); does not discuss the frame; lists heavy packers and those wanting maximum organisation as people who should skip it
+  other_builds:
+  - source: carryology-ula-ultra-dragonfly-review
+    about: 30L Ultra Dragonfly in Ultra 800 (pre-TX fabric); also steers very light packers elsewhere
+  - source: pack-hacker-ultra-36l-dragonfly
+    about: 36L Ultra Dragonfly (larger size); lists no internal organisation as a con; does not mention the frame
+  - source: nomads-nation-ula-dragonfly
+    about: 30L Dragonfly, fabric not named (mentions X-Pac and Cordura batches); says little structure and minimal organisation; page promotes the author's own bag brand
+  replaces: dfly-con-3
+  wording_note: Merged with the organisation line at Anish's call, in the wording shown to him.
+- id: dfly-con-3-c
+  kind: con
+  text: No frame sheet or stays.
+  voice: reviewers
+  support: one review
+  scope: design
+  basis: sibling
+  sources:
+  - carryology-ula-ultra-dragonfly-review
+  observed_on: []
+  from_build:
+    label: From a review of the earlier ULTRA 800 build
+    generation: Earlier build, reviewed in January 2023
+    size: Same, 30L
+    fabric: ULTRA 800, the fabric before 800TX
+    assigned: 'yes'
+    found: ULA's current page lists a padded back panel and names no frame sheet, frame or stays.
+    decided: '2026-11-13'
+  status: approved
+  source_notes:
+  - source: carryology-ula-ultra-dragonfly-review
+    about: 30L Ultra Dragonfly in Ultra 800 (pre-TX fabric); also steers very light packers elsewhere
+  replaces: dfly-con-3
+  wording_note: 'Split out after review: only Carryology, on an earlier build, says this.'
+- id: dfly-con-4
+  kind: con
+  text: Zippers can feel stiff or sticky.
+  voice: reviewers
+  support: three reviews agree
+  scope: design
+  basis: review
+  sources:
+  - the-mountainborn-video-ula-dragonfly-ultra-30
+  - nomads-nation-ula-dragonfly-pass-thru-review
+  - carryology-ula-ultra-dragonfly-review
+  observed_on:
+  - 30l-ultra-dragonfly
+  - 30l-dragonfly-pass-thru
+  from_build:
+    label: Also from a review of the earlier ULTRA 800 build
+    generation: Earlier fabric run of the same 30L design (2023)
+    size: Same, 30L
+    fabric: ULTRA 400TX (The Mountainborn, Nomads Nation), ULTRA 800 (Carryology)
+    found: Two of the three sources are the current 30L Ultra Dragonfly and Pass Thru; Carryology's earlier build used the same water-resistant zipper type.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: the-mountainborn-video-ula-dragonfly-ultra-30
+    about: same build (30L Ultra Dragonfly, ULTRA 400TX); a couple of months of use; bought with his own money
+  - source: nomads-nation-ula-dragonfly-pass-thru-review
+    about: same build (30L Dragonfly Pass Thru, ULTRA 400TX); a couple of weeks of use; price links, and the site runs its own bag brand
+  - source: carryology-ula-ultra-dragonfly-review
+    about: earlier ULTRA 800 build of the 30L Ultra Dragonfly; affiliate links
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. The Mountainborn: "Zippers have some friction that makes one handed closing often difficult"; Nomads Nation: "The YKK Aquaguard zippers sometimes felt sticky"; Carryology: "AquaGuard zippers are stiff, but expectedly so"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''ok''). research/reviews-2026-11-17/merged/dfly.json point 13.'
+  added_in: reviews-2026-11-17
+computed: []
+legacy:
+  verdict: Half the CTB26’s weight for four more litres, if you pack light. Ultra builds run 777 g to 880 g.
+  price_note: ula-equipment.com
+  avail: Regular line
+  origin: USA
+  laptop: 15" sleeve
+  fabric: ULTRA 400TX / 800TX
+  opening: Front-loading
+  brand: ULA Equipment
+  src: https://www.ula-equipment.com/product/ultra-30l-patchless-dragonfly/
+  gVar:
+  - g: 777
+    tag: 400TX Patchless / standard Ultra
+  - g: 880
+    tag: Ultra TX Pass Thru
+  claims:
+  - id: dfly-pro-1
+    kind: pro
+    text: Treeline calls it the lightest true travel pack they have tested; Carryology thought the box was empty
+    scope: material
+    basis: review
+    sources:
+    - treeline-review-ula-ultra-30l-dragonfly-pack-review
+    - carryology-ula-ultra-dragonfly-review
+    - treeline-review-ula-ultra-node-20l-pack-review
+    evidence:
+      status: supported
+      note: Treeline says 27.4 oz is the lightest of any true travel pack it has tested; Carryology's reviewer thought the box was empty (earlier Ultra 800 build, 30 oz). Treeline's Ultra Node review (13 Apr 2026) calls the Node the lightest adventure travel pack it tested, at 20.17 oz.
+      checked: '2026-11-13'
+      method: Search subagent through WebFetch, then Claude through Firecrawl, 13 Nov 2026
+    source_notes:
+    - source: treeline-review-ula-ultra-30l-dragonfly-pack-review
+      about: same build (ULA Ultra 30L Dragonfly, 27.4 oz); the same review notes the ULA Ultra Node is lighter
+    - source: carryology-ula-ultra-dragonfly-review
+      about: 30L Ultra Dragonfly in Ultra 800 (pre-TX fabric), listed at 30 oz and $249.99
+    - source: treeline-review-ula-ultra-node-20l-pack-review
+      about: ULA Ultra Node 20L (a different bag)
+    outcome:
+    - 'dfly-pro-1: reworded.'
+    - 'dfly-pro-1-b: dropped. Carryology''s empty-box remark is about the earlier Ultra 800 build at 30 oz. That is a weight finding on another fabric.'
+  - id: dfly-pro-2
+    kind: pro
+    text: Bottle pockets get hall-of-fame ratings; they swallow 64 oz bottles and full tripods
+    scope: design
+    basis: review
+    sources:
+    - pack-hacker-dragonfly
+    - ula-ultra-30l-patchless-dragonfly
+    - treeline-review-ula-ultra-30l-dragonfly-pack-review
+    - carryology-ula-ultra-dragonfly-review
+    - pack-hacker-ultra-36l-dragonfly
+    evidence:
+      status: partly
+      note: '''Hall of fame'' is one Pack Hacker reviewer on the 2022 X-Pac build, tested with 32 oz and a travel tripod; 64 oz comes from ULA and Treeline.'
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: pack-hacker-dragonfly
+      about: 30L Dragonfly in X50 X-Pac, earlier generation (not Ultra); 32 oz bottle fits, travel tripod fits, a regular tripod needs the compression straps
+    - source: ula-ultra-30l-patchless-dragonfly
+      about: same build (30L Ultra Dragonfly, ULTRA 400TX / 800TX)
+    - source: treeline-review-ula-ultra-30l-dragonfly-pack-review
+      about: same build (ULA Ultra 30L Dragonfly); says the side pockets take a 64 oz bottle; no tripod or hall-of-fame wording
+    - source: carryology-ula-ultra-dragonfly-review
+      about: 30L Ultra Dragonfly in Ultra 800; full-size Nalgene with room to spare, pockets also suggested for a tripod
+    - source: pack-hacker-ultra-36l-dragonfly
+      about: 36L Ultra Dragonfly (larger size); 48 oz Nalgene and a tripod fit; no hall-of-fame wording
+    outcome:
+    - 'dfly-pro-2: reworded.'
+    - 'dfly-pro-2-b: reworded; from another build, waiting on a call.'
+  - id: dfly-pro-3
+    kind: pro
+    text: Reviewers rate the pocket layout as just enough, in the right places, reachable when stuffed
+    scope: design
+    basis: review
+    sources:
+    - treeline-review-ula-ultra-30l-dragonfly-pack-review
+    - carryology-ula-ultra-dragonfly-review
+    evidence:
+      status: supported
+      note: Treeline says there are just enough pockets, in the right place and accessible when stuffed; that is one reviewer, and Carryology notes items sink and suggests pouches.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: treeline-review-ula-ultra-30l-dragonfly-pack-review
+      about: same build (ULA Ultra 30L Dragonfly)
+    - source: carryology-ula-ultra-dragonfly-review
+      about: 30L Ultra Dragonfly in Ultra 800; describes the pocket set but not in 'just enough' terms; a more qualified view
+    outcome:
+    - 'dfly-pro-3: reworded.'
+  - id: dfly-pro-4
+    kind: pro
+    text: Thru-hiking straps carry 25 lb comfortably; owners report rain bouncing off in monsoon
+    scope: material
+    basis: owner-reports
+    sources:
+    - ula-ultra-30l-patchless-dragonfly
+    - ula-ultra-dragonfly
+    - treeline-review-ula-ultra-30l-dragonfly-pack-review
+    - carryology-ula-ultra-dragonfly-review
+    evidence:
+      status: partly
+      note: Two owner reviews report heavy monsoon or downpour rain causing no problems; 25 lb is ULA's maximum load, which Treeline calls low-end and Carryology would keep nearer 20 lb.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ula-ultra-30l-patchless-dragonfly
+      about: same build (reviewer names the 30L Dragonfly ULTRA 800TX); page also gives the 25 lb maximum load
+    - source: ula-ultra-dragonfly
+      about: 30L Ultra Dragonfly; Harris names the earlier Ultra 800 fabric; Koffler's review is dated 2023-10-11
+    - source: treeline-review-ula-ultra-30l-dragonfly-pack-review
+      about: same build; S-straps as on ULA's thru-hiking packs; 25 lb cited as the rated limit (low end, not for heavy packers), tester reported no comfort problems
+    - source: carryology-ula-ultra-dragonfly-review
+      about: 30L Ultra Dragonfly in Ultra 800; praises the straps but wants a little more padding and would keep loads near 20 lb
+    outcome:
+    - 'dfly-pro-4: reworded.'
+    - 'dfly-pro-4-b: reworded.'
+    - 'dfly-pro-4: reworded on 13 Nov 2026 at Anish''s direction.'
+    - 'dfly-pro-4-b: Dropped by Anish on reading, 13 Nov 2026.'
+  - id: dfly-con-1
+    kind: con
+    text: Front stash pocket zipper is the shared owner gripe; nearly unusable when the pack is full
+    scope: design
+    basis: owner-reports
+    sources:
+    - ula-ultra-30l-patchless-dragonfly
+    - ula-30l-dragonfly-pass-thru
+    - ula-ultra-dragonfly
+    - reddit-r-onebag-read-through-ula-dragonfly-review-from-an-extremely-avera
+    evidence:
+      status: supported
+      note: Owner reviews on three ULA Dragonfly pages and a Reddit thread complain about the front pocket's tight zipper opening; one says it is nearly unusable when full.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    leads:
+    - https://www.reddit.com/r/onebag/comments/1cyp1l6/ula_dragonfly_review_from_an_extremely_average/
+    source_notes:
+    - source: ula-ultra-30l-patchless-dragonfly
+      about: 30L Dragonfly, fabric not stated by the reviewer; the review block on this Ultra page is headed '30L X-Pac Dragonfly', so it may be shared across listings
+    - source: ula-30l-dragonfly-pass-thru
+      about: same build (30L Ultra Dragonfly, pass-through version)
+    - source: ula-ultra-dragonfly
+      about: 30L Ultra Dragonfly; Levi's review is dated 2025-05-15; neither states the fabric
+    - source: reddit-r-onebag-read-through-ula-dragonfly-review-from-an-extremely-avera
+      about: 30L Dragonfly, fabric not shown on the page; several commenters say the front stretch pocket's zipper opening is too small
+    outcome:
+    - 'dfly-con-1: reworded.'
+    - 'dfly-con-1-b: reworded; from another build, waiting on a call.'
+    - 'dfly-con-1: reworded on 13 Nov 2026 at Anish''s direction.'
+    - 'dfly-con-1-b: Folded into dfly-con-1 at Anish''s call, 13 Nov 2026: one line on the front mesh pocket.'
+  - id: dfly-con-2
+    kind: con
+    text: Cord zipper pulls unknot; owners swap them for split rings before big trips
+    scope: design
+    basis: owner-reports
+    sources:
+    - ula-ultra-30l-patchless-dragonfly
+    - reddit-r-onebag-read-through-ula-dragonfly-review-from-an-extremely-avera
+    evidence:
+      status: supported
+      note: One owner review (ULTRA 800TX) says cord pulls unknotted and he fitted split rings; one Reddit poster also had knots undo, others did not; split rings come from one owner.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ula-ultra-30l-patchless-dragonfly
+      about: same build (reviewer names the 30L Dragonfly ULTRA 800TX)
+    - source: reddit-r-onebag-read-through-ula-dragonfly-review-from-an-extremely-avera
+      about: 30L Dragonfly, fabric not shown; one poster's zipper-pull knots came undone several times, others had no trouble; fixes suggested are flame-sealing and heat-shrink, not split rings
+    outcome:
+    - 'dfly-con-2: reworded.'
+    - 'dfly-con-2-b: dropped. Folded into dfly-con-2 after review: the owner never says the swap fixed the problem.'
+    - 'dfly-con-2: reworded on 13 Nov 2026 at Anish''s direction.'
+  - id: dfly-con-3
+    kind: con
+    text: No frame or micro-organization; reviewers steer heavy and tech-dense packers elsewhere
+    scope: material
+    basis: review
+    sources:
+    - carryology-ula-ultra-dragonfly-review
+    - treeline-review-ula-ultra-30l-dragonfly-pack-review
+    - pack-hacker-ultra-36l-dragonfly
+    - nomads-nation-ula-dragonfly
+    evidence:
+      status: supported
+      note: Carryology says no stays or frame sheet and little micro-organisation, and sends heavier and tech-heavy packers elsewhere; Treeline also lists heavy packers and organisation seekers under skip.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: carryology-ula-ultra-dragonfly-review
+      about: 30L Ultra Dragonfly in Ultra 800 (pre-TX fabric); also steers very light packers elsewhere
+    - source: treeline-review-ula-ultra-30l-dragonfly-pack-review
+      about: same build (ULA Ultra 30L Dragonfly); does not discuss the frame; lists heavy packers and those wanting maximum organisation as people who should skip it
+    - source: pack-hacker-ultra-36l-dragonfly
+      about: 36L Ultra Dragonfly (larger size); lists no internal organisation as a con; does not mention the frame
+    - source: nomads-nation-ula-dragonfly
+      about: 30L Dragonfly, fabric not named (mentions X-Pac and Cordura batches); says little structure and minimal organisation; page promotes the author's own bag brand
+    outcome:
+    - 'dfly-con-3: reworded.'
+    - 'dfly-con-3-b: reworded.'
+    - 'dfly-con-3-c: reworded; from another build, waiting on a call.'
+    - 'dfly-con-3: reworded on 13 Nov 2026 at Anish''s direction.'
+    - 'dfly-con-3-b: Folded into dfly-con-3 at Anish''s call, 13 Nov 2026.'

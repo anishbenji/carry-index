@@ -1,0 +1,52 @@
+# One listing page.
+id: uhmwpe-backpacks
+title: UHMWPE backpacks
+category: backpack
+rule:
+  category: backpack
+  shell_material: in_uhmwpe_section.decision == in
+  tests:
+  - 'The fibre does real work: UHMWPE is a main structural part of the fabric, going by the maker''s own description'
+  - The maker sells it as a UHMWPE fabric
+  - 'Bags in it stand apart from the maker''s nylon bags the way UHMWPE bags usually do: lighter, with the technical look and feel'
+  disqualifier: A fabric is out if UHMWPE is only a ripstop grid or a minor reinforcement in an ordinary nylon or polyester weave
+scope_note: 'EDC and travel backpacks with a UHMWPE fabric shell. Which fabrics count is my call, fabric by fabric. Three things I look at:'
+approach_note: These pages put checked specs next to what reviewers and owners broadly agree on. As I get to review bags myself, I'll add my own reviews or link to them.
+exclusions:
+- name: Able Carry Max EDC
+  reason: I found no sign that Able Carry has released a Challenge ULTRA build
+  decided: before Rev AE; date not recorded
+revision:
+  letter: AN
+  date: '2026-11-18'
+changelog:
+- rev: AN
+  date: '2026-11-18'
+  note: In dark mode the line-art sketches now draw in light ink in every browser, Safari and iPhone and iPad included, where they were coming out almost black.
+- rev: AM
+  date: '2026-11-17'
+  note: For and Against lines now draw on many more reviews, videos and owner posts, each linked. A line taken from another version of a bag says which.
+- rev: AL
+  date: '2026-11-15'
+  note: In the airline lists, a coloured weight limit now colours just the number, like sizes do.
+- rev: AK
+  date: '2026-11-15'
+  note: 14 more airlines checked on their own sites. Aer's weights are now the kilograms Aer prints, and the Weigh Lighter Hugger is no longer marked limited.
+- rev: AJ
+  date: '2026-11-15'
+  note: In each airline list, a limit the bag is close to is amber and one it's over is red, so you can see which side decided it.
+- rev: AI
+  date: '2026-11-15'
+  note: Airline limits re-read on the airlines' own sites, 177 of 198 now. The 30L Dragonfly Pass Thru's fabric is ULTRA 400TX.
+- rev: AH
+  date: '2026-11-14'
+  note: Airline limits show the airline's own inches and pounds where it prints them; figures I converted are marked ≈. How the EDX opens, from my own bag.
+- rev: AG
+  date: '2026-11-13'
+  note: 'Units: a switch in the header shows weights, sizes and airline limits in metric or imperial. Weight per litre is L/lb in imperial.'
+- rev: AF
+  date: '2026-11-13'
+  note: Now Carry Journal. Cards rebuilt from sourced data that Anish read line by line. Each build links to its own page.
+- rev: AE
+  date: '2026-11-10'
+  note: 'Data corrections: Aer availability, EDX name, price and source, CT21 Plus weight.'

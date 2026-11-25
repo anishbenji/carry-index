@@ -1,0 +1,611 @@
+migration:
+  source: Ultra Carry Index page, Rev AE (v20)
+  migrated: '2026-11-13'
+  claims: Anish read every line on 13 Nov 2026, one question at a time; approved lines are the ones he kept as shown. Lines from another build name the build. Old wording and search results are under legacy.claims.
+  photos: model.photos lists every photo the old page used, as its code and footer describe them; permission is none for all
+  sources_search: Claims and spec gaps were searched on 13 Nov 2026; see evidence on each claim and reports/sources-search-2026-11-13.md
+  proposals: Applied on 13 Nov 2026 by tools/migrate/apply_decisions.py, following Anish's rulings of that day.
+  availability: Removed on 13 Nov 2026. Each build links out instead; the old strings stay under legacy.
+model:
+  id: db-weigh-lighter-hugger-30l
+  legacy_id: wlh30
+  brand: db-journey
+  label: Weigh Lighter Hugger 30L
+  family: Hugger
+  category: backpack
+  use:
+  - edc
+  - travel
+  build_class: ultralight
+  drawings:
+  - file: drawings/wlh30/sketch/wlh30-sketch-front.svg
+    kind: drawing
+    view: front
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/wlh30/sketch/wlh30-sketch-iso.svg
+    kind: drawing
+    view: three-quarter
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/wlh30/sketch/wlh30-sketch-back.svg
+    kind: drawing
+    view: back
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/wlh30/sketch/wlh30-sketch-side.svg
+    kind: drawing
+    view: side
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  photos:
+  - file: img/maker/f576629d-Weigh_Lighter_Hugger_Backpack_30L_Weigh_Darker_1000651012701_1.png
+    role: card main
+    view: unknown
+    credit_text: dbjourney.com
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: Weigh Lighter Hugger Backpack 30L, Weigh Darker, _1'
+    permission: none
+  - file: img/maker/00a9d244-Weigh_Lighter_Hugger_Backpack_30L_Weigh_Darker_1000651012701_2.png
+    role: hero strip
+    view: front
+    credit_text: null
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: Weigh Lighter Hugger 30L Weigh Darker _2'
+    permission: none
+  - file: img/maker/1538d27e-Weigh_Lighter_Hugger_Backpack_30L_Weigh_Darker_1000651012701_1.png
+    role: hero strip
+    view: three-quarter
+    credit_text: null
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: Weigh Lighter Hugger 30L Weigh Darker _1'
+    permission: none
+  reviews:
+  - source: dream-big-travel-far-db-hugger-backpack-review
+    covers: 'Current standard polyester Db Hugger Backpack 30L Black Out (page lists 1.07 kg, $229, 100% polyester); last updated 8 Jan 2024. Not the Graflyte build. Discloses: Says some posts contain affiliate links (Db links are tracked affiliate links); does not say whether the bag was bought or gifted.'
+    used_for:
+    - wlh30-con-2-b
+    - wlh30-pro-5
+  - source: worn-wound-hands-on-d-b-journey-hugger-30l-backpack
+    covers: 'Standard Db Journey Hugger 30L ($229, ''100% Polyester Bluesign GRS''); published 24 Dec 2024 after a few months of use. Not the Graflyte build. Discloses: No affiliate, gift or sponsorship disclosure on the page; author describes finding and choosing the bag himself.'
+    used_for:
+    - wlh30-pro-6
+  - source: stoked-for-travel-p-9462
+    covers: 'Db-era standard Hugger 30L (1.2 kg, US$179) tested alongside the Backpack Pro; published Aug 2021. Older generation. Discloses: Amazon links carry affiliate tags; does not say whether bags were bought, gifted or sponsored.'
+    used_for:
+    - wlh30-con-2-b
+    - wlh30-pro-5
+    - wlh30-pro-6
+  - source: pack-hacker-the-hugger-30l
+    covers: 'Douchebags-era Hugger 30L (spec block 1.4 kg, 15-inch laptop); published 2019-06, updated 2023-11. Page text is only a spec block and a three-line usage note; video not transcribed. Discloses: Reader-supported, may earn affiliate commission; Pro member discount on Db; no statement on whether the bag was gifted.'
+    used_for:
+    - wlh30-pro-5
+  - source: the-adult-man-db-bags-review
+    covers: 'Db-era standard Hugger 30L Blackout (EVA/PU front) plus a 20L; published June 2021, updated Apr 2024. Older generation. Discloses: Sponsored post with affiliate links; received compensation and courtesy product from Db; discount code offered.'
+    used_for: []
+  - source: the-loam-wolf-review-douchebags-hugger-30l
+    covers: 'Original-generation Douchebags Hugger 30L: photos uploaded 2018-05, price $159, 15-inch laptop sleeve, two compartments. Page modified 2024-12 but content is from 2018. Discloses: Nothing stated (''When this bag first showed up'' hints it was supplied, but no disclosure).'
+    used_for: []
+  - source: toms-lode-video-db-the-hugger-backpack-review
+    covers: 'Current standard polyester Db Hugger 30L, Black (1.23 kg, EUR 220); says the hook system was upgraded since the 2023 bag; uploaded 9 Jul 2025 after one week of use. Not the Graflyte build. Discloses: Says ''I bought a new bag''; no sponsorship or gift stated; description lists contact emails only.'
+    used_for:
+    - wlh30-con-2-b
+    - wlh30-pro-6
+  - source: joris-van-der-kamp-video-db-journey-hugger-30l
+    covers: '''New version'' standard polyester Db Journey Hugger 30L, Moss Green; uploaded 27 Jul 2024, conclusion after two months and a trip to Scotland. Not the Graflyte build. Discloses: Says he chose the bag; does not say whether it was bought or gifted; no sponsorship stated; description lists a business-inquiry email.'
+    used_for:
+    - wlh30-pro-6
+  - source: james-wright-video-douchebags-30l-hugger-1-year-review
+    covers: 'Original-generation Douchebags 30L Hugger (2017-18), bought over a year before the 12 Aug 2018 upload; owner in Finland, used for work, gym, travel and treks. Discloses: Says ''I originally purchased this bag''; no sponsorship or gift stated.'
+    used_for: []
+  - source: verkkokauppa-db-hugger-backpack-30-l
+    covers: 'Standard Db Hugger Backpack 30L; listing is reflective black but all 7 reviews are marked as written about sibling colourways (black out, sand grey, line cluster). Reviews dated 6.8.2024 to 25.9.2026, mostly Finnish. Current generation. Discloses: Retailer customer review section; 7 reviews, all 5 stars; nothing else stated.'
+    used_for:
+    - wlh30-pro-5
+  - source: active-traveller-douchebag-the-hugger-30l-backpack
+    covers: 'Original-generation Douchebags The Hugger 30L (GBP 126, 15-inch laptop pocket); last updated 25 Jul 2018. Discloses: Nothing stated about purchase, gifting or affiliates (page carries display ads).'
+    used_for: []
+  sourcing: Based on Db's own pages, plus reviews of the standard Hugger 30L from Dream Big, Travel Far, Worn & Wound, Stoked For Travel, Pack Hacker, Toms Lode and Joris van der Kamp, and owner reviews at Verkkokauppa.com.
+variants:
+- id: weigh-lighter-hugger-backpack-30l-weigh-darker
+  name: Weigh Lighter Hugger Backpack 30L Weigh Darker
+  page: db-weigh-lighter-hugger-30l-weigh-darker
+  link:
+    url: https://dbjourney.com/en-us/products/weigh-lighter-hugger-backpack-30l-weigh-darker
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - aluula-graflyte
+    shell_as_written: 'Main: 100% Polyethylene (ALUULA Graflyte™)'
+    lining: 93.7% Polyamide, 6.3% Polyester
+  volume_l: 30
+  weight_g: 520
+  dims_cm:
+    h: 52.0
+    w: 31.0
+    d: 22.5
+  as_written:
+    weight: 1.15 lbs in the specifications on the US page; 0.52 kg on the UK and Canadian pages; 520g in the description
+    dims: 20.47 x 12.2 x 8.86 in (H x W x D) on the US page; 52 x 31 x 22.5 cm (H x W x D) on the UK and Canadian pages
+  laptop:
+    max_in: 16
+    type: padded compartment
+  opening: Full clamshell
+  price:
+    amount: 399
+    currency: USD
+    seller: db-journey
+  release: regular
+  made_in: Vietnam
+  colourways:
+  - name: Weigh Darker
+  - name: Monochrome
+    page: db-weigh-lighter-hugger-30l-monochrome
+  media:
+  - file: img/maker/f576629d-Weigh_Lighter_Hugger_Backpack_30L_Weigh_Darker_1000651012701_1.png
+    kind: photo
+    view: unknown
+    shows_variant: null
+    credit: dbjourney.com
+    source: https://dbjourney.com/en-us/products/weigh-lighter-hugger-backpack-30l-weigh-darker
+    permission: none
+  checks:
+  - date: '2026-11-13'
+    source: db-weigh-lighter-hugger-30l-weigh-darker
+    basis: page
+    method: Page opened and read by Claude through WebFetch; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - laptop
+    - fabric.shell
+    - fabric.lining
+    - made_in
+    - colourways
+  - date: '2026-11-13'
+    source: db-weigh-lighter-hugger-30l-weigh-darker
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - opening
+  - date: '2026-11-15'
+    source: db-weigh-lighter-hugger-30l-weigh-darker
+    basis: page
+    method: Search subagent, through WebFetch on 15 Nov 2026; Anish's call the same day
+    fields:
+    - release
+    note: Db calls Weigh Darker "Drop 2" of the Weigh Lighter line and offers a notify-me sign-up; nothing on Db's pages says limited. Anish ruled it is not a limited release.
+  units:
+    weight:
+      metric:
+        g: 520
+        from: maker
+      imperial:
+        lb: 1.15
+        from: maker
+    dims:
+      metric:
+        cm:
+        - 52.0
+        - 31.0
+        - 22.5
+        from: maker
+      imperial:
+        in:
+        - 20.47
+        - 12.2
+        - 8.86
+        from: maker
+- id: hugger-backpack-30l-oatmilk
+  name: Hugger Backpack 30L Oatmilk
+  record: comparison
+  page: db-hugger-backpack-30l-oatmilk
+  link:
+    url: https://dbjourney.com/en-ca/products/hugger-backpack-30l-oatmilk
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - polyester-recycled
+    shell_as_written: 100% Polyester (recycled)
+    lining: 100% Polyester (recycled)
+  volume_l: 30
+  weight_g: 1230
+  dims_cm:
+    h: 52
+    w: 31
+    d: 22.5
+  as_written:
+    weight: 1.23 kg
+    dims: 52 x 31 x 22.5 cm (H x W x D)
+  made_in: Vietnam
+  checks:
+  - date: '2026-11-13'
+    source: db-hugger-backpack-30l-oatmilk
+    basis: page
+    method: Page opened and read by Claude through WebFetch on 13 Nov 2026; not yet spot-checked by Anish
+    fields:
+    - name
+    - volume_l
+    - weight_g
+    - dims_cm
+    - fabric.shell
+    - fabric.lining
+    - made_in
+    note: Db's Canadian store page; one colourway of the standard Hugger Backpack 30L
+  - date: '2026-11-15'
+    source: db-hugger-backpack-30l-black-out-us
+    basis: page
+    method: Search subagent, page opened through Firecrawl (US location) on 15 Nov 2026
+    fields:
+    - price
+    note: Read on Db's US store page for the Black Out colourway of the same standard Hugger Backpack 30L, which also lists 2.71 lb (matching the 1.23 kg on file). Price assumed the same across colourways.
+  notes:
+    price: Db's US store lists $229 for the Black Out colourway (15 Nov 2026); the Canadian Oatmilk page showed $260 without naming the currency.
+  units:
+    weight:
+      metric:
+        g: 1230
+        from: maker
+      imperial:
+        lb: 2.71
+        from: converted
+    dims:
+      metric:
+        cm:
+        - 52
+        - 31
+        - 22.5
+        from: maker
+      imperial:
+        in:
+        - 20.5
+        - 12.2
+        - 8.9
+        from: converted
+  price:
+    amount: 229
+    currency: USD
+    seller: db-journey
+features:
+- id: wlh30-feat-2-b
+  text: ALUULA Graflyte™ shell, a monomaterial that is UV-resistant, water-resistant and ready to recycle.
+  scope: material
+  sources:
+  - db-weigh-lighter-hugger-30l-weigh-darker
+  applies_to:
+  - weigh-lighter-hugger-backpack-30l-weigh-darker
+  replaces: wlh30-pro-2
+  was_kind: pro
+  status: approved
+- id: wlh30-feat-4
+  text: Rib Cage Technology™ ABS ribs hold the shape when empty, and the Hook-Up System™ clips it to Db rollers.
+  scope: design
+  sources:
+  - db-weigh-lighter-hugger-30l-weigh-darker
+  - db-weigh-lighter-hugger-30l-monochrome
+  - t3-db-weigh-lighter-hugger-backpack-30l-monochr
+  applies_to:
+  - weigh-lighter-hugger-backpack-30l-weigh-darker
+  replaces: wlh30-pro-4
+  was_kind: pro
+  status: approved
+- id: wlh30-feat-3
+  text: Full clamshell opening to the whole main compartment, plus a quick-access top pocket.
+  scope: design
+  sources:
+  - db-weigh-lighter-hugger-30l-weigh-darker
+  applies_to:
+  - weigh-lighter-hugger-backpack-30l-weigh-darker
+  replaces: wlh30-pro-3
+  was_kind: pro
+  status: approved
+claims:
+- id: wlh30-con-2-b
+  kind: con
+  text: No sternum strap or water bottle pocket.
+  voice: reviewers
+  support: three reviews agree
+  scope: design
+  basis: sibling
+  sources:
+  - dream-big-travel-far-db-hugger-backpack-review
+  - toms-lode-video-db-the-hugger-backpack-review
+  - stoked-for-travel-p-9462
+  observed_on: []
+  from_build:
+    label: From reviews of the standard polyester Hugger 30L
+    generation: Standard Hugger; review page dated January 2024
+    size: Same, 30L
+    fabric: Recycled polyester
+    assigned: 'yes'
+    found: Db's page for the Weigh Lighter build lists neither a sternum strap nor a bottle pocket.
+    decided: '2026-11-13'
+  status: approved
+  source_notes:
+  - source: dream-big-travel-far-db-hugger-backpack-review
+    about: standard polyester Db Hugger 30L (Black Out); date is last-updated
+  - source: toms-lode-video-db-the-hugger-backpack-review
+    about: current standard polyester Hugger 30L, not the Weigh Lighter build; one week of use; he bought it himself
+  - source: stoked-for-travel-p-9462
+    about: older standard Hugger 30L (2021), not the Weigh Lighter build; affiliate links, sample status not stated
+  replaces: wlh30-con-2
+  wording_note: 'Split. Sternum strap rests on one review; Stoked For Travel also notes no bottle pouch. Db''s page lists neither. 17 Nov 2026: support widened with Toms Lode, Stoked For Travel (research/reviews-2026-11-17/merged/wlh30.json points 0, 1); was ''one review''. Toms Lode (current standard Hugger 30L) misses both a bottle holder and a middle strap; Stoked For Travel (2021) says the Hugger lacks a side bottle pouch.'
+- id: wlh30-pro-5
+  kind: pro
+  text: The quick-access top pocket is easy to reach and really useful.
+  voice: reviewers
+  support: four reviewers and owners agree
+  scope: design
+  basis: sibling
+  sources:
+  - dream-big-travel-far-db-hugger-backpack-review
+  - stoked-for-travel-p-9462
+  - pack-hacker-the-hugger-30l
+  - verkkokauppa-db-hugger-backpack-30-l
+  observed_on: []
+  from_build:
+    label: From reviews of current and earlier standard polyester Hugger 30L builds
+    generation: Standard Hugger 30L, 2019 to current
+    size: Same, 30L
+    fabric: Polyester
+    found: Db's page for the Weigh Lighter build lists the same quick-access top pocket.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: dream-big-travel-far-db-hugger-backpack-review
+    about: standard polyester Hugger 30L, not the Weigh Lighter build; affiliate links, sample status not stated
+  - source: stoked-for-travel-p-9462
+    about: older standard Hugger 30L (2021), not the Weigh Lighter build; affiliate links, sample status not stated
+  - source: pack-hacker-the-hugger-30l
+    about: older-generation standard Hugger 30L (2019), not the Weigh Lighter build; a short usage note; affiliate links
+  - source: verkkokauppa-db-hugger-backpack-30-l
+    about: current standard Hugger 30L, not the Weigh Lighter build; customer reviews on a retailer's page, mostly in Finnish
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. Dream Big, Travel Far: "The top pocket is very easily accessible and separate from the main compartment."; Stoked For Travel: "One of my favourite features of this bag though is the top compartment"; Pack Hacker: "The top pocket comes in really useful"; Verkkokauppa.com: "Päällä olevaan helposti käytettävään taskuun mahtuu aurinkolasikotelo"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''agree (on the Hugger heading)''). research/reviews-2026-11-17/merged/wlh30.json point 7.'
+  added_in: reviews-2026-11-17
+- id: wlh30-pro-6
+  kind: pro
+  text: The laptop sleeve takes a 16-inch MacBook Pro.
+  voice: reviewers
+  support: four reviews agree
+  scope: design
+  basis: sibling
+  sources:
+  - worn-wound-hands-on-d-b-journey-hugger-30l-backpack
+  - stoked-for-travel-p-9462
+  - toms-lode-video-db-the-hugger-backpack-review
+  - joris-van-der-kamp-video-db-journey-hugger-30l
+  observed_on: []
+  from_build:
+    label: From reviews of current and earlier standard polyester Hugger 30L builds
+    generation: Standard Hugger 30L, 2021 to current
+    size: Same, 30L
+    fabric: Polyester
+    found: Db lists a 16-inch laptop compartment for the Weigh Lighter build too.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: worn-wound-hands-on-d-b-journey-hugger-30l-backpack
+    about: standard polyester Hugger 30L, not the Weigh Lighter build; a few months of use; no disclosure, the author chose the bag himself
+  - source: stoked-for-travel-p-9462
+    about: older standard Hugger 30L (2021), not the Weigh Lighter build; affiliate links, sample status not stated
+  - source: toms-lode-video-db-the-hugger-backpack-review
+    about: current standard polyester Hugger 30L, not the Weigh Lighter build; one week of use; he bought it himself
+  - source: joris-van-der-kamp-video-db-journey-hugger-30l
+    about: current standard polyester Hugger 30L, not the Weigh Lighter build; two months of use; no sponsor statement
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. Worn & Wound: "can easily accept a 16” laptop"; Stoked For Travel: "laptop sleeve can even accomodate Apples beast of a 16″ Macbook Pro!"; Toms Lode: "This can hold up a 14-in Mac and a 16-in Mac."; Joris van der Kamp: "laptop pocket suitable for a 16-in Macbook Pro"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''agree (on the Hugger heading)''). research/reviews-2026-11-17/merged/wlh30.json point 8.'
+  added_in: reviews-2026-11-17
+computed:
+- replaces: wlh30-pro-1
+  was: '520 g for 30 L: Db puts it 54% under the standard Hugger, level with the EDX as the lightest pack here'
+  rule: Rank all bags by weight_g; if this bag is lowest, show 'lightest on the list', or 'joint lightest' when tied.
+  state: Built. "Lightest" standout in tools/summary_lines.py, shown only while true.
+- replaces: wlh30-pro-2
+  was: 'The only non-ULTRA shell on the sheet: ALUULA Graflyte, which Db rates UV- and water-resistant and recyclable as a single polymer'
+  rule: Check shell fabric across all bags; if this is the only shell outside the ULTRA family, say it is the only non-ULTRA shell on the list.
+  state: Built. "Only build listed in a fabric from ..." standout in tools/summary_lines.py.
+legacy:
+  verdict: A full-size Hugger at EDX weight, and the first non-ULTRA bag on the sheet.
+  price_note: dbjourney.com · out of stock
+  avail: Limited colorway · out of stock
+  origin: Norway
+  laptop: 16"
+  fabric: ALUULA Graflyte
+  opening: Full clamshell
+  brand: Db Journey
+  src: https://dbjourney.com/en-us/products/weigh-lighter-hugger-backpack-30l-weigh-darker
+  claims:
+  - id: wlh30-pro-1
+    kind: pro
+    text: '520 g for 30 L: Db puts it 54% under the standard Hugger, level with the EDX as the lightest pack here'
+    scope: material
+    basis: maker
+    sources:
+    - db-weigh-lighter-hugger-30l-weigh-darker
+    flags:
+    - names-other-bag
+    - list-comparison
+    outcome:
+    - 'wlh30-pro-1: computed from data. Built. "Lightest" standout in tools/summary_lines.py, shown only while true.'
+  - id: wlh30-pro-2
+    kind: pro
+    text: 'The only non-ULTRA shell on the sheet: ALUULA Graflyte, which Db rates UV- and water-resistant and recyclable as a single polymer'
+    scope: material
+    basis: maker
+    sources:
+    - db-weigh-lighter-hugger-30l-weigh-darker
+    flags:
+    - list-comparison
+    outcome:
+    - 'wlh30-pro-2: computed from data. Built. "Only build listed in a fabric from ..." standout in tools/summary_lines.py.'
+    - 'wlh30-pro-2-b: moved to features (maker statement).'
+  - id: wlh30-pro-3
+    kind: pro
+    text: 'Standard-Hugger consensus, extrapolated: the full clamshell opening and quick top pocket are the most-praised features, and it packs like a duffel'
+    scope: material
+    basis: sibling
+    sources:
+    - dream-big-travel-far-db-hugger-backpack-review
+    - worn-wound-hands-on-d-b-journey-hugger-30l-backpack
+    - stoked-for-travel-p-9462
+    - db-weigh-lighter-hugger-30l-weigh-darker
+    evidence:
+      status: partly
+      note: Standard-Hugger reviews praise the full opening and top pocket; Db lists both on the ALUULA build. None says 'packs like a duffel' (one says suitcase, one 'sturdiness of a duffel').
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: dream-big-travel-far-db-hugger-backpack-review
+      about: standard polyester Db Hugger 30L (Black Out); date is last-updated
+    - source: worn-wound-hands-on-d-b-journey-hugger-30l-backpack
+      about: standard polyester Db Hugger 30L
+    - source: stoked-for-travel-p-9462
+      about: older standard Db Hugger 30L (1.2 kg)
+    - source: db-weigh-lighter-hugger-30l-weigh-darker
+      about: same build; lists full clamshell opening and quick-access top pocket
+    outcome:
+    - 'wlh30-pro-3: reworded; from another build, waiting on a call.'
+    - 'wlh30-pro-3: moved to features on 13 Nov 2026 at Anish''s call; Db''s page for this build lists both.'
+  - id: wlh30-pro-4
+    kind: pro
+    text: Rib Cage ABS ribs hold the shape when empty; the Hook-Up System clips it to Db rollers
+    scope: design
+    basis: maker
+    sources:
+    - db-weigh-lighter-hugger-30l-weigh-darker
+    - db-weigh-lighter-hugger-30l-monochrome
+    - t3-db-weigh-lighter-hugger-backpack-30l-monochr
+    evidence:
+      status: supported
+      note: Db's page says Rib Cage ABS ribs keep the shape when empty and the Hook-Up System attaches the pack to Db Hugger and Snow rollers; T3 relays the same.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: db-weigh-lighter-hugger-30l-weigh-darker
+      about: same build
+    - source: db-weigh-lighter-hugger-30l-monochrome
+      about: same build, Monochrome colourway
+    - source: t3-db-weigh-lighter-hugger-backpack-30l-monochr
+      about: same build, Monochrome colourway
+    outcome:
+    - 'wlh30-pro-4: moved to features (maker statement).'
+  - id: wlh30-con-1
+    kind: con
+    text: No hands-on reviews of the ALUULA build yet; T3’s coverage is a launch piece
+    scope: general
+    basis: maker
+    sources:
+    - t3-db-weigh-lighter-hugger-backpack-30l-monochr
+    - carryology-scouted-september-2026s-most-interesting-car
+    - bergfreunde-db-weigh-lighter-hugger-backpack-30-daypack
+    evidence:
+      status: supported
+      note: T3's 23 Sept 2026 piece is news relaying Db's claims; searches found no hands-on review of the ALUULA build. Carryology's mention is a roundup blurb; a retailer shows zero reviews.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: t3-db-weigh-lighter-hugger-backpack-30l-monochr
+      about: same build, Monochrome colourway only; Weigh Darker not mentioned
+    - source: carryology-scouted-september-2026s-most-interesting-car
+      about: same build; release-roundup blurb, no testing
+    - source: bergfreunde-db-weigh-lighter-hugger-backpack-30-daypack
+      about: same build, Monochrome; zero customer reviews when opened 2026-11-13
+    outcome:
+    - 'wlh30-con-1: not carried over. The model now has a review list and a sourcing line instead.'
+  - id: wlh30-con-2
+    kind: con
+    text: 'Standard-Hugger consensus, extrapolated: thin straps and basic back padding, no sternum strap or bottle pocket; a reviewer would not carry it loaded all day'
+    scope: design
+    basis: sibling
+    sources:
+    - dream-big-travel-far-db-hugger-backpack-review
+    - stoked-for-travel-p-9462
+    - pack-hacker-the-hugger-30l
+    - the-adult-man-db-bags-review
+    evidence:
+      status: partly
+      note: One review (Dream Big, Travel Far) says all of this about the polyester Hugger, calling straps thin but comfortable; three other reviews call the harness comfortable, so 'consensus' is overstated.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: dream-big-travel-far-db-hugger-backpack-review
+      about: standard polyester Db Hugger 30L (Black Out); date is last-updated
+    - source: stoked-for-travel-p-9462
+      about: older standard Db Hugger 30L; confirms no bottle pouch but says comfortable fully loaded
+    - source: pack-hacker-the-hugger-30l
+      about: older-generation standard Hugger 30L; calls the harness comfortable
+    - source: the-adult-man-db-bags-review
+      about: older standard Hugger 30L; sponsored post, says extremely comfortable when heavy
+    outcome:
+    - 'wlh30-con-2: reworded; from another build, waiting on a call.'
+    - 'wlh30-con-2-b: reworded; from another build, waiting on a call.'
+    - 'wlh30-con-2: Dropped by Anish, 13 Nov 2026. Db''s page for this build says nothing about straps or padding, and the build is far lighter than the standard Hugger.'
+  - id: wlh30-con-3
+    kind: con
+    text: Pack Hacker found the earlier Hugger 30L big and bulky for its size
+    scope: design
+    basis: sibling
+    sources:
+    - pack-hacker-the-hugger-30l
+    evidence:
+      status: supported
+      note: Pack Hacker's usage timeline calls the Hugger 30L very big and bulky for a 30 L pack; that review dates from 2019 (updated 2023) and covers the older polyester/TPE generation.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: pack-hacker-the-hugger-30l
+      about: older-generation standard Hugger 30L (then Douchebags), polyester and TPE
+    outcome:
+    - 'wlh30-con-3: dropped on review (ruling 5). It came from a 2019 review of an older build.'
+  - id: wlh30-con-4
+    kind: con
+    text: Weigh Darker is a limited colorway and shows out of stock; Monochrome is the same bag in translucent white
+    scope: general
+    basis: maker
+    sources:
+    - db-weigh-lighter-hugger-30l-weigh-darker
+    - db-weigh-lighter-hugger-30l-monochrome
+    - db-journey-weigh-lighter
+    - t3-db-weigh-lighter-monochrome-0926
+    flags:
+    - state-in-prose
+    evidence:
+      status: partly
+      note: Db's US page shows Weigh Darker sold out; Monochrome has identical specs in translucent white (also sold out). No source calls Weigh Darker limited; Db labels it 'Drop 2'.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: db-weigh-lighter-hugger-30l-weigh-darker
+      about: same build; Sold Out when opened 2026-11-13, no limited wording
+    - source: db-weigh-lighter-hugger-30l-monochrome
+      about: same build, Monochrome colourway; also Sold Out on the US store when opened 2026-11-13
+    - source: db-journey-weigh-lighter
+      about: same build; lists both colourways at 520 g, Weigh Darker as Drop 2 and Monochrome as Drop 3, no limited wording
+    - source: t3-db-weigh-lighter-monochrome-0926
+      about: Weigh Lighter collection (25L and others), not the Hugger 30L; names Aurora, Weigh Darker and Monochrome, none called limited
+    outcome:
+    - 'wlh30-con-4: dropped. No source calls Weigh Darker limited. Stock is not recorded any more, and the Monochrome colourway is in colourways.'

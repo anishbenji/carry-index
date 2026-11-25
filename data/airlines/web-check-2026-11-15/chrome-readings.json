@@ -1,0 +1,466 @@
+[
+ {
+  "name": "Cathay Pacific",
+  "result": "changed",
+  "source": "https://flights.cathaypacific.com/en_HK/baggage/baggage-calculator.html",
+  "opened_by": "Chrome (Anish's Mac)",
+  "quote": "Cabin baggage: 1 piece(s) + 1 small item. Total weight limit 7kg / 15lbs. Cabin baggage size limit 36cm x 23cm x 56cm (14in x 9in x 22in). Small item size limit 40cm x 15cm x 30cm (16in x 6in x 12in) ... can fit under the seat in front.",
+  "carryOn": {
+   "dims_cm": [
+    56,
+    36,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": [
+    22,
+    14,
+    9
+   ],
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    15
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": [
+    16,
+    12,
+    6
+   ],
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": 7,
+  "combined_lb": 15,
+  "notes": "Read in Cathay's baggage calculator (BLR to HKG, Economy Essential tab). The 7 kg is a total weight limit for both pieces."
+ },
+ {
+  "name": "Transavia Airlines",
+  "result": "changed",
+  "source": "https://www.transavia.com/en-EU/legal/",
+  "opened_by": "Chrome (Anish's Mac)",
+  "quote": "1 piece of hand luggage of max. 40x 30 x 20 cm including handles and wheels ... and 1 cabin bag of max. 55 x 40 x 25 cm including handles and wheels ... The total weight of the cabin bag and hand luggage may not exceed 10 kg",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": 10,
+  "combined_lb": null,
+  "notes": "Transavia's Conditions of Carriage (its help pages showed an error page in Chrome). The 55 x 40 x 25 cabin bag comes with the higher fares or as a paid add-on (Basic is the 40 x 30 x 20 under-seat bag only); 10 kg covers both pieces. Cabin bag size went from 55 x 35 x 25 to 55 x 40 x 25 in May 2025."
+ },
+ {
+  "name": "Vietnam Airlines",
+  "result": "changed",
+  "source": "https://www.vietnamairlines.com/us/en/travel-information/baggage/baggage-allowance-hand-baggage",
+  "opened_by": "Chrome (Anish's Mac)",
+  "quote": "For 01 piece of baggage: 56cm x 36cm x 23cm < 115cm. For 1 accessory: 40cm x 30cm x 15cm < 85cm. Other routes, Premium Economy/Economy Class: 01 piece of hand baggage (10kg) and 01 accessory, with a total combined weight not exceeding 10kg.",
+  "carryOn": {
+   "dims_cm": [
+    56,
+    36,
+    23
+   ],
+   "linear_cm": 115,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    15
+   ],
+   "linear_cm": 85,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": 10,
+  "combined_lb": null,
+  "notes": "Figures are in pop-up dialogs on the page. Economy on most routes: 10 kg for both pieces together. To or from the US, Australia and Europe (including Russia) Economy gets 12 kg in total (one piece up to 10 kg plus an accessory). The file had the 12 kg; changed to 10 kg as the rule for most routes."
+ },
+ {
+  "name": "Xiamen",
+  "result": "changed",
+  "source": "https://rescms.xiamenair.cn/brandnew_EN/passenger-service/baggage-claim.html",
+  "opened_by": "Chrome (Anish's Mac)",
+  "quote": "Unchecked baggage ... First class 2 ... No more than 8 kg (17 lbs) ... The length, width, and height of the baggage shall not exceed 55 cm (22 inches), 40 cm (16 inches), and 20 cm (8 inches), respectively ... Business class 2 ... Economy class 1",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 8,
+   "dims_in": [
+    22,
+    16,
+    8
+   ],
+   "linear_in": null,
+   "weight_lb": 17
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": false
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "The weight and size cells are shared by all three class rows of the table (Economy gets 1 piece). The page also shows stray bracketed figures (3,2 kg; 56 cm; 41 cm) beside the limits, apparently leftover editing marks; the main figures are used. No personal item is mentioned, so the file's 'none' stays."
+ },
+ {
+  "name": "S7",
+  "result": "changed",
+  "source": "https://www.s7.ru/en/pages/bagazh/hand-luggage/",
+  "opened_by": "Chrome (Anish's Mac)",
+  "quote": "In Economy Class — up to 10 kg, up to 55x40x23 cm in size ... Compact personal items can be taken into the cabin in addition to your carry-on baggage allowance. However, their weight must not exceed 5 kg, and their total length, width, and height must not exceed 75 cm.",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": 10,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": 75,
+   "weight_kg": 5,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Carry-on 55 x 40 x 23 cm, 10 kg in Economy on all three Economy fares. A handbag, briefcase or backpack up to 5 kg and 75 cm (L+W+H) goes in addition. The file had the personal item as under-seat only; it now has the 75 cm total."
+ },
+ {
+  "name": "GOL Linhas Aéreas",
+  "result": "changed",
+  "source": "https://www.voegol.com.br/informacoes/bagagem",
+  "opened_by": "Chrome (Anish's Mac)",
+  "quote": "1 Bolsa ou mochila de até 10 kg: deve ser acomodada abaixo do assento à frente ... 32 cm de altura, 43 cm de largura e 22 cm de profundidade ... 1 Mala pequena de até 12 kg: para emissões a partir de 14/10/2025, exceto passagens emitidas com a tarifa Basic ... 55 cm de altura, 35 cm de largura e 25 cm de profundidade, incluindo as rodas",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    35,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": 12,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": [
+    43,
+    32,
+    22
+   ],
+   "linear_cm": null,
+   "weight_kg": 10,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Hand-baggage tab of GOL's baggage page (Portuguese). Small suitcase 55 x 35 x 25 cm up to 12 kg for tickets issued from 14 Oct 2025, except the Basic fare (before that, 10 kg); bag or backpack under the seat 43 x 32 x 22 cm, up to 10 kg."
+ },
+ {
+  "name": "Breeze Airways",
+  "result": "confirmed",
+  "source": "https://www.flybreeze.com/support?a=Bag-Allowance-and-Dimensions---id--EvTT15-VRZWup0Ivwy_VhA",
+  "opened_by": "Chrome (Anish's Mac)",
+  "quote": "The personal item must fit under the seat directly in front of you and should not exceed the maximum dimension of 17 x 13 x 8 inches ... Carry-on bags must fit in the overhead bin, with the maximum dimensions of 22 x 14 x 9 inches (including handles and wheels), and weigh no more than 35 pounds.",
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": [
+    22,
+    14,
+    9
+   ],
+   "linear_in": null,
+   "weight_lb": 35
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": [
+    17,
+    13,
+    8
+   ],
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Breeze prints inches and pounds only; the cm and kg on file are conversions and match. The carry-on is included with the Nice, Nicer and Nicest bundles and is paid on the No Flex fare. The checker had flagged the personal item; it was a misread."
+ },
+ {
+  "name": "China Airlines",
+  "result": "changed",
+  "source": "https://www.china-airlines.com/us/en/prepare-for-the-fly/information/baggage/carry-on-baggage?tab=BasicRegulationsTab",
+  "opened_by": "Chrome (Anish's Mac)",
+  "quote": "Cabin Baggage: ... must not exceed 56 x 36 x 23 cm (22 x 14 x 9 inches) or a total of 115 cm / 45 inches, and the weight of each item must not exceed 7 kg (15 lbs). Personal Items: ... must not exceed 40 x 30 x 15 cm (16 x 12 x 6 inches) or total linear dimensions of 85 cm / 34 inches.",
+  "carryOn": {
+   "dims_cm": [
+    56,
+    36,
+    23
+   ],
+   "linear_cm": 115,
+   "weight_kg": 7,
+   "dims_in": [
+    22,
+    14,
+    9
+   ],
+   "linear_in": 45,
+   "weight_lb": 15
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    15
+   ],
+   "linear_cm": 85,
+   "weight_kg": null,
+   "dims_in": [
+    16,
+    12,
+    6
+   ],
+   "linear_in": 34,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Basic Regulations tab of the carry-on page. Economy and Premium Economy: one cabin bag and one personal item. Carry-on figures confirmed; the personal item now has a printed size (file had under-seat only)."
+ },
+ {
+  "name": "Liat Air",
+  "result": "changed",
+  "source": "https://flyliatair.com/terms-conditions#baggage",
+  "opened_by": "Chrome (Anish's Mac)",
+  "quote": "Each adult or child may carry one piece of hand luggage (max 7 kg, 45 × 33 × 20 cm) plus a small personal item (e.g., purse, laptop).",
+  "carryOn": {
+   "dims_cm": [
+    45,
+    33,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 7,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Liat Air's terms and conditions, Baggage section; the site moved from flyliat20.com to flyliatair.com. Carry-on figures confirmed. A small personal item is allowed with no size given (the file had under-seat only)."
+ },
+ {
+  "name": "Rex",
+  "result": "changed",
+  "source": "https://www.rex.com.au/FlightInfo/BaggageAllowance.aspx?pos=pabpi",
+  "opened_by": "Chrome (Anish's Mac)",
+  "quote": "Carry-on Baggage Allowance: 7kg total. One small piece and one personal item ... [image: 48cm x 34cm x 23cm] Carry-on baggage is subject to linear dimensions not exceeding 105cm",
+  "carryOn": {
+   "dims_cm": [
+    48,
+    34,
+    23
+   ],
+   "linear_cm": 105,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": 7,
+  "combined_lb": null,
+  "notes": "Rex's Baggage Allowance Table is an image; read from a screenshot. All fares: one small piece of 48 x 34 x 23 cm (105 cm linear) and one personal item with no size given, 7 kg in total. The file had 56 x 36 x 23 for the carry-on and the 48 x 34 x 23 as the personal item; corrected."
+ },
+ {
+  "name": "Tianjin Airlines",
+  "result": "confirmed",
+  "source": "https://www.tianjin-air.com/stcontent/menupage/fb195765-3202-43d1-8a20-4fa83ce8d95e/d754ed07-81fb-41be-89b8-d79efa34d0a1/1d499cd1-bf35-4504-b472-6522987a7a7a",
+  "opened_by": "Chrome (Anish's Mac)",
+  "quote": "II. Hand Baggage Regulations ... International and regional routes | Business Class | 2 | 7 kg | 20*40*55 cm (excluding wheels) | Preferred Economy Class | 1 | Economy Class | 1",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 7,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": false
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Tianjin's international and regional baggage rules (the stored link was the domestic page). Economy: one piece, 7 kg, 20 x 40 x 55 cm excluding wheels. No personal item is mentioned, so the file's 'none' stays."
+ },
+ {
+  "name": "Batik Air",
+  "result": "changed",
+  "source": "https://www.batikair.com.my/experience/baggage",
+  "opened_by": "Chrome (Anish's Mac)",
+  "quote": "Economy class - One (1) piece cabin bag, additional ONE of the following personal items carried, such as overcoat, laptop bag ... with total maximum combined weight of 7 kgs. ... Cabin Baggage Dimensions - must not exceed 56 x 36 x 23 cm with a linear dimension of 115 cm.",
+  "carryOn": {
+   "dims_cm": [
+    56,
+    36,
+    23
+   ],
+   "linear_cm": 115,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": 7,
+  "combined_lb": null,
+  "notes": "Batik Air Malaysia's baggage page (updated 17 Aug 2026). Carry-on and 7 kg combined confirmed. The personal item (laptop bag, overcoat and the like) has no size. A ladies' handbag up to 22 x 27 x 8 cm or a men's pouch up to 10 x 15 x 20 cm is allowed on top, not recorded here."
+ },
+ {
+  "name": "Air Caraibes",
+  "result": "confirmed",
+  "source": "https://www.aircaraibes.com/avant-voyage/bagages/franchise-format",
+  "opened_by": "Chrome (Anish's Mac)",
+  "quote": "Sur le réseau transatlantique: 1 bagage et un accessoire*. L'ensemble ne doit pas dépasser 12 kg ... [image] h-55cm, L-35cm, l-25cm + h-40cm, L-15cm, l-30cm = 12 kg",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    35,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    15
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": 12,
+  "combined_lb": null,
+  "notes": "The sizes are only in the page's illustration, which a text reader misses; read from a screenshot. Transatlantic network: one bag 55 x 35 x 25 cm and one accessory 40 x 30 x 15 cm, 12 kg together. The regional network allows 5 kg in total."
+ }
+]

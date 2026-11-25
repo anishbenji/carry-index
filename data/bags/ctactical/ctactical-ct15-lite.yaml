@@ -1,0 +1,477 @@
+migration:
+  source: Ultra Carry Index page, Rev AE (v20)
+  migrated: '2026-11-13'
+  claims: Anish read every line on 13 Nov 2026, one question at a time; approved lines are the ones he kept as shown. Lines from another build name the build. Old wording and search results are under legacy.claims.
+  photos: model.photos lists every photo the old page used, as its code and footer describe them; permission is none for all
+  sources_search: Claims and spec gaps were searched on 13 Nov 2026; see evidence on each claim and reports/sources-search-2026-11-13.md
+  proposals: Applied on 13 Nov 2026 by tools/migrate/apply_decisions.py, following Anish's rulings of that day.
+  availability: Removed on 13 Nov 2026. Each build links out instead; the old strings stay under legacy.
+model:
+  id: ctactical-ct15-lite
+  legacy_id: ct15l
+  brand: ctactical
+  label: CT15 Lite
+  family: CT15
+  category: backpack
+  use:
+  - edc
+  - travel
+  build_class: structured
+  drawings:
+  - file: drawings/ct15l/sketch/ct15l-sketch-front.svg
+    kind: drawing
+    view: front
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/ct15l/sketch/ct15l-sketch-iso.svg
+    kind: drawing
+    view: three-quarter
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/ct15l/sketch/ct15l-sketch-back.svg
+    kind: drawing
+    view: back
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/ct15l/sketch/ct15l-sketch-side.svg
+    kind: drawing
+    view: side
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  photos:
+  - file: img/maker/acf382b9-CT15_Lite_Ultra200X_-_Black_1.jpg
+    role: card main
+    view: unknown
+    credit_text: ctactical.com
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: CT15 Lite Ultra200X Black _1'
+    permission: none
+  - file: img/maker/7a0ed020-CT15_Lite_Ultra200X_-_Black_1.jpg
+    role: hero strip
+    view: front
+    credit_text: null
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: CT15 Lite Ultra200X Black _1'
+    permission: none
+  - file: img/maker/1d2cbea5-CT15_Lite_Ultra200X_-_Black_2.jpg
+    role: hero strip
+    view: three-quarter
+    credit_text: null
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: CT15 Lite Ultra200X Black _2'
+    permission: none
+  reviews:
+  - source: ctactical-ct15-plus-ultra200x
+    covers: 'CT15 Plus - ULTRA200X (same 2026 generation and same shell fabric as the Lite ULTRA200X; adds the ''Plus'' front section; maker lists it at 28 L and 20.5 cm deep). One Judge.me review by ''Jan K'', dated 04/09/2026, title ''Incredible workmanship''. Discloses: Maker''s own store page. Review marked ''Review collected via store invitation''. The widget header shows a verified checkmark next to the review count; purchase status of this reviewer is not otherwise stated.'
+    used_for:
+    - ct15l-pro-5
+  - source: the-brooks-review-p-34836
+    covers: 'other build: CT21 V3.0 Slick in X-Pac X50 (earlier version, different fabric)'
+    used_for: []
+  - source: nomads-nation-ctactical-ct21-v3-review
+    covers: 'other build: CT21 V3 in 500D Cordura (earlier version, different fabric)'
+    used_for: []
+  - source: pk-shiu-video-ctactical-ct15-lite-waxed-canvas
+    covers: 'CT15 Lite, Navy Waxed Canvas (Halley Stevensons P400 per video tags), 2026 generation (side-access laptop, internal stretch iPad sleeve, side handle). Title, description and mid-video say Lite (''does not have the extra front compartment''); the narrator calls it ''CT15 Plus'' at the start and the end, and YouTube''s auto-chapters copy that. First-impression packing video in a studio: ''I haven''t taken this outside yet'', ''I haven''t really adjusted it yet''. Uploaded 2026-04-05. Discloses: Description: ''Some bags shown on this channel are personally owned and may be sold after extended real-world testing'', links to his geareg.com bag list. No sponsor, gift or affiliate statement for this video. The cached page also showed ''#AvantLink #1431773'' in the channel blurb (an affiliate network ID), not in this video''s description.'
+    used_for:
+    - ct15l-pro-6
+    - ct15l-pro-7
+  - source: ctactical-ct15-lite-robic-nylon-420d-ripstop
+    covers: 'Page title confirmed: ''CT15 Lite - ROBIC® Nylon 420D Ripstop'' (2026 generation Lite, different fabric; listed at $109 regular price). One anonymous Judge.me review dated 04/14/2026, ''Very nice backpack''. Discloses: Maker''s own store page. Anonymous reviewer; ''Review collected via store invitation''.'
+    used_for: []
+  sourcing: Based on Ctactical's own pages, an owner review of the CT15 Plus on Ctactical's site, and PK Shiu's first-look video of the waxed canvas CT15 Lite.
+variants:
+- id: ct15-lite-ultra200x
+  name: CT15 Lite - ULTRA200X
+  page: ctactical-ct15-lite-ultra200x
+  link:
+    url: https://ctactical.com/products/ct15-lite-ultra200x
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - ultra-200x
+    shell_as_written: Challenge Sailcloth ULTRA200X
+    lining: Challenge Sailcloth UltraGrid - Blue Smoke
+    lining_material: ultragrid
+    base: EcoPak EPLX840 Black
+    base_material: ecopak-eplx840
+  volume_l: 22
+  weight_g: 1180
+  dims_cm:
+    h: 47.5
+    w: 29
+    d: 16
+  as_written:
+    weight: 1.18 kg / 2.6 lbs
+    dims: 47.5 x 29 x 16cm/18.7 x 11.4 x 6.3in
+  laptop:
+    max_in: 15
+  price:
+    amount: 215
+    currency: USD
+    seller: ctactical
+  release: regular
+  colourways:
+  - name: Black Magic
+  opening: Main compartment opens flat, up to 180°
+  media:
+  - file: img/maker/acf382b9-CT15_Lite_Ultra200X_-_Black_1.jpg
+    kind: photo
+    view: unknown
+    shows_variant: null
+    credit: ctactical.com
+    source: https://ctactical.com/products/ct15-lite-ultra200x
+    permission: none
+  checks:
+  - date: '2026-11-13'
+    source: ctactical-ct15-lite-ultra200x
+    basis: page
+    method: Page opened and read by Claude through WebFetch; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - laptop
+    - fabric.shell
+    - fabric.lining
+    - fabric.base
+    - colourways
+  - date: '2026-11-13'
+    source: ctactical-ct15-lite-ultra200x
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - opening
+    note: Ctactical's wording; "panel-load" is not on the page
+  - date: '2026-11-13'
+    source: chuyentactical-balo-ct15-lite-ultra200x
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026; origin line also read word for word by Claude through Firecrawl
+    fields:
+    - made_in
+    note: 'The maker''s Vietnamese store lists "Xuất xứ: Việt Nam" (origin: Vietnam). The English ctactical.com page has no origin line.'
+  - date: '2026-11-15'
+    source: ctactical-ct15-lite-ultra200x
+    basis: page
+    method: Search subagent, page opened through WebFetch on 15 Nov 2026
+    fields:
+    - release
+    note: 'Read as a regular catalogue item: no limited, drop or pre-order wording; the page''s only timing phrase is a launch in 2026, now past.'
+  made_in: Vietnam
+  units:
+    weight:
+      metric:
+        g: 1180
+        from: maker
+      imperial:
+        lb: 2.6
+        from: maker
+    dims:
+      metric:
+        cm:
+        - 47.5
+        - 29
+        - 16
+        from: maker
+      imperial:
+        in:
+        - 18.7
+        - 11.4
+        - 6.3
+        from: maker
+features:
+- id: ct15l-feat-3
+  text: Four internal webbing straps attach the CT Admin Panel and Molle Panel add-ons.
+  scope: design
+  sources:
+  - ctactical-ct15-lite-ultra200x
+  applies_to:
+  - ct15-lite-ultra200x
+  replaces: ct15l-pro-3
+  was_kind: pro
+  status: approved
+- id: ct15l-feat-c4
+  text: Standard delivery ships from Vietnam.
+  scope: general
+  sources:
+  - ctactical-shipping-policy
+  - ctactical-return-policy-warranty-policy
+  applies_to:
+  - ct15-lite-ultra200x
+  replaces: ct15l-con-4
+  was_kind: con
+  status: approved
+claims:
+- id: ct15l-pro-5
+  kind: pro
+  text: Comfortable harness, with a somewhat airy back panel.
+  voice: owners
+  support: one owner review
+  scope: design
+  basis: sibling
+  sources:
+  - ctactical-ct15-plus-ultra200x
+  observed_on: []
+  from_build:
+    label: From an owner review of the CT15 Plus - ULTRA200X
+    generation: Same generation
+    size: 28 L against this bag's 22 L
+    fabric: Same, ULTRA200X
+    assigned: 'yes'
+    found: Ctactical describes the same shoulder padding (PU sponge) and back panel (breathable mesh, EVA foam, ventilation grooves) on both pages.
+    decided: '2026-11-13'
+  status: approved
+  source_notes:
+  - source: ctactical-ct15-plus-ultra200x
+    about: CT15 Plus - ULTRA200X; one owner review on the page, undated
+  wording_note: New on 13 Nov 2026. Not on the old page.
+- id: ct15l-pro-6
+  kind: pro
+  text: The inside stretch sleeve fits an iPad Pro with its keyboard case and pencil.
+  voice: reviewers
+  support: one review
+  scope: design
+  basis: sibling
+  sources:
+  - pk-shiu-video-ctactical-ct15-lite-waxed-canvas
+  observed_on: []
+  from_build:
+    label: From a first-look video of the waxed canvas CT15 Lite
+    generation: Same generation (2026 CT15 Lite)
+    size: Same model and size
+    fabric: Waxed canvas
+    found: Ctactical lists the same stretch compartment for an iPad and stylus on the 2026 Lite; the fabric does not change the layout.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: pk-shiu-video-ctactical-ct15-lite-waxed-canvas
+    about: CT15 Lite in waxed canvas (same 2026 design, different fabric); a first-look packing video filmed indoors; no sponsor or gift statement
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. PK Shiu: "it''s not even pushing this thing out"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''ok to both''). research/reviews-2026-11-17/merged/ct15l.json point 7.'
+  added_in: reviews-2026-11-17
+- id: ct15l-pro-7
+  kind: pro
+  text: The quick-access pocket has plenty of room for a phone, ID and badges.
+  voice: reviewers
+  support: one review
+  scope: design
+  basis: sibling
+  sources:
+  - pk-shiu-video-ctactical-ct15-lite-waxed-canvas
+  observed_on: []
+  from_build:
+    label: From a first-look video of the waxed canvas CT15 Lite
+    generation: Same generation (2026 CT15 Lite)
+    size: Same model and size
+    fabric: Waxed canvas
+    found: Ctactical lists the same top quick-access pocket on the 2026 Lite; the fabric does not change the layout.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: pk-shiu-video-ctactical-ct15-lite-waxed-canvas
+    about: CT15 Lite in waxed canvas (same 2026 design, different fabric); a first-look packing video filmed indoors; no sponsor or gift statement
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. PK Shiu: "There''s a quick access pocket here. Plenty of room."'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''ok to both''). research/reviews-2026-11-17/merged/ct15l.json point 5.'
+  added_in: reviews-2026-11-17
+computed:
+- replaces: ct15l-pro-1
+  was: Cheapest Ultra pack on the sheet at $215
+  rule: Lowest maker price among bags in ULTRA fabrics on the index, compared in one currency; show only if this bag is lowest.
+  state: Built. "Lowest price" standout in tools/summary_lines.py, shown only while true.
+legacy:
+  verdict: Entry point to the whole category.
+  price_note: ctactical.com · sold out
+  avail: Sold out · restocks
+  origin: Vietnam
+  laptop: 15"
+  fabric: ULTRA 200X
+  opening: Panel-load
+  brand: Ctactical
+  src: https://ctactical.com/products/ct15-lite-ultra200x
+  claims:
+  - id: ct15l-pro-1
+    kind: pro
+    text: Cheapest Ultra pack on the sheet at $215
+    scope: general
+    basis: unstated
+    sources:
+    - ctactical-ct15-lite-ultra200x
+    - ctactical-ct21-v3-0-backpack-slick-ultra400x-wbp
+    flags:
+    - list-comparison
+    - state-in-prose
+    evidence:
+      status: not_found
+      note: Maker page gives $215; no source makes the comparison. Ctactical's own CT21 V3.0 Slick ULTRA400X page showed $184, so check whether that build is on the sheet.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ctactical-ct15-lite-ultra200x
+      about: same build
+    - source: ctactical-ct21-v3-0-backpack-slick-ultra400x-wbp
+      about: 'other build: CT21 V3.0 Slick in ULTRA400X (earlier version, 21 L, 1300 g, $184)'
+    outcome:
+    - 'ct15l-pro-1: computed from data. Built. "Lowest price" standout in tools/summary_lines.py, shown only while true.'
+  - id: ct15l-pro-2
+    kind: pro
+    text: UltraGrid lining + EcoPak EPLX840 base
+    scope: material
+    basis: maker
+    sources:
+    - ctactical-ct15-lite-ultra200x
+    outcome:
+    - 'ct15l-pro-2: dropped. It restates data already on the record (fabric.lining and fabric.base).'
+  - id: ct15l-pro-3
+    kind: pro
+    text: Simple pouch-first single compartment
+    scope: design
+    basis: maker
+    sources:
+    - ctactical-ct15-lite-ultra200x
+    evidence:
+      status: partly
+      note: Maker shows one flat-opening main compartment with loops for add-on admin/MOLLE panels, but also a built-in organiser, mesh pockets, hidden pocket and front compartment; 'pouch-first' is not maker wording.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ctactical-ct15-lite-ultra200x
+      about: same build
+    outcome:
+    - 'ct15l-pro-3: moved to features (maker statement).'
+  - id: ct15l-pro-4
+    kind: pro
+    text: Sold-out runs trade at or above retail secondhand
+    scope: general
+    basis: unstated
+    sources:
+    - geartrade-ctactical-ct21-v30-backpack-1147289
+    flags:
+    - state-in-prose
+    evidence:
+      status: not_found
+      note: No resale listing for any Ctactical Ultra build was found; the one listing opened was a used nylon CT21 V3.0 at $40, far below retail. The eBay lead is an ended listing (the page now returns 404) for a "CT15+ Variant Special Edition" at US $239.99, fabric not stated.
+      checked: '2026-11-13'
+      method: Search subagent through WebFetch, then Claude through Firecrawl, 13 Nov 2026
+    source_notes:
+    - source: geartrade-ctactical-ct21-v30-backpack-1147289
+      about: 'other build: used CT21 V3.0 in 420D nylon, secondhand marketplace listing'
+    outcome:
+    - 'ct15l-pro-4: dropped. No resale listing for any Ultra build found; the one listing opened was a used nylon CT21 V3.0 well below retail.'
+  - id: ct15l-con-1
+    kind: con
+    text: 200X only — no 400X variant
+    scope: general
+    basis: maker
+    sources:
+    - ctactical-ct15-backpack
+    - ctactical-ct15-lite-ultra200x
+    evidence:
+      status: supported
+      note: The CT15 collection lists the Lite in ULTRA200X as its only Ultra fabric; no CT15 ULTRA400X product appears on either collection page.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ctactical-ct15-backpack
+      about: whole CT15 line, all fabrics; lists the Ultra builds
+    - source: ctactical-ct15-lite-ultra200x
+      about: same build
+    outcome:
+    - 'ct15l-con-1: dropped. It restates data already on the record (the list of builds).'
+  - id: ct15l-con-2
+    kind: con
+    text: 15" laptop ceiling
+    scope: design
+    basis: maker
+    sources:
+    - ctactical-ct15-lite-ultra200x
+    - ctactical-ct21-lite-ultra200x
+    evidence:
+      status: supported
+      note: Maker page says it fits a 15-inch MacBook, where the CT21 pages say 16-inch; 'ceiling' is the site's reading and no fit test of larger laptops was found.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ctactical-ct15-lite-ultra200x
+      about: same build
+    - source: ctactical-ct21-lite-ultra200x
+      about: 'sibling build: CT21 Lite ULTRA200X, used only for the 16-inch contrast'
+    outcome:
+    - 'ct15l-con-2: dropped. It restates data already on the record (laptop).'
+  - id: ct15l-con-3
+    kind: con
+    text: Little independent review coverage yet; owner reports skew enthusiastic
+    scope: general
+    basis: sibling
+    sources:
+    - ctactical-ct15-lite-ultra200x
+    - ctactical-ct15-plus-ultra200x
+    - ctactical-ct21-plus-ultra400x
+    - ctactical-ct21-plus-ultra200x
+    - the-brooks-review-p-34836
+    - nomads-nation-ctactical-ct21-v3-review
+    evidence:
+      status: partly
+      note: No independent review of this build found and its page has no customer reviews; 'enthusiastic owners' rests on three one-line reviews on sibling Ultra pages. Older-build reviews are mixed.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ctactical-ct15-lite-ultra200x
+      about: same build
+    - source: ctactical-ct15-plus-ultra200x
+      about: 'sibling build: CT15 Plus ULTRA200X, one customer review'
+    - source: ctactical-ct21-plus-ultra400x
+      about: 'sibling build: CT21 Plus ULTRA400X, one customer review'
+    - source: ctactical-ct21-plus-ultra200x
+      about: 'sibling build: CT21 Plus ULTRA200X, one customer review'
+    - source: the-brooks-review-p-34836
+      about: 'other build: CT21 V3.0 Slick in X-Pac X50 (earlier version, different fabric)'
+    - source: nomads-nation-ctactical-ct21-v3-review
+      about: 'other build: CT21 V3 in 500D Cordura (earlier version, different fabric)'
+    outcome:
+    - 'ct15l-con-3: not carried over. The model now has a review list and a sourcing line instead.'
+  - id: ct15l-con-4
+    kind: con
+    text: Ships from Vietnam; currently sold out
+    scope: general
+    basis: maker
+    sources:
+    - ctactical-shipping-policy
+    - ctactical-return-policy-warranty-policy
+    - ctactical-ct15-lite-ultra200x
+    flags:
+    - state-in-prose
+    evidence:
+      status: supported
+      note: Shipping and returns pages say parcels leave from Vietnam; the product page showed Sold Out when opened on 2026-11-13.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ctactical-shipping-policy
+      about: all products, not build-specific
+    - source: ctactical-return-policy-warranty-policy
+      about: all products, not build-specific
+    - source: ctactical-ct15-lite-ultra200x
+      about: same build
+    outcome:
+    - 'ct15l-con-4: moved to features (maker statement).'

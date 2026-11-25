@@ -1,0 +1,490 @@
+migration:
+  source: Ultra Carry Index page, Rev AE (v20)
+  migrated: '2026-11-13'
+  claims: Anish read every line on 13 Nov 2026, one question at a time; approved lines are the ones he kept as shown. Lines from another build name the build. Old wording and search results are under legacy.claims.
+  photos: model.photos lists every photo the old page used, as its code and footer describe them; permission is none for all
+  sources_search: Claims and spec gaps were searched on 13 Nov 2026; see evidence on each claim and reports/sources-search-2026-11-13.md
+  proposals: Applied on 13 Nov 2026 by tools/migrate/apply_decisions.py, following Anish's rulings of that day.
+  availability: Removed on 13 Nov 2026. Each build links out instead; the old strings stay under legacy.
+model:
+  id: ctactical-ct15-plus
+  legacy_id: ct15p
+  brand: ctactical
+  label: CT15 Plus
+  family: CT15
+  category: backpack
+  use:
+  - edc
+  - travel
+  build_class: structured
+  drawings:
+  - file: drawings/ct15p/sketch/ct15p-sketch-front.svg
+    kind: drawing
+    view: front
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/ct15p/sketch/ct15p-sketch-iso.svg
+    kind: drawing
+    view: three-quarter
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/ct15p/sketch/ct15p-sketch-back.svg
+    kind: drawing
+    view: back
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/ct15p/sketch/ct15p-sketch-side.svg
+    kind: drawing
+    view: side
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  photos:
+  - file: img/maker/67778124-CT15PlusUltra200X-Black_1.jpg
+    role: card main
+    view: unknown
+    credit_text: ctactical.com
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: CT15 Plus Ultra200X Black _1'
+    permission: none
+  - file: img/maker/13ee43d5-CT15PlusUltra200X-Black_1.jpg
+    role: hero strip
+    view: front
+    credit_text: null
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: CT15 Plus Ultra200X Black _1'
+    permission: none
+  - file: img/maker/e1bf6a4f-CT15PlusUltra200X-Black_2.jpg
+    role: hero strip
+    view: three-quarter
+    credit_text: null
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: CT15 Plus Ultra200X Black _2'
+    permission: none
+  reviews:
+  - source: ctactical-ct15-plus-ultra200x
+    covers: 'CT15 Plus - ULTRA200X (Black Magic), same build; maker page with 1 Judge.me review (Jan K, dated 04/09/2026). Discloses: Maker''s own store; review shows ''Review collected via store invitation'' and a Judge.me verified mark'
+    used_for:
+    - ct15p-pro-4
+    - ct15p-pro-5
+  - source: pk-shiu-video-ctactical-ct15-plus-deep-dive
+    covers: '2026 regular-line CT15 Plus (new design); fabric not named in the talk; description links the ctactical.vn ROBIC Nylon 420D page and tags ''Robic'', so likely ROBIC 420D, other fabric; J-style straps. Discloses: Description: some bags shown are personally owned and may be sold; channel text carries an #AvantLink (affiliate network) tag; no sample, gift, sponsor or purchase statement in the video'
+    used_for:
+    - ct15p-pro-4
+  - source: george-defined-video-ctactical-ct15-plus
+    covers: 'CT15 Plus in ''Ultra 200'' (his words; Ctactical sells it as ULTRA200X), about 3 months of use, ultra version priced at $235; same build. He says his has reverse-coil zippers, not Aquaguard. Discloses: Description has amzn.to and alnk.to affiliate-style links and a maker link carrying his name (ctactical.vn/GEORGEDEFINED); no statement on whether he bought or was given the bag'
+    used_for:
+    - ct15p-pro-4
+    - ct15p-pro-6
+    - ct15p-pro-8
+    - ct15p-con-4
+  - source: visionswell-video-ctactical-ct15-plus-review
+    covers: 'CT15 Plus in 1000D Rough Tex nylon, Kelly Green, $135, loaded for a week of travel; other fabric; he gives about 3.44 lb empty. Discloses: Description: affiliate links and ''Brands often provide me with free gear''; in the video he says he bought this bag and the CT21 himself'
+    used_for:
+    - ct15p-pro-7
+  - source: bagdad-video-c-tactical-ct15-plus-review
+    covers: 'Stock CT15 Plus in ROBIC 420D ripstop with J-straps (other fabric); also shows his custom group-buy versions (Dyneema; X-Pac/EcoPak) with S-straps. Discloses: Says ''I paid for every one of these'' and makes nothing off it (caption garbles the brand name); says some brands he is affiliated with, some not; description has affiliate-style links (alnk.to, aspr, Amazon)'
+    used_for:
+    - ct15p-pro-4
+    - ct15p-pro-6
+    - ct15p-pro-7
+  - source: ctactical-ct15-plus-cordura-nylon-1000d
+    covers: 'CT15 Plus - Cordura Nylon 1000D, other fabric; 3 Judge.me reviews dated 08/22-09/11/2026 (Tony Matthews, Anonymous, Jay). Discloses: Maker''s own store; each review shows ''Review collected via store invitation'''
+    used_for: []
+  - source: ctactical-ct15-plus-robic-nylon-420d-ripstop
+    covers: 'CT15 Plus - ROBIC Nylon 420D Ripstop, other fabric; 12 reviews (4.58/5), 5 shown, dated 06/12-07/04/2026. Discloses: Maker''s own store; each review shows ''Review collected via store invitation'''
+    used_for: []
+  sourcing: Based on George DEFINED's video review of this build, an owner review on Ctactical's site, video reviews of other CT15 Plus builds from visionswell, Bagdad and PK Shiu, plus Ctactical's own pages.
+variants:
+- id: ct15-plus-ultra200x
+  name: CT15 Plus - ULTRA200X
+  page: ctactical-ct15-plus-ultra200x
+  link:
+    url: https://ctactical.com/products/ct15-plus-ultra200x
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - ultra-200x
+    shell_as_written: Challenge Sailcloth ULTRA200X
+    lining: Challenge Sailcloth UltraGrid - Blue Smoke
+    lining_material: ultragrid
+    base: EcoPak EPLX840 Black
+    base_material: ecopak-eplx840
+  volume_l: 28
+  weight_g: 1440
+  dims_cm:
+    h: 47.5
+    w: 29
+    d: 20.5
+  as_written:
+    weight: 1.44 kg / 3.17 lbs
+    dims: 47.5 x 29 x 20.5cm / 18.7 x 11.4 x 8in
+  laptop:
+    max_in: 15
+  price:
+    amount: 235
+    currency: USD
+    seller: ctactical
+  release: regular
+  colourways:
+  - name: Black Magic
+  opening: Main compartment opens flat, up to 180°; separate Plus compartment
+  media:
+  - file: img/maker/67778124-CT15PlusUltra200X-Black_1.jpg
+    kind: photo
+    view: unknown
+    shows_variant: null
+    credit: ctactical.com
+    source: https://ctactical.com/products/ct15-plus-ultra200x
+    permission: none
+  checks:
+  - date: '2026-11-13'
+    source: ctactical-ct15-plus-ultra200x
+    basis: page
+    method: Page opened and read by Claude through WebFetch; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - laptop
+    - fabric.shell
+    - fabric.lining
+    - fabric.base
+    - colourways
+  - date: '2026-11-13'
+    source: ctactical-ct15-plus-ultra200x
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - opening
+    note: Ctactical's wording; "panel-load" is not on the page
+  - date: '2026-11-13'
+    source: chuyentactical-balo-ct15-plus-ultra200x
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - made_in
+    note: 'The maker''s Vietnamese store lists "Xuất xứ: Việt Nam" (origin: Vietnam). The English ctactical.com page has no origin line.'
+  - date: '2026-11-15'
+    source: ctactical-ct15-plus-ultra200x
+    basis: page
+    method: Search subagent, page opened through WebFetch on 15 Nov 2026
+    fields:
+    - release
+    note: 'Read as a regular catalogue item: no limited, drop or pre-order wording; the page''s only timing phrase is a launch in 2026, now past.'
+  made_in: Vietnam
+  units:
+    weight:
+      metric:
+        g: 1440
+        from: maker
+      imperial:
+        lb: 3.17
+        from: maker
+    dims:
+      metric:
+        cm:
+        - 47.5
+        - 29
+        - 20.5
+        from: maker
+      imperial:
+        in:
+        - 18.7
+        - 11.4
+        - 8
+        from: maker
+features:
+- id: ct15p-feat-1
+  text: A separate PLUS section adds space for organising small accessories.
+  scope: design
+  sources:
+  - ctactical-ct15-plus-ultra200x
+  applies_to:
+  - ct15-plus-ultra200x
+  replaces: ct15p-pro-1
+  was_kind: pro
+  status: approved
+claims:
+- id: ct15p-pro-4
+  kind: pro
+  text: Comfortable harness, and an air channel down the back panel helps airflow.
+  voice: owners
+  support: four reviewers and owners agree
+  scope: design
+  basis: owner-reports
+  sources:
+  - ctactical-ct15-plus-ultra200x
+  - george-defined-video-ctactical-ct15-plus
+  - pk-shiu-video-ctactical-ct15-plus-deep-dive
+  - bagdad-video-c-tactical-ct15-plus-review
+  observed_on:
+  - ct15-plus-ultra200x
+  status: approved
+  source_notes:
+  - source: ctactical-ct15-plus-ultra200x
+    about: same build; one owner review on the page, undated
+  - source: george-defined-video-ctactical-ct15-plus
+    about: same build ('Ultra 200'); about three months of use; affiliate-style links, does not say how he got the bag
+  - source: pk-shiu-video-ctactical-ct15-plus-deep-dive
+    about: 2026 CT15 Plus, fabric not named in the video (the description points to the ROBIC nylon build); no sample or sponsor statement
+  - source: bagdad-video-c-tactical-ct15-plus-review
+    about: CT15 Plus in ROBIC 420D nylon, a different fabric; he paid for it himself; affiliate-style links
+  wording_note: 'New on 13 Nov 2026, from the one owner review on Ctactical''s page for this build (undated, read through WebFetch). Not on the old page. 17 Nov 2026: support widened with George DEFINED, PK Shiu, Bagdad (research/reviews-2026-11-17/merged/ct15p.json points 0, 1); was ''one owner review''. George DEFINED (same build, about three months) calls the straps ''really freaking comfortable'' and says the back pads ''give you a lot of venting''. PK Shiu (''very, very comfortable'', ''quite thick with an air channel'') and Bagdad (''These straps are very comfortable'', ''a strip going down right here for airflow'') reviewed other fabric builds. Build label ''Also from reviews of the ROBIC nylon build; one doesn''t name its fabric'' added because the new sources cover other builds. Reworded the same day from ''Comfortable harness, and the somewhat airy back panel helps in Singapore''s weather.'' to ''Comfortable harness, and an air channel down the back panel helps airflow.''. Anish
+    accepted ''Comfortable harness, with an air channel in the back panel.'' on 17 Nov 2026 and asked for more emphasis on the airflow (''Looks good, try to emphasis the airflow a bit more''). Only the owner mentions Singapore''s weather, so that is no longer in the line. George DEFINED alone says it gives ''a lot of venting''; the line stays with what all four back.'
+  from_build:
+    label: Also from reviews of the ROBIC nylon build; one doesn't name its fabric
+    decided: '2026-11-17'
+- id: ct15p-pro-5
+  kind: pro
+  text: The right bottle pocket fits a 46 oz Yeti; the left one is smaller to make room for the side handle.
+  voice: owners
+  support: one owner review
+  scope: design
+  basis: owner-reports
+  sources:
+  - ctactical-ct15-plus-ultra200x
+  observed_on:
+  - ct15-plus-ultra200x
+  status: approved
+  source_notes:
+  - source: ctactical-ct15-plus-ultra200x
+    about: same build; one owner review on the page, undated
+  wording_note: New on 13 Nov 2026, from the one owner review on Ctactical's page for this build (undated, read through WebFetch). Not on the old page.
+- id: ct15p-pro-6
+  kind: pro
+  text: The wide top quick-access pocket is deep and roomy.
+  voice: reviewers
+  support: two reviews
+  scope: design
+  basis: review
+  sources:
+  - george-defined-video-ctactical-ct15-plus
+  - bagdad-video-c-tactical-ct15-plus-review
+  observed_on:
+  - ct15-plus-ultra200x
+  from_build:
+    label: Also from a review of the ROBIC nylon build
+    generation: Same generation (2026 CT15 Plus)
+    size: Same model and size
+    fabric: ULTRA200X (George DEFINED), ROBIC 420D nylon (Bagdad)
+    found: George DEFINED shows the same pocket on the ULTRA build.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: george-defined-video-ctactical-ct15-plus
+    about: same build ('Ultra 200'); about three months of use; affiliate-style links, does not say how he got the bag
+  - source: bagdad-video-c-tactical-ct15-plus-review
+    about: CT15 Plus in ROBIC 420D nylon, a different fabric; he paid for it himself; affiliate-style links
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. George DEFINED: "wallet, keys, and cell phone fit in there with no problem."; Bagdad: "this is pretty deep. As you can see how my hand goes down."'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''ok for all''). research/reviews-2026-11-17/merged/ct15p.json point 5.'
+  added_in: reviews-2026-11-17
+- id: ct15p-pro-7
+  kind: pro
+  text: The laptop sleeve can be reached from the side or from inside.
+  voice: reviewers
+  support: two reviews
+  scope: design
+  basis: sibling
+  sources:
+  - visionswell-video-ctactical-ct15-plus-review
+  - bagdad-video-c-tactical-ct15-plus-review
+  observed_on: []
+  from_build:
+    label: From reviews of the 1000D and ROBIC nylon builds
+    generation: Same generation (2026 CT15 Plus)
+    size: Same model and size
+    fabric: 1000D nylon (visionswell), ROBIC 420D nylon (Bagdad)
+    found: Side laptop access is part of the 2026 CT15 Plus layout, which the fabric builds share.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: visionswell-video-ctactical-ct15-plus-review
+    about: CT15 Plus in 1000D nylon, a different fabric; he bought it himself; affiliate links
+  - source: bagdad-video-c-tactical-ct15-plus-review
+    about: CT15 Plus in ROBIC 420D nylon, a different fabric; he paid for it himself; affiliate-style links
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. visionswell: "it''s easy to get at this both ways if you''re going through security."; Bagdad: "Awesome to have that where you can get to it two ways"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''ok for all''). research/reviews-2026-11-17/merged/ct15p.json point 7.'
+  added_in: reviews-2026-11-17
+- id: ct15p-pro-8
+  kind: pro
+  text: The ULTRA fabric does well in rain.
+  voice: reviewers
+  support: one review
+  scope: material
+  basis: review
+  sources:
+  - george-defined-video-ctactical-ct15-plus
+  observed_on:
+  - ct15-plus-ultra200x
+  status: approved
+  source_notes:
+  - source: george-defined-video-ctactical-ct15-plus
+    about: same build ('Ultra 200'); about three months of use; affiliate-style links, does not say how he got the bag
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. George DEFINED: "I know it does really well in rain."'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''ok for all''). research/reviews-2026-11-17/merged/ct15p.json point 12.'
+  added_in: reviews-2026-11-17
+- id: ct15p-con-4
+  kind: con
+  text: The organisation may be too much for some.
+  voice: reviewers
+  support: one review
+  scope: design
+  basis: review
+  sources:
+  - george-defined-video-ctactical-ct15-plus
+  observed_on:
+  - ct15-plus-ultra200x
+  status: approved
+  source_notes:
+  - source: george-defined-video-ctactical-ct15-plus
+    about: same build ('Ultra 200'); about three months of use; affiliate-style links, does not say how he got the bag
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. George DEFINED: "for some the organization may be too much."'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''ok for all''). research/reviews-2026-11-17/merged/ct15p.json point 3.'
+  added_in: reviews-2026-11-17
+computed: []
+legacy:
+  verdict: The organized-commuter version of the CT15.
+  price_note: ctactical.com · sold out
+  avail: Sold out · restocks
+  origin: Vietnam
+  laptop: 15"
+  fabric: ULTRA 200X
+  opening: Panel-load + Plus section
+  brand: Ctactical
+  src: https://ctactical.com/products/ct15-plus-ultra200x
+  claims:
+  - id: ct15p-pro-1
+    kind: pro
+    text: Dedicated “Plus” admin compartment, fully separated
+    scope: design
+    basis: maker
+    sources:
+    - ctactical-ct15-plus-ultra200x
+    evidence:
+      status: supported
+      note: Maker describes the Plus section as an integrated but separate compartment for slotting small accessories; 'admin' is the site's label, the maker uses that word for the front organiser.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ctactical-ct15-plus-ultra200x
+      about: same build
+    outcome:
+    - 'ct15p-pro-1: moved to features (maker statement).'
+  - id: ct15p-pro-2
+    kind: pro
+    text: 28 L for $235
+    scope: general
+    basis: maker
+    sources:
+    - ctactical-ct15-plus-ultra200x
+    flags:
+    - state-in-prose
+    evidence:
+      status: supported
+      note: Maker page states 28 L capacity and a $235 price; by my arithmetic 28 L equals the outer box volume of the listed 47.5 x 29 x 20.5 cm.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ctactical-ct15-plus-ultra200x
+      about: same build
+    outcome:
+    - 'ct15p-pro-2: dropped. Only states volume and price, both already data fields. A litres-per-dollar ranking would need computing.'
+  - id: ct15p-pro-3
+    kind: pro
+    text: Same UltraGrid / EcoPak construction
+    scope: material
+    basis: maker
+    sources:
+    - ctactical-ct15-plus-ultra200x
+    outcome:
+    - 'ct15p-pro-3: dropped. It restates data already on the record (fabric.lining and fabric.base).'
+  - id: ct15p-con-1
+    kind: con
+    text: 260 g heavier than the CT15 Lite
+    scope: material
+    basis: maker
+    sources:
+    - ctactical-ct15-plus-ultra200x
+    - ctactical-ct15-lite-ultra200x
+    flags:
+    - names-other-bag
+    evidence:
+      status: supported
+      note: 'Derived from two maker figures: 1.44 kg for the CT15 Plus minus 1.18 kg for the CT15 Lite is 260 g; neither page states the difference itself.'
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ctactical-ct15-plus-ultra200x
+      about: same build
+    - source: ctactical-ct15-lite-ultra200x
+      about: 'sibling build: CT15 Lite ULTRA200X, weight figure'
+    outcome:
+    - 'ct15p-con-1: dropped on review (ruling 5).'
+  - id: ct15p-con-2
+    kind: con
+    text: Still a 15" laptop ceiling
+    scope: design
+    basis: maker
+    sources:
+    - ctactical-ct15-plus-ultra200x
+    evidence:
+      status: supported
+      note: Maker page says the bag and its laptop compartment fit a 15-inch MacBook; no test of larger laptops was found.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ctactical-ct15-plus-ultra200x
+      about: same build
+    outcome:
+    - 'ct15p-con-2: dropped. It restates data already on the record (laptop).'
+  - id: ct15p-con-3
+    kind: con
+    text: 200X only; sold out at the moment
+    scope: general
+    basis: maker
+    sources:
+    - ctactical-ct15-backpack
+    - ctactical-ct15-plus-ultra200x
+    flags:
+    - state-in-prose
+    evidence:
+      status: supported
+      note: The only CT15 Plus Ultra listing is ULTRA200X, shown Sold Out on 2026-11-13; no CT15 ULTRA400X appears in the collection.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ctactical-ct15-backpack
+      about: whole CT15 line, all fabrics; lists the Ultra builds
+    - source: ctactical-ct15-plus-ultra200x
+      about: same build
+    outcome:
+    - 'ct15p-con-3: dropped. It restates data already on the record (the list of builds).'

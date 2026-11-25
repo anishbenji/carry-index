@@ -1,0 +1,1551 @@
+[
+ {
+  "name": "Pegasus Airlines",
+  "region": [
+   "Europe",
+   "Middle East"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": 8,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     21.7,
+     15.7,
+     9.1
+    ],
+    "l_in": null,
+    "lb": 17.6,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    15
+   ],
+   "linear_cm": null,
+   "weight_kg": 3,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     15.7,
+     11.8,
+     5.9
+    ],
+    "l_in": null,
+    "lb": 6.6,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://www.flypgs.com/en/travel-glossary/cabin-baggage",
+  "quote": "This includes one item no more than 55x40x23 cm in size and 8 kg in weight.",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "flynas",
+  "region": [
+   "Middle East"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    56,
+    36,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     22,
+     14.2,
+     9.1
+    ],
+    "l_in": null,
+    "lb": 15.4,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://flynas.com/en/plan-my-trip/cabin-baggage",
+  "quote": "Each guest may carry 1 piece of cabin baggage with maximum dimensions (length x width x height) 56 cm x 36 cm x 23 cm",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "flyadeal",
+  "region": [
+   "Middle East"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     21.7,
+     15.7,
+     7.9
+    ],
+    "l_in": null,
+    "lb": 15.4,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     15.7,
+     11.8,
+     7.9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://help.flyadeal.com/hc/en-us/articles/360010229700-Carry-On",
+  "quote": "one cabin bag not larger than 55×40×20 cm and up to 7 Kg is allowed",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "Jazeera Airways",
+  "region": [
+   "Middle East"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     21.7,
+     15.7,
+     7.9
+    ],
+    "l_in": null,
+    "lb": 15.4,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://aem.jazeeraairways.com/en/plan/baggage-allowance/cabin-baggage",
+  "quote": "Maximum carry-on baggage dimensions: 55 cm x 40 cm x 20 cm.",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "Riyadh Air",
+  "region": [
+   "Middle East"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    56,
+    36,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric",
+      "imperial"
+     ]
+    },
+    "d_in": [
+     22,
+     14.2,
+     9.1
+    ],
+    "l_in": null,
+    "lb": 15,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    45,
+    35,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": 5,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     17.7,
+     13.8,
+     9.8
+    ],
+    "l_in": null,
+    "lb": 11,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://www.riyadhair.com/en/help/baggage-allowance",
+  "quote": "Economy class 1 piece (56 x 36 x 23 cm) Maximum weight - 7 kg (15 lb)",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "ZIPAIR",
+  "region": [
+   "Asia",
+   "North America"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     21.7,
+     15.7,
+     9.8
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    45,
+    35,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     17.7,
+     13.8,
+     9.8
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": 7,
+  "fareNote": "",
+  "source": "https://www.zipair.net/en/service/baggage",
+  "quote": "1st piece: 55 cm x 40 cm x 25 cm, 2nd piece: 35 cm x 45 cm x 25 cm ... The total weight of all carry-on baggage must not exceed 7 kg.",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed.",
+  "combinedUnits": {
+   "printed": {
+    "kg": [
+     "metric"
+    ]
+   },
+   "lb": 15.4,
+   "converted": [
+    "lb"
+   ],
+   "read": "2026-11-14",
+   "from": "quote"
+  }
+ },
+ {
+  "name": "Jeju Air",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     21.7,
+     15.7,
+     7.9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": 10,
+  "fareNote": "",
+  "source": "https://www.jejuair.net/en/linkService/boardingProcessGuide/cabinBaggage.do",
+  "quote": "Maximum size 40 x 20 x 55CM (21INCH) ... allowable weight of 10KG/22LB",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed.",
+  "combinedUnits": {
+   "printed": {
+    "kg": [
+     "metric",
+     "imperial"
+    ]
+   },
+   "lb": 22,
+   "converted": [],
+   "read": "2026-11-14",
+   "from": "quote"
+  }
+ },
+ {
+  "name": "Jin Air",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    20
+   ],
+   "linear_cm": 115,
+   "weight_kg": 10,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": [
+      "metric"
+     ],
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     21.7,
+     15.7,
+     7.9
+    ],
+    "l_in": 45.3,
+    "lb": 22,
+    "converted": [
+     "d_in",
+     "l_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://help.jinair.com/hc/en-us/articles/4409835666329-What-are-the-regulations-for-a-carry-on-baggage",
+  "quote": "Allowed size: 115cm or less, maximum value of each side is 40 X 20 X less than 55 cm in height ... 1 carry-on baggage at 10kg",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "Air Busan",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    20
+   ],
+   "linear_cm": 115,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": [
+      "metric"
+     ],
+     "kg": null
+    },
+    "d_in": [
+     21.7,
+     15.7,
+     7.9
+    ],
+    "l_in": 45.3,
+    "lb": null,
+    "converted": [
+     "d_in",
+     "l_in"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": 60,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": 23.6,
+    "lb": null,
+    "converted": [
+     "l_in"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": 10,
+  "fareNote": "",
+  "source": "https://en.airbusan.com/content/common/service/baggage/",
+  "quote": "Only one piece of baggage weighing 10 kg or less with a sum of three dimensions of 115 cm",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed.",
+  "combinedUnits": {
+   "printed": {
+    "kg": [
+     "metric"
+    ]
+   },
+   "lb": 22,
+   "converted": [
+    "lb"
+   ],
+   "read": "2026-11-14",
+   "from": "quote"
+  }
+ },
+ {
+  "name": "Citilink",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    56,
+    36,
+    23
+   ],
+   "linear_cm": 115,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": [
+      "metric"
+     ],
+     "kg": null
+    },
+    "d_in": [
+     22,
+     14.2,
+     9.1
+    ],
+    "l_in": 45.3,
+    "lb": null,
+    "converted": [
+     "d_in",
+     "l_in"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": 7,
+  "fareNote": "",
+  "source": "https://www.citilink.co.id/en/baggage-info",
+  "quote": "L + W + H = 115cm Max. Weight 7 kg",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed.",
+  "combinedUnits": {
+   "printed": {
+    "kg": [
+     "metric"
+    ]
+   },
+   "lb": 15.4,
+   "converted": [
+    "lb"
+   ],
+   "read": "2026-11-14",
+   "from": "quote"
+  }
+ },
+ {
+  "name": "STARLUX Airlines",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    56,
+    36,
+    23
+   ],
+   "linear_cm": 115,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": [
+      "metric",
+      "imperial"
+     ],
+     "kg": null
+    },
+    "d_in": [
+     22,
+     14,
+     9
+    ],
+    "l_in": 45,
+    "lb": 15.4,
+    "converted": [
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    10
+   ],
+   "linear_cm": 80,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     15.7,
+     11.8,
+     3.9
+    ],
+    "l_in": 31.5,
+    "lb": null,
+    "converted": [
+     "d_in",
+     "l_in"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://www.starlux-airlines.com/en-US/check-in-fly/baggage-information/general/carry-on-baggage",
+  "quote": "56cm x 36cm x 23cm (22×14×9 inch) or total 115cm (45 inch). These dimensions include wheels, handles, and side pockets.",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "Edelweiss",
+  "region": [
+   "Europe"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": 8,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     21.7,
+     15.7,
+     9.1
+    ],
+    "l_in": null,
+    "lb": 17.6,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    15
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     15.7,
+     11.8,
+     5.9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://www.flyedelweiss.com/us/en/prepare/baggage/free-baggage/hand-baggage.html",
+  "quote": "Size per baggage item 55 x 40 x 23 cm ... Weight per baggage item 8 kg",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "Discover Airlines",
+  "region": [
+   "Europe"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": 8,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     21.7,
+     15.7,
+     9.1
+    ],
+    "l_in": null,
+    "lb": 17.6,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    15
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     15.7,
+     11.8,
+     5.9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://www.discover-airlines.com/us/en/book/baggage/carry-on-baggage",
+  "quote": "The maximum permitted dimensions are 55 x 40 x 23 cm",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "Widerøe",
+  "region": [
+   "Europe"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     21.7,
+     15.7,
+     7.9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    15
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     15.7,
+     11.8,
+     5.9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": 8,
+  "fareNote": "",
+  "source": "https://help.wideroe.no/hc/en-gb/articles/29531904831378-Baggage-Rules",
+  "quote": "one piece of hand luggage (max 55x40x20 cm) ... All cabin baggage must in total not exceed 8 kg.",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed.",
+  "combinedUnits": {
+   "printed": {
+    "kg": [
+     "metric"
+    ]
+   },
+   "lb": 17.6,
+   "converted": [
+    "lb"
+   ],
+   "read": "2026-11-14",
+   "from": "quote"
+  }
+ },
+ {
+  "name": "Loganair",
+  "region": [
+   "Europe"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    40,
+    35,
+    18
+   ],
+   "linear_cm": null,
+   "weight_kg": 6,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     15.7,
+     13.8,
+     7.1
+    ],
+    "l_in": null,
+    "lb": 13.2,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://www.loganair.co.uk/get-ready-to-fly/luggage-guidance/",
+  "quote": "Your cabin bag must weigh no more than 6kg and measure no more than 40cm x 35cm x 18cm.",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "Avelo Airlines",
+  "region": [
+   "North America"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    35,
+    22
+   ],
+   "linear_cm": null,
+   "weight_kg": null
+  },
+  "personal": {
+   "dims_cm": [
+    43,
+    33,
+    22
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": true,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://www.aveloair.com/help/carry-on-bags",
+  "quote": "no larger than 22”L x 14″H x 9”W (55 cm x 35 cm x 22 cm)",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "Flair Airlines",
+  "region": [
+   "North America"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": 10,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": [
+      "metric",
+      "imperial"
+     ]
+    },
+    "d_in": [
+     21.5,
+     15.5,
+     9
+    ],
+    "l_in": null,
+    "lb": 22,
+    "converted": [],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    43,
+    33,
+    15
+   ],
+   "linear_cm": null,
+   "weight_kg": 7,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     16.9,
+     13,
+     5.9
+    ],
+    "l_in": null,
+    "lb": 15.4,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://website-prd.flyflair.com/travel-info/baggage/allowance-and-fees",
+  "quote": "23 cm x 40 cm x 55 cm (9 in x 15.5 in x 21.5 in) ... 10 kg (22 lb)",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "JetSMART",
+  "region": [
+   "South America"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    35,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": 10,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     21.7,
+     13.8,
+     9.8
+    ],
+    "l_in": null,
+    "lb": 22,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    45,
+    35,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": 10,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     17.7,
+     13.8,
+     9.8
+    ],
+    "l_in": null,
+    "lb": 22,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://jetsmart.com/us/en/PreguntasFrecuentes",
+  "quote": "Carry-on baggage: 55cm x 35cm x 25cm. Max 10 kg",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "Arajet",
+  "region": [
+   "North America",
+   "South America"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    56,
+    46,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": 12,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": [
+      "metric",
+      "imperial"
+     ]
+    },
+    "d_in": [
+     22,
+     18,
+     10
+    ],
+    "l_in": null,
+    "lb": 26,
+    "converted": [],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    25,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 6,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     15.7,
+     9.8,
+     7.9
+    ],
+    "l_in": null,
+    "lb": 13.2,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://www.arajet.com/en-us/baggage",
+  "quote": "Carry-on 56×46×25 cm / 22\"×18\"×10\", 12 kg / 26 lbs",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "Air Mauritius",
+  "region": [
+   "Africa"
+  ],
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": 115,
+   "weight_kg": 7
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://www.airmauritius.com/en/before-you-fly/baggage/carry-on-baggage",
+  "quote": "the dimensions (length + width + height) of a hand baggage should not exceed 115 cm",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "Alliance Air",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    40,
+    30,
+    15
+   ],
+   "linear_cm": 85,
+   "weight_kg": 5,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": [
+      "metric"
+     ],
+     "kg": null
+    },
+    "d_in": [
+     16,
+     12,
+     6
+    ],
+    "l_in": 33.5,
+    "lb": 11,
+    "converted": [
+     "l_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://plone.allianceair.in/allianceair/en/assets/policy/baggage-policy-eff-07-08-2025.pdf",
+  "quote": "Height 40 cms (16 inches) + Length 30 cms (12 inches) + Width 15 cms (06 inches) ... Total Dimensions - 85 cms",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "Fly91",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    35,
+    30,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     13.8,
+     11.8,
+     7.9
+    ],
+    "l_in": null,
+    "lb": 15.4,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://support.fly91.in/portal/en/kb/articles/baggage-allowance",
+  "quote": "Length: 35 cm, Width: 30 cm, Height: 20 cm ... Upto 7 Kgs",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "Nepal Airlines",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55.9,
+    45.7,
+    25.4
+   ],
+   "linear_cm": null,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": [
+      "imperial"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     22,
+     18,
+     10
+    ],
+    "l_in": null,
+    "lb": 15.4,
+    "converted": [
+     "d",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://www.nepalairlines.com.np/carry-on-baggage",
+  "quote": "maximum dimension not exceeding 22\"x 18\" x10\" ... total weight not exceeding 7 kg on Economy Class",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "Drukair",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    45,
+    35,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 5,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     17,
+     13,
+     8
+    ],
+    "l_in": null,
+    "lb": 11,
+    "converted": [
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://drukair.com.bt/experience/before-you-fly/baggage-allowance/",
+  "quote": "The maximum dimensions allowed for cabin baggage are 45 x 35 x 20 cm (17 x 13 x 8 inches).",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ }
+]

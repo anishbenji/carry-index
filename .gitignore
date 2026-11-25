@@ -1,0 +1,83 @@
+# DRAFT allow-list for the public carry-index repo, written 25 Nov 2026.
+# Review before the first commit. Everything is ignored unless listed below.
+# Ignored files still exist locally, so agents can read them as reference;
+# they just never reach GitHub.
+
+/*
+!/.gitignore
+!/README.md
+!/README-data.md
+!/CLAUDE.md
+!/docs/
+!/schema/
+
+# Paths the build will add. Any NEW top-level path must be added here in a PR,
+# or git silently ignores it.
+!/.github/
+!/apps/
+!/packages/
+!/workers/
+!/scripts/
+!/tests/
+!/e2e/
+!/package.json
+!/bun.lock
+!/bunfig.toml
+!/tsconfig.json
+!/tsconfig.*.json
+!/biome.json
+!/biome.jsonc
+!/playwright.config.ts
+!/.editorconfig
+!/.node-version
+!/LICENSE*
+!/SECURITY.md
+
+# Catalogue data (public). Private ownership notes and third-party seed data stay out.
+!/data/
+/data/my-bags.yaml
+/data/my-notes.yaml
+/data/airlines/willmybagfit-seed.psv
+
+# Fabric notes written for the site. Scratch images stay out.
+!/content/
+/content/_scratch*/
+
+# Final line drawings only (SVG), plus the generator code.
+!/drawings/
+/drawings/*
+!/drawings/generator/
+!/drawings/*/
+/drawings/raw source images/
+/drawings/gemini-inputs/
+/drawings/_to_delete/
+/drawings/tool-trials/
+/drawings/*/*
+!/drawings/*/sketch/
+/drawings/*/sketch/*
+!/drawings/*/sketch/*.svg
+!/drawings/generator/**
+
+# Tools: code only. Run state, logs, reports and installed packages stay out.
+!/tools/
+/tools/__pycache__/
+/tools/airline-checker/node_modules/
+/tools/airline-checker/state/
+/tools/airline-checker/reports/
+/tools/airline-checker/search.config.json
+/tools/_backup*/
+
+# Never public: handoffs (orders, prices), research and report dumps (scraped pages),
+# backups, old page mocks with brand photos, local Claude settings.
+# (Covered by /* above; listed so the intent is explicit.)
+#   /handoffs/ /research/ /reports/ /_backup-*/ /design/ /.claude/
+
+# Everywhere
+.DS_Store
+__pycache__/
+*.pyc
+node_modules/
+.env
+.env.*
+*.pem
+.claude/settings.local.json

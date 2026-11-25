@@ -1,0 +1,915 @@
+migration:
+  source: Ultra Carry Index page, Rev AE (v20)
+  migrated: '2026-11-13'
+  claims: Anish read every line on 13 Nov 2026, one question at a time; approved lines are the ones he kept as shown. Lines from another build name the build. Old wording and search results are under legacy.claims.
+  photos: model.photos lists every photo the old page used, as its code and footer describe them; permission is none for all
+  sources_search: Claims and spec gaps were searched on 13 Nov 2026; see evidence on each claim and reports/sources-search-2026-11-13.md
+  proposals: Applied on 13 Nov 2026 by tools/migrate/apply_decisions.py, following Anish's rulings of that day.
+  availability: Removed on 13 Nov 2026. Each build links out instead; the old strings stay under legacy.
+model:
+  id: ula-cicada-22l
+  legacy_id: cicada
+  brand: ula-equipment
+  label: Cicada 22L
+  family: Cicada
+  category: backpack
+  use:
+  - edc
+  - travel
+  build_class: ultralight
+  drawings:
+  - file: drawings/cicada/sketch/cicada-sketch-front.svg
+    kind: drawing
+    view: front
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/cicada/sketch/cicada-sketch-iso.svg
+    kind: drawing
+    view: three-quarter
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/cicada/sketch/cicada-sketch-back.svg
+    kind: drawing
+    view: back
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/cicada/sketch/cicada-sketch-side.svg
+    kind: drawing
+    view: side
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  photos:
+  - file: img/maker/ede5d89d-ULTRACicada-3.jpg
+    role: card main
+    view: unknown
+    credit_text: ula-equipment.com
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: ULTRA Cicada (colourway not stated)'
+    permission: none
+  - file: img/cicada-front-muse.jpg
+    role: hero strip
+    view: front
+    credit_text: ULA's photo with the props removed
+    credit_url: null
+    source_page: null
+    edits: Props removed (footer)
+    shows: 'Muse colourway (footer: ''Cicada (Muse colourway) front''; hero tile aria-label ''ULTRA Muse Cicada EWP'')'
+    permission: none
+  - file: img/maker/962e33e1-CicadaMuse-6.jpg
+    role: hero strip
+    view: three-quarter
+    credit_text: null
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: Cicada Muse; tile aria-label says Muse Cicada EWP'
+    permission: none
+  reviews:
+  - source: ula-ultra-cicada-ewp
+    covers: 'ULTRA Cicada EWP 22L (ULTRA 400TX, external angled bottle pockets); 3 verified-owner reviews: CicadaBuyer 30 Apr 2026, Anonymous 1 May 2026, Cj 27 Aug 2026. Discloses: Owner reviews on the maker''s shop page (maker-moderated); no samples or sponsorship mentioned.'
+    used_for:
+    - cicada-pro-2
+    - cicada-pro-4
+    - cicada-note-1
+    - cicada-pro-9
+  - source: pack-hacker-cicada
+    covers: 'Standard ULTRA Cicada 22L (ULTRA 400TX + CORDURA, internal bottle pockets, no external ones), not EWP; published 10 Oct 2025, updated 29 Apr 2026; usage timeline to 2 weeks, cycling and short hikes. Discloses: Reader-supported, affiliate commission (''Check Price'' links to ULA via affiliate). Does not say how the unit was obtained.'
+    used_for:
+    - cicada-pro-7
+    - cicada-pro-8
+    - cicada-pro-9
+    - cicada-con-5
+    - cicada-con-6
+  - source: the-brooks-review-p-35024
+    covers: 'X-Pac X50 Cicada 22L, standard (interior bottle pockets, external laptop access, no top quick-access pocket); X-Pac build, same design; used since December (2025); published 2 Apr 2026. Discloses: Affiliate links statement; buy link to ULA. Author chose the Cicada as his company''s gifts, implying his bag came via his employer; no sample from ULA stated.'
+    used_for:
+    - cicada-pro-8
+  - source: ula-ultra-muse-cicada
+    covers: 'ULTRA Muse Cicada EWP 22L (ULTRA 400TX + CORDURA TrueLock, external bottle pockets); one verified-owner review, David Hutchinson, 18 Dec 2025. Discloses: Owner review on the maker''s shop page; nothing else stated.'
+    used_for:
+    - cicada-pro-7
+  - source: pk-shiu-video-ula-bespoke-series-28l-cicada
+    covers: 'Bespoke Series 2026 Cicada, ''26 or 28 L'', 19 in tall, Dyneema 5.9 oz, S-strap chosen, external and internal bottle pockets, grey interior; unboxed on camera, loaded with office carry, first wear. Short run. Not a card build; design points only. 17:44, 5 Nov 2026. Discloses: Bought it himself (''that''s one of the reason I got it''; ''Now the bag is mine''). Description: bags personally owned, may be sold after testing; links his own bag-list site. No sponsorship or affiliate statement.'
+    used_for: []
+  sourcing: Based on owner reviews on ULA's site, Pack Hacker's review of the ULTRA Cicada, The Brooks Review's review of the X-Pac build, plus ULA's own pages.
+variants:
+- id: ultra-cicada
+  name: ULTRA Cicada
+  page: ula-ultra-cicada
+  link:
+    url: https://www.ula-equipment.com/product/ultra-cicada/
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - ultra-400tx
+    shell_as_written: ULTRA 400TX
+    lining: 210D Liner
+    other: UltraStretch Mesh, YKK Aquaguard zippers
+  volume_l: 22
+  weight_g: 799.5
+  dims_cm:
+    h: 45.7
+    w: 27.9
+    d: 12.7
+  as_written:
+    weight: 28.2 oz | 799.5 g
+    dims: 18" x 11" x 5"
+    volume: 1,342 cu in | 22 L
+    laptop: 15.5" x 10"
+  laptop:
+    max_in: 15.5
+    type: sleeve
+    shown: Sleeve 15.5 × 10 in
+  made_in: USA
+  opening: Front-loading
+  price:
+    amount: 349.99
+    currency: USD
+    seller: ula-equipment
+  release: regular
+  colourways:
+  - name: Black Beauty
+  media:
+  - file: img/maker/ede5d89d-ULTRACicada-3.jpg
+    kind: photo
+    view: unknown
+    shows_variant: null
+    credit: ula-equipment.com
+    source: https://www.ula-equipment.com/product/ultra-cicada/
+    permission: none
+  checks:
+  - date: '2026-11-13'
+    source: ula-ultra-cicada
+    basis: page
+    method: Page opened and read by Claude through WebFetch; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - laptop
+    - fabric.shell
+    - fabric.lining
+    - colourways
+  - date: '2026-11-13'
+    source: ula-ultra-cicada
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - opening
+    note: ULA's wording; "hybrid" is not on the page
+  - date: '2026-11-17'
+    source: ula-ultra-cicada
+    basis: page
+    method: Product page saved by Claude from the Mac on 17 Nov 2026 (research/factcheck-2026-11-17/pages)
+    fields:
+    - made_in
+    note: The product page prints "MADE IN THE U.S.A.". ULA's fabric page says its packs are designed, cut and sewn in Utah.
+  - date: '2026-11-15'
+    source: ula-ultra-cicada
+    basis: page
+    method: Search subagent, page opened through WebFetch on 15 Nov 2026
+    fields:
+    - release
+    note: 'Read as a regular catalogue item: no limited, drop or pre-order wording on the page.'
+  units:
+    weight:
+      metric:
+        g: 799.5
+        from: maker
+      imperial:
+        lb: 1.76
+        shown: 28.2 oz
+        from: maker
+    dims:
+      metric:
+        cm:
+        - 45.7
+        - 27.9
+        - 12.7
+        from: converted
+      imperial:
+        in:
+        - 18
+        - 11
+        - 5
+        from: maker
+- id: ultra-cicada-ewp
+  name: ULTRA Cicada EWP
+  page: ula-ultra-cicada-ewp
+  link:
+    url: https://www.ula-equipment.com/product/ultra-cicada-ewp/
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - ultra-400tx
+    shell_as_written: ULTRA 400TX
+    lining: 210D liner (Silverado UltraGrid)
+    lining_material: ultragrid
+    other: UltraStretch mesh, YKK Aquaguard zippers; two external angled UltraStretch mesh bottle pockets
+  volume_l: 22
+  weight_g: 799.5
+  dims_cm:
+    h: 45.7
+    w: 27.9
+    d: 12.7
+  as_written:
+    weight: 28.2 oz | 799.5 g
+    dims: 18" x 11" x 5"
+    volume: 1,342 cu in | 22 L
+    laptop: 15.5" x 10"
+  laptop:
+    max_in: 15.5
+    type: sleeve
+    shown: Sleeve 15.5 × 10 in
+  made_in: USA
+  opening: Front-loading
+  price:
+    amount: 349.99
+    currency: USD
+    seller: ula-equipment
+  release: regular
+  colourways:
+  - name: ULTRA 400TX Black Magic
+  checks:
+  - date: '2026-11-13'
+    source: ula-ultra-cicada-ewp
+    basis: page
+    method: Page opened and read by Claude through WebFetch; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - laptop
+    - fabric.shell
+    - fabric.lining
+    - colourways
+  - date: '2026-11-17'
+    source: ula-ultra-cicada-ewp
+    basis: page
+    method: Product page saved by Claude from the Mac on 17 Nov 2026 (research/factcheck-2026-11-17/pages)
+    fields:
+    - made_in
+    note: The product page prints "MADE IN THE U.S.A.". ULA's fabric page says its packs are designed, cut and sewn in Utah.
+  - date: '2026-11-13'
+    source: ula-ultra-cicada-ewp
+    basis: page
+    method: Read on the build's own page by a search subagent and again by Claude, both through WebFetch, on 13 Nov 2026
+    fields:
+    - opening
+    note: ULA's description calls it a front-loading backpack and the feature list has "Front Loading".
+  - date: '2026-11-15'
+    source: ula-ultra-cicada-ewp
+    basis: page
+    method: Search subagent, page opened through WebFetch on 15 Nov 2026
+    fields:
+    - release
+    note: 'Read as a regular catalogue item: no limited, drop or pre-order wording on the page.'
+  units:
+    weight:
+      metric:
+        g: 799.5
+        from: maker
+      imperial:
+        lb: 1.76
+        shown: 28.2 oz
+        from: maker
+    dims:
+      metric:
+        cm:
+        - 45.7
+        - 27.9
+        - 12.7
+        from: converted
+      imperial:
+        in:
+        - 18
+        - 11
+        - 5
+        from: maker
+- id: ultra-muse-cicada-ewp
+  name: ULTRA Muse Cicada EWP
+  page: ula-ultra-muse-cicada
+  link:
+    url: https://www.ula-equipment.com/product/ultra-muse-cicada/
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - ultra-400tx
+    shell_as_written: ULTRA 400TX + CORDURA® TrueLock™
+    lining: 210D UltraGrid
+    lining_material: ultragrid
+    other: CORDURA TrueLock, UltraStretch Mesh, standard YKK zippers
+  volume_l: 22
+  weight_g: 799.5
+  dims_cm:
+    h: 45.7
+    w: 27.9
+    d: 12.7
+  as_written:
+    weight: 28.2 oz | 799.5 g
+    dims: 18" x 11" x 5"
+    volume: 1,342 cu in | 22 L
+    laptop: 15.5" x 10"
+  laptop:
+    max_in: 15.5
+    type: sleeve
+    shown: Sleeve 15.5 × 10 in
+  made_in: USA
+  opening: Front-loading
+  price:
+    amount: 349.99
+    currency: USD
+    seller: ula-equipment
+  release: regular
+  colourways:
+  - name: Black Beauty + Coyote
+  checks:
+  - date: '2026-11-13'
+    source: ula-ultra-muse-cicada
+    basis: page
+    method: Page opened and read by Claude through WebFetch; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - laptop
+    - fabric.shell
+    - fabric.lining
+    - colourways
+  - date: '2026-11-13'
+    source: ula-ultra-muse-cicada
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - opening
+    note: ULA's wording; "hybrid" is not on the page
+  - date: '2026-11-17'
+    source: ula-ultra-muse-cicada
+    basis: page
+    method: Product page saved by Claude from the Mac on 17 Nov 2026 (research/factcheck-2026-11-17/pages)
+    fields:
+    - made_in
+    note: The product page prints "MADE IN THE U.S.A.". ULA's fabric page says its packs are designed, cut and sewn in Utah.
+  - date: '2026-11-15'
+    source: ula-ultra-muse-cicada
+    basis: page
+    method: Search subagent, page opened through WebFetch on 15 Nov 2026
+    fields:
+    - release
+    note: 'Read as a regular catalogue item: no limited, drop or pre-order wording on the page.'
+  units:
+    weight:
+      metric:
+        g: 799.5
+        from: maker
+      imperial:
+        lb: 1.76
+        shown: 28.2 oz
+        from: maker
+    dims:
+      metric:
+        cm:
+        - 45.7
+        - 27.9
+        - 12.7
+        from: converted
+      imperial:
+        in:
+        - 18
+        - 11
+        - 5
+        from: maker
+- id: x50-cicada
+  name: X50 Cicada
+  record: comparison
+  page: ula-x50-cicada
+  link:
+    url: https://www.ula-equipment.com/product/x50-cicada/
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - x-pac-x50
+    shell_as_written: X-Pac X50
+  volume_l: 22
+  weight_g: 870.3
+  dims_cm:
+    h: 45.7
+    w: 27.9
+    d: 12.7
+  as_written:
+    weight: 30.7 OZ | 870.3 GM
+    dims: 18″ × 11″ × 5″
+  price:
+    amount: 319.99
+    currency: USD
+    seller: ula-equipment
+  checks:
+  - date: '2026-11-13'
+    source: ula-x50-cicada
+    basis: page
+    method: Page opened and read by Claude through WebFetch on 13 Nov 2026; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - fabric.shell
+  units:
+    weight:
+      metric:
+        g: 870.3
+        from: maker
+      imperial:
+        lb: 1.92
+        shown: 30.7 oz
+        from: maker
+    dims:
+      metric:
+        cm:
+        - 45.7
+        - 27.9
+        - 12.7
+        from: converted
+      imperial:
+        in:
+        - 18
+        - 11
+        - 5
+        from: maker
+features:
+- id: cicada-feat-5
+  text: Stealth passport pocket in the false back panel, a luggage pass-through and hip belt attachment loops.
+  scope: design
+  sources:
+  - ula-ultra-cicada
+  - ula-ultra-cicada-ewp
+  - ula-ultra-muse-cicada
+  applies_to:
+  - ultra-cicada
+  - ultra-cicada-ewp
+  - ultra-muse-cicada-ewp
+  replaces: cicada-pro-5
+  was_kind: pro
+  status: approved
+- id: cicada-feat-5-b
+  text: ULA gives a maximum load of 25 lb (11 kg).
+  scope: design
+  sources:
+  - ula-ultra-cicada
+  - ula-ultra-cicada-ewp
+  - ula-ultra-muse-cicada
+  applies_to:
+  - ultra-cicada
+  - ultra-cicada-ewp
+  - ultra-muse-cicada-ewp
+  replaces: cicada-pro-5
+  was_kind: pro
+  status: approved
+- id: cicada-feat-6
+  text: Stands up on its own.
+  scope: design
+  sources:
+  - ula-equipment-p-536810
+  applies_to:
+  - ultra-cicada
+  - ultra-cicada-ewp
+  - ultra-muse-cicada-ewp
+  replaces: cicada-pro-2
+  was_kind: pro
+  status: approved
+  checked: From ULA's launch Q&A of 6 Aug 2025, which predates the EWP build. Found again by search on 13 Nov 2026.
+claims:
+- id: cicada-pro-2
+  kind: pro
+  text: 'Self-stands very well: one owner says better than any bag they have used.'
+  voice: owners
+  support: one owner review
+  scope: design
+  basis: owner-reports
+  sources:
+  - ula-ultra-cicada-ewp
+  observed_on:
+  - ultra-cicada-ewp
+  status: approved
+  source_notes:
+  - source: ula-ultra-cicada-ewp
+    about: same build (ULTRA 400TX Cicada, EWP version)
+  other_builds:
+  - source: ula-equipment-p-536810
+    about: pre-launch Cicada, standard version (before the EWP existed); maker statement that it stands on its own
+  replaces: cicada-pro-2
+  wording_note: Anish asked for "general consensus is that it self stands very well". The sources on file are one owner review and ULA's own launch Q&A; Pack Hacker and The Brooks Review do not mention it. So the line says one owner, and ULA's statement is a "Maker says" line. He agreed to both.
+- id: cicada-pro-4
+  kind: pro
+  text: The EWP's water bottle pockets sit flush with the sides and disappear when empty.
+  voice: owners
+  support: one owner review
+  scope: design
+  basis: owner-reports
+  sources:
+  - ula-ultra-cicada-ewp
+  observed_on:
+  - ultra-cicada-ewp
+  status: approved
+  source_notes:
+  - source: ula-ultra-cicada-ewp
+    about: same build (ULTRA 400TX Cicada, EWP version); the description does not say the pockets lie flat or vanish
+  - source: ula-ultra-cicada-ewp
+    about: same build (ULTRA 400TX Cicada, EWP version)
+  other_builds:
+  - source: pack-hacker-cicada
+    about: standard Cicada with internal bottle pockets; lists the lack of external bottle pockets as a con (indirect support only, no EWP comparison)
+  replaces: cicada-pro-4
+  wording_note: 'Anish''s wording, with "the sides" for "the body". The owner review says the pockets are nearly invisible when empty. "Flush" was checked by Claude on 13 Nov 2026 against ULA''s front and left-side photos of the ULTRA Cicada EWP, opened in the browser: the mesh pockets lie flat against the side panels and do not break the bag''s outline.'
+- id: cicada-note-1
+  kind: note
+  text: A 16-inch MacBook Pro fits easily; a bulkier 16-inch Dell did not.
+  voice: owners
+  support: two owner reviews
+  scope: design
+  basis: owner-reports
+  sources:
+  - ula-ultra-cicada-ewp
+  observed_on:
+  - ultra-cicada-ewp
+  status: approved
+  source_notes:
+  - source: ula-ultra-cicada-ewp
+    about: same build (ULTRA 400TX Cicada, EWP version)
+  - source: ula-ultra-cicada-ewp
+    about: same build (ULTRA 400TX Cicada, EWP version)
+  other_builds:
+  - source: ula-equipment-p-538083
+    about: launch-time standard Cicada; maker says the sleeve is designed for a 16-inch MacBook Pro (product pages give only 15.5 x 10 in sleeve, 10 in opening)
+  - source: pack-hacker-cicada
+    about: standard Cicada; tested only a 15-inch laptop, which fit
+  replaces: cicada-con-1
+  wording_note: 'Anish: neither a pro nor a con, since few bags take laptops much bigger than a 16-inch MacBook Pro. Filed as a "Good to know" note beside the laptop sleeve spec (15.5 x 10 in, 10 in opening, by ULA''s page).'
+  about: laptop
+- id: cicada-pro-7
+  kind: pro
+  text: Very light to carry.
+  voice: reviewers
+  support: one review and one owner review
+  scope: material
+  basis: review
+  sources:
+  - pack-hacker-cicada
+  - ula-ultra-muse-cicada
+  observed_on:
+  - ultra-cicada
+  - ultra-muse-cicada-ewp
+  status: approved
+  source_notes:
+  - source: pack-hacker-cicada
+    about: same build (standard ULTRA Cicada, not the EWP); two weeks of use; affiliate links, sample status not stated
+  - source: ula-ultra-muse-cicada
+    about: same build (ULTRA Muse Cicada EWP); one verified-owner review on ULA's own page
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. Pack Hacker: "It’s incredibly lightweight, so much so that you notice it while carrying the bag."; ULA Equipment: "lightweight, looks great and is very practical"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''yes''). research/reviews-2026-11-17/merged/cicada.json point 1.'
+  added_in: reviews-2026-11-17
+- id: cicada-pro-8
+  kind: pro
+  text: Comfortable to wear with light everyday loads.
+  voice: reviewers
+  support: two reviews
+  scope: design
+  basis: review
+  sources:
+  - pack-hacker-cicada
+  - the-brooks-review-p-35024
+  observed_on:
+  - ultra-cicada
+  from_build:
+    label: Also from a review of the X-Pac X50 build
+    generation: Same design; the X50 has been in use since December 2025
+    size: Same, 22L
+    fabric: ULTRA 400TX (Pack Hacker), X-Pac X50 (The Brooks Review)
+    found: Pack Hacker says the same of the standard ULTRA Cicada; the harness is the same design on the X50.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: pack-hacker-cicada
+    about: same build (standard ULTRA Cicada, not the EWP); two weeks of use; affiliate links, sample status not stated
+  - source: the-brooks-review-p-35024
+    about: X-Pac X50 build, standard version (not Ultra); used since December 2025; affiliate links
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. Pack Hacker: "Overall, it’s pretty comfortable and malleable"; The Brooks Review: "the comfort is spot on"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''yes''). research/reviews-2026-11-17/merged/cicada.json point 2.'
+  added_in: reviews-2026-11-17
+- id: cicada-pro-9
+  kind: pro
+  text: A zip at the top reaches the laptop from outside.
+  voice: reviewers
+  support: one review and one owner review
+  scope: design
+  basis: review
+  sources:
+  - ula-ultra-cicada-ewp
+  - pack-hacker-cicada
+  observed_on:
+  - ultra-cicada
+  - ultra-cicada-ewp
+  status: held
+  source_notes:
+  - source: ula-ultra-cicada-ewp
+    about: same build (ULTRA Cicada EWP); verified-owner reviews on ULA's own page
+  - source: pack-hacker-cicada
+    about: same build (standard ULTRA Cicada, not the EWP); two weeks of use; affiliate links, sample status not stated
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. ULA Equipment: "that hybrid laptop and main compartment access pocket on top is honestly freakin’ great"; Pack Hacker: "accessible through a separate zipper on the top of the pack"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish took it off the card the same day (his comment on the reading list: ''yes, but not worth highlighting as a feature''). research/reviews-2026-11-17/merged/cicada.json point 4.'
+  added_in: reviews-2026-11-17
+- id: cicada-con-5
+  kind: con
+  text: Front pockets are better suited to slim items.
+  voice: reviewers
+  support: one review
+  scope: design
+  basis: review
+  sources:
+  - pack-hacker-cicada
+  observed_on:
+  - ultra-cicada
+  status: approved
+  source_notes:
+  - source: pack-hacker-cicada
+    about: same build (standard ULTRA Cicada, not the EWP); two weeks of use; affiliate links, sample status not stated
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. Pack Hacker: "better suited for skinnier items due to their shape"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''ok''). research/reviews-2026-11-17/merged/cicada.json point 9.'
+  added_in: reviews-2026-11-17
+- id: cicada-con-6
+  kind: con
+  text: The standard version has no outside bottle pockets, so water is harder to reach.
+  voice: reviewers
+  support: one review
+  scope: design
+  basis: review
+  sources:
+  - pack-hacker-cicada
+  observed_on:
+  - ultra-cicada
+  status: held
+  source_notes:
+  - source: pack-hacker-cicada
+    about: same build (standard ULTRA Cicada, not the EWP); two weeks of use; affiliate links, sample status not stated
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. Pack Hacker: "There aren’t external water bottle pockets"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish took it off the card the same day (his comment on the reading list: ''Can ignore since we have also include the EWP version here''). research/reviews-2026-11-17/merged/cicada.json point 7.'
+  added_in: reviews-2026-11-17
+computed: []
+legacy:
+  verdict: The EDC door into ultralight construction. Buy the EWP or Muse; the standard is sold out.
+  price_note: ula-equipment.com · EWP in stock
+  avail: EWP & Muse in stock · standard sold out
+  origin: USA
+  laptop: 15.5" sleeve
+  fabric: ULTRA 400TX
+  opening: Front-loading hybrid
+  brand: ULA Equipment
+  src: https://www.ula-equipment.com/product/ultra-cicada/
+  gVar:
+  - g: 800
+    tag: Standard / EWP / Muse — identical
+  claims:
+  - id: cicada-pro-1
+    kind: pro
+    text: 800 g in tough 400TX; all three Ultra variants share the weight and the $349.99 price
+    scope: general
+    basis: maker
+    sources:
+    - ula-ultra-cicada
+    - ula-ultra-cicada-ewp
+    - ula-ultra-muse-cicada
+    flags:
+    - state-in-prose
+    outcome:
+    - 'cicada-pro-1: dropped. It restates data already on the record (fabric.shell and weight_g).'
+  - id: cicada-pro-2
+    kind: pro
+    text: Owners say it stands upright better than anything they have used
+    scope: design
+    basis: owner-reports
+    sources:
+    - ula-ultra-cicada-ewp
+    - ula-equipment-p-536810
+    evidence:
+      status: supported
+      note: One verified-owner review on the EWP page says it stands better than any bag they have used; ULA's blog says it stands unaided; no second owner found.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ula-ultra-cicada-ewp
+      about: same build (ULTRA 400TX Cicada, EWP version)
+    - source: ula-equipment-p-536810
+      about: pre-launch Cicada, standard version (before the EWP existed); maker statement that it stands on its own
+    outcome:
+    - 'cicada-pro-2: reworded.'
+    - 'cicada-pro-2: reworded on 13 Nov 2026 at Anish''s direction.'
+  - id: cicada-pro-3
+    kind: pro
+    text: The hybrid top opening for laptop and main access is the most-praised feature
+    scope: design
+    basis: owner-reports
+    sources:
+    - ula-ultra-cicada-ewp
+    - pack-hacker-cicada
+    - ula-equipment-p-538083
+    evidence:
+      status: partly
+      note: One owner review calls the hybrid top access their favourite feature by far; Pack Hacker only describes it, so 'most-praised' across owners or reviewers is not shown.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ula-ultra-cicada-ewp
+      about: same build (ULTRA 400TX Cicada, EWP version)
+    - source: pack-hacker-cicada
+      about: standard Cicada with internal bottle pockets (Ultra 400TX with Cordura trim), not the EWP; says the top zipper eases laptop access but does not rank it
+    - source: ula-equipment-p-538083
+      about: launch-time standard Cicada; describes the top access pocket reaching both laptop sleeve and main compartment
+    outcome:
+    - 'cicada-pro-3: reworded.'
+    - 'cicada-pro-3: Dropped by Anish on reading, 13 Nov 2026.'
+  - id: cicada-pro-4
+    kind: pro
+    text: EWP adds exterior bottle pockets that vanish when empty; owners recommend it over the standard
+    scope: design
+    basis: owner-reports
+    sources:
+    - ula-ultra-cicada-ewp
+    - pack-hacker-cicada
+    evidence:
+      status: supported
+      note: ULA's EWP page lists two external angled mesh pockets; one owner review calls them basically invisible when unused and recommends the EWP, so 'owners' is a single owner.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ula-ultra-cicada-ewp
+      about: same build (ULTRA 400TX Cicada, EWP version); the description does not say the pockets lie flat or vanish
+    - source: ula-ultra-cicada-ewp
+      about: same build (ULTRA 400TX Cicada, EWP version)
+    - source: pack-hacker-cicada
+      about: standard Cicada with internal bottle pockets; lists the lack of external bottle pockets as a con (indirect support only, no EWP comparison)
+    outcome:
+    - 'cicada-pro-4: reworded.'
+    - 'cicada-pro-4-b: dropped on review (ruling 5).'
+    - 'cicada-pro-4: reworded on 13 Nov 2026 at Anish''s direction.'
+  - id: cicada-pro-5
+    kind: pro
+    text: Stealth passport pocket, pass-through, hip-belt loops; 25 lb rated load
+    scope: design
+    basis: maker
+    sources:
+    - ula-ultra-cicada
+    - ula-ultra-cicada-ewp
+    - ula-ultra-muse-cicada
+    - pack-hacker-cicada
+    evidence:
+      status: supported
+      note: All three ULA product pages list the stealth passport pocket, luggage pass-through sleeve, 1-inch hipbelt attachment loops and a 25 lb maximum load.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ula-ultra-cicada
+      about: same build (ULTRA 400TX Cicada, standard version)
+    - source: ula-ultra-cicada-ewp
+      about: same build (ULTRA 400TX Cicada, EWP version)
+    - source: ula-ultra-muse-cicada
+      about: same build (ULTRA 400TX Muse Cicada with Cordura TrueLock trim; page now describes an EWP with standard YKK zippers)
+    - source: pack-hacker-cicada
+      about: standard Cicada with internal bottle pockets; hands-on confirmation of the hidden back-panel pocket, pass-through and hip-belt loops; no load figure
+    outcome:
+    - 'cicada-pro-5: moved to features (maker statement).'
+    - 'cicada-pro-5-b: moved to features (maker statement).'
+  - id: cicada-con-1
+    kind: con
+    text: Laptop fit is real-world 16" MacBook, not 16" Dell; one owner could not fit theirs through the top opening
+    scope: design
+    basis: owner-reports
+    sources:
+    - ula-ultra-cicada-ewp
+    - ula-equipment-p-538083
+    - pack-hacker-cicada
+    evidence:
+      status: supported
+      note: 'Two owner reviews on the EWP page: a 16-inch MacBook Pro fits easily, a 16-inch Dell would not go through the top opening; ULA''s blog names the MacBook too.'
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ula-ultra-cicada-ewp
+      about: same build (ULTRA 400TX Cicada, EWP version)
+    - source: ula-ultra-cicada-ewp
+      about: same build (ULTRA 400TX Cicada, EWP version)
+    - source: ula-equipment-p-538083
+      about: launch-time standard Cicada; maker says the sleeve is designed for a 16-inch MacBook Pro (product pages give only 15.5 x 10 in sleeve, 10 in opening)
+    - source: pack-hacker-cicada
+      about: standard Cicada; tested only a 15-inch laptop, which fit
+    outcome:
+    - 'cicada-con-1: reworded.'
+    - 'cicada-con-1-b: reworded as cicada-pro-6, now a pro.'
+    - 'cicada-con-1: Folded into cicada-pro-6 at Anish''s call, 13 Nov 2026: one line on which 16-inch laptops fit.'
+    - 'cicada-note-1: reworded on 13 Nov 2026 at Anish''s direction.'
+  - id: cicada-con-2
+    kind: con
+    text: Front panel pocketing reviewed as convoluted; owners are unsure what the stash pocket is for
+    scope: design
+    basis: owner-reports
+    sources:
+    - ula-ultra-cicada-ewp
+    - the-brooks-review-p-35024
+    - pack-hacker-cicada
+    evidence:
+      status: supported
+      note: One owner review calls the front panel a bit convoluted and is unsure about the back-panel secret stash (passport) pocket for daily use; Brooks Review found the X50's pockets clever.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ula-ultra-cicada-ewp
+      about: same build (ULTRA 400TX Cicada, EWP version); the pocket in doubt is the hidden back-panel passport pocket, not the two small front stash pockets
+    - source: the-brooks-review-p-35024
+      about: 'X-Pac X50 Cicada, standard version (not Ultra); contrary view: calls the front-panel organisation unexpectedly clever'
+    - source: pack-hacker-cicada
+      about: standard Cicada; describes three unorganised front pockets for slim items but does not call them confusing
+    outcome:
+    - 'cicada-con-2: reworded.'
+    - 'cicada-con-2-b: reworded.'
+    - 'cicada-con-2: Dropped by Anish on reading, 13 Nov 2026.'
+    - 'cicada-con-2-b: Dropped by Anish on reading, 13 Nov 2026.'
+  - id: cicada-con-3
+    kind: con
+    text: Owners question the price against the cheaper Dragonfly
+    scope: design
+    basis: owner-reports
+    sources:
+    - ula-ultra-cicada-ewp
+    - ula-ultra-dragonfly
+    flags:
+    - names-other-bag
+    evidence:
+      status: supported
+      note: One owner review names price as the main drawback, significantly above the Dragonfly, yet judges it worth paying; ULA lists $349.99 against $289.99; no other owners found.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ula-ultra-cicada-ewp
+      about: same build (ULTRA 400TX Cicada, EWP version); page price $349.99
+    - source: ula-ultra-dragonfly
+      about: 30L Ultra Dragonfly, used only for the price comparison
+    outcome:
+    - 'cicada-con-3: dropped. Names another bag and is a price comparison resting on one owner. Price fields already carry the figures.'
+  - id: cicada-con-4
+    kind: con
+    text: Standard version (internal bottle pockets, AquaGuard zips) is sold out
+    scope: general
+    basis: maker
+    sources:
+    - ula-ultra-cicada
+    - ula-ultra-cicada-ewp
+    flags:
+    - state-in-prose
+    evidence:
+      status: supported
+      note: ULA's ULTRA Cicada page showed 'Out of stock' on 13 Nov 2026, with internal mesh bottle pockets and AquaGuard zips; the EWP also has AquaGuard; no restock date given.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ula-ultra-cicada
+      about: same build (ULTRA 400TX Cicada, standard version); stock status as seen 2026-11-13
+    - source: ula-ultra-cicada-ewp
+      about: same build (EWP version); shows add-to-cart and also lists YKK AquaGuard zippers, so the zips do not distinguish standard from EWP
+    outcome:
+    - 'cicada-con-4: dropped. Stock only; the card links out instead. AquaGuard zips are on the EWP too.'

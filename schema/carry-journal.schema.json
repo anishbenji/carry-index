@@ -1,0 +1,1396 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carryjournal.com/schema/carry-journal.schema.json",
+  "title": "Carry Journal data model v0.1",
+  "description": "One definition per file type. tools/validate.py picks the definition by file location.",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "check": {
+      "description": "One sitting: a date, a source, the fields confirmed there, and a basis. A field no check covers renders as unverified.",
+      "type": "object",
+      "required": [
+        "date",
+        "source",
+        "basis",
+        "fields"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "$ref": "#/$defs/date"
+        },
+        "source": {
+          "$ref": "#/$defs/id"
+        },
+        "basis": {
+          "enum": [
+            "page",
+            "sibling",
+            "own"
+          ]
+        },
+        "from": {
+          "$ref": "#/$defs/id",
+          "description": "Variant or model the value was taken from, when basis is sibling."
+        },
+        "method": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "name",
+              "price",
+              "release",
+              "volume_l",
+              "weight_g",
+              "dims_cm",
+              "laptop",
+              "opening",
+              "fabric.shell",
+              "fabric.lining",
+              "fabric.base",
+              "made_in",
+              "warranty",
+              "colourways",
+              "uhmwpe_role",
+              "uhmwpe_content",
+              "name_as_written"
+            ]
+          }
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "media": {
+      "type": "object",
+      "required": [
+        "file",
+        "kind",
+        "credit",
+        "permission"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "file": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "photo",
+            "drawing"
+          ]
+        },
+        "view": {
+          "enum": [
+            "front",
+            "back",
+            "side",
+            "three-quarter",
+            "detail",
+            "unknown"
+          ]
+        },
+        "shows_variant": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Variant id the picture shows; null when not yet established."
+        },
+        "credit": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "permission": {
+          "enum": [
+            "none",
+            "asked",
+            "granted",
+            "refused",
+            "own",
+            "embed"
+          ]
+        },
+        "edits": {
+          "type": "string"
+        }
+      }
+    },
+    "variant": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "page",
+        "fabric",
+        "checks"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "description": "Exactly as the maker writes it."
+        },
+        "page": {
+          "$ref": "#/$defs/id",
+          "description": "Source id of this variant's own product page."
+        },
+        "fabric": {
+          "type": "object",
+          "required": [
+            "shell"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "shell": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/id"
+              },
+              "description": "Material ids. More than one when the maker sells fabric options under one listing and one set of specs."
+            },
+            "shell_as_written": {
+              "type": "string"
+            },
+            "lining": {
+              "type": "string"
+            },
+            "lining_material": {
+              "$ref": "#/$defs/id"
+            },
+            "base": {
+              "type": "string"
+            },
+            "base_material": {
+              "$ref": "#/$defs/id"
+            },
+            "other": {
+              "type": "string"
+            }
+          }
+        },
+        "volume_l": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "weight_g": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "dims_cm": {
+          "type": "object",
+          "required": [
+            "h",
+            "w",
+            "d"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "h": {
+              "type": "number"
+            },
+            "w": {
+              "type": "number"
+            },
+            "d": {
+              "type": "number"
+            }
+          }
+        },
+        "as_written": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "The maker's own wording for a figure, kept when we convert units.",
+          "properties": {
+            "weight": {
+              "type": "string"
+            },
+            "dims": {
+              "type": "string"
+            },
+            "volume": {
+              "type": "string"
+            },
+            "laptop": {
+              "type": "string"
+            }
+          }
+        },
+        "laptop": {
+          "type": "object",
+          "required": [
+            "max_in"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "max_in": {
+              "type": "number"
+            },
+            "type": {
+              "type": "string"
+            },
+            "shown": {
+              "type": "string",
+              "description": "What the card shows instead of the size, for a maker that gives a sleeve measurement and no laptop size (ULA Cicada: 'Sleeve 15.5 × 10 in'). Added after the fact check of 17 Nov 2026."
+            }
+          }
+        },
+        "opening": {
+          "type": "string"
+        },
+        "features": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "boolean",
+              "string",
+              "number"
+            ]
+          }
+        },
+        "price": {
+          "type": "object",
+          "required": [
+            "amount",
+            "currency",
+            "seller"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "amount": {
+              "type": "number"
+            },
+            "currency": {
+              "type": "string",
+              "pattern": "^[A-Z]{3}$"
+            },
+            "seller": {
+              "$ref": "#/$defs/id"
+            }
+          }
+        },
+        "release": {
+          "enum": [
+            "regular",
+            "limited",
+            "pre-launch"
+          ]
+        },
+        "made_in": {
+          "type": "string"
+        },
+        "warranty": {
+          "type": "string"
+        },
+        "colourways": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "shell": {
+                "$ref": "#/$defs/id"
+              },
+              "page": {
+                "$ref": "#/$defs/id"
+              }
+            }
+          }
+        },
+        "media": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/media"
+          }
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/check"
+          }
+        },
+        "notes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Per-field remarks, keyed by field name, for values that have no check yet."
+        },
+        "record": {
+          "enum": [
+            "full",
+            "comparison"
+          ],
+          "description": "comparison: another build of the same bag, kept only so builds can be compared from data. Not listed in a section. Default full."
+        },
+        "link": {
+          "type": "object",
+          "required": [
+            "url",
+            "kind"
+          ],
+          "additionalProperties": false,
+          "description": "Where the card sends the reader. Stock and availability are not recorded; the linked page shows them.",
+          "properties": {
+            "url": {
+              "type": "string",
+              "pattern": "^https?://"
+            },
+            "kind": {
+              "enum": [
+                "product-page",
+                "partner-page",
+                "retailer-page"
+              ]
+            },
+            "affiliate_url": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Replaces url on the page once an affiliate link exists."
+            },
+            "note": {
+              "type": "string"
+            }
+          }
+        },
+        "units": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "The figure in each unit system, with where it comes from. The page's unit switch reads this. Rounding for converted figures: grams to the whole gram, pounds to 2 decimals, centimetres and inches to 1 decimal. The maker's exact wording stays in as_written.",
+          "required": [
+            "weight"
+          ],
+          "properties": {
+            "weight": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "metric",
+                "imperial"
+              ],
+              "properties": {
+                "metric": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "g",
+                    "from"
+                  ],
+                  "properties": {
+                    "g": {
+                      "type": "number"
+                    },
+                    "from": {
+                      "enum": [
+                        "maker",
+                        "converted"
+                      ],
+                      "description": "maker: the maker prints a figure in this system. converted: worked out by us from the other system."
+                    }
+                  }
+                },
+                "imperial": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "lb",
+                    "from"
+                  ],
+                  "properties": {
+                    "lb": {
+                      "type": "number",
+                      "description": "Pounds. When the maker prints ounces, or pounds and ounces, this is that figure in pounds to 2 decimals."
+                    },
+                    "shown": {
+                      "type": "string",
+                      "description": "The maker's imperial figure as the card writes it, when it is not plain pounds (27.4 oz; 3 lb 3.5 oz)."
+                    },
+                    "from": {
+                      "enum": [
+                        "maker",
+                        "converted"
+                      ],
+                      "description": "maker: the maker prints a figure in this system. converted: worked out by us from the other system."
+                    }
+                  }
+                }
+              }
+            },
+            "dims": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "metric",
+                "imperial"
+              ],
+              "properties": {
+                "metric": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "cm",
+                    "from"
+                  ],
+                  "properties": {
+                    "cm": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      },
+                      "minItems": 3,
+                      "maxItems": 3,
+                      "description": "Height, width, depth."
+                    },
+                    "from": {
+                      "enum": [
+                        "maker",
+                        "converted"
+                      ],
+                      "description": "maker: the maker prints a figure in this system. converted: worked out by us from the other system."
+                    }
+                  }
+                },
+                "imperial": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "in",
+                    "from"
+                  ],
+                  "properties": {
+                    "in": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      },
+                      "minItems": 3,
+                      "maxItems": 3,
+                      "description": "Height, width, depth."
+                    },
+                    "from": {
+                      "enum": [
+                        "maker",
+                        "converted"
+                      ],
+                      "description": "maker: the maker prints a figure in this system. converted: worked out by us from the other system."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "claim": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "text",
+        "scope",
+        "basis",
+        "sources"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "enum": [
+            "pro",
+            "con",
+            "note"
+          ],
+          "description": "note: neither a pro nor a con. A plain 'Good to know' line shown beside the spec named in 'about'."
+        },
+        "text": {
+          "type": "string"
+        },
+        "scope": {
+          "enum": [
+            "design",
+            "material",
+            "general"
+          ],
+          "description": "design: holds for every fabric build. material: holds only for the builds it was observed on. general: price, stock, warranty, coverage."
+        },
+        "basis": {
+          "enum": [
+            "maker",
+            "review",
+            "owner-reports",
+            "sibling",
+            "own",
+            "unstated"
+          ],
+          "description": "maker -> 'Maker says'. review / owner-reports -> 'Reviewers say'. own -> 'My notes'."
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "observed_on": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "description": "Variant ids. Empty means not yet established."
+        },
+        "sibling_of": {
+          "type": "string"
+        },
+        "flags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "names-other-bag",
+              "list-comparison",
+              "state-in-prose"
+            ]
+          },
+          "description": "Rule breaks carried over from the old page. names-other-bag: breaks the no-yardstick rule. list-comparison: should be computed, not typed. state-in-prose: price or stock typed into a sentence."
+        },
+        "evidence": {
+          "type": "object",
+          "required": [
+            "status",
+            "checked"
+          ],
+          "additionalProperties": false,
+          "description": "Result of looking for the claim in published sources.",
+          "properties": {
+            "status": {
+              "enum": [
+                "supported",
+                "partly",
+                "contradicted",
+                "not_found"
+              ]
+            },
+            "note": {
+              "type": "string"
+            },
+            "checked": {
+              "$ref": "#/$defs/date"
+            },
+            "method": {
+              "type": "string"
+            }
+          }
+        },
+        "leads": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Pages that may hold the claim but could not be opened. Not sources."
+        },
+        "source_notes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "source",
+              "about"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "source": {
+                "$ref": "#/$defs/id"
+              },
+              "about": {
+                "type": "string",
+                "description": "'same build' or which other build the source covers."
+              }
+            }
+          }
+        },
+        "proposals": {
+          "type": "array",
+          "description": "Unused since the 13 Nov 2026 rulings were applied.",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "action"
+            ],
+            "properties": {
+              "action": {
+                "enum": [
+                  "keep",
+                  "reword",
+                  "drop",
+                  "compute"
+                ]
+              }
+            }
+          }
+        },
+        "voice": {
+          "enum": [
+            "reviewers",
+            "owners",
+            "mine"
+          ],
+          "description": "reviewers and owners render under 'Reviewers say'; mine under 'My notes'. Maker statements are features, not claims."
+        },
+        "support": {
+          "type": "string",
+          "description": "How many independent publishers: 'one review', 'one owner review', 'two reviews', 'two owner reviews', 'one review and one owner review', 'three reviews agree', 'three owner reviews agree', 'four reviewers and owners agree' (numbers spelled out up to nine). Older lines may say 'reviewers agree' or 'owner reviews agree'."
+        },
+        "from_build": {
+          "type": "object",
+          "required": [
+            "label"
+          ],
+          "additionalProperties": false,
+          "description": "Set when the point was reported on another build of this bag. The label is shown with the line.",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "generation": {
+              "type": "string"
+            },
+            "size": {
+              "type": "string"
+            },
+            "fabric": {
+              "type": "string"
+            },
+            "suggestion": {
+              "enum": [
+                "likely",
+                "check",
+                "unlikely"
+              ],
+              "description": "Claude's reading of whether the point carries over. Anish decides."
+            },
+            "why": {
+              "type": "string"
+            },
+            "assigned": {
+              "enum": [
+                "pending",
+                "yes",
+                "no"
+              ]
+            },
+            "found": {
+              "type": "string",
+              "description": "What a check of the listed build's own page turned up."
+            },
+            "decided": {
+              "$ref": "#/$defs/date"
+            }
+          }
+        },
+        "other_builds": {
+          "type": "array",
+          "description": "Sources on file that report on the same point for another build. Not counted as support.",
+          "items": {
+            "type": "object",
+            "required": [
+              "source",
+              "about"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "source": {
+                "$ref": "#/$defs/id"
+              },
+              "about": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "replaces": {
+          "type": "string",
+          "description": "Id of the old-page line this came from."
+        },
+        "status": {
+          "enum": [
+            "draft",
+            "approved",
+            "to-assign",
+            "held"
+          ],
+          "description": "approved: shown to Anish as worded and kept. draft: wording he has not read. to-assign: from another build, waiting on his call. held: kept off the card until something is checked."
+        },
+        "wording_note": {
+          "type": "string"
+        },
+        "my_note": {
+          "$ref": "#/$defs/id",
+          "description": "Id of Anish's own note on this point, in data/my-notes.yaml."
+        },
+        "about": {
+          "type": "string",
+          "description": "For a note: the data field it sits beside, such as laptop."
+        },
+        "added_in": {
+          "type": "string",
+          "description": "Name of the research pass that added this line, such as reviews-2026-11-17. A draft line is shown on the page only when the build script names its pass (build_v28.py shows reviews-2026-11-17)."
+        }
+      }
+    },
+    "bagFile": {
+      "type": "object",
+      "required": [
+        "model",
+        "variants",
+        "claims"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "migration": {
+          "type": "object"
+        },
+        "model": {
+          "type": "object",
+          "required": [
+            "id",
+            "brand",
+            "label",
+            "category",
+            "use",
+            "build_class"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "$ref": "#/$defs/id"
+            },
+            "legacy_id": {
+              "type": "string"
+            },
+            "brand": {
+              "$ref": "#/$defs/id"
+            },
+            "collab": {
+              "$ref": "#/$defs/id"
+            },
+            "label": {
+              "type": "string",
+              "description": "Our grouping label for the design at this size. Not a maker's product name."
+            },
+            "family": {
+              "type": "string"
+            },
+            "category": {
+              "enum": [
+                "backpack",
+                "sling",
+                "pouch",
+                "duffel",
+                "tote",
+                "other"
+              ]
+            },
+            "use": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "edc",
+                  "travel",
+                  "outdoor"
+                ]
+              }
+            },
+            "build_class": {
+              "enum": [
+                "structured",
+                "ultralight",
+                "packable"
+              ]
+            },
+            "drawings": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/media"
+              }
+            },
+            "photos": {
+              "type": "array",
+              "description": "Every photo the old page used for this model, with what the page said about it.",
+              "items": {
+                "type": "object",
+                "required": [
+                  "file",
+                  "role"
+                ]
+              }
+            },
+            "reviews": {
+              "type": "array",
+              "description": "Reviews and owner reports on file for this bag, with the build each covers.",
+              "items": {
+                "type": "object",
+                "required": [
+                  "source",
+                  "covers"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "source": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "covers": {
+                    "type": "string"
+                  },
+                  "used_for": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "sourcing": {
+              "type": "string",
+              "description": "One plain line on where the notes come from. Never states that something was not found."
+            }
+          }
+        },
+        "variants": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/variant"
+          }
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/claim"
+          }
+        },
+        "legacy": {
+          "type": "object",
+          "description": "Strings from the old page that the new model replaces. Not rendered."
+        },
+        "features": {
+          "type": "array",
+          "description": "What the maker says the bag has. Rendered as 'Maker says', apart from pros and cons.",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "text",
+              "sources",
+              "applies_to"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/id"
+              },
+              "text": {
+                "type": "string"
+              },
+              "scope": {
+                "enum": [
+                  "design",
+                  "material",
+                  "general"
+                ]
+              },
+              "sources": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "$ref": "#/$defs/id"
+                }
+              },
+              "applies_to": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "$ref": "#/$defs/id"
+                }
+              },
+              "replaces": {
+                "type": "string"
+              },
+              "was_kind": {
+                "enum": [
+                  "pro",
+                  "con"
+                ]
+              },
+              "status": {
+                "enum": [
+                  "draft",
+                  "approved"
+                ]
+              },
+              "checked": {
+                "type": "string",
+                "description": "What a re-check of the maker's page found, with the date."
+              }
+            }
+          }
+        },
+        "computed": {
+          "type": "array",
+          "description": "Old-page lines that are now worked out from data instead of typed.",
+          "items": {
+            "type": "object",
+            "required": [
+              "replaces",
+              "was",
+              "rule",
+              "state"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "replaces": {
+                "type": "string"
+              },
+              "was": {
+                "type": "string"
+              },
+              "rule": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "brandsFile": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "name",
+          "site"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "site": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "country_checked": {
+            "type": "boolean"
+          },
+          "image_permission": {
+            "type": "object",
+            "required": [
+              "status"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_asked",
+                  "asked",
+                  "granted",
+                  "refused"
+                ]
+              },
+              "terms": {
+                "type": "string"
+              },
+              "terms_url": {
+                "type": "string"
+              },
+              "contact": {
+                "type": "string"
+              },
+              "asked": {
+                "$ref": "#/$defs/date"
+              },
+              "answered": {
+                "$ref": "#/$defs/date"
+              }
+            }
+          },
+          "country_note": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "materialsFile": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "name",
+          "maker",
+          "family",
+          "uhmwpe_role",
+          "uhmwpe_content",
+          "in_uhmwpe_section"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "As the fabric's maker writes it."
+          },
+          "maker": {
+            "type": "string"
+          },
+          "family": {
+            "type": "string"
+          },
+          "fibre": {
+            "type": "string"
+          },
+          "construction": {
+            "type": "string"
+          },
+          "uhmwpe_role": {
+            "enum": [
+              "face",
+              "fibre-layer",
+              "fused-film",
+              "grid-only",
+              "none",
+              "not-published"
+            ]
+          },
+          "uhmwpe_content": {
+            "type": "object",
+            "required": [
+              "published"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "published": {
+                "type": "boolean"
+              },
+              "statement": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              }
+            }
+          },
+          "in_uhmwpe_section": {
+            "type": "object",
+            "required": [
+              "decision"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "decision": {
+                "enum": [
+                  "in",
+                  "out",
+                  "undecided",
+                  "not-applicable"
+                ]
+              },
+              "reasons": {
+                "type": "string"
+              },
+              "decided": {
+                "type": "string"
+              },
+              "draft": {
+                "type": "object",
+                "description": "Drafted reasons against the three tests, awaiting Anish's decision."
+              }
+            }
+          },
+          "note": {
+            "type": "string"
+          },
+          "checks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/check"
+            }
+          }
+        }
+      }
+    },
+    "sourcesFile": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "kind",
+          "publisher"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "url": {
+            "type": "string",
+            "pattern": "^https?://"
+          },
+          "kind": {
+            "enum": [
+              "maker-page",
+              "maker-other",
+              "retailer",
+              "review",
+              "launch-coverage",
+              "video",
+              "forum",
+              "own",
+              "other"
+            ]
+          },
+          "publisher": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "archived": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "last_ok": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/date"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "published": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Publication date as the page gives it (YYYY, YYYY-MM or YYYY-MM-DD)."
+          },
+          "relays_maker_info": {
+            "type": "boolean",
+            "description": "True when the page repeats information the maker supplied rather than its own testing."
+          },
+          "opened_by": {
+            "type": "string",
+            "description": "Who opened the page and how."
+          }
+        },
+        "if": {
+          "properties": {
+            "kind": {
+              "const": "own"
+            }
+          }
+        },
+        "else": {
+          "required": [
+            "url"
+          ]
+        },
+        "description": "One page or video. kind own is Anish's own bag or measurement and has no url."
+      }
+    },
+    "sectionFile": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "category",
+        "rule",
+        "exclusions",
+        "revision"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "title": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "rule": {
+          "type": "object"
+        },
+        "scope_note": {
+          "type": "string"
+        },
+        "approach_note": {
+          "type": "string",
+          "description": "One or two plain sentences on what the pages are: checked specs beside reviewer and owner consensus, with Anish's own reviews to follow. Shown with the scope note."
+        },
+        "exclusions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "reason"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "decided": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "revision": {
+          "type": "object",
+          "required": [
+            "letter",
+            "date"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "letter": {
+              "type": "string"
+            },
+            "date": {
+              "$ref": "#/$defs/date"
+            }
+          }
+        },
+        "changelog": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "notesFile": {
+      "type": "array",
+      "description": "Anish's own notes. Kept apart from sourced lines; each points at a build and, where it answers a line on the card, at that line.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "date",
+          "variant",
+          "said"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/id"
+          },
+          "date": {
+            "$ref": "#/$defs/date"
+          },
+          "variant": {
+            "$ref": "#/$defs/id"
+          },
+          "about": {
+            "$ref": "#/$defs/id"
+          },
+          "experience": {
+            "enum": [
+              "own use",
+              "not experienced",
+              "handled"
+            ]
+          },
+          "said": {
+            "type": "string",
+            "description": "His words, as he gave them."
+          },
+          "draft_text": {
+            "type": "string",
+            "description": "A draft of how it could read on the card. His to rewrite."
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "approved"
+            ]
+          }
+        }
+      }
+    },
+    "ownedFile": {
+      "type": "array",
+      "description": "Bags Anish owns. His own record, kept apart from sourced data; each entry points at a listed build.",
+      "items": {
+        "type": "object",
+        "required": [
+          "variant",
+          "date"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "variant": {
+            "$ref": "#/$defs/id"
+          },
+          "date": {
+            "$ref": "#/$defs/date",
+            "description": "The day he said so."
+          },
+          "review": {
+            "enum": [
+              "planned",
+              "published"
+            ],
+            "description": "Whether his own review exists yet."
+          },
+          "review_url": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

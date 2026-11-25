@@ -1,0 +1,779 @@
+migration:
+  source: Ultra Carry Index page, Rev AE (v20)
+  migrated: '2026-11-13'
+  claims: Anish read every line on 13 Nov 2026, one question at a time; approved lines are the ones he kept as shown. Lines from another build name the build. Old wording and search results are under legacy.claims.
+  photos: model.photos lists every photo the old page used, as its code and footer describe them; permission is none for all
+  sources_search: Claims and spec gaps were searched on 13 Nov 2026; see evidence on each claim and reports/sources-search-2026-11-13.md
+  proposals: Applied on 13 Nov 2026 by tools/migrate/apply_decisions.py, following Anish's rulings of that day.
+  availability: Removed on 13 Nov 2026. Each build links out instead; the old strings stay under legacy.
+model:
+  id: tortuga-superlite-backpack
+  legacy_id: slite
+  brand: tortuga
+  label: Superlite Backpack 34L
+  family: Superlite
+  category: backpack
+  use:
+  - edc
+  - travel
+  build_class: ultralight
+  drawings:
+  - file: drawings/slite/sketch/slite-sketch-front.svg
+    kind: drawing
+    view: front
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/slite/sketch/slite-sketch-iso.svg
+    kind: drawing
+    view: three-quarter
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/slite/sketch/slite-sketch-back.svg
+    kind: drawing
+    view: back
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/slite/sketch/slite-sketch-side.svg
+    kind: drawing
+    view: side
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  photos:
+  - file: img/maker/1446e7b2-superlite-backpack_3-4right.webp
+    role: card main
+    view: three-quarter
+    credit_text: tortugabackpacks.com
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: superlite-backpack 3-4 right'
+    permission: none
+  - file: img/slite-front.jpg
+    role: hero strip
+    view: front
+    credit_text: Tortuga's Kickstarter campaign photo
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'Not stated by the page; footer: ''Superlite front, Tortuga''s Kickstarter campaign photo'''
+    permission: none
+  - file: img/maker/ac38b7ca-superlite-backpack_3-4right.webp
+    role: hero strip
+    view: three-quarter
+    credit_text: null
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: superlite-backpack 3-4 right'
+    permission: none
+  reviews:
+  - source: pack-hacker-superlite-backpack
+    covers: 'Tortuga Superlite Backpack 34L, Challenge ULTRA 200TX (same build as card); tested for a week; published 2026-06-16, updated 2026-08-17. Page does not mention Kickstarter-era testing (ctx ''covers'' says it does). Discloses: Reader-supported, may earn affiliate commission (Avantlink links to Tortuga); promotes ''up to 15% off Tortuga'' for Pro members. Sample/purchase status not stated.'
+    used_for:
+    - slite-pro-1
+    - slite-pro-3
+    - slite-pro-5
+    - slite-con-2
+    - slite-con-3
+  - source: nomads-nation-tortuga-superlite-review
+    covers: 'Tortuga Superlite 34L, ULTRA (Ultra Black; same build); tested weight ~2.1 lb; published 2026-07-14, updated 2026-11-11; author Aaron Radcliffe. Discloses: No affiliate or sample disclosure in page text; ''Check Best Price'' redirect links. Author founded Fyro and promotes its Levo backpack in Alternatives (competing-interest).'
+    used_for:
+    - slite-pro-1
+    - slite-pro-3
+    - slite-con-2
+    - slite-con-3
+    - slite-note-1
+  - source: hafu-way-there-video-tortuga-superlite
+    covers: 'Superlite 34L in ULTRA, 2.2 lb (said in video and description); first hands-on impressions, ''I''ve only had this bag for a couple days''; 5:28, uploaded 2026-06-16, before the Kickstarter. Discloses: Tortuga sent the bag early for review; not paid; Tortuga did not review or approve content; Kickstarter link may be an affiliate link.'
+    used_for:
+    - slite-pro-1
+    - slite-pro-3
+    - slite-con-2
+    - slite-pro-7
+    - slite-con-5
+  - source: carry-on-club-tortuga-superlite-early-impressions
+    covers: 'Superlite 26L (stated in page meta description, not body), white colourway, ULTRA; one ~5-mile day hike in Oregon heat; early impressions only. Different size from the 34L card. Discloses: Affiliate links marked. Sample vs purchase not stated (author refers to ''owning'' an ULTRA bag). Page dated only ''2026''.'
+    used_for: []
+  - source: pack-hacker-video-tortuga-superlite-backpack-review
+    covers: 'Superlite Backpack 34 L, 2.2 lb, ULTRA 200TX; pre-production sample (said to precede Kickstarter version, may differ slightly); tested for one week; hip belt tested; 16-in MacBook Pro in sleeve. Colour not stated in transcript. Uploaded 2026-06-16. Discloses: Pack Hacker Reviews channel: same publisher and same tester (Lauren, 5 ft 6 in, 16.5 in torso) as the on-file Pack Hacker written review, which the description links to; NOT an independent voice, count Pack Hacker once. Description carries Pack Hacker affiliate-link and Amazon Associates terms. Says it is a pre-production sample; who supplied it and whether paid is not stated.'
+    used_for:
+    - slite-con-7
+  - source: away-together-video-tortuga-superlite-review
+    covers: 'Superlite 34 L, ULTRA 200TX, 2.2 lb; production colour not shown/stated; length of use not stated (''getting to know'' the bag). Uploaded 2026-06-16 (launch day). Discloses: Says Tortuga sent the bag for testing and has no influence over what is said. Description: Tortuga link via tortuga.kckb.me referral plus awaytogether.com/go links; affiliate notice (''some of the product links are affiliate links''). Asks viewers to use the links. No payment stated.'
+    used_for:
+    - slite-pro-1
+    - slite-pro-3
+    - slite-con-7
+  - source: visionswell-video-tortuga-superlite-backpack-review
+    covers: 'Superlite 34 L, ULTRA, 2.2 lb; WHITE early-prototype colourway, said not commercially available or planned; hip belt (white) tested. First-look review; reviewer is a personal-item-only traveller. Uploaded 2026-06-16. Design points count; fabric look/colour does not. Discloses: Says Tortuga sent it for test and review; opinions his own. Description: Kickstarter link via visionswell shortlink, affiliate disclosure, Amazon Associates, and free-gear disclosure. No payment stated.'
+    used_for:
+    - slite-pro-1
+    - slite-pro-7
+  - source: one-bag-travels-video-tortuga-superlite-ultra-review
+    covers: 'Superlite 34 L, ULTRA 200TX, 2.2 lb; taken on ''a couple of trips'' before filming; compared with Tortuga Light 40. Colour not stated. Uploaded 2026-07-14. Discloses: Description: affiliate referral link to Tortuga (onebagtravels.com/refer) and affiliate/Amazon Associates disclaimer. Whether the bag was supplied or bought is not stated.'
+    used_for:
+    - slite-pro-1
+    - slite-pro-3
+    - slite-con-5
+  - source: unpackd-video-tortuga-superlite-review
+    covers: 'Superlite 34 L, ULTRA 200TX; WHITE sample colourway (says Kickstarter is black only); one week of daily use, says so himself; 3-mile humid-day trail walk. Uploaded 2026-06-16. Design points count; fabric look/colour (patina, wrinkles) does not. Discloses: Received the bag in exchange for a review; no payment, brands have no say; thanks Tortuga for sending it. Description: affiliate links (unpackd.link/tortuga, Amazon). Reads out a Tortuga co-founder''s Facebook-group reply.'
+    used_for:
+    - slite-con-3
+    - slite-pro-6
+    - slite-con-6
+    - slite-note-1
+  - source: nitpacker-video-tortuga-superlite
+    covers: 'Superlite 34 L, ULTRA, 2.2 lb; WHITE review/PR sample colourway (says public version is black/grey only); his first Tortuga bag; hip belt shown; length of use not stated. Uploaded 2026-06-16. Design points count; fabric look/colour does not. Discloses: Description link marked ''(affiliate)'' (tidd.ly). Implies the white bag is a review/PR sample; does not say who supplied it or whether paid. Mentions testing another Tortuga bag.'
+    used_for:
+    - slite-pro-6
+    - slite-con-5
+    - slite-note-1
+  - source: outen-the-lights-video-tortuga-superlite-pack-with-me
+    covers: 'Superlite 34 L, ULTRA 200TX, 2.2 lb, BLACK (the sold colour); launch-day pack-with-me for a 2-week trip (packing demo, not 2 weeks of use); little spoken opinion. Uploaded 2026-06-16. Discloses: Description: Tortuga link (alnk.to), Fyro referral, Pioneer Carry tidd.ly link, Field Notes affiliate code; no explicit affiliate statement. Sample or purchase not stated.'
+    used_for:
+    - slite-pro-3
+    - slite-con-2
+  - source: the-perfect-bag-video-tortuga-superlite
+    covers: 'Superlite 34 L (label read on camera; he also says ''35 L'', ''2 lb''), ULTRA; WHITE prototype colourway, says sold version is black; used on a 4-day trip to Iowa. Uploaded 2026-06-16. Design points count; fabric look/colour (scuffing on white) does not. Discloses: Thanks Tortuga for letting him go hands-on with a prototype. Description: no payments or sponsorship from bag makers, no affiliate links to bag makers (Amazon affiliate links used); but on camera he calls the Kickstarter link an affiliate link. Description''s ''This Bag'' link is empty.'
+    used_for:
+    - slite-pro-1
+    - slite-pro-3
+    - slite-con-2
+    - slite-con-3
+    - slite-con-6
+  - source: kickstarter-superlite-backpack-comments
+    covers: 'Delivered retail Superlite Backpack: Benji posts ''Mine just arrived (Aus)!'' about 28 days before the scrape, Tortuga replies that international Batch 1 has shipped; next day he answers his order number ''249'' and gives his opinion. He names Ultra 200TX. Colour not stated (only black is sold). Short-term owner impressions. Discloses: Owner post by a campaign backer (bought via Kickstarter), on the maker''s campaign page where Tortuga staff reply. No affiliate or sample involvement.'
+    used_for:
+    - slite-pro-1
+    - slite-con-2
+    - slite-pro-6
+  sourcing: Based on reviews from Pack Hacker and Nomads Nation, eight video reviews, a backer's comments on the Kickstarter page, plus Tortuga's own pages.
+variants:
+- id: superlite-backpack
+  name: Superlite Backpack
+  page: tortuga-superlite-backpack
+  link:
+    url: https://www.tortugabackpacks.com/products/superlite-backpack
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - ultra-200tx
+    shell_as_written: ULTRA 200TX, made of UHMWPE and high-tenacity polyester
+    other: YKK zippers, Woojin buckles
+  volume_l: 34
+  weight_g: 1000
+  dims_cm:
+    h: 53
+    w: 32
+    d: 20
+  as_written:
+    weight: 2.2 lbs (1.0 kg)
+    dims: 21 x 12.5 x 8 in (53 x 32 x 20 cm)
+  laptop:
+    max_in: 16
+  opening: Clamshell that opens flat like a suitcase
+  price:
+    amount: 325
+    currency: USD
+    seller: tortuga
+  release: pre-launch
+  media:
+  - file: img/maker/1446e7b2-superlite-backpack_3-4right.webp
+    kind: photo
+    view: unknown
+    shows_variant: null
+    credit: tortugabackpacks.com
+    source: https://www.tortugabackpacks.com/products/superlite-backpack
+    permission: none
+  checks:
+  - date: '2026-11-13'
+    source: tortuga-superlite-backpack
+    basis: page
+    method: Page opened and read by Claude through WebFetch; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - laptop
+    - fabric.shell
+    - release
+  - date: '2026-11-13'
+    source: tortuga-superlite-backpack
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - opening
+  - date: '2026-11-13'
+    source: pack-hacker-superlite-backpack
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - made_in
+    note: From Pack Hacker's hands-on review; Tortuga's product page does not state it
+  - date: '2026-11-13'
+    source: tortuga-kickstarter-superlite
+    basis: page
+    method: Opened by Claude through Firecrawl on 13 Nov 2026
+    fields:
+    - made_in
+    note: Tortuga's Kickstarter campaign gives Vietnam; Pack Hacker lists the same.
+  made_in: Vietnam
+  units:
+    weight:
+      metric:
+        g: 1000
+        from: maker
+      imperial:
+        lb: 2.2
+        from: maker
+    dims:
+      metric:
+        cm:
+        - 53
+        - 32
+        - 20
+        from: maker
+      imperial:
+        in:
+        - 21
+        - 12.5
+        - 8
+        from: maker
+features:
+- id: slite-feat-1-b
+  text: Dual-density shoulder straps.
+  scope: design
+  sources:
+  - tortuga-superlite-backpack
+  applies_to:
+  - superlite-backpack
+  replaces: slite-pro-1
+  was_kind: pro
+  status: approved
+- id: slite-feat-2
+  text: Optional hip belt transfers up to 80% of the weight from shoulders to hips.
+  scope: design
+  sources:
+  - tortuga-kickstarter-superlite
+  - men-s-gear-tortuga-superlite-backpack
+  - gear-patrol-tortuga-superlite
+  applies_to:
+  - superlite-backpack
+  replaces: slite-pro-2
+  was_kind: pro
+  status: approved
+claims:
+- id: slite-pro-1
+  kind: pro
+  text: Comfortable harness, with load lifters and a channelled back panel.
+  voice: reviewers
+  support: eight reviewers and owners agree
+  scope: design
+  basis: review
+  sources:
+  - pack-hacker-superlite-backpack
+  - nomads-nation-tortuga-superlite-review
+  - hafu-way-there-video-tortuga-superlite
+  - away-together-video-tortuga-superlite-review
+  - visionswell-video-tortuga-superlite-backpack-review
+  - one-bag-travels-video-tortuga-superlite-ultra-review
+  - the-perfect-bag-video-tortuga-superlite
+  - kickstarter-superlite-backpack-comments
+  observed_on:
+  - superlite-backpack
+  status: approved
+  source_notes:
+  - source: pack-hacker-superlite-backpack
+    about: same build; tested during the Kickstarter, sample status not stated
+  - source: nomads-nation-tortuga-superlite-review
+    about: same build; sample status not stated
+  - source: hafu-way-there-video-tortuga-superlite
+    about: same build; first impressions after a couple of days; bag sent by Tortuga, not paid
+  - source: away-together-video-tortuga-superlite-review
+    about: same build; bag sent by Tortuga; affiliate links
+  - source: visionswell-video-tortuga-superlite-backpack-review
+    about: same build (white prototype colour); first look; bag sent by Tortuga; affiliate links
+  - source: one-bag-travels-video-tortuga-superlite-ultra-review
+    about: same build; taken on a couple of trips; affiliate link, sample status not stated
+  - source: the-perfect-bag-video-tortuga-superlite
+    about: same build (white prototype); used on a four-day trip; prototype lent by Tortuga
+  - source: kickstarter-superlite-backpack-comments
+    about: same build; a backer's comments after his bag arrived, on Tortuga's campaign page
+  replaces: slite-pro-1
+  wording_note: 'Both hands-on reviews found the harness comfortable; flourish and weight (a data field) removed. ''Dual-density'' is maker-only, split to -b. 17 Nov 2026: support widened with Hafu Way There, Away Together w/ Nik and Allie, visionswell, One Bag Travels, The Perfect Bag, Kickstarter backer comments (research/reviews-2026-11-17/merged/slite.json point 0; research/reviews-2026-11-17/merged/slite2.json point 0); was ''reviewers agree''. Hafu Way There, Away Together, visionswell, One Bag Travels, The Perfect Bag and a Kickstarter backer all call the harness or carry comfortable. Pack Hacker''s video repeats its written review and is not counted again.'
+- id: slite-pro-3
+  kind: pro
+  text: Clamshell opens flat like a suitcase, and the laptop sleeve has a suspended false bottom.
+  voice: reviewers
+  support: seven reviews agree
+  scope: design
+  basis: review
+  sources:
+  - tortuga-superlite-backpack
+  - pack-hacker-superlite-backpack
+  - nomads-nation-tortuga-superlite-review
+  - hafu-way-there-video-tortuga-superlite
+  - one-bag-travels-video-tortuga-superlite-ultra-review
+  - outen-the-lights-video-tortuga-superlite-pack-with-me
+  - away-together-video-tortuga-superlite-review
+  - the-perfect-bag-video-tortuga-superlite
+  observed_on:
+  - superlite-backpack
+  status: approved
+  source_notes:
+  - source: tortuga-superlite-backpack
+    about: same build
+  - source: pack-hacker-superlite-backpack
+    about: same build; tested with a 16-inch MacBook Pro, notes the false bottom
+  - source: nomads-nation-tortuga-superlite-review
+    about: same build; suitcase-style opening and suspended false bottom
+  - source: hafu-way-there-video-tortuga-superlite
+    about: same build; first impressions after a couple of days; bag sent by Tortuga, not paid
+  - source: one-bag-travels-video-tortuga-superlite-ultra-review
+    about: same build; taken on a couple of trips; affiliate link, sample status not stated
+  - source: outen-the-lights-video-tortuga-superlite-pack-with-me
+    about: same build (black); a launch-day packing demo; purchase links, sample status not stated
+  - source: away-together-video-tortuga-superlite-review
+    about: same build; bag sent by Tortuga; affiliate links
+  - source: the-perfect-bag-video-tortuga-superlite
+    about: same build (white prototype); used on a four-day trip; prototype lent by Tortuga
+  other_builds:
+  - source: tortuga-fastest-person-at-airport
+    about: Tortuga Travel Backpack Pro 40L (different bag); same clamshell and suspended 16-inch sleeve
+  replaces: slite-pro-3
+  wording_note: '''Familiar Tortuga layout'' compares with another bag, removed. Both reviews confirm the opening and suspended sleeve. Laptop size is a data field. 17 Nov 2026: support widened with Hafu Way There, One Bag Travels, outen the lights, Away Together w/ Nik and Allie, The Perfect Bag (research/reviews-2026-11-17/merged/slite.json points 2, 3; research/reviews-2026-11-17/merged/slite2.json points 2, 5); was ''reviewers agree''. Away Together, outen the lights and The Perfect Bag describe the suitcase-style clamshell; Hafu Way There, One Bag Travels and outen the lights describe the laptop sleeve''s false bottom.'
+- id: slite-pro-5
+  kind: pro
+  text: Snug fit holds the weight close to the body (tester 5 ft 6 in, 16.5 in torso).
+  voice: reviewers
+  support: one review
+  scope: design
+  basis: review
+  sources:
+  - pack-hacker-superlite-backpack
+  observed_on:
+  - superlite-backpack
+  status: approved
+  source_notes:
+  - source: pack-hacker-superlite-backpack
+    about: same build; tester 5'6" with a 16.5-inch torso
+  replaces: slite-con-1
+  wording_note: Only Pack Hacker says 'snug fit', as praise, so moved to pros. Broad-shoulder caution was inference.
+- id: slite-con-2
+  kind: con
+  text: Single bottle pocket and no luggage pass-through
+  voice: reviewers
+  support: six reviewers and owners agree
+  scope: design
+  basis: review
+  sources:
+  - nomads-nation-tortuga-superlite-review
+  - pack-hacker-superlite-backpack
+  - tortuga-superlite-backpack
+  - hafu-way-there-video-tortuga-superlite
+  - the-perfect-bag-video-tortuga-superlite
+  - kickstarter-superlite-backpack-comments
+  - outen-the-lights-video-tortuga-superlite-pack-with-me
+  observed_on:
+  - superlite-backpack
+  status: approved
+  source_notes:
+  - source: nomads-nation-tortuga-superlite-review
+    about: same build
+  - source: pack-hacker-superlite-backpack
+    about: same build
+  - source: tortuga-superlite-backpack
+    about: same build; lists one stretch bottle pocket, no pass-through mentioned
+  - source: hafu-way-there-video-tortuga-superlite
+    about: same build; first impressions after a couple of days; bag sent by Tortuga, not paid
+  - source: the-perfect-bag-video-tortuga-superlite
+    about: same build (white prototype); used on a four-day trip; prototype lent by Tortuga
+  - source: kickstarter-superlite-backpack-comments
+    about: same build; a backer's comments after his bag arrived, on Tortuga's campaign page
+  - source: outen-the-lights-video-tortuga-superlite-pack-with-me
+    about: same build (black); a launch-day packing demo; purchase links, sample status not stated
+  replaces: slite-con-2
+  wording_note: 'Both hands-on reviews note one bottle pocket and no pass-through; Tortuga''s page agrees. 17 Nov 2026: support widened with Hafu Way There, The Perfect Bag, Kickstarter backer comments, outen the lights (research/reviews-2026-11-17/merged/slite.json points 5, 6; research/reviews-2026-11-17/merged/slite2.json points 8, 9); was ''reviewers agree''. Hafu Way There, The Perfect Bag and a Kickstarter backer note the single bottle pocket (two of them say they can live with it); outen the lights and Pack Hacker''s video confirm there is no luggage pass-through.'
+- id: slite-con-3
+  kind: con
+  text: Does not stand fully upright on its own.
+  voice: reviewers
+  support: four reviews agree
+  scope: design
+  basis: review
+  sources:
+  - pack-hacker-superlite-backpack
+  - nomads-nation-tortuga-superlite-review
+  - unpackd-video-tortuga-superlite-review
+  - the-perfect-bag-video-tortuga-superlite
+  observed_on:
+  - superlite-backpack
+  status: approved
+  source_notes:
+  - source: pack-hacker-superlite-backpack
+    about: same build
+  - source: nomads-nation-tortuga-superlite-review
+    about: same build; says it can self-stand but leans
+  - source: unpackd-video-tortuga-superlite-review
+    about: same build (white sample colour); a week of daily use; bag received in exchange for a review, not paid; affiliate links
+  - source: the-perfect-bag-video-tortuga-superlite
+    about: same build (white prototype); used on a four-day trip; prototype lent by Tortuga
+  replaces: slite-con-3
+  wording_note: 'The two reviews disagree, so the flat con becomes both findings side by side. 17 Nov 2026: support widened with UnPack''D, The Perfect Bag (research/reviews-2026-11-17/merged/slite.json point 7; research/reviews-2026-11-17/merged/slite2.json point 11); was ''reviewers agree''. UnPack''D says it tends to lean forward even fully packed, and The Perfect Bag says it does not stand up on its own.'
+- id: slite-pro-6
+  kind: pro
+  text: The uncoated YKK zippers run smoothly.
+  voice: reviewers
+  support: three reviewers and owners agree
+  scope: design
+  basis: review
+  sources:
+  - unpackd-video-tortuga-superlite-review
+  - nitpacker-video-tortuga-superlite
+  - kickstarter-superlite-backpack-comments
+  observed_on:
+  - superlite-backpack
+  status: approved
+  source_notes:
+  - source: unpackd-video-tortuga-superlite-review
+    about: same build (white sample colour); a week of daily use; bag received in exchange for a review, not paid; affiliate links
+  - source: nitpacker-video-tortuga-superlite
+    about: same build (white review sample); affiliate link
+  - source: kickstarter-superlite-backpack-comments
+    about: same build; a backer's comments after his bag arrived, on Tortuga's campaign page
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. UnPack''D: "they are buttery smooth"; nitpacker: "You get a smooth smooth smooth zipper experience."; Kickstarter backer comments: "Non-PU YKK coated zippers run smooth (interior/exterior)"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''agree to all (on the Superlite heading)''). research/reviews-2026-11-17/merged/slite2.json point 20.'
+  added_in: reviews-2026-11-17
+- id: slite-pro-7
+  kind: pro
+  text: The stretch mesh side pocket holds a bottle securely.
+  voice: reviewers
+  support: two reviews
+  scope: design
+  basis: review
+  sources:
+  - hafu-way-there-video-tortuga-superlite
+  - visionswell-video-tortuga-superlite-backpack-review
+  observed_on:
+  - superlite-backpack
+  status: approved
+  source_notes:
+  - source: hafu-way-there-video-tortuga-superlite
+    about: same build; first impressions after a couple of days; bag sent by Tortuga, not paid
+  - source: visionswell-video-tortuga-superlite-backpack-review
+    about: same build (white prototype colour); first look; bag sent by Tortuga; affiliate links
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. Hafu Way There: "this mesh pocket grips your water bottle very well"; visionswell: "I can fit my 32 oz Klean Kanteen TKWide no problem in there"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''agree to all (on the Superlite heading)''). research/reviews-2026-11-17/merged/slite.json point 4; research/reviews-2026-11-17/merged/slite2.json point 7.'
+  added_in: reviews-2026-11-17
+- id: slite-con-5
+  kind: con
+  text: Not much organisation beyond the two main compartments.
+  voice: reviewers
+  support: three reviews agree
+  scope: design
+  basis: review
+  sources:
+  - hafu-way-there-video-tortuga-superlite
+  - nitpacker-video-tortuga-superlite
+  - one-bag-travels-video-tortuga-superlite-ultra-review
+  observed_on:
+  - superlite-backpack
+  status: approved
+  source_notes:
+  - source: hafu-way-there-video-tortuga-superlite
+    about: same build; first impressions after a couple of days; bag sent by Tortuga, not paid
+  - source: nitpacker-video-tortuga-superlite
+    about: same build (white review sample); affiliate link
+  - source: one-bag-travels-video-tortuga-superlite-ultra-review
+    about: same build; taken on a couple of trips; affiliate link, sample status not stated
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. Hafu Way There: "Not too much organization outside of these two compartments here."; nitpacker: "You''re not going to get a ton of organization"; One Bag Travels: "it just doesn''t have that many pockets"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''agree to all (on the Superlite heading)''). research/reviews-2026-11-17/merged/slite.json point 12; research/reviews-2026-11-17/merged/slite2.json point 17.'
+  added_in: reviews-2026-11-17
+- id: slite-con-6
+  kind: con
+  text: Admin and main zipper tracks sit together, so the wrong one often gets opened.
+  voice: reviewers
+  support: two reviews
+  scope: design
+  basis: review
+  sources:
+  - unpackd-video-tortuga-superlite-review
+  - the-perfect-bag-video-tortuga-superlite
+  observed_on:
+  - superlite-backpack
+  status: approved
+  source_notes:
+  - source: unpackd-video-tortuga-superlite-review
+    about: same build (white sample colour); a week of daily use; bag received in exchange for a review, not paid; affiliate links
+  - source: the-perfect-bag-video-tortuga-superlite
+    about: same build (white prototype); used on a four-day trip; prototype lent by Tortuga
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. UnPack''D: "I would accidentally open the main compartment and vice versa"; The Perfect Bag: "almost every time I accidentally open the main compartment"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''agree to all (on the Superlite heading)''). research/reviews-2026-11-17/merged/slite2.json point 22.'
+  added_in: reviews-2026-11-17
+- id: slite-con-7
+  kind: con
+  text: The harness isn't height-adjustable.
+  voice: reviewers
+  support: two reviews
+  scope: design
+  basis: review
+  sources:
+  - pack-hacker-video-tortuga-superlite-backpack-review
+  - away-together-video-tortuga-superlite-review
+  observed_on:
+  - superlite-backpack
+  status: held
+  source_notes:
+  - source: pack-hacker-video-tortuga-superlite-backpack-review
+    about: same build (pre-production sample); a week of use; same publisher and tester as Pack Hacker's written review, so counted once
+  - source: away-together-video-tortuga-superlite-review
+    about: same build; bag sent by Tortuga; affiliate links
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. Pack Hacker: "the harness system is that it''s not adjustable like previous versions"; Away Together w/ Nik and Allie: "the harness here is not height adjustable"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish took it off the card the same day (his comment on the reading list: ''drop it for now (his thought: features such as the second bottle pocket and harness adjustment were dropped to save weight, but he has no definite source for that)''). research/reviews-2026-11-17/merged/slite2.json point 23.'
+  added_in: reviews-2026-11-17
+- id: slite-note-1
+  kind: note
+  text: 'Not fully waterproof: the zippers are uncoated and the seams are stitched.'
+  voice: reviewers
+  support: three reviews agree
+  scope: material
+  basis: review
+  sources:
+  - nomads-nation-tortuga-superlite-review
+  - nitpacker-video-tortuga-superlite
+  - unpackd-video-tortuga-superlite-review
+  observed_on:
+  - superlite-backpack
+  status: held
+  source_notes:
+  - source: nomads-nation-tortuga-superlite-review
+    about: same build; price links, sample status not stated, and the author runs his own bag brand
+  - source: nitpacker-video-tortuga-superlite
+    about: same build (white review sample); affiliate link
+  - source: unpackd-video-tortuga-superlite-review
+    about: same build (white sample colour); a week of daily use; bag received in exchange for a review, not paid; affiliate links
+  about: fabric.shell
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. Nomads Nation: "should not be treated as completely waterproof"; nitpacker: "not going to get the same level of waterproofing with non-PU coated zippers"; UnPack''D: "this bag is not going to be waterproof because it is stitched together"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish took it off the card the same day (his comment on the reading list: ''valid for all bags in this list, so not something to highlight here''). research/reviews-2026-11-17/merged/slite.json point 10; research/reviews-2026-11-17/merged/slite2.json point 15.'
+  added_in: reviews-2026-11-17
+computed: []
+legacy:
+  verdict: An organized 34 L that weighs a kilo.
+  price_note: tortugabackpacks.com · Spring 2027
+  avail: Pre-launch
+  origin: USA
+  laptop: 16"
+  fabric: ULTRA 200TX
+  opening: Suitcase-style clamshell
+  brand: Tortuga
+  src: https://www.tortugabackpacks.com/products/superlite-backpack
+  claims:
+  - id: slite-pro-1
+    kind: pro
+    text: 'Early reviews agree it trims weight without trimming comfort: dual-density straps, load lifters, vented back panel at 1 kg'
+    scope: material
+    basis: review
+    sources:
+    - pack-hacker-superlite-backpack
+    - nomads-nation-tortuga-superlite-review
+    - tortuga-superlite-backpack
+    evidence:
+      status: supported
+      note: Pack Hacker and Nomads Nation both tested it and found the harness comfortable at about 1 kg, with load lifters and channelled back panel; 'dual-density' appears only in Tortuga's spec.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: pack-hacker-superlite-backpack
+      about: same build; tested during the Kickstarter, sample status not stated
+    - source: nomads-nation-tortuga-superlite-review
+      about: same build; sample status not stated
+    - source: tortuga-superlite-backpack
+      about: same build
+    outcome:
+    - 'slite-pro-1: reworded.'
+    - 'slite-pro-1-b: moved to features (maker statement).'
+  - id: slite-pro-2
+    kind: pro
+    text: Optional hip belt claimed to move about 80% of load to the hips
+    scope: design
+    basis: maker
+    sources:
+    - men-s-gear-tortuga-superlite-backpack
+    - gear-patrol-tortuga-superlite
+    - tortuga-fastest-person-at-airport
+    - tortuga-kickstarter-superlite
+    evidence:
+      status: supported
+      note: Tortuga's Kickstarter campaign says the optional hip belt transfers up to 80% of the weight from shoulders to hips; Men's Gear relays it. Not on the product page, and no hands-on review gives a figure.
+      checked: '2026-11-13'
+      method: Search subagent through WebFetch, then Claude through Firecrawl, 13 Nov 2026
+    source_notes:
+    - source: men-s-gear-tortuga-superlite-backpack
+      about: same build (Kickstarter campaign information)
+    - source: gear-patrol-tortuga-superlite
+      about: same build; confirms the hip belt is an optional upgrade, gives no percentage
+    - source: tortuga-fastest-person-at-airport
+      about: Tortuga Travel Backpack Pro 40L (different bag); FAQ uses the same 80% figure for its suspension
+    - source: tortuga-kickstarter-superlite
+      about: same build (maker's campaign page)
+    outcome:
+    - 'slite-pro-2: moved to features (maker statement).'
+  - id: slite-pro-3
+    kind: pro
+    text: Suitcase-flat clamshell and suspended 16" sleeve keep the familiar Tortuga layout
+    scope: material
+    basis: maker
+    sources:
+    - tortuga-superlite-backpack
+    - pack-hacker-superlite-backpack
+    - nomads-nation-tortuga-superlite-review
+    - tortuga-fastest-person-at-airport
+    evidence:
+      status: supported
+      note: Tortuga's page lists a clamshell that opens flat like a suitcase and a padded, suspended sleeve for 16-inch laptops; both reviews confirm. 'Familiar layout' matches the Pro 40L page's features.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: tortuga-superlite-backpack
+      about: same build
+    - source: pack-hacker-superlite-backpack
+      about: same build; tested with a 16-inch MacBook Pro, notes the false bottom
+    - source: nomads-nation-tortuga-superlite-review
+      about: same build; suitcase-style opening and suspended false bottom
+    - source: tortuga-fastest-person-at-airport
+      about: Tortuga Travel Backpack Pro 40L (different bag); same clamshell and suspended 16-inch sleeve
+    outcome:
+    - 'slite-pro-3: reworded.'
+  - id: slite-pro-4
+    kind: pro
+    text: About 44% lighter than the average travel pack
+    scope: material
+    basis: maker
+    sources:
+    - tortuga-superlite-backpack
+    outcome:
+    - 'slite-pro-4: dropped on review (ruling 5).'
+  - id: slite-con-1
+    kind: con
+    text: Reviewers describe the fit as snug and close to the body; broad-shouldered packers should try before relying on it
+    scope: design
+    basis: review
+    sources:
+    - pack-hacker-superlite-backpack
+    - nomads-nation-tortuga-superlite-review
+    evidence:
+      status: partly
+      note: Only Pack Hacker says 'snug fit' and weight held close to the body, as praise on a medium frame; no reviewer mentions broad shoulders, so that caution is inference.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: pack-hacker-superlite-backpack
+      about: same build; tester 5'6" with a 16.5-inch torso
+    - source: nomads-nation-tortuga-superlite-review
+      about: same build; 'snug' used only for the hip belt and side pocket, no fit warning
+    outcome:
+    - 'slite-con-1: reworded as slite-pro-5, now a pro.'
+  - id: slite-con-2
+    kind: con
+    text: Single bottle pocket and no luggage pass-through
+    scope: design
+    basis: review
+    sources:
+    - nomads-nation-tortuga-superlite-review
+    - pack-hacker-superlite-backpack
+    - tortuga-superlite-backpack
+    evidence:
+      status: supported
+      note: Nomads Nation lists one bottle pocket and no luggage pass-through as cons; Pack Hacker lists the missing pass-through and describes a single stretch pocket.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: nomads-nation-tortuga-superlite-review
+      about: same build
+    - source: pack-hacker-superlite-backpack
+      about: same build
+    - source: tortuga-superlite-backpack
+      about: same build; lists one stretch bottle pocket, no pass-through mentioned
+    outcome:
+    - 'slite-con-2: kept.'
+  - id: slite-con-3
+    kind: con
+    text: Won’t stand upright on its own
+    scope: design
+    basis: review
+    sources:
+    - pack-hacker-superlite-backpack
+    - nomads-nation-tortuga-superlite-review
+    evidence:
+      status: partly
+      note: Pack Hacker lists 'doesn't stand upright on its own' as a con, but Nomads Nation says it self-stands with a slight lean (average performance); the two hands-on reviews disagree.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: pack-hacker-superlite-backpack
+      about: same build
+    - source: nomads-nation-tortuga-superlite-review
+      about: same build; says it can self-stand but leans
+    outcome:
+    - 'slite-con-3: reworded.'
+  - id: slite-con-4
+    kind: con
+    text: General release listed for Spring 2027; pre-release reviews only so far
+    scope: general
+    basis: maker
+    sources:
+    - tortuga-superlite-backpack
+    - pack-hacker-superlite-backpack
+    - nomads-nation-tortuga-superlite-review
+    - tortuga-email-archived-on-mi-one-more-thing-3f3lbninrwu0ekky
+    - pledgebox-the-superlite-backpack-by-tortuga
+    evidence:
+      status: supported
+      note: Tortuga's page says 'Launches Spring 2027' and shows Sold Out; the two hands-on reviews date from June-July 2026, before release, though neither states its sample was pre-production.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: tortuga-superlite-backpack
+      about: same build
+    - source: pack-hacker-superlite-backpack
+      about: same build; published on the Kickstarter's opening day, updated 2026-08-17
+    - source: nomads-nation-tortuga-superlite-review
+      about: same build; updated 2026-11-11
+    - source: tortuga-email-archived-on-mi-one-more-thing-3f3lbninrwu0ekky
+      about: same build; campaign email saying early backpack backers are in Batch 1 and Batch 2 ships Spring 2027
+    - source: pledgebox-the-superlite-backpack-by-tortuga
+      about: same build; campaign tracker (16 June to 14 July, funded)
+    outcome:
+    - 'slite-con-4: dropped. Release timing and stock; the card links out instead.'
+    - 'slite-con-4-b: not carried over. The model now has a review list and a sourcing line instead.'

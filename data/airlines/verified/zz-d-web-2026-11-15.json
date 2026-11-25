@@ -1,0 +1,2810 @@
+[
+ {
+  "name": "Aegean Airlines",
+  "region": [
+   "Europe"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    56,
+    45,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     22.0,
+     17.7,
+     9.8
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Size 56x45x25 confirmed for Airbus fleet (turboprop 55x40x23). Page lists NO carry-on weight limit (8 kg on file not found). Personal item has no size given.",
+  "source": "https://en.aegeanair.com/travel-info/travelling-with-aegean/baggage/cabin-baggage/",
+  "quote": "Airbus fleet: 56 cm x 45 cm x 25 cm; Turboprop fleet: 55 cm x 40 cm x 23 cm. Personal item: Women's/men's handbag or thin laptop case.",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "Aeromexico",
+  "region": [
+   "North America"
+  ],
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": 15,
+  "fareNote": "Page gives NO carry-on dimensions (55x40x25 on file not found). Combined carry-on + personal weight depends on fare: Basic 10 kg (Light: purchase option 10 kg), Classic/Flex 15 kg. Standard (non-basic) economy = 15 kg; 10 kg on file is the Basic figure. Page region selector defaults vary by route; read default view only. Personal item under seat only (confirmed).",
+  "source": "https://www.aeromexico.com/en-us/travel-information/baggage/carry-on-baggage",
+  "quote": "You are allowed to carry 1 carry-on baggage plus 1 personal article, weighting a maximum of 10 to 15kg together, depending on your fare. | Basic: Carry on 10 kg | Classic: Carry on 15 kg | Flex: Carry on 15 kg. Personal items ... must fit under the seat in the cabin.",
+  "checked": "2026-11-15",
+  "status": "partial",
+  "by": "Claude web check 15 Nov 2026 (Firecrawl); airline's own page",
+  "combinedUnits": {
+   "printed": {
+    "kg": [
+     "metric"
+    ]
+   },
+   "lb": 33.1,
+   "converted": [
+    "lb"
+   ],
+   "read": "2026-11-15",
+   "from": "page"
+  }
+ },
+ {
+  "name": "Air Transat",
+  "region": [
+   "North America"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55.0,
+    40.0,
+    23.0
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     21.5,
+     15.5,
+     9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    43.0,
+    31.0,
+    13.0
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     17,
+     12,
+     5
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Printed order is L x W x H; same numbers as on file (55x40x23, 43x31x13). No weight limit stated beyond 'light enough to lift unassisted'. Carry-on not permitted on Eco Budget (Promo) fares to/from South, Florida and within Canada.",
+  "source": "https://www.airtransat.com/en-US/travel-information/baggage/weight-dimensions",
+  "quote": "Carry-on baggage maximum dimensions: 40 cm/15.5\" in length, 23 cm/9\" in width and 55 cm/21.5\" in height. Personal item maximum dimensions: 43 cm/17\" in length, 13 cm/5\" in width and 31 cm/12\" in height (1 per passenger).",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (Firecrawl); airline's own page"
+ },
+ {
+  "name": "Alaska Airlines",
+  "region": [
+   "North America"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55.9,
+    35.6,
+    22.9
+   ],
+   "linear_cm": 114.3,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "imperial"
+     ],
+     "l": [
+      "imperial"
+     ],
+     "kg": null
+    },
+    "d_in": [
+     22,
+     14,
+     9
+    ],
+    "l_in": 45,
+    "lb": null,
+    "converted": [
+     "d",
+     "l"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Page prints inches only (cm on file = conversions). No weight limit and no personal-item size stated; the personal item is a 'small personal item' with no number (recorded as under-seat only per standard rule; page does not literally say 'under the seat' in the excerpt read). Original stored URL failed; this is the current URL found via search.",
+  "source": "https://www.alaskaair.com/content/travel-info/baggage/baggage-carryon",
+  "quote": "Carry-on bag: maximum dimension 22\" x 14\" x 9\" or 45 linear inches, including wheels and handle. Personal item: One small personal item such as a purse, briefcase, or laptop bag",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "Cayman Airways",
+  "region": [
+   "North America"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    60.9,
+    40.6,
+    27.9
+   ],
+   "linear_cm": 129.5,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "imperial"
+     ],
+     "l": [
+      "imperial"
+     ],
+     "kg": null
+    },
+    "d_in": [
+     24,
+     16,
+     11
+    ],
+    "l_in": 51,
+    "lb": null,
+    "converted": [
+     "d",
+     "l"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    35.6,
+    35.6,
+    25.4
+   ],
+   "linear_cm": 96.5,
+   "weight_kg": 6.8,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "imperial"
+     ],
+     "l": [
+      "imperial"
+     ],
+     "kg": [
+      "imperial"
+     ]
+    },
+    "d_in": [
+     14,
+     14,
+     10
+    ],
+    "l_in": 38,
+    "lb": 15,
+    "converted": [
+     "d",
+     "l",
+     "kg"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Page prints inches only (cm on file are conversions: 60.9x40.6x27.9 and 35.6x35.6x25.4 match). Personal item also has a 15 lb weight limit (not on file). Domestic jet: carry-on 45 in linear; propeller (Twin Otter/Saab): only one 15 lb carry-on of 38 in.",
+  "source": "https://www.caymanairways.com/baggage-policy",
+  "quote": "International Jet Service - Baggage: 51 inches (24\"L x 16\"W x 11\"H); Personal item: 38 inches (14\"L x 14\"W x 10\"H) and 15lbs",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "Cebu Pacific",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    56,
+    36,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     22.0,
+     14.2,
+     9.1
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    35,
+    20,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     13.8,
+     7.9,
+     7.9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": 10,
+  "fareNote": "Combined weight now 10 kg for Cebu Pacific (5J) flights departing on/after 15 Sep 2026 (was 7 kg); Cebgo (DG) stays 7 kg. Personal item now has a printed size 20x35x20 (on file: under-seat only). Opened the help-centre article on the airline's own domain; the main baggage-information page returned no content.",
+  "source": "https://help.cebupacificair.com/article/hand-carry-baggage-guidelines-272309",
+  "quote": "Hand carry item (overhead bin): 56cm (H) x 36cm (L) x 23cm (W). Personal item (under the seat in front): 20cm (H) x 35cm (L) x 20cm (W). The total weight of your hand carry item and personal item must not exceed: Cebu Pacific (5J): 10kg combined; Cebgo (DG): 7kg combined",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page",
+  "combinedUnits": {
+   "printed": {
+    "kg": [
+     "metric"
+    ]
+   },
+   "lb": 22.0,
+   "converted": [
+    "lb"
+   ],
+   "read": "2026-11-15",
+   "from": "page"
+  }
+ },
+ {
+  "name": "China Eastern",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55.0,
+    40.0,
+    20.0
+   ],
+   "linear_cm": null,
+   "weight_kg": 8.0,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     22,
+     16,
+     8
+    ],
+    "l_in": null,
+    "lb": 17.6,
+    "converted": [
+     "lb"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Size now found (earlier checker miss). Personal item must fit under front seat; page mentions reference under-seat space 35x32x18 cm (not a stated item limit).",
+  "source": "https://www.ceair.com/global/en_static/Announcement/BaggageService/CarryonBaggage/",
+  "quote": "Economy: Weight ≤8kg; A≤55cm(22 in) B≤40cm(16 in) C≤20cm(8 in). Personal item: can be placed under the front seat; reference space 35 × 32 × 18 cm.",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "China Southern Airlines",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55.0,
+    40.0,
+    20.0
+   ],
+   "linear_cm": null,
+   "weight_kg": 8.0,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     22,
+     16,
+     8
+    ],
+    "l_in": null,
+    "lb": 17.6,
+    "converted": [
+     "lb"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Economy, one piece, domestic and international.",
+  "source": "https://www.csair.com/us/en/tourguide/luggage_service/carryon_luggage/",
+  "quote": "Maximum Weight per Piece 8kg. The length, width and height of each carry-on shall not exceed :55 * 40 * 20 cm (or 22 * 16 * 8 inches). Free extra item: A small computer bag, camera bag, briefcase or handbag, which must be placed under the front seat",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "EL AL",
+  "region": [
+   "Middle East"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    56.0,
+    45.0,
+    25.0
+   ],
+   "linear_cm": 115,
+   "weight_kg": 8.0,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": [
+      "metric"
+     ],
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     22.0,
+     17.7,
+     9.8
+    ],
+    "l_in": 45.3,
+    "lb": 17.6,
+    "converted": [
+     "d_in",
+     "l_in",
+     "lb"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    38.0,
+    30.0,
+    18.0
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     15.0,
+     11.8,
+     7.1
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Economy Lite to/from Europe and UAE: carry-on must be sent to the hold at no cost (Matmid Silver+ exempt). Flex: two carry-ons, 8 kg each, 12 kg total. Subject to overhead space.",
+  "source": "https://www.elal.com/eng/baggage/hand-baggage",
+  "quote": "The maximum carry-on bag size on EL AL flights is up to 56 cm (length), 45 cm (width), and 25 cm (depth), not exceeding a total dimension of 115 cm. Personal bag dimensions should not exceed 18x38x30 cm. Classic - entitled to one carry-on, maximum 8 kg.",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (Firecrawl); airline's own page"
+ },
+ {
+  "name": "Garuda Indonesia",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    56.0,
+    36.0,
+    23.0
+   ],
+   "linear_cm": 115,
+   "weight_kg": 7.0,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": [
+      "metric"
+     ],
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     22.0,
+     14.2,
+     9.1
+    ],
+    "l_in": 45.3,
+    "lb": 15.4,
+    "converted": [
+     "d_in",
+     "l_in",
+     "lb"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Read the Indonesian-language (id/id) path; stored hk/tw URL failed. Exception: Economy on CRJ and ATR aircraft 41x34x17 cm, sum 92 cm, 7 kg. Personal item allowance not seen in the excerpt retrieved, so 'under-seat only' on file is not verified.",
+  "source": "https://www.garuda-indonesia.com/id/id/garuda-indonesia-experience/baggage-info",
+  "quote": "dengan ukuran maksimum yang diperbolehkan adalah barang dengan panjang 56 cm, lebar 36 cm atau tebal 23 cm, namun jumlah dari tiga dimensi tersebut tidak melebihi 115 cm atau berat 7kg",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "Hawaiian Airlines",
+  "region": [
+   "North America",
+   "Oceania"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55.9,
+    35.6,
+    22.9
+   ],
+   "linear_cm": 114,
+   "weight_kg": 11.3,
+   "units": {
+    "printed": {
+     "d": [
+      "imperial"
+     ],
+     "l": [
+      "metric",
+      "imperial"
+     ],
+     "kg": [
+      "metric",
+      "imperial"
+     ]
+    },
+    "d_in": [
+     22,
+     14,
+     9
+    ],
+    "l_in": 45,
+    "lb": 25,
+    "converted": [
+     "d"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Domestic contract of carriage rule; dims printed in inches only (L x W x H as printed 9/14/22); cm given only as linear 114 and weight 11 kg. On-file 55.9x35.6x22.9 cm and 11.3 kg are conversions of 22x14x9 in and 25 lb.",
+  "source": "https://www.hawaiianairlines.com/legal/domestic-contract-of-carriage/rule-17",
+  "quote": "not to exceed 9L x 14W x 22H or 45 linear inches (114 cm) (length + width + height); ... limited to 25 pounds (11 kg). ... Your allotted personal item must be small enough to fit safely under the seat in front of you.",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "Horizon Airlines",
+  "region": [
+   "North America"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55.9,
+    35.6,
+    22.9
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "imperial"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     22,
+     14,
+     9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Alaska's regional-aircraft page (Horizon/SkyWest Q400/CRJ); no weight or personal-item size stated; the 22x14x9 in is the planeside limit. Stored URL (carry-on-luggage) failed; main Alaska page (baggage-carryon) gives 22x14x9 in / 45 linear in and says one item must fit under the seat. Under-seat-only taken from main Alaska page. Inches only; on-file cm are conversions.",
+  "source": "https://www.alaskaair.com/content/travel-info/baggage/carry-on-luggage/regional-aircraft",
+  "quote": "you're allowed one carry-on bag plus one personal item ... The maximum dimensions allowed for planeside baggage service is 9\" H x 14\" W x 22\" L ... including wheels and handles.",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "Icelandair",
+  "region": [
+   "Europe"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55.0,
+    40.0,
+    20.0
+   ],
+   "linear_cm": null,
+   "weight_kg": 10.0,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": [
+      "metric",
+      "imperial"
+     ]
+    },
+    "d_in": [
+     21.6,
+     15.7,
+     7.8
+    ],
+    "l_in": null,
+    "lb": 22,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    40.0,
+    30.0,
+    15.0
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     15.7,
+     11.8,
+     5.9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Economy Light/Standard/Flex. No personal item weight stated.",
+  "source": "https://www.icelandair.com/support/baggage/allowance/",
+  "quote": "Maximum size (including handles and wheels): 21.6x15.7x7.8 inches (55x40x20 cm). Maximum weight: 22lbs (10kg). ... Personal item Maximum dimensions: 15.7x11.8x5.9 inches (40x30x15cm).",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "ITA Airways",
+  "region": [
+   "Europe"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55.0,
+    40.0,
+    23.0
+   ],
+   "linear_cm": null,
+   "weight_kg": 8.0,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": [
+      "metric",
+      "imperial"
+     ]
+    },
+    "d_in": [
+     21.7,
+     15.7,
+     9.0
+    ],
+    "l_in": null,
+    "lb": 17.6,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    40.0,
+    30.0,
+    15.0
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     15.7,
+     11.8,
+     5.9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Stored de_de URL blocked WebFetch; en_gb page read via Firecrawl (redirected to /gb/en/.../carry-on-baggage). Personal-item size appears only in the diagram caption/alt text (30x40x15 cm = on-file 40x30x15 in different order). Prior PEND resolved.",
+  "source": "https://www.ita-airways.com/en_gb/fly-ita/baggage/hand-baggage.html",
+  "quote": "You may bring one carry-on bag, with a maximum weight of 8 kg and dimensions of 55 cm x 40 cm x 23 cm. ... ITA Airways allows one personal item, such as a handbag, small backpack, or laptop bag. [image text] Carry-on luggage: max 8 kg (17.6 lbs) / 55 cm, 40 cm, 23 cm (21,7 in, 15,7 in, 9,0 in) + Accessory: 30 cm, 40 cm, 15 cm (11,8 in, 15,7 in, 5,9 in).",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (Firecrawl); airline's own page"
+ },
+ {
+  "name": "Jet2",
+  "region": [
+   "Europe"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    56,
+    45,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": 10,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     22.0,
+     17.7,
+     9.8
+    ],
+    "l_in": null,
+    "lb": 22.0,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     15.7,
+     11.8,
+     7.9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Personal item is 40x30x20 cm now (file had 40x30x15). Carry-on and 10 kg confirmed. No personal weight limit.",
+  "source": "https://www.jet2.com/en/baggage",
+  "quote": "must be no larger than 56cm x 45cm x 25cm (including wheels and handles). ... it weighs no more than 10kg. ... Small personal item ... doesn't exceed 40 x 30 x 20cm in size ... can be placed underneath the seat in front of you.",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "jetBlue",
+  "region": [
+   "North America"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55.88,
+    35.56,
+    22.86
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     22,
+     14,
+     9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    43.2,
+    33,
+    20.32
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     17,
+     13,
+     8
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Personal item is 17x13x8 in (43.2x33x20.32 cm), not 40x30x20 cm. Carry-on confirmed. Stored baggage-information URL had no content; this help page used. No weights stated.",
+  "source": "https://www.jetblue.com/help/carry-on-bags",
+  "quote": "Including wheels and handles, carry-on bags must not exceed 22\" L (55.88 cm) x 14\" W (35.56 cm) x 9\" H (22.86 cm). ... Personal items must not exceed 17\" L (43.2 cm) x 13\" W (33 cm) x 8\" H (20.32 cm).",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "Juneyao Airlines",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    20
+   ],
+   "linear_cm": 115,
+   "weight_kg": 5,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": [
+      "metric",
+      "imperial"
+     ],
+     "kg": [
+      "metric",
+      "imperial"
+     ]
+    },
+    "d_in": [
+     22,
+     16,
+     8
+    ],
+    "l_in": 46,
+    "lb": 11,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": false,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Weight is 5 kg / 11 lb (file had 10 kg). Dims confirmed. Page mentions no personal item, only one piece; recorded allowed=false per page silence.",
+  "source": "https://global.juneyaoair.com/carryOnBaggage",
+  "quote": "each economy class passenger is allowed to carry one piece of non-checked baggage. ... ≤ 5KG (or 11LB) ... A≤55CM (22 inches), B≤40CM (16 inches), C≤20CM (8 inches) ... A+B+C≤115CM（46 inches）",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "Lion Air",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    40,
+    30,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     15.7,
+     11.8,
+     7.9
+    ],
+    "l_in": null,
+    "lb": 15.4,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Personal items ARE allowed (file said not allowed); no size or weight given. Wings Air ATR is 35x30x20. Source is Lion Air Group's support (freshdesk) site, not lionair.co.id (stored FAQ page had no baggage content), so treat as semi-official.",
+  "source": "https://lionairgroupsupport.freshdesk.com/en/support/solutions/articles/70000464473-ketentuan-bagasi-kabin",
+  "quote": "The maximum weight of cabin baggage is 7 KG ... The dimensions for Boeing/Airbus (Lion Air & Batik Air) aircraft types are 40 cm x 30 cm x 20 cm. ... It is allowed to bring personal items such as laptop bags/ women's tote bags/ reading materials/ cameras/ baby equipment.",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "Middle East Airlines",
+  "region": [
+   "Middle East"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    56,
+    40,
+    25
+   ],
+   "linear_cm": 121,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": [
+      "metric"
+     ],
+     "kg": null
+    },
+    "d_in": [
+     22.0,
+     15.7,
+     9.8
+    ],
+    "l_in": 47.6,
+    "lb": null,
+    "converted": [
+     "d_in",
+     "l_in"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    15
+   ],
+   "linear_cm": 85,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": [
+      "metric"
+     ],
+     "kg": null
+    },
+    "d_in": [
+     15.7,
+     11.8,
+     5.9
+    ],
+    "l_in": 33.5,
+    "lb": null,
+    "converted": [
+     "d_in",
+     "l_in"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": 10,
+  "fareNote": "Accessory now has a size (30x40x15 cm, 85 linear), not just under-seat. Carry-on and combined 10 kg confirmed (8 kg for DUS/CPH). Economy cabin class per calculator.",
+  "source": "https://www.mea.com.lb/english/traveler-info/baggage-info/baggage-calculator",
+  "quote": "one hand baggage item and one accessory, and their maximum weight must not exceed 10KG (8KG for Dusseldorf and Copenhagen). ... 121 cm (56cm x 40cm x 25cm) ... one personal accessory which should not exceed ... 85 cm (30cm x 40cm x 15cm)",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (Firecrawl); airline's own page",
+  "combinedUnits": {
+   "printed": {
+    "kg": [
+     "metric"
+    ]
+   },
+   "lb": 22.0,
+   "converted": [
+    "lb"
+   ],
+   "read": "2026-11-15",
+   "from": "page"
+  }
+ },
+ {
+  "name": "NokAir",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    56,
+    36,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     22.0,
+     14.2,
+     9.1
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": 7,
+  "fareNote": "Personal small item IS allowed (file said no); weight 7 kg is combined carry-on + small item. Dims confirmed (Boeing 737 table). No personal size given.",
+  "source": "https://content.nokair.com/en/Journey-Planning/Baggage/Hand-Baggage-allowance.aspx",
+  "quote": "not exceeding 36 cm x 56 cm x 23 cm ... a combined weight not exceeding 7 kilograms ... one small item, such as a handbag or laptop bag, in addition to the carry-on. It must fit under the seat in front or in the overhead bin",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page",
+  "combinedUnits": {
+   "printed": {
+    "kg": [
+     "metric"
+    ]
+   },
+   "lb": 15.4,
+   "converted": [
+    "lb"
+   ],
+   "read": "2026-11-15",
+   "from": "page"
+  }
+ },
+ {
+  "name": "RwandAir",
+  "region": [
+   "Africa"
+  ],
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": 10,
+  "fareNote": "Combined weight is 10 kg / 22 lb (file 9). No dimensions on any RwandAir page read (also cn/cabin-baggage and baggage-allowance), so file's 55.9x38.1x20.3 cm not confirmed. Johannesburg limit 7 kg.",
+  "source": "https://www.rwandair.com/information/prepare-to-fly/baggage/",
+  "quote": "Each passenger is allowed one carry-on bag and one personal item on board. ... should not exceed a combined weight of 10kg/22 lbs. ... except for Johannesburg, where the authority restricts this to 15 lbs [7kgs].",
+  "checked": "2026-11-15",
+  "status": "partial",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page",
+  "combinedUnits": {
+   "printed": {
+    "kg": [
+     "metric",
+     "imperial"
+    ]
+   },
+   "lb": 22,
+   "converted": [],
+   "read": "2026-11-15",
+   "from": "page"
+  }
+ },
+ {
+  "name": "Shandong Airlines",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55.0,
+    40.0,
+    20.0
+   ],
+   "linear_cm": null,
+   "weight_kg": 5.0,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": [
+      "metric",
+      "imperial"
+     ]
+    },
+    "d_in": [
+     22,
+     16,
+     8
+    ],
+    "l_in": null,
+    "lb": 11,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Paraphrase-level quote from fetch summary (PDF).",
+  "source": "https://www.sda.cn/uploads/2/BaggageService.pdf",
+  "quote": "Economy class: one unchecked bag, weighing no more than 5KG (11 pounds). ... must not exceed 55cm (22 inches), 40cm (16 inches), or 20cm (8 inches) ... each passenger can also carry one personal belonging that can be placed under the passenger's front seat for free.",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "South African Airways",
+  "region": [
+   "Africa"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    56.0,
+    36.0,
+    23.0
+   ],
+   "linear_cm": null,
+   "weight_kg": 8.0,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     22.0,
+     14.2,
+     9.1
+    ],
+    "l_in": null,
+    "lb": 17.6,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    40.0,
+    30.0,
+    10.0
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     15.7,
+     11.8,
+     3.9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Prior PEND resolved; all figures found. Personal weight not stated.",
+  "source": "https://www.flysaa.com/manage-fly/baggage/hand-baggage",
+  "quote": "Economy Class: 1 piece not exceeding 8kg ... 56cm (l) 36cm (w) 23cm (h) ... 1 small handbag or small slimline laptop bag not exceeding dimensions of 30cm x 40cm x 10cm",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "Spring Airlines",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    40,
+    30,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     15.7,
+     11.8,
+     7.9
+    ],
+    "l_in": null,
+    "lb": 15.4,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Standard fare: one cabin bag 7 kg, 20x30x40 cm (file had 56x36x23). No separate personal item mentioned. Passenger guidelines (Section IV.2) on Spring's Thai site; stored en.ch.com page had no figures. Larger 20x40x55 only with upgrade service.",
+  "source": "https://th.ch.com/flights/notice-travelers",
+  "quote": "not over 7kg nor larger than 20×30×40cm (standard passengers); 20×40×55cm if unchecked-baggage upgrade service bought; SpringPlus 10kg, 20×40×55cm",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "Sun Country Airlines",
+  "region": [
+   "North America"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    61.0,
+    40.6,
+    27.9
+   ],
+   "linear_cm": null,
+   "weight_kg": 15.9,
+   "units": {
+    "printed": {
+     "d": [
+      "imperial"
+     ],
+     "l": null,
+     "kg": [
+      "imperial"
+     ]
+    },
+    "d_in": [
+     24,
+     16,
+     11
+    ],
+    "l_in": null,
+    "lb": 35,
+    "converted": [
+     "d",
+     "kg"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    43.2,
+    33.0,
+    22.9
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "imperial"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     17,
+     13,
+     9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Inches only printed; no cm. Standard fare includes only the free underseat item; the overhead bag is a paid option ('Overhead bins are only allowed for travelers who have selected the overhead bag option').",
+  "source": "https://www.suncountry.com/bags-optional-services",
+  "quote": "Underseat item Max Height: 17\" Max Width: 13\" Max Depth: 9\" Must fit under the seat in front of you. ... Overhead Max Height: 24\" Max Width: 16\" Max Depth: 11\" Max Weight: 35 lbs Must fit in the sizer box located at the ticket counter or at the gate.",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (Firecrawl); airline's own page"
+ },
+ {
+  "name": "TAAG",
+  "region": [
+   "Africa"
+  ],
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": 121,
+   "weight_kg": 8,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": [
+      "metric"
+     ],
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": null,
+    "l_in": 47.6,
+    "lb": 17.6,
+    "converted": [
+     "l_in",
+     "lb"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Old URL redirects to flytaag.com. Page prints only a 121 cm linear limit, no 56x40x25 dims. International 8 kg (10 kg for Brazil). Personal item (shoulder bag/laptop bag) allowed in addition; no size or under-seat wording seen; a separate 'Personal Item' page exists but was not read. Quote is from a summarised fetch, not verbatim.",
+  "source": "https://flytaag.com/en/Plan/Luggage/Hand-luggage",
+  "quote": "the maximum weight allowed is 8 kg for Economy and Executive ... The sum of the suitcase/luggage's measurements (height + width + length) cannot exceed 121 cm. (paraphrased by fetch tool; page also lists personal shoulder bag, tablet/laptop bag, medical devices as extra items)",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "TAROM",
+  "region": [
+   "Europe"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55.0,
+    40.0,
+    20.0
+   ],
+   "linear_cm": 115,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": [
+      "metric",
+      "imperial"
+     ],
+     "kg": null
+    },
+    "d_in": [
+     21.7,
+     15.7,
+     7.9
+    ],
+    "l_in": 45.27,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": 8,
+  "fareNote": "Boeing dims; ATR 72 is 35x30x20 cm (max 85 cm / 33.46in). Personal item allowed (purse/briefcase), no size printed; 'under seat' wording not seen in the fetched text.",
+  "source": "https://www.tarom.ro/en/passenger-information/baggage/hand-baggage/",
+  "quote": "8 Kg (18lb) total. Includes cabin baggage and a personal item (e.g. purse or briefcase). Boeing aircraft dimensions: 55 x 40 x 20 cm (length x width x height). Maximum 115cm / 45.27in.",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page",
+  "combinedUnits": {
+   "printed": {
+    "kg": [
+     "metric",
+     "imperial"
+    ]
+   },
+   "lb": 18,
+   "converted": [],
+   "read": "2026-11-15",
+   "from": "page"
+  }
+ },
+ {
+  "name": "Tunisair",
+  "region": [
+   "Africa"
+  ],
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": 115,
+   "weight_kg": 8,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": [
+      "metric"
+     ],
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": null,
+    "l_in": 45.3,
+    "lb": 17.6,
+    "converted": [
+     "l_in",
+     "lb"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": false,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Page prints only the 115 cm linear limit (55x35x25 on file sums to 115 but is not printed in the fetched text). Economy = one piece; no personal item mentioned in the fetched text (allowed=false is a reading of silence). Quote is from a summarised fetch.",
+  "source": "https://www.tunisair.com/en/guide-utilisateur/prepare-your-luggage",
+  "quote": "Economy class: one piece, with a weight limit of \"8 Kg.\" ... \"To be accepted in the cabin, your piece must measure no more than 115 cm (length + width + height)\" including handles, side pockets, and wheels. (Business: two pieces, 10 kg overall)",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "Turkmenistan Airlines",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    50,
+    40,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     19.7,
+     15.7,
+     7.9
+    ],
+    "l_in": null,
+    "lb": 15.4,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "File's 19.9 cm depth is printed as 20. The 40x30x15 cm / 3 kg figures on file are listed on the page as a separate Duty Free bag allowance, not as a personal item; no personal item per se is mentioned (allowed=false is a reading of silence).",
+  "source": "https://turkmenistanairlines.tm/en/information/show/pravila-provoza-ruchnogo-bagazha",
+  "quote": "Hand luggage in business-classand economy class, as a rule, does not exceed 7 kilograms ... the maximum dimensions of hand luggage should be no more than 50x40x20cm. Duty Free bag: up to 3 kg and 40x30x15 cm.",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "Uzbekistan Airways",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    35,
+    25
+   ],
+   "linear_cm": 115,
+   "weight_kg": 8,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": [
+      "metric"
+     ],
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     21.7,
+     13.8,
+     9.8
+    ],
+    "l_in": 45.3,
+    "lb": 17.6,
+    "converted": [
+     "d_in",
+     "l_in",
+     "lb"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": 92,
+   "weight_kg": 5,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": [
+      "metric"
+     ],
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": null,
+    "l_in": 36.2,
+    "lb": 11.0,
+    "converted": [
+     "l_in",
+     "lb"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Carry-on 55x35x25 and 8 kg confirmed on this airline press-center page (the stored free-baggage-allowance page only gives 8 kg per piece, no size). Differs from file on personal item: page allows an under-seat item, 5 kg, 92 cm linear (file said none). Quote is from a summarised fetch.",
+  "source": "https://www.uzairways.com/en/press-center/news/uzbekistan-airways-hand-baggage-regulations",
+  "quote": "For Economy Class passengers — 8 kg; The dimensions of any single item must not exceed 55 cm, 35 cm, and 25 cm ... total sum of the three dimensions must not exceed 115 cm ... personal item: weighing no more than 5 kg with total dimensions not exceeding 92 cm (sum of three dimensions)",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "Volotea",
+  "region": [
+   "Europe"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     21.7,
+     15.7,
+     9.8
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     15.7,
+     11.8,
+     7.9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": 10,
+  "fareNote": "File had carry-on depth 20; page says 25 (55x40x25). Personal 40x30x20 and shared 10 kg confirmed. Cabin bag is only included with Priority Boarding; base fare = small bag only. Quote is from a summarised fetch.",
+  "source": "https://www.volotea.com/en/baggage/",
+  "quote": "Small bag: It will go under the seat in front and must measure no more than 40 (height) x 30 (width) x 20 (depth) cm. Cabin bag: It will go in the overhead compartment and must measure no more than 55 (height) x 40 (width) x 25 (depth) cm. You can bring a maximum total of 10kg only.",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page",
+  "combinedUnits": {
+   "printed": {
+    "kg": [
+     "metric"
+    ]
+   },
+   "lb": 22.0,
+   "converted": [
+    "lb"
+   ],
+   "read": "2026-11-15",
+   "from": "page"
+  }
+ },
+ {
+  "name": "Air India",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    20
+   ],
+   "linear_cm": 115,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": [
+      "metric",
+      "imperial"
+     ],
+     "kg": [
+      "metric",
+      "imperial"
+     ]
+    },
+    "d_in": [
+     21,
+     15,
+     7
+    ],
+    "l_in": 45,
+    "lb": 15,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 3,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": [
+      "metric",
+      "imperial"
+     ]
+    },
+    "d_in": [
+     15,
+     11,
+     7
+    ],
+    "l_in": null,
+    "lb": 6,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "All figures on file found, including personal 40x30x20 (the checker's miss). Personal item must fit under the seat in front.",
+  "source": "https://www.airindia.com/in/en/travel-information/baggage-guidelines/cabin-baggage.html",
+  "quote": "Economy: 7 kg / 15 lb; Height: 55 cm / 21 in, Length: 40 cm / 15 in, Width: 20 cm / 7 in; total dimensions must not exceed 115 cm / 45 in. Personal item/handbag: not more than 3 kg / 6 lb; 40 cm/15 in x 30 cm/11 in x 20 cm/7 in each.",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "IndiGo",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    35,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     21.7,
+     13.8,
+     9.8
+    ],
+    "l_in": null,
+    "lb": 15.4,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": 3,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": 6.6,
+    "converted": [
+     "lb"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "55x35x25 found (checker's miss). Personal item (purse/laptop bag) has 3 kg limit, no size. Quote is from a summarised fetch.",
+  "source": "https://www.goindigo.in/information/baggage-policy.html",
+  "quote": "one hand bag weighing a maximum of 7 (seven) kg and not exceeding the following dimensions: length -55cm + width- 35cm + height- 25cm. One extra personal item ... not weighing more than 3 (three) kg",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "SriLankan Airlines",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": 115,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": [
+      "metric"
+     ],
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": null,
+    "l_in": 45.3,
+    "lb": 15.4,
+    "converted": [
+     "l_in",
+     "lb"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "115 cm linear and 7 kg found (checker's miss). Economy = one piece; no personal item mentioned. Infant-travelling passengers may carry an extra 56x36x23 cm / 5 kg bag with infant items.",
+  "source": "https://www.srilankan.com/bgalw",
+  "quote": "Each piece of hand baggage must weigh no more than 7 kg and measure no more than a total of 115cm (l+h+w). In Economy Class, passengers are allowed one piece of hand baggage.",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "United Airlines",
+  "region": [
+   "North America"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    56,
+    35,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     22,
+     14,
+     9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    43,
+    25,
+    22
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     17,
+     10,
+     9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "United prints both inches and rounded cm; file's cm (55.9x35.6x22.9; 43.2x25.4x22.9) are conversions and differ from printed cm. Basic Economy: personal item only on most routes (carry-on allowed to South America, transatlantic, transpacific). Firecrawl result was a cache hit dated 2026-11-14.",
+  "source": "https://www.united.com/en/us/fly/baggage/carry-on-bags.html",
+  "quote": "Your carry-on bag must fit in the overhead bin, so it must be 9 in x 14 in x 22 in (23 cm x 35 cm x 56 cm). ... Personal items: ... must be 9 in x 10 in x 17 in (22 cm x 25 cm x 43 cm).",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (Firecrawl); airline's own page"
+ },
+ {
+  "name": "American Airlines",
+  "region": [
+   "North America"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    56,
+    36,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     22,
+     14,
+     9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    45,
+    35,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     18,
+     14,
+     8
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Both systems printed; cm are rounded, so file's converted cm (55.9x35.6x22.9; 45.7x35.6x20.3) differ slightly. Quote is from a summarised fetch.",
+  "source": "https://www.aa.com/web/i18n/travel-info/baggage/carry-on-baggage.html",
+  "quote": "Personal item: Dimensions should not exceed 18 x 14 x 8 inches (45 x 35 x 20 cm). Carry-on bag: Cannot exceed 22 x 14 x 9 inches (56 x 36 x 23 cm) including handles and wheels",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "Allegiant Air",
+  "region": [
+   "North America"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     22,
+     16,
+     10
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    45,
+    35,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     18,
+     14,
+     8
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Both systems printed; cm rounded vs file conversions (55.9x40.6x25.4; 45.7x35.6x20.3). Carry-on is a paid add-on on Allegiant in most fares (not stated in the fetched text). Quote is from a summarised fetch.",
+  "source": "https://www.allegiantair.com/baggage-1",
+  "quote": "Personal item: Maximum dimensions are 8 in. x 14 in. x 18 in. (20cm x 35cm x 45cm). Carry-on bag: Maximum size is 10 in. x 16 in. x 22 in. (25cm x 40cm x 55cm)",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page"
+ },
+ {
+  "name": "Volaris",
+  "region": [
+   "North America"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": 10,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     21.7,
+     15.7,
+     9.8
+    ],
+    "l_in": null,
+    "lb": 22.0,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    45,
+    35,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     17.7,
+     13.8,
+     7.9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "combined_kg": 20,
+  "fareNote": "Page prints cm and kg ONLY (no inches/lb), so the 55x40x25 cm belief is right. File differs on: personal item has a size (35x45x20 cm, must fit under seat), carry-on 10 kg, shared limit 20 kg (file said 15). Quote is from a summarised fetch; fares/carry-on inclusion not checked.",
+  "source": "https://cms.volaris.com/en/travel-info/baggage-policy/",
+  "quote": "Its maximum dimensions are 35 × 45 × 20 cm. [personal item] ... It must not exceed 55 × 40 × 25 cm (length × width × height) and must have a maximum weight of 10 kg. The combined weight of your carry-on and personal item must not exceed 20 kg.",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page",
+  "combinedUnits": {
+   "printed": {
+    "kg": [
+     "metric"
+    ]
+   },
+   "lb": 44.1,
+   "converted": [
+    "lb"
+   ],
+   "read": "2026-11-15",
+   "from": "page"
+  }
+ },
+ {
+  "name": "uTair Airlines",
+  "region": [
+   "Asia",
+   "Europe"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    40,
+    30,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 5,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     15.7,
+     11.8,
+     7.9
+    ],
+    "l_in": null,
+    "lb": 11,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-15",
+    "from": "page"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": false
+  },
+  "combined_kg": null,
+  "fareNote": "Economy fares Минимум and Оптимум (Utair's two Economy tariffs; the page lists no other Economy fare): one piece of hand luggage, 5 kg, 40x30x20 cm, and bags cannot be combined, so no separate personal item. Премиум and Евробизнес add a second piece of 10 kg, 55x40x25 cm. Approved with this note by Anish, 15 Nov 2026.",
+  "source": "https://www.utair.ru/support/3/gabarity_i_ves_ruchnoj_kladi",
+  "quote": "Минимум: 1 место 5 кг (40x30x20 см); Оптимум: 1 место 5 кг (40x30x20 см); Премиум: 1 место 5 кг (40x30x20 см) и 1 место 10 кг (55x40x25 см)",
+  "checked": "2026-11-15",
+  "status": "verified",
+  "by": "Claude web check 15 Nov 2026 (WebFetch); airline's own page; approved by Anish with a note"
+ }
+]

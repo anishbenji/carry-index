@@ -1,0 +1,541 @@
+migration:
+  source: Ultra Carry Index page, Rev AE (v20)
+  migrated: '2026-11-13'
+  claims: Anish read every line on 13 Nov 2026, one question at a time; approved lines are the ones he kept as shown. Lines from another build name the build. Old wording and search results are under legacy.claims.
+  photos: model.photos lists every photo the old page used, as its code and footer describe them; permission is none for all
+  sources_search: Claims and spec gaps were searched on 13 Nov 2026; see evidence on each claim and reports/sources-search-2026-11-13.md
+  proposals: Applied on 13 Nov 2026 by tools/migrate/apply_decisions.py, following Anish's rulings of that day.
+  availability: Removed on 13 Nov 2026. Each build links out instead; the old strings stay under legacy.
+model:
+  id: matador-edx
+  legacy_id: edx
+  brand: matador
+  collab: carryology
+  label: EDX
+  family: EDX
+  category: backpack
+  use:
+  - edc
+  - travel
+  build_class: packable
+  drawings:
+  - file: drawings/edx/sketch/edx-sketch-front.svg
+    kind: drawing
+    view: front
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/edx/sketch/edx-sketch-iso.svg
+    kind: drawing
+    view: three-quarter
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/edx/sketch/edx-sketch-back.svg
+    kind: drawing
+    view: back
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/edx/sketch/edx-sketch-side.svg
+    kind: drawing
+    view: side
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  photos:
+  - file: img/edx-iso.jpg
+    role: card main
+    view: three-quarter
+    credit_text: Matador studio photo
+    credit_url: null
+    source_page: null
+    edits: 'Background removed (footer: ''Matador''s studio photo with the background removed'')'
+    shows: Not stated by the page; file name edx-iso
+    permission: none
+  - file: img/edx-front.jpg
+    role: hero strip
+    view: front
+    credit_text: an owner's photo
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'Not stated by the page (footer: ''EDX front, an owner''s photo'')'
+    permission: none
+  reviews:
+  - source: iron-heart-forum-905181
+    covers: 'same build (third run): a member reports stock lasting about twenty minutes after launch; not about the prior two runs'
+    used_for: []
+  - source: jb-outside-video-matador-x-carryology-edx-backpack-and-sling
+    covers: 'FIRST EDX (EDX Series ''Trident'', 2023) 22 L backpack in black Dimension Polyant X-Pac VX07, plus the 2 L sling; video uploaded 2023-07-04. Out-of-the-box walkthrough and first impressions; he ''wore it around'' but has not travelled with it or rain-tested it. Not the Ultra. Discloses: Description: ''This video and description contain affiliate links'' (includes a bit.ly link to the EDX). Spoken: he ''went in and bought the things individually'' after missing the bundle. No gifted sample or sponsorship stated.'
+    used_for:
+    - edx-pro-5
+    - edx-pro-6
+    - edx-con-5
+    - edx-con-6
+  - source: iron-heart-forum-905157
+    covers: 'Anesthetist, 29 Jul 2025, on the ''last run'', posted the day before the Ultra launch in a thread about the Ultra. On the same page Graeme links ''last iteration'' to the EDX Lite article, so ''last run'' = EDX Lite (2024). The post does not name the model; the Lite reading is from context. Not the Ultra. Discloses: Forum owner post; no affiliate, gift or sponsorship. The post itself does not say he owns it, but his July 2024 posts on s3''s page show he bought the 2024 bag.'
+    used_for: []
+  - source: iron-heart-forum-821556
+    covers: 'Anesthetist, 7 Jul 2024, ''Latest Carryology buys ... The Matador is nice''. Three weeks after the EDX Lite drop (17 Jun 2024). Post 821506 on the same page: ''I bought one for me and one for my better half'' (a reply to Graeme''s post 817228, not on this page). The model name is not in the text; it is shown only in photos I could not view. EDX Lite by date and context. Not the Ultra. Discloses: Owner post (bought it himself); no affiliate or sponsorship.'
+    used_for: []
+  - source: carryology-collaboration-par-matador-x-carryology-edx-ultra-collection-ex
+    covers: 'EDX Ultra release page (Taylor Welden, 30 Jul 2025): backpack 22 L, 520 g, 7.8 x 10.8 x 17.9 in, Challenge Ultra 200TX, full feature list. Used for the version history only. Discloses: Co-maker page (Carryology), not independent.'
+    used_for: []
+  - source: carryology-collaboration-par-exclusive-release-matador-x-carryology-edx-s
+    covers: 'First EDX (EDX Series) release page, 24 Jun 2023: backpack 22 L, 425.2 g, 7.75 x 10.75 x 17.875 in, X-Pac VX07, full feature list. Used for the version history only. Discloses: Co-maker page, not independent.'
+    used_for: []
+  - source: carryology-collaboration-par-matador-x-carryology-advancing-to-edx-lite
+    covers: 'EDX Lite design article, 14 Jun 2024: lists what changed from V1 (Robic UHMWPE nylon on front lower panel, side panels and shoulder straps; mono mesh back replaced by printed VX07; side handles moved to form pass-through; new laptop sleeve closure). Version history only. Discloses: Co-maker page, not independent.'
+    used_for: []
+  - source: matador-x-carryology-edx-ultra-backpack
+    covers: 'EDX Ultra backpack product page. The WebFetch feature list matches s4 word for word (foam-padded shoulder straps, secondary main zipper, internal admin pocket, magnetic laptop sleeve with standoff, expandable magnetic bottle pockets). Version history only. Discloses: Co-maker''s own store page.'
+    used_for: []
+  sourcing: The For points and one Against point come from a video review of the first EDX (2023). Also based on Matador's and Carryology's own pages, plus my own bag for how it opens and stands.
+variants:
+- id: matador-x-carryology-edx-ultra-backpack
+  name: Matador® x Carryology EDX Ultra™ Backpack
+  page: matador-x-carryology-edx-ultra-backpack
+  link:
+    url: https://www.carryology.com/projects/matador-x-carryology-edx-ultra-collection-exclusive-release/
+    kind: partner-page
+    affiliate_url: null
+    note: A limited run made with Carryology, so the card links to Carryology's page. The specs were checked on Matador's page.
+  fabric:
+    shell:
+    - ultra-200tx
+    shell_as_written: Challenge® Ultra 200TX UHMWPE composite laminate
+    other: Toray Ultrasuede®, nylon monomesh, EVA foam, HydraGuard™ seam binding, Number 5 YKK® PU coated sealing zippers
+  volume_l: 22
+  weight_g: 520
+  dims_cm:
+    h: 45
+    w: 27
+    d: 20
+  as_written:
+    weight: 18oz (520g)
+    dims: 7.8 x 10.8 x 17.9in (20 x 27 x 45cm)
+    volume: 22 liters
+  laptop:
+    max_in: 16
+    type: magnetic sleeve
+  opening: Opens from the top; the main zip runs partway down, to the top of the bottle pockets
+  price:
+    amount: 260
+    currency: USD
+    seller: matador
+  release: limited
+  warranty: 3-year warranty; repair only, with store credit if repair is not feasible
+  media:
+  - file: img/edx-iso.jpg
+    kind: photo
+    view: unknown
+    shows_variant: null
+    credit: Matador studio photo
+    source: https://www.matadorequipment.com/products/matador-x-carryology-edx-ultra-backpack
+    permission: none
+  checks:
+  - date: '2026-11-13'
+    source: matador-x-carryology-edx-ultra-backpack
+    basis: page
+    method: Page opened and read by Claude through WebFetch; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - laptop
+    - fabric.shell
+    - warranty
+  - date: '2026-11-13'
+    source: matador-x-carryology-edx-ultra-backpack
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - release
+    note: Matador marks it a limited edition; no quantity given
+  - date: '2026-11-14'
+    source: anish-own-bag
+    basis: own
+    fields:
+    - opening
+    method: Anish's own bag, described by him on 14 Nov 2026
+    note: 'His words: "It''s a partial panel/top loader. The main compartment zip comes down to the top of the water bottle pocket". The old value also said "packable"; that is not about the opening and is already a "Maker says" line (lays flat or packs into its mesh bag).'
+  units:
+    weight:
+      metric:
+        g: 520
+        from: maker
+      imperial:
+        lb: 1.13
+        shown: 18 oz
+        from: maker
+    dims:
+      metric:
+        cm:
+        - 45
+        - 27
+        - 20
+        from: maker
+      imperial:
+        in:
+        - 17.9
+        - 10.8
+        - 7.8
+        from: maker
+features:
+- id: edx-feat-1-b
+  text: Lays flat or packs into its included mesh zipper bag.
+  scope: design
+  sources:
+  - matador-x-carryology-edx-ultra-backpack
+  applies_to:
+  - matador-x-carryology-edx-ultra-backpack
+  replaces: edx-pro-1
+  was_kind: pro
+  status: approved
+- id: edx-feat-3
+  text: HydraGuard™ weatherproof seam binding, with YKK® sealing zippers on all external pockets.
+  scope: design
+  sources:
+  - matador-x-carryology-edx-ultra-backpack
+  applies_to:
+  - matador-x-carryology-edx-ultra-backpack
+  replaces: edx-pro-3
+  was_kind: pro
+  status: approved
+- id: edx-feat-3-b
+  text: Keeps the silhouette and organisation of the earlier EDX runs, with a new fabric and handle wraps.
+  scope: design
+  sources:
+  - carryology-collaboration-par-matador-x-carryology-edx-ultra-collection-ex
+  - carryology-collaboration-par-the-evolution-introducing-the-third-iteratio
+  applies_to:
+  - matador-x-carryology-edx-ultra-backpack
+  replaces: edx-pro-3
+  was_kind: pro
+  status: approved
+- id: edx-feat-4
+  text: Magnetic fold-away bottle pockets and luggage pass-through
+  scope: design
+  sources:
+  - matador-x-carryology-edx-ultra-backpack
+  - carryology-collaboration-par-matador-x-carryology-edx-ultra-collection-ex
+  - carryology-collaboration-par-the-evolution-introducing-the-third-iteratio
+  applies_to:
+  - matador-x-carryology-edx-ultra-backpack
+  replaces: edx-pro-4
+  was_kind: pro
+  status: approved
+claims:
+- id: edx-pro-5
+  kind: pro
+  text: Comfortable to wear around.
+  voice: reviewers
+  support: one review
+  scope: design
+  basis: sibling
+  sources:
+  - jb-outside-video-matador-x-carryology-edx-backpack-and-sling
+  observed_on: []
+  from_build:
+    label: From a video review of the first EDX
+    generation: First EDX (EDX Series, June 2023); the EDX Ultra is the third run (July 2025)
+    size: Same, 22 L
+    fabric: X-Pac VX07
+    found: Carryology's pages list foam-padded shoulder straps and a removable sternum strap for both the first EDX and the Ultra, and the Ultra goes back to the first EDX's mesh back panel. No page gives the strap foam for the Ultra, which is 95 g heavier.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: jb-outside-video-matador-x-carryology-edx-backpack-and-sling
+    about: first EDX (EDX Series, 2023) in X-Pac VX07, not the Ultra; out-of-the-box first impressions; he bought it himself, affiliate links
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. JB Outside: "it is comfortable wore it around is very sufficient"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''yes (on the EDX heading)''). research/reviews-2026-11-17/merged/edx.json point 1.'
+  added_in: reviews-2026-11-17
+- id: edx-pro-6
+  kind: pro
+  text: A side zipper reaches the main compartment without unpacking from the top.
+  voice: reviewers
+  support: one review
+  scope: design
+  basis: sibling
+  sources:
+  - jb-outside-video-matador-x-carryology-edx-backpack-and-sling
+  observed_on: []
+  from_build:
+    label: From a video review of the first EDX
+    generation: First EDX (EDX Series, June 2023); the EDX Ultra is the third run (July 2025)
+    size: Same, 22 L
+    fabric: X-Pac VX07
+    found: The secondary main compartment zipper is listed word for word on the first EDX, the EDX Lite and the EDX Ultra.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: jb-outside-video-matador-x-carryology-edx-backpack-and-sling
+    about: first EDX (EDX Series, 2023) in X-Pac VX07, not the Ultra; out-of-the-box first impressions; he bought it himself, affiliate links
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. JB Outside: "you don''t need to unpack everything from the top"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''yes (on the EDX heading)''). research/reviews-2026-11-17/merged/edx.json point 2.'
+  added_in: reviews-2026-11-17
+- id: edx-con-5
+  kind: con
+  text: Hard to stand on its own because the bottom isn't flat.
+  voice: reviewers
+  support: one review
+  scope: design
+  basis: sibling
+  sources:
+  - jb-outside-video-matador-x-carryology-edx-backpack-and-sling
+  observed_on:
+  - matador-x-carryology-edx-ultra-backpack
+  from_build:
+    label: From a video review of the first EDX; same on my own EDX Ultra
+    generation: First EDX (EDX Series, June 2023); the EDX Ultra is the third run (July 2025)
+    size: Same, 22 L
+    fabric: X-Pac VX07
+    found: Confirmed on the Ultra. Anish checked his own EDX Ultra on 17 Nov 2026 and finds it difficult to make it stand on its own.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: jb-outside-video-matador-x-carryology-edx-backpack-and-sling
+    about: first EDX (EDX Series, 2023) in X-Pac VX07, not the Ultra; out-of-the-box first impressions; he bought it himself, affiliate links
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. JB Outside: "the bottom is not flat so it doesn''t stand on its own"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: Added 17 Nov 2026 from the wider source search. Anish confirmed it on his own EDX Ultra the same day ('Agree - difficult to make it self stand') and chose 'Hard to stand' over the reviewer's 'doesn't stand', to match his own bag. research/reviews-2026-11-17/merged/edx.json point 3.
+  added_in: reviews-2026-11-17
+- id: edx-con-6
+  kind: con
+  text: Inside zip pocket on the back wall is too shallow for an iPad Mini.
+  voice: reviewers
+  support: one review
+  scope: design
+  basis: sibling
+  sources:
+  - jb-outside-video-matador-x-carryology-edx-backpack-and-sling
+  observed_on: []
+  from_build:
+    label: From a video review of the first EDX
+    generation: First EDX (EDX Series, June 2023); the EDX Ultra is the third run (July 2025)
+    size: Same, 22 L
+    fabric: X-Pac VX07
+    found: Not settled. Both versions list an internal admin pocket and the same outside dimensions, but no maker page describes this pocket or its depth, so it may not be the same pocket. Anish has no iPad Mini to try it with, and set the question aside for now (17 Nov 2026).
+    decided: '2026-11-17'
+  status: held
+  source_notes:
+  - source: jb-outside-video-matador-x-carryology-edx-backpack-and-sling
+    about: first EDX (EDX Series, 2023) in X-Pac VX07, not the Ultra; out-of-the-box first impressions; he bought it himself, affiliate links
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. JB Outside: "so you can''t put really even an iPad Mini in there"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search; Anish has not read this wording. research/reviews-2026-11-17/merged/edx.json point 5. Held off the card on 17 Nov 2026: whether the point carries over to this build is not settled. It goes on the card if Anish confirms it on his own bag.'
+  added_in: reviews-2026-11-17
+computed:
+- replaces: edx-pro-1
+  was: Joint-lightest pack on the sheet at 520 g, level with the Db Hugger; packs flat or into its included mesh bag
+  rule: Rank all bags by weight_g; if this bag is lowest, show 'lightest on the list', or 'joint lightest' when tied.
+  state: Built. "Lightest" standout in tools/summary_lines.py, shown only while true.
+legacy:
+  verdict: 'The packable outlier: a second bag that can be the only bag.'
+  price_note: matadorequipment.com · sold out
+  avail: Sold out · secondhand
+  origin: USA
+  laptop: 16" magnetic sleeve
+  fabric: ULTRA 200TX
+  opening: Panel-load, packable
+  brand: Matador × Carryology
+  src: https://www.matadorequipment.com/products/matador-x-carryology-edx-ultra-backpack
+  claims:
+  - id: edx-pro-1
+    kind: pro
+    text: Joint-lightest pack on the sheet at 520 g, level with the Db Hugger; packs flat or into its included mesh bag
+    scope: material
+    basis: maker
+    sources:
+    - matador-x-carryology-edx-ultra-backpack
+    - carryology-collaboration-par-matador-x-carryology-edx-ultra-collection-ex
+    - db-weigh-lighter-hugger-30l-weigh-darker
+    flags:
+    - names-other-bag
+    - list-comparison
+    evidence:
+      status: supported
+      note: Matador lists 520 g and says it lays flat or packs into an included mesh zipper bag; Db also lists 520 g. 'Joint-lightest on the sheet' is the site's comparison.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: matador-x-carryology-edx-ultra-backpack
+      about: same build
+    - source: carryology-collaboration-par-matador-x-carryology-edx-ultra-collection-ex
+      about: same build
+    - source: db-weigh-lighter-hugger-30l-weigh-darker
+      about: Db Weigh Lighter Hugger 30L (the 520 g comparison bag)
+    outcome:
+    - 'edx-pro-1: computed from data. Built. "Lightest" standout in tools/summary_lines.py, shown only while true.'
+    - 'edx-pro-1-b: moved to features (maker statement).'
+  - id: edx-pro-2
+    kind: pro
+    text: Two prior EDX runs built a cult following and sold out instantly; Carryology calls this the bag people chased twice
+    scope: general
+    basis: maker
+    sources:
+    - carryology-collaboration-par-matador-x-carryology-edx-ultra-collection-ex
+    - carryology-collaboration-par-matador-x-carryology-advancing-to-edx-lite
+    - carryology-collaboration-par-exclusive-release-matador-x-carryology-edx-l
+    - iron-heart-forum-905181
+    flags:
+    - state-in-prose
+    evidence:
+      status: partly
+      note: Carryology's release says 'cult favorite' and 'chased twice before'. Only the first run is documented as sold out, with no speed given; 'instantly' is unsupported for prior runs.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: carryology-collaboration-par-matador-x-carryology-edx-ultra-collection-ex
+      about: same build
+    - source: carryology-collaboration-par-matador-x-carryology-advancing-to-edx-lite
+      about: EDX Lite (second run); says the first run sold out and requests followed, no speed given
+    - source: carryology-collaboration-par-exclusive-release-matador-x-carryology-edx-l
+      about: EDX Lite (second run); says the original series sold out
+    - source: iron-heart-forum-905181
+      about: 'same build (third run): a member reports stock lasting about twenty minutes after launch; not about the prior two runs'
+    outcome:
+    - 'edx-pro-2: dropped on review (ruling 5).'
+  - id: edx-pro-3
+    kind: pro
+    text: HydraGuard seams and YKK sealing zippers; the V3 upgrades a proven shape rather than redesigning it
+    scope: design
+    basis: maker
+    sources:
+    - matador-x-carryology-edx-ultra-backpack
+    - carryology-collaboration-par-matador-x-carryology-edx-ultra-collection-ex
+    - carryology-collaboration-par-the-evolution-introducing-the-third-iteratio
+    - shop-eat-surf-outdoor-p-610257
+    evidence:
+      status: supported
+      note: Matador lists HydraGuard seam binding and YKK sealing zippers on external pockets; Carryology says silhouette and organisation carry over, with new fabric, handle wraps and magnetic latches.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: matador-x-carryology-edx-ultra-backpack
+      about: same build
+    - source: carryology-collaboration-par-matador-x-carryology-edx-ultra-collection-ex
+      about: same build
+    - source: carryology-collaboration-par-the-evolution-introducing-the-third-iteratio
+      about: same build; uses the 'V3' label and notes HydraGuard carried over from V1 and V2
+    - source: shop-eat-surf-outdoor-p-610257
+      about: same build (press release)
+    outcome:
+    - 'edx-pro-3: moved to features (maker statement).'
+    - 'edx-pro-3-b: moved to features (maker statement).'
+  - id: edx-pro-4
+    kind: pro
+    text: Magnetic fold-away bottle pockets and luggage pass-through
+    scope: design
+    basis: maker
+    sources:
+    - matador-x-carryology-edx-ultra-backpack
+    - carryology-collaboration-par-matador-x-carryology-edx-ultra-collection-ex
+    - carryology-collaboration-par-the-evolution-introducing-the-third-iteratio
+    evidence:
+      status: supported
+      note: Matador lists expandable magnetic bottle pockets and a rolling-luggage handle pass-through; the 'fold away when not in use' wording comes from Carryology's launch articles, not the product page.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: matador-x-carryology-edx-ultra-backpack
+      about: same build
+    - source: carryology-collaboration-par-matador-x-carryology-edx-ultra-collection-ex
+      about: same build
+    - source: carryology-collaboration-par-the-evolution-introducing-the-third-iteratio
+      about: same build
+    outcome:
+    - 'edx-pro-4: moved to features (maker statement).'
+  - id: edx-con-1
+    kind: con
+    text: 'Prior-gen consensus, extrapolated: the minimal harness suits light loads, not full days at max weight'
+    scope: material
+    basis: sibling
+    sources: []
+    evidence:
+      status: not_found
+      note: No independent hands-on review or owner report of any EDX generation's harness was found; maker copy says foam-padded straps 'for comfort under load'. The 'prior-gen consensus' has no traceable source.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    outcome:
+    - 'edx-con-1: dropped. No source: no independent review or owner report of any EDX generation''s harness exists on file.'
+  - id: edx-con-2
+    kind: con
+    text: Monomesh panels trade padding and structure for grams
+    scope: material
+    basis: maker
+    sources:
+    - matador-x-carryology-edx-ultra-backpack
+    - carryology-collaboration-par-matador-x-carryology-edx-ultra-collection-ex
+    evidence:
+      status: partly
+      note: Maker copy says monomesh panels cut weight and keep packability, but calls them structural; no source says padding or structure is given up, so the trade-off is inference.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: matador-x-carryology-edx-ultra-backpack
+      about: same build
+    - source: carryology-collaboration-par-matador-x-carryology-edx-ultra-collection-ex
+      about: same build; says the monomesh back panel maintains structure and needs a sealed wall plus drain port behind it
+    outcome:
+    - 'edx-con-2: dropped. Maker calls the monomesh panels structural; the padding and structure trade-off is inference with no source.'
+  - id: edx-con-3
+    kind: con
+    text: Quantities extremely limited every run; retail is sold out again
+    scope: general
+    basis: maker
+    sources:
+    - matador-x-carryology-edx-ultra-backpack
+    - carryology-collaboration-par-matador-x-carryology-edx-ultra-collection-ex
+    - carryology-collaboration-par-exclusive-release-matador-x-carryology-edx-s
+    - matador-matador-x-carryology-edx-lite
+    - shop-eat-surf-outdoor-p-610257
+    - iron-heart-forum-905181
+    flags:
+    - state-in-prose
+    evidence:
+      status: partly
+      note: Matador shows Sold Out and says limited editions come in limited quantities; Carryology says 'highly limited'. No quantity limit found for the second run; 'extremely' is the site's word.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: matador-x-carryology-edx-ultra-backpack
+      about: same build; Sold Out when opened 2026-11-13
+    - source: carryology-collaboration-par-matador-x-carryology-edx-ultra-collection-ex
+      about: same build
+    - source: carryology-collaboration-par-exclusive-release-matador-x-carryology-edx-s
+      about: first EDX run; limited-quantity wording applies to the discounted three-piece set
+    - source: matador-matador-x-carryology-edx-lite
+      about: EDX Lite (second run); shows Sold Out, final-sale limited item, no quantity statement
+    - source: shop-eat-surf-outdoor-p-610257
+      about: same build (press release); calls it a limited release
+    - source: iron-heart-forum-905181
+      about: same build; member reports it sold out quickly
+    outcome:
+    - 'edx-con-3: dropped. Stock; the card links out instead. ''Every run'' and ''extremely'' are unsupported.'
+  - id: edx-con-4
+    kind: con
+    text: 3-year warranty is repair-only, no replacements
+    scope: general
+    basis: maker
+    sources:
+    - matador-x-carryology-edx-ultra-backpack
+    outcome:
+    - 'edx-con-4: dropped. It restates data already on the record (warranty).'

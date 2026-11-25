@@ -1,0 +1,797 @@
+migration:
+  source: Ultra Carry Index page, Rev AE (v20)
+  migrated: '2026-11-13'
+  claims: Anish read every line on 13 Nov 2026, one question at a time; approved lines are the ones he kept as shown. Lines from another build name the build. Old wording and search results are under legacy.claims.
+  photos: model.photos lists every photo the old page used, as its code and footer describe them; permission is none for all
+  sources_search: Claims and spec gaps were searched on 13 Nov 2026; see evidence on each claim and reports/sources-search-2026-11-13.md
+  proposals: Applied on 13 Nov 2026 by tools/migrate/apply_decisions.py, following Anish's rulings of that day.
+  availability: Removed on 13 Nov 2026. Each build links out instead; the old strings stay under legacy.
+model:
+  id: evergoods-civic-travel-bag-26l
+  legacy_id: ctb26
+  brand: evergoods
+  label: CIVIC Travel Bag 26L
+  family: CIVIC Travel Bag
+  category: backpack
+  use:
+  - edc
+  - travel
+  build_class: structured
+  drawings:
+  - file: drawings/ctb26/sketch/ctb26-sketch-front.svg
+    kind: drawing
+    view: front
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/ctb26/sketch/ctb26-sketch-iso.svg
+    kind: drawing
+    view: three-quarter
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/ctb26/sketch/ctb26-sketch-back.svg
+    kind: drawing
+    view: back
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/ctb26/sketch/ctb26-sketch-side.svg
+    kind: drawing
+    view: side
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  photos:
+  - file: img/maker/fc906142-CIVIC-TRAVEL-BAG-CTB26-ULTRA-BLACK-MAGIC-FRONT-_1.png
+    role: card main
+    view: front
+    credit_text: evergoods.us
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: CIVIC Travel Bag CTB26 ULTRA, Black Magic, front'
+    permission: none
+  - file: img/ctb26-front-ultra.jpg
+    role: hero strip
+    view: front
+    credit_text: Urban Cred NYC's photo with their add-on patch swapped for the plain hook-and-loop panel from u/Uci2ci's photo on r/EVERGOODS
+    credit_url: https://www.instagram.com/p/DdMqIDUm6eU/ (Urban Cred NYC); https://www.reddit.com/r/EVERGOODS/comments/1w8l4pg/ultra_ctb26_and_cubes_on_hand/ (u/Uci2ci)
+    source_page: https://www.instagram.com/p/DdMqIDUm6eU/
+    edits: Add-on patch swapped for the plain hook-and-loop panel taken from the r/EVERGOODS photo (footer)
+    shows: ULTRA build (file name ctb26-front-ultra)
+    permission: none
+  - file: img/maker/17b81266-CIVIC-TRAVEL-BAG-CTB26-ULTRA-BLACK-MAGIC-FRONT-_1.png
+    role: hero strip
+    view: three-quarter
+    credit_text: null
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: CIVIC Travel Bag CTB26 ULTRA Black Magic Front (same file name as card main, different hash prefix)'
+    permission: none
+  reviews:
+  - source: evergoods-civic-travel-bag-26l
+    covers: 'Pooled CIVIC Travel Bag page (20L/26L/35L, 516 reviews); visible reviews dated 2026-09-07 to 2026-11-15 include 20L, 35L, waxed canvas and X-Pac owners; many truncated. Discloses: Maker''s own review widget (Loox); a few reviews marked Verified; maker sells the bag.'
+    used_for:
+    - ctb26-pro-1
+    - ctb26-pro-1-b
+    - ctb26-pro-3
+    - ctb26-con-2
+  - source: evergoods-civic-travel-bag-ultra
+    covers: 'CIVIC Travel Bag 26L - ULTRA (Black Magic ULTRA 200X, $425); 7 owner reviews shown, dated 2026-09-02 to 2026-11-08; several truncated; Ray R.''s material not clear. Discloses: Maker''s own review widget (Loox); one review marked Verified (Ron L.); maker sells the bag; star ratings not visible in captured text.'
+    used_for:
+    - ctb26-pro-2
+    - ctb26-con-5
+    - ctb26-con-6
+  - source: nomads-nation-evergoods-ctb26-review
+    covers: 'CTB26 26L, 420D high-tenacity nylon 6 (not ULTRA); published 2025-08-15, updated 2026-11-09. Discloses: No disclosure text. ''Best Black Friday Deal'' redirect links, Awin and LinkSynergy affiliate links on alternatives; promotes Fyro, a bag brand the author founded.'
+    used_for:
+    - ctb26-pro-2
+    - ctb26-con-5
+    - ctb26-con-6
+    - ctb26-pro-6
+  - source: pack-hacker-civic-travel-bag-26l-ctb26
+    covers: 'CTB26 26L, 420D nylon (not ULTRA); published 2023-11-13, updated 2024-10-11; usage timeline covers initial use and 2 weeks. Discloses: Reader-supported; says it may earn an affiliate commission; AvantLink ''Check Price at EVERGOODS'' links. No sample or loan statement.'
+    used_for:
+    - ctb26-pro-1
+  - source: outside-bozeman-review-civic-travel-bag
+    covers: size and fabric not stated; short write-up that reads close to maker copy
+    used_for: []
+  - source: rushfaster-reviews-io-evergoods-ctb26
+    covers: 'CTB26 26L owner reviews posted 1-2 years ago (pre-ULTRA); fabric not stated (Charlie: Coyote Brown; Fraser M mentions ''the new back panel''). Header says no reviews for 13012c-CYB yet lists five. Discloses: Retailer (Rushfaster) review page on REVIEWS.io; reviewers marked ''Verified Reviewer''; store replies to each. No sample or sponsorship stated.'
+    used_for:
+    - ctb26-pro-1
+    - ctb26-pro-6
+    - ctb26-con-7
+  - source: mukama-evergoods-civic-travel-bag-26-l-ultra
+    covers: 'CTB26 26L ULTRA (Black Magic ULTRA 200X); one Judge.me review by Andrew M. (GB), marked Verified, ''5 days ago'' (about 2026-11-12). Discloses: Retailer selling the bag ($516 incl. US tariffs); review marked Verified; nothing on samples or sponsorship.'
+    used_for:
+    - ctb26-pro-1
+    - ctb26-pro-6
+  - source: danny-packs-video-evergoods-ctb26-revisited
+    covers: 'CTB26 Carryology Phoenix 2 collaboration: X-Pac shell, AquaGuard zippers, orange lining, slightly different internal slip pocket; reviewer says ''for the most part it''s the same bag'' as the mainline release and that it has ''evergoods new breathable back panel''. Uploaded 2023-05-05; reviewer 5''11". Discloses: Description has affiliate-style purchase links (alnk.to, Huckberry via prf.hn, shrsl.com) and Amazon links; no sample or sponsorship statement.'
+    used_for:
+    - ctb26-pro-1
+    - ctb26-pro-2
+    - ctb26-con-7
+  - source: ryan-bowman-video-evergoods-ctb26-full-review
+    covers: 'CTB26 26L mainline 2023 nylon release (not ULTRA) after 2-3 weeks of use; compared with his Civic Half Zip 26; says the CTB fabric is thinner. Uploaded 2023-05-29. Discloses: Description only says 3 weeks of use; no affiliate links, sample or sponsorship statement.'
+    used_for:
+    - ctb26-pro-2
+  sourcing: Based on owner reviews on Evergoods' site for both the ULTRA and the 420D nylon builds, owner reviews at Mukama and Rushfaster, reviews of the 420D nylon build from Nomads Nation and Pack Hacker, video reviews from Danny Packs and Ryan Bowman, my own use, and Evergoods' own pages.
+variants:
+- id: civic-travel-bag-26l-ultra
+  name: CIVIC Travel Bag 26L - ULTRA
+  page: evergoods-civic-travel-bag-ultra
+  link:
+    url: https://evergoods.us/products/civic-travel-bag-ultra
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - ultra-200x
+    shell_as_written: Black Magic ULTRA 200X shell textile
+    lining: White 210D Nylon 6,6 with PU coating and silicone finish
+    other: '#10 and #8 YKK RCPU coated exterior zippers'
+  volume_l: 26
+  weight_g: 1459
+  dims_cm:
+    h: 48.2
+    w: 29.2
+    d: 20.3
+  as_written:
+    weight: 3lbs 3.5oz (1459g)
+    dims: 11.5"W x 8"D x 19"H (29.2W x 20.3D x 48.2H cm)
+  laptop:
+    max_in: 16
+    type: padded, suspended pocket
+  opening: Panel-load clamshell
+  price:
+    amount: 425
+    currency: USD
+    seller: evergoods
+  release: limited
+  warranty: Lifetime warranty
+  colourways:
+  - name: Black Magic
+  media:
+  - file: img/maker/fc906142-CIVIC-TRAVEL-BAG-CTB26-ULTRA-BLACK-MAGIC-FRONT-_1.png
+    kind: photo
+    view: unknown
+    shows_variant: null
+    credit: evergoods.us
+    source: https://evergoods.us/products/civic-travel-bag-ultra
+    permission: none
+  checks:
+  - date: '2026-11-13'
+    source: evergoods-civic-travel-bag-ultra
+    basis: page
+    method: Page opened and read by Claude through WebFetch; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - laptop
+    - fabric.shell
+    - opening
+    - fabric.lining
+    - warranty
+    - colourways
+  - date: '2026-11-13'
+    source: rushfaster-evergoods-civic-travel-bag-26l-ultra
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - made_in
+    note: From a retailer; no Evergoods page states it
+  - date: '2026-11-13'
+    source: evergoods-the-ultra-travel-system-coming-soon
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - release
+    note: Evergoods calls it a limited edition collection with no restock planned
+  made_in: Vietnam
+  units:
+    weight:
+      metric:
+        g: 1459
+        from: maker
+      imperial:
+        lb: 3.22
+        shown: 3 lb 3.5 oz
+        from: maker
+    dims:
+      metric:
+        cm:
+        - 48.2
+        - 29.2
+        - 20.3
+        from: maker
+      imperial:
+        in:
+        - 19
+        - 11.5
+        - 8
+        from: maker
+- id: civic-travel-bag-26l
+  name: CIVIC Travel Bag
+  record: comparison
+  page: evergoods-civic-travel-bag-26l
+  link:
+    url: https://evergoods.us/products/civic-travel-bag-26l
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - nylon-420d-high-tenacity
+    shell_as_written: 420d High Tenacity Nylon
+  volume_l: 26
+  weight_g: 1587
+  dims_cm:
+    h: 48.2
+    w: 29.2
+    d: 20.3
+  as_written:
+    weight: 3lbs 8oz | 1587g
+    dims: 11.5 in W × 8 in D × 19 in H (29.2 × 20.3 × 48.2 cm)
+  laptop:
+    max_in: 16
+    type: padded, suspended pocket
+  checks:
+  - date: '2026-11-13'
+    source: evergoods-civic-travel-bag-26l
+    basis: page
+    method: Page opened and read by Claude through WebFetch on 13 Nov 2026; not yet spot-checked by Anish
+    fields:
+    - name
+    - volume_l
+    - weight_g
+    - dims_cm
+    - laptop
+    - fabric.shell
+    note: 26L is a size option on a listing shared with other sizes
+  - date: '2026-11-15'
+    source: evergoods-civic-travel-bag-26l
+    basis: page
+    method: 'Search subagent, through WebFetch on 15 Nov 2026: the listing''s store data (https://evergoods.us/products/civic-travel-bag.js), 26L option'
+    fields:
+    - price
+    note: $299 for the 26L in all three colourways (20L $270, 35L $365).
+  notes:
+    name: The listing is "CIVIC Travel Bag"; 26L is a size option on it.
+  units:
+    weight:
+      metric:
+        g: 1587
+        from: maker
+      imperial:
+        lb: 3.5
+        shown: 3 lb 8 oz
+        from: maker
+    dims:
+      metric:
+        cm:
+        - 48.2
+        - 29.2
+        - 20.3
+        from: maker
+      imperial:
+        in:
+        - 19
+        - 11.5
+        - 8
+        from: maker
+  price:
+    amount: 299
+    currency: USD
+    seller: evergoods
+features:
+- id: ctb26-feat-4
+  text: 'Waterproof ULTRA 200X shell with #10 and #8 YKK RCPU coated zippers.'
+  scope: material
+  sources:
+  - evergoods-civic-travel-bag-ultra
+  - evergoods-the-ultra-travel-system-coming-soon
+  applies_to:
+  - civic-travel-bag-26l-ultra
+  replaces: ctb26-pro-4
+  was_kind: pro
+  status: approved
+- id: ctb26-feat-c3
+  text: Evergoods offers no hip belt for this size.
+  scope: design
+  sources:
+  - evergoods-civic-travel-bag-ultra
+  - evergoods-civic-travel-bag-26l
+  applies_to:
+  - civic-travel-bag-26l-ultra
+  replaces: ctb26-con-3
+  was_kind: con
+  status: approved
+claims:
+- id: ctb26-pro-1
+  kind: pro
+  text: Plenty of well-organised pockets, none eating into each other or the main compartment.
+  voice: owners
+  support: five reviewers and owners agree
+  scope: design
+  basis: sibling
+  sources:
+  - evergoods-civic-travel-bag-26l
+  - pack-hacker-civic-travel-bag-26l-ctb26
+  - rushfaster-reviews-io-evergoods-ctb26
+  - mukama-evergoods-civic-travel-bag-26-l-ultra
+  - danny-packs-video-evergoods-ctb26-revisited
+  observed_on:
+  - civic-travel-bag-26l-ultra
+  from_build:
+    label: Also from reviews of the 420D nylon, X-Pac and earlier builds
+    generation: Same generation
+    size: Same, 26L (the owner names the CTB26)
+    fabric: 420D nylon
+    assigned: 'yes'
+    found: Evergoods lists the usual CIVIC Travel Bag pocket set on the ULTRA page; it does not say outright that the layout is identical.
+    decided: '2026-11-13'
+  status: approved
+  source_notes:
+  - source: evergoods-civic-travel-bag-26l
+    about: 420D nylon build, not ULTRA; maker specs plus owner reviews pooled across 20L/26L/35L (514 total, about 40 visible, dated 2026-07 to 2026-11); the owner reviews cited name the CTB26
+  - source: pack-hacker-civic-travel-bag-26l-ctb26
+    about: 420D nylon build, not ULTRA; affiliate links, sample status not stated
+  - source: rushfaster-reviews-io-evergoods-ctb26
+    about: earlier CTB26 build, fabric not stated (reviews posted before the ULTRA build); verified-buyer reviews on a retailer's review page
+  - source: mukama-evergoods-civic-travel-bag-26-l-ultra
+    about: same build; one verified customer review on a retailer's page
+  - source: danny-packs-video-evergoods-ctb26-revisited
+    about: X-Pac build (Carryology Phoenix 2 collaboration), same design; affiliate links, no sample statement
+  replaces: ctb26-pro-1
+  wording_note: 'One 420D owner, not a repeated line. Yoke, stash and security detail unsupported; second owner''s point split to -b. 17 Nov 2026: support widened with Pack Hacker, Rushfaster, Mukama, Danny Packs (research/reviews-2026-11-17/merged/ctb26.json points 0, 1); was ''one owner review''. Pack Hacker (420D nylon), a Rushfaster owner (earlier build) and a Mukama owner (ULTRA) all confirm lots of pockets and good organisation. Danny Packs (X-Pac build) says the front pocket adds space ''without eating into the main compartment''. Build label changed from ''From reviews of the 420D nylon build'' to ''Also from reviews of the 420D nylon, X-Pac and earlier builds'' to fit the wider sources. Reworded the same day from ''Plenty of pockets, with some left spare.'' to ''Plenty of well-organised pockets, none eating into each other or the main compartment.''. Anish asked on 17 Nov 2026 for his two pocket lines to be one. No single source states the whole line: Pack Hacker, a Rushfaster owner
+    and a Mukama owner back plenty of pockets and good organisation, the Evergoods owner review backs pockets not robbing each other, and Danny Packs backs not eating into the main compartment. This line now also covers ''Filling one pocket does not eat into the space of the others.'' (ctb26-pro-1-b), merged into it the same day at Anish''s call.'
+- id: ctb26-pro-1-b
+  kind: pro
+  text: Filling one pocket does not eat into the space of the others.
+  voice: owners
+  support: one owner review
+  scope: design
+  basis: sibling
+  sources:
+  - evergoods-civic-travel-bag-26l
+  observed_on: []
+  from_build:
+    label: From reviews of the 420D nylon build
+    generation: Same generation
+    size: Same, 26L (the owner names the CTB26)
+    fabric: 420D nylon
+    assigned: 'yes'
+    found: Evergoods lists the usual CIVIC Travel Bag pocket set on the ULTRA page; it does not say outright that the layout is identical.
+    decided: '2026-11-13'
+  status: held
+  source_notes:
+  - source: evergoods-civic-travel-bag-26l
+    about: 420D nylon build, not ULTRA; maker specs plus owner reviews pooled across 20L/26L/35L (514 total, about 40 visible, dated 2026-07 to 2026-11); the owner reviews cited name the CTB26
+  replaces: ctb26-pro-1
+  wording_note: 'Split from pro-1: a different 420D owner says full pockets do not rob the others. 17 Nov 2026: merged into ctb26-pro-1 at Anish''s call and taken off the card as a separate line.'
+- id: ctb26-pro-2
+  kind: pro
+  text: The external bottle pockets are a big plus.
+  voice: owners
+  support: four reviewers and owners agree
+  scope: design
+  basis: owner-reports
+  sources:
+  - evergoods-civic-travel-bag-ultra
+  - nomads-nation-evergoods-ctb26-review
+  - danny-packs-video-evergoods-ctb26-revisited
+  - ryan-bowman-video-evergoods-ctb26-full-review
+  observed_on:
+  - civic-travel-bag-26l-ultra
+  status: approved
+  source_notes:
+  - source: evergoods-civic-travel-bag-ultra
+    about: same build; an owner review on the ULTRA page, read 13 Nov 2026
+  - source: nomads-nation-evergoods-ctb26-review
+    about: 420D nylon build, not ULTRA; affiliate links, and the author runs his own bag brand
+  - source: danny-packs-video-evergoods-ctb26-revisited
+    about: X-Pac build (Carryology Phoenix 2 collaboration), same design; affiliate links, no sample statement
+  - source: ryan-bowman-video-evergoods-ctb26-full-review
+    about: 2023 nylon build, not ULTRA; about three weeks of use, no affiliate links or sample statement
+  replaces: ctb26-pro-2
+  wording_note: 'Re-sourced on 13 Nov 2026 to an owner review of the ULTRA build, at Anish''s call. 17 Nov 2026: support widened with Nomads Nation, Danny Packs, Ryan Bowman (research/reviews-2026-11-17/merged/ctb26.json point 2); was ''one owner review''. Nomads Nation (420D), Danny Packs (X-Pac) and Ryan Bowman (2023 nylon) all praise the bottle pockets. Build label ''Also from reviews of the nylon and X-Pac builds'' added because the new sources cover other builds.'
+  other_builds:
+  - source: evergoods-civic-travel-bag-26l
+    about: 420D nylon build; two owners call the bottle pockets the best
+  from_build:
+    label: Also from reviews of the nylon and X-Pac builds
+    decided: '2026-11-17'
+- id: ctb26-pro-3
+  kind: pro
+  text: The handles do not make the bag sag.
+  voice: owners
+  support: one owner review
+  scope: design
+  basis: sibling
+  sources:
+  - evergoods-civic-travel-bag-26l
+  observed_on: []
+  from_build:
+    label: From reviews of the 420D nylon build
+    generation: Same generation
+    size: Same, 26L (the owner names the CTB26)
+    fabric: 420D nylon
+    assigned: 'yes'
+    found: Nothing on the ULTRA page covers it. Anish kept it because it matches his own use of the 26L ULTRA.
+    decided: '2026-11-13'
+  status: approved
+  source_notes:
+  - source: evergoods-civic-travel-bag-26l
+    about: 420D nylon build, not ULTRA; maker specs plus owner reviews pooled across 20L/26L/35L (514 total, about 40 visible, dated 2026-07 to 2026-11); the owner reviews cited name the CTB26
+  replaces: ctb26-pro-3
+  wording_note: One 420D owner. Cross-shopping half names other brands (Tom Bihn, GoRuck, GR2) and is dropped.
+  my_note: note-ctb26-handles
+- id: ctb26-con-2
+  kind: con
+  text: The back panel could breathe better, and the back can get sweaty.
+  voice: owners
+  support: owner reviews agree
+  scope: design
+  basis: sibling
+  sources:
+  - evergoods-civic-travel-bag-26l
+  observed_on: []
+  from_build:
+    label: From reviews of the 420D nylon build
+    generation: Same generation
+    size: Same, 26L (the owners name the CTB26)
+    fabric: 420D nylon
+    assigned: 'yes'
+    found: No owner review on the ULTRA page mentions breathability; the page captions a photo "Breathable Back Panel".
+    decided: '2026-11-13'
+  status: approved
+  source_notes:
+  - source: evergoods-civic-travel-bag-26l
+    about: 420D nylon build, not ULTRA; maker specs plus owner reviews pooled across 20L/26L/35L (514 total, about 40 visible, dated 2026-07 to 2026-11); the owner reviews cited name the CTB26
+  replaces: ctb26-con-2
+  wording_note: Three 420D owners want more airflow or report sweat; Nomads Nation rates it moderate. 'Hot days' not in sources. Pack Hacker disagrees.
+- id: ctb26-con-5
+  kind: con
+  text: Can lean forward and tip over if not packed correctly.
+  voice: owners
+  support: one review and one owner review
+  scope: design
+  basis: owner-reports
+  sources:
+  - evergoods-civic-travel-bag-ultra
+  - nomads-nation-evergoods-ctb26-review
+  observed_on:
+  - civic-travel-bag-26l-ultra
+  status: approved
+  source_notes:
+  - source: evergoods-civic-travel-bag-ultra
+    about: same build; maker specs plus 7 owner reviews dated 2026-09 to 2026-11
+  - source: nomads-nation-evergoods-ctb26-review
+    about: 420D nylon build, not ULTRA; affiliate links, and the author runs his own bag brand
+  other_builds:
+  - source: evergoods-civic-travel-bag-26l
+    about: 420D nylon build, not ULTRA; maker specs plus owner reviews pooled across 20L/26L/35L (514 total, about 40 visible, dated 2026-07 to 2026-11); the owner reviews cited name the CTB26
+  - source: nomads-nation-evergoods-ctb26-review
+    about: 420D nylon build, not ULTRA (updated 2026-11-09); affiliate site whose author promotes his own bag brand
+  replaces: ctb26-con-5
+  wording_note: 'Rests on the ULTRA owner who reports leaning; another ULTRA owner says it stands. ''When empty'' came from a 420D owner. 17 Nov 2026: support widened with Nomads Nation (research/reviews-2026-11-17/merged/ctb26.json point 7); was ''one owner review''. Nomads Nation (420D) says self-standing is ''hit-or-miss and depends on how you load it''. Another ULTRA owner and Danny Packs say it stands on its own, especially packed out. Build label ''Also from a review of the 420D nylon build'' added because the new sources cover other builds.'
+  from_build:
+    label: Also from a review of the 420D nylon build
+    decided: '2026-11-17'
+- id: ctb26-con-6
+  kind: con
+  text: The stiff back panel's bottom edges can dig into the lower back.
+  voice: owners
+  support: one review and one owner review
+  scope: design
+  basis: owner-reports
+  sources:
+  - evergoods-civic-travel-bag-ultra
+  - nomads-nation-evergoods-ctb26-review
+  observed_on:
+  - civic-travel-bag-26l-ultra
+  status: approved
+  source_notes:
+  - source: evergoods-civic-travel-bag-ultra
+    about: same build; an owner review on the ULTRA page, read 13 Nov 2026
+  - source: nomads-nation-evergoods-ctb26-review
+    about: 420D nylon build, not ULTRA; affiliate links, and the author runs his own bag brand
+  my_note: note-ctb26-back-panel
+  wording_note: 'New on 13 Nov 2026, added at Anish''s call. Not on the old page. 17 Nov 2026: support widened with Nomads Nation (research/reviews-2026-11-17/merged/ctb26.json point 6); was ''one owner review''. Nomads Nation (420D) says a small share of users feel the curved back panel press into the lower back. A Mukama ULTRA owner found the back pad more comfortable than expected. Build label ''Also from a review of the 420D nylon build'' added because the new sources cover other builds.'
+  from_build:
+    label: Also from a review of the 420D nylon build
+    decided: '2026-11-17'
+- id: ctb26-pro-6
+  kind: pro
+  text: Holds more than the 26 L figure suggests.
+  voice: owners
+  support: three reviewers and owners agree
+  scope: design
+  basis: owner-reports
+  sources:
+  - rushfaster-reviews-io-evergoods-ctb26
+  - mukama-evergoods-civic-travel-bag-26-l-ultra
+  - nomads-nation-evergoods-ctb26-review
+  observed_on:
+  - civic-travel-bag-26l-ultra
+  from_build:
+    label: Also from a 420D nylon review and an owner of an earlier build
+    generation: Same design; the Rushfaster owner's review predates the ULTRA build
+    size: Same, 26L
+    fabric: ULTRA (Mukama owner), 420D nylon (Nomads Nation), not stated (Rushfaster owner)
+    found: Volume is a design figure, listed as 26 L for both builds on file, and one of the three sources is an owner of the ULTRA build.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: rushfaster-reviews-io-evergoods-ctb26
+    about: earlier CTB26 build, fabric not stated (reviews posted before the ULTRA build); verified-buyer reviews on a retailer's review page
+  - source: mukama-evergoods-civic-travel-bag-26-l-ultra
+    about: same build; one verified customer review on a retailer's page
+  - source: nomads-nation-evergoods-ctb26-review
+    about: 420D nylon build, not ULTRA; affiliate links, and the author runs his own bag brand
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. Rushfaster: "it can carry more than 26L"; Mukama: "the 26L feels larger than expected"; Nomads Nation: "Feels closer to 28–29L"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''yes''). research/reviews-2026-11-17/merged/ctb26.json point 12.'
+  added_in: reviews-2026-11-17
+- id: ctb26-con-7
+  kind: con
+  text: Can feel big for everyday carry on a smaller frame.
+  voice: reviewers
+  support: one review and one owner review
+  scope: design
+  basis: sibling
+  sources:
+  - rushfaster-reviews-io-evergoods-ctb26
+  - danny-packs-video-evergoods-ctb26-revisited
+  observed_on: []
+  from_build:
+    label: From an X-Pac build review and an owner of an earlier build
+    generation: Same design; both predate the ULTRA build
+    size: Same, 26L
+    fabric: X-Pac (Danny Packs), not stated (Rushfaster owner)
+    found: How big the bag wears comes from its size and shape, which the ULTRA build shares; no ULTRA owner has said it yet.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: rushfaster-reviews-io-evergoods-ctb26
+    about: earlier CTB26 build, fabric not stated (reviews posted before the ULTRA build); verified-buyer reviews on a retailer's review page
+  - source: danny-packs-video-evergoods-ctb26-revisited
+    about: X-Pac build (Carryology Phoenix 2 collaboration), same design; affiliate links, no sample statement
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. Rushfaster: "if they have a smaller frame, and they find it too big"; Danny Packs: "feel maybe a little bit big for EDC depending on your height"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''yes''). research/reviews-2026-11-17/merged/ctb26.json point 13.'
+  added_in: reviews-2026-11-17
+computed: []
+legacy:
+  verdict: Reviewers call it the strongest CTB26 yet. Owners accept the grams for the pockets and the build.
+  price_note: evergoods.us · in stock
+  avail: Limited release · in stock
+  origin: USA
+  laptop: 16"
+  fabric: ULTRA 200X
+  opening: Panel-load clamshell
+  brand: Evergoods
+  src: https://evergoods.us/products/civic-travel-bag-ultra
+  claims:
+  - id: ctb26-pro-1
+    kind: pro
+    text: 'Owners repeat the same line: it never runs out of pockets, and the yoke, stash and security layout stays usable when full'
+    scope: design
+    basis: sibling
+    sources:
+    - evergoods-civic-travel-bag-26l
+    - evergoods-civic-travel-bag-ultra
+    evidence:
+      status: partly
+      note: One 420D CTB26 owner says he never runs out of room and has spare pockets; another says full pockets do not rob others. Not a repeated line; no ULTRA owner.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: evergoods-civic-travel-bag-26l
+      about: 420D nylon build, not ULTRA; maker specs plus owner reviews pooled across 20L/26L/35L (514 total, about 40 visible, dated 2026-07 to 2026-11); the owner reviews cited name the CTB26
+    - source: evergoods-civic-travel-bag-ultra
+      about: same build; maker specs plus 7 owner reviews dated 2026-09 to 2026-11
+    outcome:
+    - 'ctb26-pro-1: reworded; from another build, waiting on a call.'
+    - 'ctb26-pro-1-b: reworded; from another build, waiting on a call.'
+  - id: ctb26-pro-2
+    kind: pro
+    text: Bottle pockets rated best in class in nearly every review
+    scope: design
+    basis: sibling
+    sources:
+    - nomads-nation-evergoods-ctb26-review
+    - pack-hacker-civic-travel-bag-26l-ctb26
+    - evergoods-civic-travel-bag-26l
+    evidence:
+      status: partly
+      note: Nomads Nation says some of the best; two 420D owners say best. Pack Hacker likes them but notes big bottles are hard when full. 'Nearly every review' is overstated.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: nomads-nation-evergoods-ctb26-review
+      about: 420D nylon build, not ULTRA (updated 2026-11-09); affiliate site whose author promotes his own bag brand
+    - source: pack-hacker-civic-travel-bag-26l-ctb26
+      about: 420D nylon build, not ULTRA (updated 2024-10-11)
+    - source: evergoods-civic-travel-bag-26l
+      about: 420D nylon build, not ULTRA; maker specs plus owner reviews pooled across 20L/26L/35L (514 total, about 40 visible, dated 2026-07 to 2026-11); the owner reviews cited name the CTB26
+    outcome:
+    - 'ctb26-pro-2: reworded; from another build, waiting on a call.'
+  - id: ctb26-pro-3
+    kind: pro
+    text: Handles that do not sag the bag; owners cross-shop Tom Bihn and GoRuck and pick this for build feel
+    scope: design
+    basis: owner-reports
+    sources:
+    - evergoods-civic-travel-bag-26l
+    - evergoods-civic-travel-bag-ultra
+    flags:
+    - names-other-bag
+    evidence:
+      status: partly
+      note: 'One 420D owner says handles do not sag the bag and compares Tom Bihn and GoRuck; one ULTRA owner prefers it to his GR2. Reasons given: function and ruggedness.'
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: evergoods-civic-travel-bag-26l
+      about: 420D nylon build, not ULTRA; maker specs plus owner reviews pooled across 20L/26L/35L (514 total, about 40 visible, dated 2026-07 to 2026-11); the owner reviews cited name the CTB26
+    - source: evergoods-civic-travel-bag-ultra
+      about: same build; maker specs plus 7 owner reviews dated 2026-09 to 2026-11
+    outcome:
+    - 'ctb26-pro-3: reworded; from another build, waiting on a call.'
+  - id: ctb26-pro-4
+    kind: pro
+    text: Waterproof 200X shell, chunky YKK RCPU zippers, bright white interior
+    scope: material
+    basis: maker
+    sources:
+    - evergoods-civic-travel-bag-ultra
+    - evergoods-the-ultra-travel-system-coming-soon
+    evidence:
+      status: supported
+      note: 'Maker page lists a waterproof ULTRA 200X shell, #10 and #8 YKK RCPU zippers and a bright white 210D lining; ''chunky'' is the site''s own word.'
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: evergoods-civic-travel-bag-ultra
+      about: same build; maker specs plus 7 owner reviews dated 2026-09 to 2026-11
+    - source: evergoods-the-ultra-travel-system-coming-soon
+      about: same build; pre-launch post for the 1 Sep 2026 release, page date not shown
+    outcome:
+    - 'ctb26-pro-4: moved to features (maker statement).'
+    - 'ctb26-pro-4-b: dropped. It restates data already on the record (fabric.lining).'
+  - id: ctb26-pro-5
+    kind: pro
+    text: Lifetime warranty
+    scope: general
+    basis: maker
+    sources:
+    - evergoods-civic-travel-bag-ultra
+    outcome:
+    - 'ctb26-pro-5: dropped. It restates data already on the record (warranty).'
+  - id: ctb26-con-1
+    kind: con
+    text: Weight is the recurring owner complaint, even in Ultra
+    scope: material
+    basis: sibling
+    sources:
+    - evergoods-civic-travel-bag-26l
+    - nomads-nation-evergoods-ctb26-review
+    - evergoods-civic-travel-bag-ultra
+    evidence:
+      status: partly
+      note: Several 420D owners and Nomads Nation call it heavy, though most say it carries well. None of the seven ULTRA reviews complains about weight, so 'even in Ultra' is unsupported.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: evergoods-civic-travel-bag-26l
+      about: 420D nylon build, not ULTRA; maker specs plus owner reviews pooled across 20L/26L/35L (514 total, about 40 visible, dated 2026-07 to 2026-11); the owner reviews cited name the CTB26
+    - source: nomads-nation-evergoods-ctb26-review
+      about: 420D nylon build, not ULTRA (updated 2026-11-09); affiliate site whose author promotes his own bag brand
+    - source: evergoods-civic-travel-bag-ultra
+      about: same build; maker specs plus 7 owner reviews dated 2026-09 to 2026-11
+    outcome:
+    - 'ctb26-con-1: dropped. Weight complaints come from 420D owners; weight is fabric-dependent. None of the seven ULTRA reviews mentions weight.'
+  - id: ctb26-con-2
+    kind: con
+    text: Back panel airflow rated weak for hot days
+    scope: design
+    basis: sibling
+    sources:
+    - nomads-nation-evergoods-ctb26-review
+    - evergoods-civic-travel-bag-26l
+    - pack-hacker-civic-travel-bag-26l-ctb26
+    - outside-bozeman-review-civic-travel-bag
+    evidence:
+      status: partly
+      note: Nomads Nation rates ventilation moderate; three 420D owners want more airflow or report sweat. Pack Hacker says it breathes reasonably well and one owner finds it cool. Nothing on ULTRA.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: nomads-nation-evergoods-ctb26-review
+      about: 420D nylon build, not ULTRA (updated 2026-11-09); affiliate site whose author promotes his own bag brand
+    - source: evergoods-civic-travel-bag-26l
+      about: 420D nylon build, not ULTRA; maker specs plus owner reviews pooled across 20L/26L/35L (514 total, about 40 visible, dated 2026-07 to 2026-11); the owner reviews cited name the CTB26
+    - source: pack-hacker-civic-travel-bag-26l-ctb26
+      about: 420D nylon build, not ULTRA (updated 2024-10-11)
+    - source: outside-bozeman-review-civic-travel-bag
+      about: size and fabric not stated; short write-up that reads close to maker copy
+    outcome:
+    - 'ctb26-con-2: reworded; from another build, waiting on a call.'
+  - id: ctb26-con-3
+    kind: con
+    text: No hip belt option, a repeated wish in reviews
+    scope: design
+    basis: sibling
+    sources:
+    - evergoods-civic-travel-bag-26l
+    - evergoods-civic-travel-bag-ultra
+    evidence:
+      status: partly
+      note: Maker pages show a hip belt only on the 35L. Only one 420D owner asks for one; no published review found raising it, so 'repeated wish in reviews' is unsupported.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: evergoods-civic-travel-bag-26l
+      about: 420D nylon build, not ULTRA; maker specs plus owner reviews pooled across 20L/26L/35L (514 total, about 40 visible, dated 2026-07 to 2026-11); the owner reviews cited name the CTB26
+    - source: evergoods-civic-travel-bag-ultra
+      about: same build; maker specs plus 7 owner reviews dated 2026-09 to 2026-11
+    outcome:
+    - 'ctb26-con-3: moved to features (maker statement).'
+  - id: ctb26-con-4
+    kind: con
+    text: Harness rated good, not class-leading; owners rank Able Carry comfier
+    scope: design
+    basis: sibling
+    sources:
+    - evergoods-civic-travel-bag-26l
+    - pack-hacker-civic-travel-bag-26l-ctb26
+    flags:
+    - names-other-bag
+    evidence:
+      status: partly
+      note: A single 420D owner calls the harness good but Able Carry's more comfortable. No second owner or review ranking found; Pack Hacker calls the harness comfortable for most uses.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: evergoods-civic-travel-bag-26l
+      about: 420D nylon build, not ULTRA; maker specs plus owner reviews pooled across 20L/26L/35L (514 total, about 40 visible, dated 2026-07 to 2026-11); the owner reviews cited name the CTB26
+    - source: pack-hacker-civic-travel-bag-26l-ctb26
+      about: 420D nylon build, not ULTRA (updated 2024-10-11)
+    outcome:
+    - 'ctb26-con-4: dropped. The con exists only as a comparison with Able Carry from one 420D owner. Pack Hacker calls the harness comfortable.'
+  - id: ctb26-con-5
+    kind: con
+    text: Inconsistent self-standing when empty
+    scope: design
+    basis: owner-reports
+    sources:
+    - evergoods-civic-travel-bag-ultra
+    - evergoods-civic-travel-bag-26l
+    - nomads-nation-evergoods-ctb26-review
+    evidence:
+      status: supported
+      note: 'ULTRA owners disagree: one says it stands, another says it leans and may tip. A 420D owner says standing is inconsistent when empty; Nomads Nation says not fully self-standing.'
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: evergoods-civic-travel-bag-ultra
+      about: same build; maker specs plus 7 owner reviews dated 2026-09 to 2026-11
+    - source: evergoods-civic-travel-bag-26l
+      about: 420D nylon build, not ULTRA; maker specs plus owner reviews pooled across 20L/26L/35L (514 total, about 40 visible, dated 2026-07 to 2026-11); the owner reviews cited name the CTB26
+    - source: nomads-nation-evergoods-ctb26-review
+      about: 420D nylon build, not ULTRA (updated 2026-11-09); affiliate site whose author promotes his own bag brand
+    outcome:
+    - 'ctb26-con-5: reworded.'

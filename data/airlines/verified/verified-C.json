@@ -1,0 +1,530 @@
+[
+ {
+  "name": "British Airways",
+  "region": "Europe",
+  "carryOn": {
+   "dims_cm": [
+    56,
+    45,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": null
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    15
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "Economy allowance; page states no cabin-bag weight limit, only checked-bag weights. Basic fare rules not checked.",
+  "source": "https://www.britishairways.com/content/en/us/information/baggage-essentials",
+  "quote": "Cabin bag: Max dimensions up to 56 x 45 x 25cm (22 x 18 x 10in) – includes wheels and handles",
+  "checked": "2026-11-02",
+  "status": "partial",
+  "seedDiff": "matches (dims); weight not stated on page, could not confirm from another BA page",
+  "render": "static",
+  "anchor": "Max dimensions up to 56 x 45 x 25cm"
+ },
+ {
+  "name": "Lufthansa",
+  "region": "Europe",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": 8
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    15
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "Economy Light/Comfort/Flex: carry-on + personal item; Economy Basic: personal item only. No personal-item weight stated.",
+  "source": "https://www.lufthansa.com/jo/en/carry-on-baggage",
+  "quote": "Economy Light, Comfort, Comfort Green & Flex 1 personal item max. 40 x 30 x 15 cm 1 item of carry-on baggage max. 8 kg",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "matches",
+  "render": "js",
+  "anchor": "1 item of carry-on baggage"
+ },
+ {
+  "name": "Air France",
+  "region": "Europe",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    35,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": null
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    15
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": 12,
+  "fareNote": "Economy: 0-1 hand baggage depending on fare + 1 small bag, 12 kg total; Business/La Premiere 18 kg total.",
+  "source": "https://wwws.airfrance.us/information/bagages/bagage-cabine-soute",
+  "quote": "In the Economy cabin, 0 to 1 hand baggage depending on the fare chosen + 1 small bag (maximum total weight: 12 kg/26.4 lb.)",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "matches (source moved to airfrance.us; .com.tr seed URL not used)",
+  "render": "js",
+  "anchor": "Hand baggage dimensions"
+ },
+ {
+  "name": "KLM",
+  "region": "Europe",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    35,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": null
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    15
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": 12,
+  "fareNote": "Economy: 1 hand baggage + 1 accessory, 12 kg combined. Premium cabins differ.",
+  "source": "https://www.klm.com/information/baggage/hand-baggage-allowance",
+  "quote": "1 item of hand baggage with a maximum size of 55 x 35 x 25 cm including handles and wheels",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "matches",
+  "render": "static",
+  "anchor": "combined weight of up to 12 kg"
+ },
+ {
+  "name": "Virgin Atlantic",
+  "region": "Europe",
+  "carryOn": {
+   "dims_cm": [
+    56,
+    36,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": 10
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    15
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "Economy Light/Classic/Delight and Premium: 1 bag 10 kg; Upper Class up to 2 bags (12/16 kg). Personal item all cabins.",
+  "source": "https://www.virginatlantic.com/en-US/help/articles/what-is-my-hand-baggage-allowance----a5a24d4c-a652-4fbd-925d-57d0ead2ed5e",
+  "quote": "Economy Classic | 1 bag | 10kg (22lbs) | 23 × 36 × 56cm (9 × 14 × 22in)",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "matches (seed help.virginatlantic.com URL now redirects to a JS help centre)",
+  "render": "js",
+  "anchor": "What is my hand baggage allowance?"
+ },
+ {
+  "name": "SWISS",
+  "region": "Europe",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": 8
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    15
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "Economy Light/Classic/Flex: carry-on + personal item; Economy Basic: personal item only.",
+  "source": "https://www.swiss.com/us/en/prepare/baggage/hand-baggage.html",
+  "quote": "max. 40 × 30 × 15 cm ... max. 8 kg ... max. 55 × 40 × 23 cm",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "matches",
+  "render": "static",
+  "anchor": "max. 55 × 40 × 23 cm"
+ },
+ {
+  "name": "Finnair",
+  "region": "Europe",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": null
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    15
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": 8,
+  "fareNote": "Economy Light/Classic/Flex: carry-on + small bag, 8 kg combined (Business 12 kg). Economy Superlight: small bag only.",
+  "source": "https://www.finnair.com/us-en/baggage-on-finnair-flights/carry-on-baggage",
+  "quote": "55 x 40 x 23 cm (21.7 x 15.7 x 9.1 in) ... maximum combined weight with a small bag 8/12 kg (17.6/26.5 lb.)",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "weight is 8 kg COMBINED for both pieces, not 8 kg each as seed implies",
+  "render": "static",
+  "anchor": "maximum combined weight with a small bag"
+ },
+ {
+  "name": "Ryanair",
+  "region": "Europe",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 10
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "LCC: carryOn = paid Priority/10kg overhead bag; personal = free small bag under seat (all fares). No personal weight stated.",
+  "source": "https://help.ryanair.com/hc/en-us/categories/12489112419089-Bag-Rules",
+  "quote": "a small personal bag (40 x 30 x 20 cm), which must fit under the seat in front of you and a 10kg bag (55x40x20cm)",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "matches",
+  "render": "js",
+  "anchor": "small personal bag (40 x 30 x 20 cm)"
+ },
+ {
+  "name": "easyJet",
+  "region": "Europe",
+  "carryOn": {
+   "dims_cm": [
+    56,
+    45,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": 15
+  },
+  "personal": {
+   "dims_cm": [
+    45,
+    36,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 15,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "LCC: carryOn = paid large cabin bag (Up Front/Extra Legroom/bundles); personal = free under-seat bag, also up to 15 kg.",
+  "source": "https://www.easyjet.com/en/help/baggage/cabin-bags",
+  "quote": "maximum size of 45 x 36 x 20 cm (including any handles and wheels) ... Your bag can weigh up to 15kg",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "personal-item weight is 15 kg (seed: not specified)",
+  "render": "static",
+  "anchor": "Maximum size 56 x 45 x 25 cm"
+ },
+ {
+  "name": "Wizz Air",
+  "region": "Europe",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": 10
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 10,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "LCC: carryOn = paid WIZZ Priority trolley bag; personal = free under-seat bag.",
+  "source": "https://www.wizzair.com/en-gb/help-centre/booking-information-and-services/baggage/baggage-allowance/cabin-baggage",
+  "quote": "Maximum dimensions of the trolley bag: 55 x 40 x 23 cm. Maximum weight of the trolley bag: 10 kg.",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "matches",
+  "render": "js",
+  "anchor": "Maximum dimensions of the trolley bag"
+ },
+ {
+  "name": "United Airlines",
+  "region": "North America",
+  "carryOn": {
+   "dims_cm": [
+    55.9,
+    35.6,
+    22.9
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     22,
+     14,
+     9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    43.2,
+    25.4,
+    22.9
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     17,
+     10,
+     9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Personal item 9 x 10 x 17 in (22 x 25 x 43 cm) must fit under seat. Basic Economy: personal item only except South America/transatlantic/transpacific. No weight stated.",
+  "source": "https://www.united.com/en/us/fly/baggage/carry-on-bags.html",
+  "quote": "so it must be 9 in x 14 in x 22 in (23 cm x 35 cm x 56 cm)",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "matches",
+  "render": "js",
+  "anchor": "must fit in the overhead bin"
+ },
+ {
+  "name": "American Airlines",
+  "region": "North America",
+  "carryOn": {
+   "dims_cm": [
+    55.9,
+    35.6,
+    22.9
+   ],
+   "linear_cm": null,
+   "weight_kg": null
+  },
+  "personal": {
+   "dims_cm": [
+    45.7,
+    35.6,
+    20.3
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "Main Cabin; no weight limit stated (some partner/regional routes differ).",
+  "source": "https://www.aa.com/i18n/travel-info/baggage/carry-on-baggage.jsp",
+  "quote": "Cannot exceed 22 x 14 x 9 inches (56 x 36 x 23 cm) ... should not exceed 18 x 14 x 8 inches",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "matches",
+  "render": "static",
+  "anchor": "Cannot exceed 22 x 14 x 9 inches"
+ },
+ {
+  "name": "Delta Airlines",
+  "region": "North America",
+  "carryOn": {
+   "dims_cm": [
+    56,
+    35,
+    23
+   ],
+   "linear_cm": 114,
+   "weight_kg": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": true,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "Also a 45 in (114 cm) linear cap. Personal item: under-seat only, no dimensions. No weight limit stated.",
+  "source": "https://www.delta.com/us/en/baggage/carry-on-baggage",
+  "quote": "Individual length, width and height measurements may not exceed 22” x 14” x 9” (56 cm x 35 cm x 23 cm)",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "dims converted from inches (55.9x35.6x22.9 vs seed 56x35x23); adds 45 in / 114.3 cm linear limit",
+  "render": "static",
+  "anchor": "45 linear inches (114 cm)"
+ },
+ {
+  "name": "Southwest",
+  "region": "North America",
+  "carryOn": {
+   "dims_cm": [
+    61,
+    40.6,
+    25.4
+   ],
+   "linear_cm": null,
+   "weight_kg": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": true,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "Personal item must fit under the seat; no dimensions or weight stated. Page frames limit under 'What will that mean for you?' (policy-change copy).",
+  "source": "https://support.southwest.com/helpcenter/s/article/carryon-baggage-policy",
+  "quote": "Size limit: 24” (length) × 16” (width) × 10” (height).",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "matches",
+  "render": "js",
+  "anchor": "Size limit: 24"
+ },
+ {
+  "name": "Air Canada",
+  "region": "North America",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": null
+  },
+  "personal": {
+   "dims_cm": [
+    43,
+    33,
+    16
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "Standard item + personal item; page says no weight limit for carry-on baggage.",
+  "source": "https://www.aircanada.com/ca/en/aco/home/plan/baggage/carry-on.html",
+  "quote": "23 x 40 x 55 cm/9 x 15.5 x 21.5 in ... 33 x 43 x 16 cm/13 x 17 x 6 in",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "matches",
+  "render": "static",
+  "anchor": "No weight limit applies to carry-on baggage"
+ }
+]

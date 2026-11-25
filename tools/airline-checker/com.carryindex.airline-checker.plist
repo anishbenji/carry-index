@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Template: install.sh fills in __DIR__ and __NODE__ and copies it to ~/Library/LaunchAgents.
+     StartCalendarInterval runs at 11:23; if the Mac was asleep, launchd runs it on wake.
+     RunAtLoad covers a Mac that was switched off: check.mjs exits at once if today's batch already ran. -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.carryindex.airline-checker</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>__NODE__</string>
+    <string>__DIR__/check.mjs</string>
+  </array>
+  <key>WorkingDirectory</key><string>__DIR__</string>
+  <key>EnvironmentVariables</key>
+  <dict><key>PATH</key><string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string></dict>
+  <key>StartCalendarInterval</key>
+  <dict><key>Hour</key><integer>11</integer><key>Minute</key><integer>23</integer></dict>
+  <key>RunAtLoad</key><true/>
+  <key>StandardOutPath</key><string>__DIR__/reports/launchd.log</string>
+  <key>StandardErrorPath</key><string>__DIR__/reports/launchd.log</string>
+</dict>
+</plist>

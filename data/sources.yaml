@@ -1,0 +1,1573 @@
+# One entry per page. last_ok is the last date the page opened; null means it has not been opened.
+# archived is for a link checker to fill. opened_by says who opened it and how.
+evergoods-civic-travel-bag-ultra:
+  url: https://evergoods.us/products/civic-travel-bag-ultra
+  kind: maker-page
+  publisher: Evergoods
+  archived: null
+  last_ok: '2026-11-17'
+aer-city-pack-pro-2-ultra-24l:
+  url: https://aersf.com/products/city-pack-pro-2-ultra-24l
+  kind: maker-page
+  publisher: Aer
+  archived: null
+  last_ok: '2026-11-13'
+aer-travel-pack-4-ultra-28l:
+  url: https://aersf.com/products/travel-pack-4-ultra-28l
+  kind: maker-page
+  publisher: Aer
+  archived: null
+  last_ok: '2026-11-13'
+ula-ultra-cicada:
+  url: https://www.ula-equipment.com/product/ultra-cicada/
+  kind: maker-page
+  publisher: ULA Equipment
+  archived: null
+  last_ok: '2026-11-13'
+ula-ultra-cicada-ewp:
+  url: https://www.ula-equipment.com/product/ultra-cicada-ewp/
+  kind: maker-page
+  publisher: ULA Equipment
+  archived: null
+  last_ok: '2026-11-17'
+ula-ultra-muse-cicada:
+  url: https://www.ula-equipment.com/product/ultra-muse-cicada/
+  kind: maker-page
+  publisher: ULA Equipment
+  archived: null
+  last_ok: '2026-11-17'
+ula-ultra-30l-patchless-dragonfly:
+  url: https://www.ula-equipment.com/product/ultra-30l-patchless-dragonfly/
+  kind: maker-page
+  publisher: ULA Equipment
+  archived: null
+  last_ok: '2026-11-13'
+ula-ultra-dragonfly:
+  url: https://www.ula-equipment.com/product/ultra-dragonfly/
+  kind: maker-page
+  publisher: ULA Equipment
+  archived: null
+  last_ok: '2026-11-17'
+ula-30l-dragonfly-pass-thru:
+  url: https://www.ula-equipment.com/product/30l-dragonfly-pass-thru/
+  kind: maker-page
+  publisher: ULA Equipment
+  archived: null
+  last_ok: '2026-11-13'
+ctactical-ct15-lite-ultra200x:
+  url: https://ctactical.com/products/ct15-lite-ultra200x
+  kind: maker-page
+  publisher: Ctactical
+  archived: null
+  last_ok: '2026-11-13'
+ctactical-ct21-lite-ultra200x:
+  url: https://ctactical.com/products/ct21-lite-ultra200x
+  kind: maker-page
+  publisher: Ctactical
+  archived: null
+  last_ok: '2026-11-13'
+ctactical-ct21-lite-ultra400x:
+  url: https://ctactical.com/products/ct21-lite-ultra400x
+  kind: maker-page
+  publisher: Ctactical
+  archived: null
+  last_ok: '2026-11-13'
+ctactical-ct15-plus-ultra200x:
+  url: https://ctactical.com/products/ct15-plus-ultra200x
+  kind: maker-page
+  publisher: Ctactical
+  archived: null
+  last_ok: '2026-11-17'
+ctactical-ct21-plus-ultra400x:
+  url: https://ctactical.com/products/ct21-plus-ultra400x
+  kind: maker-page
+  publisher: Ctactical
+  archived: null
+  last_ok: '2026-11-13'
+ctactical-ct21-plus-ultra200x:
+  url: https://ctactical.com/products/ct21-plus-ultra200x
+  kind: maker-page
+  publisher: Ctactical
+  archived: null
+  last_ok: '2026-11-17'
+matador-x-carryology-edx-ultra-backpack:
+  url: https://www.matadorequipment.com/products/matador-x-carryology-edx-ultra-backpack
+  kind: maker-page
+  publisher: Matador
+  archived: null
+  last_ok: '2026-11-17'
+tortuga-superlite-backpack:
+  url: https://www.tortugabackpacks.com/products/superlite-backpack
+  kind: maker-page
+  publisher: Tortuga
+  archived: null
+  last_ok: '2026-11-13'
+db-weigh-lighter-hugger-30l-weigh-darker:
+  url: https://dbjourney.com/en-us/products/weigh-lighter-hugger-backpack-30l-weigh-darker
+  kind: maker-page
+  publisher: Db Journey
+  archived: null
+  last_ok: '2026-11-13'
+db-weigh-lighter-hugger-30l-monochrome:
+  url: https://dbjourney.com/en-us/products/weigh-lighter-hugger-backpack-30l-monochrome
+  kind: maker-page
+  publisher: Db Journey
+  archived: null
+  last_ok: '2026-11-13'
+stranded-variable-review-aer-city-pack-pro-2-24l-ultra:
+  url: https://www.strandedvariable.com/posts/review-aer-city-pack-pro-2-24l-ultra
+  kind: review
+  publisher: Stranded Variable
+  title: 'Review: Aer City Pack Pro 2 (24L, Ultra)'
+  published: '2026-08-09'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+pack-hacker-city-pack-pro-2:
+  url: https://packhacker.com/travel-gear/aer/city-pack-pro-2/
+  kind: review
+  publisher: Pack Hacker
+  title: Aer City Pack Pro 2 Review
+  published: '2025-03-10'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+t3-i-tested-5-of-the-best-high-end-edc-backpack:
+  url: https://www.t3.com/luxury/style/i-tested-5-of-the-best-high-end-edc-backpacks-for-techies-heres-how-they-stacked-up
+  kind: review
+  publisher: T3
+  title: I tested 6 of the best high-end EDC backpacks for techies
+  published: '2026-09-20'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+gizmodo-japan-aer-city-pack-pro-2-ultra:
+  url: https://www.gizmodo.jp/article/aer-city-pack-pro-2-ultra/
+  kind: review
+  publisher: Gizmodo Japan
+  title: Aer City Pack Pro 2 Ultra (hands-on review, Japanese)
+  published: '2025-08-23'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+aer-city-pack-pro-2-24l:
+  url: https://aersf.com/products/city-pack-pro-2-24l
+  kind: maker-page
+  publisher: Aer
+  title: City Pack Pro 2 24L
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+nomads-nation-evergoods-ctb26-review:
+  url: https://nomadsnation.com/evergoods-ctb26-review/
+  kind: review
+  publisher: Nomads Nation
+  title: EVERGOODS CTB26 Review (HONEST Pros & Cons)
+  published: '2025-08-15'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+aer-travel-pack-4-28l:
+  url: https://aersf.com/products/travel-pack-4-28l
+  kind: maker-page
+  publisher: Aer
+  title: Travel Pack 4 28L
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+rushfaster-aer-travel-pack-4-xpac-28l:
+  url: https://rushfaster.com.au/products/aer-travel-pack-4-xpac-28l
+  kind: retailer
+  publisher: Rushfaster
+  title: Aer Travel Pack 4 X-Pac 28L
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+pack-hacker-travel-pack-4-28l:
+  url: https://www.packhacker.com/travel-gear/aer/travel-pack-4-28l/
+  kind: review
+  publisher: Pack Hacker
+  title: Aer Travel Pack 4 28L Review
+  published: '2026-03-09'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+visionswell-aer-travel-pack-4-ultra:
+  url: https://visionswell.com/reviews/aer-travel-pack-4-ultra/
+  kind: review
+  publisher: visionswell
+  title: 'Aer Travel Pack 4 Ultra 28L Review: The Best One-Bag Travel Backpack Yet?'
+  published: '2026-03-09'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+better-trail-aer-travel-pack-4-review:
+  url: https://bettertrail.com/outdoor-gear/aer-travel-pack-4-review
+  kind: review
+  publisher: Better Trail
+  title: Aer Travel Pack 4 Review
+  published: '2026-08-12'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+stranded-variable-review-aer-travel-pack-4-35l:
+  url: https://www.strandedvariable.com/posts/review-aer-travel-pack-4-35l
+  kind: review
+  publisher: Stranded Variable
+  title: 'Review: Aer Travel Pack 4 (35L)'
+  published: '2026-05-05'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+the-modern-xplorer-aer-travel-pack-4-ultra-review:
+  url: https://www.themodernxplorer.com/post/aer-travel-pack-4-ultra-review
+  kind: review
+  publisher: The Modern Xplorer
+  title: 'Gear Spotlight: Aer Travel Pack 4 Ultra (28L): Ten Days in Costa Rica'
+  published: '2026-07-13'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+nomads-nation-aer-travel-pack-4-28l-vs-35l-review:
+  url: https://nomadsnation.com/aer-travel-pack-4-28l-vs-35l-review/
+  kind: review
+  publisher: Nomads Nation
+  title: Aer Travel Pack 4 (28L vs 35L) Review (HONEST Pros & Cons)
+  published: '2026-04-05'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+evergoods-civic-travel-bag-26l:
+  url: https://evergoods.us/products/civic-travel-bag-26l
+  kind: maker-page
+  publisher: Evergoods
+  title: CIVIC Travel Bag (product page with customer reviews)
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+ctactical-ct21-v3-0-backpack-slick-ultra400x-wbp:
+  url: https://ctactical.vn/products/ct21-v3-0-backpack-slick-ultra400x-wbp
+  kind: maker-page
+  publisher: Ctactical
+  title: CT21 V3.0 Backpack Slick - ULTRA400X WBP
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+geartrade-ctactical-ct21-v30-backpack-1147289:
+  url: https://geartrade.com/products/ctactical-ct21-v30-backpack-1147289
+  kind: retailer
+  publisher: Geartrade
+  title: CTactical CT21 V3.0 Backpack (used listing)
+  published: null
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+ctactical-ct15-backpack:
+  url: https://ctactical.com/collections/ct15-backpack
+  kind: maker-other
+  publisher: Ctactical
+  title: CT15 backpack collection (pages 1 and 2)
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+the-brooks-review-p-34836:
+  url: https://brooksreview.net/?p=34836
+  kind: review
+  publisher: The Brooks Review
+  title: Chuyen Tactical CT21 X50 Stealth Quick Thoughts
+  published: '2026-03-19'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+nomads-nation-ctactical-ct21-v3-review:
+  url: https://nomadsnation.com/ctactical-ct21-v3-review/
+  kind: review
+  publisher: Nomads Nation
+  title: CTactical CT21 V3 Review (HONEST Pros & Cons)
+  published: '2025-09-28'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+ctactical-shipping-policy:
+  url: https://ctactical.com/policies/shipping-policy
+  kind: maker-other
+  publisher: Ctactical
+  title: Shipping policy
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+ctactical-return-policy-warranty-policy:
+  url: https://ctactical.com/pages/return-policy-warranty-policy
+  kind: maker-other
+  publisher: Ctactical
+  title: Return Policy / Warranty Policy
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+reddit-r-manybaggers-read-th-ct21-packs-live-on-the-site-in-ultra-and-oth:
+  url: https://lr.eu.psf.lt/r/ManyBaggers/comments/1k431n6/ct21_packs_live_on_the_site_in_ultra_and_other
+  kind: forum
+  publisher: Reddit r/ManyBaggers (read through a Reddit mirror)
+  title: CT21 packs live on the site in Ultra and other premium fabrics
+  published: null
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+nomads-nation-ctactical-ct14-plus-review:
+  url: https://nomadsnation.com/ctactical-ct14-plus-review/
+  kind: review
+  publisher: Nomads Nation
+  title: CTactical CT14 Plus Backpack Review (HONEST Pros & Cons)
+  published: '2026-07-16'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+zelpio-c-tactical-ct21-vs-goruck-gr1:
+  url: https://www.zelpio.com/blog/c-tactical-ct21-vs-goruck-gr1/
+  kind: review
+  publisher: Zelpio
+  title: C Tactical CT21 vs GoRuck GR1
+  published: '2026-09-30'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+easyjet-cabin-bag-and-hold-luggage:
+  url: https://www.easyjet.com/en/help/baggage/cabin-bag-and-hold-luggage
+  kind: other
+  publisher: easyJet
+  title: Cabin bags and hold luggage
+  published: null
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+dream-big-travel-far-db-hugger-backpack-review:
+  url: https://www.dreambigtravelfarblog.com/blog/db-hugger-backpack-review
+  kind: review
+  publisher: Dream Big, Travel Far
+  title: Db Hugger Backpack Review
+  published: '2024-01-08'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+worn-wound-hands-on-d-b-journey-hugger-30l-backpack:
+  url: https://wornandwound.com/hands-on-d__b__-journey-hugger-30l-backpack/
+  kind: review
+  publisher: Worn & Wound
+  title: 'Hands-On: Db Journey Hugger 30L Backpack'
+  published: '2024-12-24'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+stoked-for-travel-p-9462:
+  url: https://www.stokedfortravel.com/?p=9462
+  kind: review
+  publisher: Stoked For Travel
+  title: 'Db Bags Review: Hugger, Backpack Pro and CIA Camera Insert'
+  published: '2021-08-08'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+t3-db-weigh-lighter-hugger-backpack-30l-monochr:
+  url: https://www.t3.com/active/outdoors/db-weigh-lighter-hugger-backpack-30l-monochrome-launch-0926
+  kind: launch-coverage
+  publisher: T3
+  title: This futuristic Norwegian backpack weighs less than a 13" iPad Pro and looks almost transparent
+  published: '2026-09-23'
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+carryology-scouted-september-2026s-most-interesting-car:
+  url: https://www.carryology.com/liking/new-releases/scouted-september-2026s-most-interesting-carry/
+  kind: launch-coverage
+  publisher: Carryology
+  title: 'Scouted: September 2026''s Most Interesting Carry'
+  published: '2026-10-02'
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+bergfreunde-db-weigh-lighter-hugger-backpack-30-daypack:
+  url: https://www.berg-freunde.ch/db-weigh-lighter-hugger-backpack-30-daypack/
+  kind: retailer
+  publisher: Bergfreunde
+  title: DB Weigh Lighter Hugger Backpack 30 - Daypack
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+pack-hacker-the-hugger-30l:
+  url: https://www.packhacker.com/travel-gear/db/the-hugger-30l/
+  kind: review
+  publisher: Pack Hacker
+  title: Db Journey The Hugger 30L Review
+  published: '2019-06-14'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+the-adult-man-db-bags-review:
+  url: https://theadultman.com/fashion-and-style/db-bags-review/
+  kind: review
+  publisher: The Adult Man
+  title: Db Bags Review
+  published: '2021-06-01'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+db-journey-weigh-lighter:
+  url: https://dbjourney.com/en-gb/pages/weigh-lighter
+  kind: maker-page
+  publisher: Db Journey
+  title: Weigh Lighter collection page (UK)
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+t3-db-weigh-lighter-monochrome-0926:
+  url: https://www.t3.com/active/outdoors/db-weigh-lighter-monochrome-0926
+  kind: launch-coverage
+  publisher: T3
+  title: Db's viral ultra-light mountaineering bags are back in their strangest colour yet, and I'm into it
+  published: '2026-09-16'
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+pack-hacker-civic-travel-bag-26l-ctb26:
+  url: https://packhacker.com/travel-gear/evergoods/civic-travel-bag-26l-ctb26/
+  kind: review
+  publisher: Pack Hacker
+  title: EVERGOODS Civic Travel Bag 26L (CTB26) Review
+  published: '2023-11-13'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+evergoods-the-ultra-travel-system-coming-soon:
+  url: https://evergoods.us/blogs/evergoods-road-to-launch/the-ultra-travel-system-coming-soon
+  kind: maker-other
+  publisher: Evergoods
+  title: 'The ULTRA Travel System: coming soon'
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026; also opened by Claude as a spot-check
+outside-bozeman-review-civic-travel-bag:
+  url: https://outsidebozeman.com/gear/product-reviews/equipment/review-civic-travel-bag
+  kind: review
+  publisher: Outside Bozeman
+  title: 'Review: Evergoods Civic Travel Bag'
+  published: '2026-10-01'
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+carryology-collaboration-par-matador-x-carryology-edx-ultra-collection-ex:
+  url: https://www.carryology.com/projects/matador-x-carryology-edx-ultra-collection-exclusive-release/
+  kind: maker-other
+  publisher: Carryology (collaboration partner)
+  title: 'Matador x Carryology EDX ULTRA Collection: Exclusive Release'
+  published: '2025-07-30'
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+carryology-collaboration-par-matador-x-carryology-advancing-to-edx-lite:
+  url: https://www.carryology.com/projects/matador-x-carryology-advancing-to-edx-lite/
+  kind: maker-other
+  publisher: Carryology (collaboration partner)
+  title: 'Matador x Carryology: Advancing to EDX Lite'
+  published: '2024-06-14'
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+carryology-collaboration-par-exclusive-release-matador-x-carryology-edx-l:
+  url: https://www.carryology.com/projects/exclusive-release-matador-x-carryology-edx-lite/
+  kind: maker-other
+  publisher: Carryology (collaboration partner)
+  title: 'Exclusive Release: Matador x Carryology EDX Lite'
+  published: '2024-06-17'
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+iron-heart-forum-905181:
+  url: https://forum.ironheart.co.uk/post/905181
+  kind: forum
+  publisher: Iron Heart forum
+  title: Forum thread post on the Matador x Carryology EDX Ultra
+  published: null
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+carryology-collaboration-par-the-evolution-introducing-the-third-iteratio:
+  url: https://www.carryology.com/projects/the-evolution-introducing-the-third-iteration-of-the-edx-collection/
+  kind: maker-other
+  publisher: Carryology (collaboration partner)
+  title: 'The Evolution: Introducing the Third Iteration of the EDX Collection'
+  published: '2025-07-24'
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+shop-eat-surf-outdoor-p-610257:
+  url: https://shop-eat-surf-outdoor.com/?p=610257
+  kind: launch-coverage
+  publisher: Shop-Eat-Surf Outdoor
+  title: Matador and Carryology Unveil Third Collaboration
+  published: '2025-08-01'
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+carryology-collaboration-par-exclusive-release-matador-x-carryology-edx-s:
+  url: https://www.carryology.com/projects/carry-collaborations/exclusive-release-matador-x-carryology-edx-series/
+  kind: maker-other
+  publisher: Carryology (collaboration partner)
+  title: 'Exclusive Release: Matador x Carryology EDX Series'
+  published: '2023-06-23'
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+matador-matador-x-carryology-edx-lite:
+  url: https://matadorequipment.com/products/matador-x-carryology-edx-lite
+  kind: maker-page
+  publisher: Matador
+  title: Matador x Carryology EDX Lite Backpack
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+pack-hacker-superlite-backpack:
+  url: https://www.packhacker.com/travel-gear/tortuga/superlite-backpack/
+  kind: review
+  publisher: Pack Hacker
+  title: Tortuga Superlite Backpack Review
+  published: '2026-06-16'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026; also opened by Claude as a spot-check
+nomads-nation-tortuga-superlite-review:
+  url: https://nomadsnation.com/tortuga-superlite-review/
+  kind: review
+  publisher: Nomads Nation
+  title: Tortuga Superlite Review (HONEST Pros and Cons)
+  published: '2026-07-14'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+men-s-gear-tortuga-superlite-backpack:
+  url: https://mensgear.net/tortuga-superlite-backpack/
+  kind: launch-coverage
+  publisher: Men's Gear
+  title: Tortuga Superlite Backpack
+  published: '2026-07-18'
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026; also opened by Claude as a spot-check
+gear-patrol-tortuga-superlite:
+  url: https://www.gearpatrol.com/outdoors/tortuga-superlite/
+  kind: launch-coverage
+  publisher: Gear Patrol
+  title: Does This Kickstarter-Breaking Ultralight, Ultra-Tough Travel Pack Live Up to the Hype?
+  published: '2026-07-07'
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+tortuga-fastest-person-at-airport:
+  url: https://www.tortugabackpacks.com/pages/fastest-person-at-airport
+  kind: maker-page
+  publisher: Tortuga
+  title: Travel Backpack Pro 40L landing page
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+tortuga-email-archived-on-mi-one-more-thing-3f3lbninrwu0ekky:
+  url: https://milled.com/tortuga/one-more-thing-3F3lBNiNRwu0EkKY
+  kind: maker-other
+  publisher: Tortuga (email archived on Milled)
+  title: One more thing
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+pledgebox-the-superlite-backpack-by-tortuga:
+  url: https://www.pledgebox.com/projects/the-superlite-backpack-by-tortuga
+  kind: launch-coverage
+  publisher: PledgeBox
+  title: 'Superlite by Tortuga: Ultralight (2.2 lb) Carry On Backpack'
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+ula-equipment-p-536810:
+  url: https://www.ula-equipment.com/?p=536810
+  kind: maker-other
+  publisher: ULA Equipment
+  title: 'First Look: 22L ULA-Equipment Cicada Pack (blog post and staff Q&A)'
+  published: '2025-08-06'
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+pack-hacker-cicada:
+  url: https://www.packhacker.com/travel-gear/ula-equipment/cicada/
+  kind: review
+  publisher: Pack Hacker
+  title: ULA Equipment Cicada Review
+  published: '2025-10-10'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+ula-equipment-p-538083:
+  url: https://www.ula-equipment.com/?p=538083
+  kind: maker-other
+  publisher: ULA Equipment
+  title: ULA 22L Everyday Carry Pack the Cicada Overview
+  published: '2025-08-13'
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+the-brooks-review-p-35024:
+  url: https://brooksreview.net/?p=35024
+  kind: review
+  publisher: The Brooks Review
+  title: ULA Cicada Ranger Green X50
+  published: '2026-04-02'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026; opened again on 17 Nov 2026 at https://brooksreview.net/2026/04/ula-cicada-ranger-green-x50/ by a research subagent through WebFetch and re-opened by a separate checking subagent through Firecrawl
+treeline-review-ula-ultra-30l-dragonfly-pack-review:
+  url: https://www.treelinereview.com/gearreviews/ula-ultra-30l-dragonfly-pack-review
+  kind: review
+  publisher: Treeline Review
+  title: 'ULA Ultra Dragonfly Review: A Travel Pack That Feels More Like an Ultralight Backpack'
+  published: '2026-07-01'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+carryology-ula-ultra-dragonfly-review:
+  url: https://www.carryology.com/reviews-2/ula-ultra-dragonfly-review/
+  kind: review
+  publisher: Carryology
+  title: ULA Ultra Dragonfly Review
+  published: '2023-01-19'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+pack-hacker-dragonfly:
+  url: https://packhacker.com/travel-gear/ula-equipment/dragonfly/
+  kind: review
+  publisher: Pack Hacker
+  title: ULA Equipment Dragonfly Review
+  published: '2022-02-18'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+pack-hacker-ultra-36l-dragonfly:
+  url: https://www.packhacker.com/travel-gear/ula-equipment/ultra-36l-dragonfly/
+  kind: review
+  publisher: Pack Hacker
+  title: ULA Equipment Ultra 36L Dragonfly Review
+  published: '2024-06-14'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+reddit-r-onebag-read-through-ula-dragonfly-review-from-an-extremely-avera:
+  url: https://reddit.rtrace.io/r/onebag/comments/1cyp1l6/ula_dragonfly_review_from_an_extremely_average/
+  kind: forum
+  publisher: Reddit r/onebag (read through a third-party mirror)
+  title: ULA Dragonfly review from An Extremely Average Person Gear
+  published: null
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+nomads-nation-ula-dragonfly:
+  url: https://nomadsnation.com/ula-dragonfly/
+  kind: review
+  publisher: Nomads Nation
+  title: ULA Dragonfly Review (HONEST Pros & Cons)
+  published: '2025-08-29'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+rushfaster-evergoods-civic-travel-bag-26l-ultra:
+  url: https://rushfaster.com.au/products/evergoods-civic-travel-bag-26l-ultra
+  kind: retailer
+  publisher: Rushfaster
+  title: Evergoods Civic Travel Bag 26L Ultra
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026; also opened by Claude as a spot-check
+rushfaster-aer-city-pack-pro-2-ultra-24l:
+  url: https://rushfaster.com.au/products/aer-city-pack-pro-2-ultra-24l
+  kind: retailer
+  publisher: Rushfaster
+  title: Aer City Pack Pro 2 Ultra 24L
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+rushfaster-aer-travel-pack-4-ultra-28l:
+  url: https://rushfaster.com.au/products/aer-travel-pack-4-ultra-28l
+  kind: retailer
+  publisher: Rushfaster
+  title: Aer Travel Pack 4 Ultra 28L
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+ula-equipment-fabric:
+  url: https://www.ula-equipment.com/fabric
+  kind: maker-other
+  publisher: ULA Equipment
+  title: Fabrics
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+challenge-outdoor-ultra-weave:
+  url: https://www.challenge-outdoor.com/ultra-weave
+  kind: maker-other
+  publisher: Challenge Outdoor
+  title: UltraWeave
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+challenge-outdoor-ultra-collection:
+  url: https://www.challenge-outdoor.com/ultra-collection
+  kind: maker-other
+  publisher: Challenge Outdoor
+  title: Ultra collection
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+challenge-outdoor-2023-ecopak-guide-v3-pdf:
+  url: https://static1.squarespace.com/static/62018e9b29f2cd0fc23c3a0c/t/63d8117224b90b2859f159a4/1675104626522/2023_EcoPak-Guide_v3.pdf
+  kind: maker-other
+  publisher: Challenge Outdoor
+  title: 2023 Outdoor Fabric Guide (PDF)
+  published: '2023'
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+challenge-outdoor-ultra-grid:
+  url: https://www.challenge-outdoor.com/ultra-grid
+  kind: maker-other
+  publisher: Challenge Outdoor
+  title: UltraGrid
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026; also opened by Claude as a spot-check
+challenge-outdoor-eplx-collection:
+  url: https://www.challenge-outdoor.com/eplx-collection
+  kind: maker-other
+  publisher: Challenge Outdoor
+  title: EcoPak EPLX collection
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+aluula-composites-technology:
+  url: https://aluula.com/technology/
+  kind: maker-other
+  publisher: ALUULA Composites
+  title: Technology
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+garage-grown-gear-aluula-graflyte-weaving-a-new-future-for-ult:
+  url: https://garagegrowngear.com/blogs/gear-gab/aluula-graflyte-weaving-a-new-future-for-ultralight-fabric
+  kind: launch-coverage
+  publisher: Garage Grown Gear
+  title: ALUULA Graflyte
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+extremtextil-72682:
+  url: https://www.extremtextil.de/en/ultra-200-x-backpack-laminate-with-uhmwpe-133g-sqm/72682
+  kind: retailer
+  publisher: Extremtextil
+  title: ULTRA 200 X
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+extremtextil-72683:
+  url: https://www.extremtextil.de/en/ultra-400-x-backpack-laminate-with-uhmwpe-178g-sqm/72683
+  kind: retailer
+  publisher: Extremtextil
+  title: ULTRA 400 X
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+chuyentactical-balo-ct15-lite-ultra200x:
+  url: https://chuyentactical.com/balo-ct15-lite-ultra200x
+  kind: maker-page
+  publisher: Ctactical (Chuyên Tactical, its Vietnamese store)
+  title: Balo ct15-lite-ultra200x
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026; origin line also read word for word by Claude through Firecrawl
+chuyentactical-balo-ct15-plus-ultra200x:
+  url: https://chuyentactical.com/balo-ct15-plus-ultra200x
+  kind: maker-page
+  publisher: Ctactical (Chuyên Tactical, its Vietnamese store)
+  title: Balo ct15-plus-ultra200x
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+chuyentactical-balo-ct21-lite-ultra200x:
+  url: https://chuyentactical.com/balo-ct21-lite-ultra200x
+  kind: maker-page
+  publisher: Ctactical (Chuyên Tactical, its Vietnamese store)
+  title: Balo ct21-lite-ultra200x
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+chuyentactical-balo-ct21-lite-ultra400x:
+  url: https://chuyentactical.com/balo-ct21-lite-ultra400x
+  kind: maker-page
+  publisher: Ctactical (Chuyên Tactical, its Vietnamese store)
+  title: Balo ct21-lite-ultra400x
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+chuyentactical-balo-ct21-plus-ultra400x:
+  url: https://chuyentactical.com/balo-ct21-plus-ultra400x
+  kind: maker-page
+  publisher: Ctactical (Chuyên Tactical, its Vietnamese store)
+  title: Balo ct21-plus-ultra400x
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026; also opened by Claude through WebFetch
+chuyentactical-balo-ct21-plus-ultra200x:
+  url: https://chuyentactical.com/balo-ct21-plus-ultra200x
+  kind: maker-page
+  publisher: Ctactical (Chuyên Tactical, its Vietnamese store)
+  title: Balo ct21-plus-ultra200x
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Search subagent, page opened through WebFetch on 13 Nov 2026
+tortuga-kickstarter-superlite:
+  url: https://www.kickstarter.com/projects/tortugabackpacks/the-superlite-backpack-by-tortuga
+  kind: maker-other
+  publisher: Tortuga (Kickstarter)
+  title: 'Superlite by Tortuga: Ultralight (2.2 lb) Carry On Backpack'
+  published: null
+  relays_maker_info: true
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Opened by Claude through Firecrawl on 13 Nov 2026
+treeline-review-ula-ultra-node-20l-pack-review:
+  url: https://www.treelinereview.com/gearreviews/ula-ultra-node-20l-pack-review
+  kind: review
+  publisher: Treeline Review
+  title: ULA Ultra Node 20L Pack Review (Tested)
+  published: '2026-04-13'
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Opened by Claude through Firecrawl on 13 Nov 2026
+united-carry-on-bags:
+  url: https://www.united.com/en/us/fly/baggage/carry-on-bags.html
+  kind: other
+  publisher: United Airlines
+  title: Carry-on Bags
+  published: null
+  relays_maker_info: false
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Opened by Claude through Firecrawl on 13 Nov 2026
+anish-own-bag:
+  kind: own
+  publisher: Anish
+  title: My own bag
+ula-x50-cicada:
+  url: https://www.ula-equipment.com/product/x50-cicada/
+  kind: maker-page
+  publisher: ULA Equipment
+  title: X50 Cicada
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Claude, WebFetch
+ula-x-pac-dragonfly:
+  url: https://www.ula-equipment.com/product/xpac-dragonfly/
+  kind: maker-page
+  publisher: ULA Equipment
+  title: ULA X-Pac Dragonfly
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Claude, WebFetch
+db-hugger-backpack-30l-oatmilk:
+  url: https://dbjourney.com/en-ca/products/hugger-backpack-30l-oatmilk
+  kind: maker-page
+  publisher: Db Journey
+  title: Hugger Backpack 30L Oatmilk
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Claude, WebFetch
+alpaka-kickstarter-momentum-collection:
+  url: https://www.kickstarter.com/projects/alpaka/momentum-collection-light-on-weight-heavy-on-durability
+  kind: maker-other
+  publisher: ALPAKA
+  title: Momentum Collection Kickstarter campaign
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Claude, Firecrawl
+alpaka-video-what-is-axodyne:
+  url: https://www.youtube.com/watch?v=tqMaQdpKa6s
+  kind: video
+  publisher: ALPAKA
+  title: What is Axodyne?
+  published: '2026-01-05'
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Claude, Firecrawl (transcript)
+alpaka-video-momentum-collection-deep-dive:
+  url: https://www.youtube.com/watch?v=JU0IFOcYZyw
+  kind: video
+  publisher: ALPAKA
+  title: Momentum Collection Deep Dive
+  published: '2025-12-15'
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Claude, Firecrawl (transcript)
+alpaka-video-momentum-kickstarter:
+  url: https://www.youtube.com/watch?v=U_Wa0feAXNY
+  kind: video
+  publisher: ALPAKA
+  title: Momentum Collection Kickstarter video
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Claude, Firecrawl (transcript)
+alpaka-video-white-axodyne-deep-dive:
+  url: https://www.youtube.com/watch?v=7zRiEPeOJMU
+  kind: video
+  publisher: ALPAKA
+  title: Momentum Collection in White Axodyne Deep Dive
+  published: '2026-10-23'
+  archived: null
+  last_ok: '2026-11-13'
+  opened_by: Claude, Firecrawl (transcript)
+db-hugger-backpack-30l-black-out-us:
+  url: https://dbjourney.com/en-us/products/hugger-backpack-30l-black-out
+  kind: maker-page
+  publisher: Db Journey
+  title: Hugger Backpack 30L Black Out
+  archived: null
+  last_ok: '2026-11-15'
+  opened_by: Search subagent, Firecrawl (US location)
+aer-uk-city-pack-pro-2-ultra-24l:
+  url: https://aersf.co.uk/products/city-pack-pro-2-ultra-24l
+  kind: maker-page
+  publisher: Aer
+  archived: null
+  last_ok: '2026-11-15'
+  opened_by: Search subagent, WebFetch
+aer-uk-travel-pack-4-ultra-28l:
+  url: https://aersf.co.uk/products/travel-pack-4-ultra-28l
+  kind: maker-page
+  publisher: Aer
+  archived: null
+  last_ok: '2026-11-15'
+  opened_by: Search subagent, WebFetch
+rushfaster-reviews-io-evergoods-ctb26:
+  url: https://www.reviews.io/product-reviews/store/rushfaster.com/13012c-CYB
+  kind: retailer
+  publisher: Rushfaster (customer reviews on REVIEWS.io)
+  title: Customer reviews of Evergoods CTB26 on Rushfaster (REVIEWS.io page)
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+mukama-evergoods-civic-travel-bag-26-l-ultra:
+  url: https://www.mukama.com/products/evergoods-civic-travel-bag-26-l-ultra
+  kind: retailer
+  publisher: Mukama (customer review)
+  title: Civic Travel Bag 26 L ULTRA - customer review 'Large, organised and comfortable!'
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through WebFetch on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+danny-packs-video-evergoods-ctb26-revisited:
+  url: https://www.youtube.com/watch?v=mkKDq950wZ8
+  kind: video
+  publisher: Danny Packs (YouTube)
+  title: The PERFECT EDC / Minimal Travel Bag! Evergoods CTB26 Revisited & Best Alternatives
+  published: 2023-05
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+ryan-bowman-video-evergoods-ctb26-full-review:
+  url: https://www.youtube.com/watch?v=M1g5zokCEPQ
+  kind: video
+  publisher: Ryan Bowman (YouTube)
+  title: Evergoods Civic Travel Bag 26L - CTB26 Full Review
+  published: 2023-05
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+the-mountainborn-video-aer-city-pack-pro-v2:
+  url: https://www.youtube.com/watch?v=PsecaXAxVjs
+  kind: video
+  publisher: The Mountainborn (YouTube)
+  title: Aer City Pack Pro v2 - a great improvement on an already excellent 24l clamshell EDC pack
+  published: 2025-03
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+john-scott-video-aer-city-pack-pro-2-review:
+  url: https://www.youtube.com/watch?v=Y4BG-XaDKCo
+  kind: video
+  publisher: John Scott (YouTube)
+  title: The almost perfect EDC backpack - Aer City Pack Pro 2 review
+  published: 2025-05
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+gearbywomen-video-aer-city-pack-pro-2-24l-review:
+  url: https://www.youtube.com/watch?v=lceOvLev8fw
+  kind: video
+  publisher: GearByWomen (YouTube)
+  title: Aer City Pack Pro 2 24L Review | Minimalist Backpack Done Right!
+  published: 2026-01
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+the-z-standard-video-aer-city-pack-pro-2:
+  url: https://www.youtube.com/watch?v=vWcFkV6w2G4
+  kind: video
+  publisher: The Z Standard (YouTube)
+  title: The backpack I stopped using all my others for... Aer City Pack Pro 2 (2025 version 24L)
+  published: 2026-05
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+aidil-azeman-video-aer-city-pack-pro-2-x-pac-24l:
+  url: https://www.youtube.com/watch?v=YgJM-J8w76w
+  kind: video
+  publisher: Aidil Azeman (YouTube)
+  title: AER City Pack Pro 2 X PAC 24L
+  published: 2026-05
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+rei-aer-city-pack-pro-2-24-l:
+  url: https://www.rei.com/product/C07946/aer-city-pack-pro-2-24-l
+  kind: retailer
+  publisher: REI (customer reviews)
+  title: Aer City Pack Pro 2 - 24 L (customer reviews)
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through WebFetch on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+rei-aer-travel-pack-4-28-l:
+  url: https://www.rei.com/product/C07942/aer-travel-pack-4-28-l
+  kind: retailer
+  publisher: REI (customer reviews)
+  title: Customer review on REI 28L product page
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through WebFetch on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+everyday-carry-and-tech-video-aer-travel-pack-4-ultra-28l:
+  url: https://www.youtube.com/watch?v=vW6EDjte0Aw
+  kind: video
+  publisher: Everyday Carry and Tech (YouTube)
+  title: AER Travel Pack 4 Ultra 28L - Detailed Review - 2 Months Later
+  published: 2026-10
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+emeralds-daily-carry-video-aer-travel-pack-4-full-review:
+  url: https://www.youtube.com/watch?v=XS2-pFxuOGo
+  kind: video
+  publisher: Emerald's Daily Carry (YouTube)
+  title: 'Why 28L is the New 35L: Aer Travel Pack 4 Full Review'
+  published: 2026-03
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+george-defined-video-aer-travel-pack-4:
+  url: https://www.youtube.com/watch?v=iBkPuJWwz5o
+  kind: video
+  publisher: George DEFINED (YouTube)
+  title: 'Aer Travel Pack 4: A One Bag Travel MONSTER'
+  published: 2026-03
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+desy-cheng-video-aer-travel-pack-4-honest-review:
+  url: https://www.youtube.com/watch?v=a7SXtteaP3Y
+  kind: video
+  publisher: Desy Cheng (YouTube)
+  title: The All-New AER Travel Pack 4 Honest Review!
+  published: 2026-03
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+pk-shiu-video-ula-bespoke-series-28l-cicada:
+  url: https://www.youtube.com/watch?v=ulsXY0iHyOE
+  kind: video
+  publisher: PK Shiu (YouTube)
+  title: 'ULA Equipment Bespoke Series: 28L Cicada Quick look'
+  published: 2026-11
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+danny-packs-video-ula-dragonfly-ultra-30l-review:
+  url: https://www.youtube.com/watch?v=fXj4SFgPRwY
+  kind: video
+  publisher: Danny Packs (YouTube)
+  title: ULA Dragonfly (ULTRA) 30L Review - MOST Requested One Bag Travel Pack!
+  published: 2024-08
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+the-mountainborn-video-ula-dragonfly-ultra-30:
+  url: https://www.youtube.com/watch?v=2grO09u4EU8
+  kind: video
+  publisher: The Mountainborn (YouTube)
+  title: ULA Equipment Dragonfly Ultra 30 - Great ultra light goldilocks bag for one bag travel / outdoor use
+  published: 2024-10
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+pack-and-roam-video-ula-dragonfly-30l-review:
+  url: https://www.youtube.com/watch?v=sRMmrZcvafM
+  kind: video
+  publisher: Pack & Roam (YouTube)
+  title: ULA Dragonfly 30L Review || Ultralight for EDC and Travel
+  published: 2024-12
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+chase-reeves-video-ula-dragonfly:
+  url: https://www.youtube.com/watch?v=Ri0KZEg40qw
+  kind: video
+  publisher: Chase Reeves (YouTube)
+  title: Perfect Lightweight Travel Bag? ULA Dragonfly
+  published: 2025-03
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+nomads-nation-ula-dragonfly-pass-thru-review:
+  url: https://nomadsnation.com/?p=104640
+  kind: review
+  publisher: Nomads Nation
+  title: ULA Dragonfly Pass Thru Review (HONEST Pros & Cons)
+  published: 2026-11
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through WebFetch on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+iron-heart-forum-903570:
+  url: https://forum.ironheart.co.uk/post/903570
+  kind: forum
+  publisher: Iron Heart forum
+  title: Thread with owner mclaincausey's Dragonfly update
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through WebFetch on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+pk-shiu-video-ctactical-ct15-lite-waxed-canvas:
+  url: https://www.youtube.com/watch?v=003VJq_Clds
+  kind: video
+  publisher: PK Shiu (YouTube)
+  title: Packing the CTactical CT15 Lite Waxed Canvas for the office
+  published: 2026-04
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+ctactical-ct15-lite-robic-nylon-420d-ripstop:
+  url: https://ctactical.com/products/ct15-lite-robic-nylon-420d-ripstop
+  kind: maker-page
+  publisher: Ctactical
+  title: CT15 Lite - ROBIC Nylon 420D Ripstop (customer review 'Very nice backpack')
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through WebFetch on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+pk-shiu-video-ctactical-ct15-plus-deep-dive:
+  url: https://www.youtube.com/watch?v=tvq5ZSeINQs
+  kind: video
+  publisher: PK Shiu (YouTube)
+  title: CTactical CT15 Plus Deep Dive Review
+  published: 2026-04
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+george-defined-video-ctactical-ct15-plus:
+  url: https://www.youtube.com/watch?v=1I1dLmmO3_s
+  kind: video
+  publisher: George DEFINED (YouTube)
+  title: CTACTICAL CT 15 Plus.. The Best New EDC Backpack
+  published: 2026-06
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+visionswell-video-ctactical-ct15-plus-review:
+  url: https://www.youtube.com/watch?v=usAU9c7neFc
+  kind: video
+  publisher: visionswell (YouTube)
+  title: Kelly Green And My New Favorite Backpack (CTACTICAL CT15 Plus Review)
+  published: 2026-08
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+bagdad-video-c-tactical-ct15-plus-review:
+  url: https://www.youtube.com/watch?v=mYcNguLlVNA
+  kind: video
+  publisher: Bagdad (Bag Dad Report, YouTube)
+  title: C Tactical CT15 Plus Review
+  published: 2026-10
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+ctactical-ct15-plus-cordura-nylon-1000d:
+  url: https://ctactical.com/products/ct15-plus-cordura-nylon-1000d
+  kind: maker-page
+  publisher: Ctactical
+  title: CT15 Plus - Cordura Nylon 1000D (customer reviews)
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through WebFetch on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+ctactical-ct15-plus-robic-nylon-420d-ripstop:
+  url: https://ctactical.com/products/ct15-plus-robic-nylon-420d-ripstop
+  kind: maker-page
+  publisher: Ctactical
+  title: CT15 Plus - ROBIC Nylon 420D Ripstop (customer reviews)
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through WebFetch on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+the-perfect-bag-video-ct21-plus-vs-ct21-lite:
+  url: https://www.youtube.com/watch?v=Xl7x7oQL8SM
+  kind: video
+  publisher: The Perfect Bag (YouTube)
+  title: CT21 Plus vs. CT21 Lite - Quick CTactical Backpack Comparison
+  published: 2026-08
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+pangolins-with-packs-chuyen-tactical-ct21-v3-backpack-review:
+  url: https://pangolinswithpacks.com/chuyen-tactical-ct21-v3-backpack-review-9ebcf784a65f
+  kind: review
+  publisher: Pangolins with Packs
+  title: Chuyen Tactical CT21 v3 Backpack Review
+  published: 2026-05
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+freds-blog-ctactical-ct21-backpack:
+  url: https://www.fredposner.com/ctactical-ct21-backpack/
+  kind: review
+  publisher: Fred's Blog
+  title: 'New Bag: Ctactical CT21'
+  published: 2025-08
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+fazal-majid-blog-backpacks:
+  url: https://blog.majid.info/backpacks/
+  kind: review
+  publisher: Fazal Majid's blog
+  title: TL:DR I try way too many backpacks so you don't have to
+  published: 2021-03
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through WebFetch on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+the-perfect-bag-video-ct21-waxed-canvas-project-alchemy:
+  url: https://www.youtube.com/watch?v=pIQDm4gmBos
+  kind: video
+  publisher: The Perfect Bag (YouTube)
+  title: CTactical CT21 Waxed Canvas Backpack- Project Alchemy Review and Walkthrough
+  published: 2024-10
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+visionswell-video-ctactical-ct21-plus-review:
+  url: https://www.youtube.com/watch?v=oyg2Km_NUrg
+  kind: video
+  publisher: visionswell (YouTube)
+  title: This Ctactical Waxed Canvas Backpack Might Beat My Goruck (CT21 Plus Review)
+  published: 2026-07
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+pk-shiu-video-ctactical-ct21-plus-quick-look:
+  url: https://www.youtube.com/watch?v=8fiHjubdKac
+  kind: video
+  publisher: PK Shiu (YouTube)
+  title: CTactical CT21 Plus Quick Look
+  published: 2026-08
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+jb-outside-video-matador-x-carryology-edx-backpack-and-sling:
+  url: https://www.youtube.com/watch?v=yDgyjFcOZgA
+  kind: video
+  publisher: JB Outside (YouTube)
+  title: Matador x Carryology EDX Backpack & Sling // Plus tips to SCORE your NEXT Collaboration!
+  published: 2023-07
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+iron-heart-forum-905157:
+  url: https://forum.ironheart.co.uk/post/905157
+  kind: forum
+  publisher: Iron Heart forum
+  title: Luggage Bags and Packs (thread page, posts 21-30 Jul 2025); post 905157
+  published: 2025-07
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through WebFetch on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+iron-heart-forum-821556:
+  url: https://forum.ironheart.co.uk/post/821556
+  kind: forum
+  publisher: Iron Heart forum
+  title: Luggage Bags and Packs (thread page, Jun-Jul 2024); post 821556 'Latest Carryology buys'
+  published: 2024-07
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through WebFetch on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+hafu-way-there-video-tortuga-superlite:
+  url: https://www.youtube.com/watch?v=DJF9msamG2k
+  kind: video
+  publisher: Hafu Way There (YouTube)
+  title: 'Tortuga Superlite: Too Light or Just Right? (2.2 lbs)'
+  published: 2026-06
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+carry-on-club-tortuga-superlite-early-impressions:
+  url: https://carryonclub.xyz/tortuga-superlite-early-impressions
+  kind: review
+  publisher: Carry On Club
+  title: 'Tortuga Superlite Early Impressions: Comfort, ULTRA Fabric, and First Thoughts'
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through WebFetch on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+pack-hacker-video-tortuga-superlite-backpack-review:
+  url: https://www.youtube.com/watch?v=V5imoJr8G0k
+  kind: video
+  publisher: Pack Hacker (Pack Hacker Reviews on YouTube)
+  title: Tortuga Superlite Backpack Review (A Week of Use)
+  published: 2026-06
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+away-together-video-tortuga-superlite-review:
+  url: https://www.youtube.com/watch?v=Q6uku6Uipok
+  kind: video
+  publisher: Away Together w/ Nik and Allie (YouTube)
+  title: 'Tortuga Superlite Review: 34L Carry-On That Weighs 2.2 lbs'
+  published: 2026-06
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+visionswell-video-tortuga-superlite-backpack-review:
+  url: https://www.youtube.com/watch?v=7uKJfZ4QYLQ
+  kind: video
+  publisher: visionswell (YouTube)
+  title: 'Tortuga Superlite Backpack Review: The Lightest Carry-On Bag I''ve Ever Held'
+  published: 2026-06
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+one-bag-travels-video-tortuga-superlite-ultra-review:
+  url: https://www.youtube.com/watch?v=MV7sy1j2bxE
+  kind: video
+  publisher: One Bag Travels (YouTube)
+  title: Tortuga Superlite Ultra Review and Packout - 2.2 Lb. 34 Liter Travel Backpack
+  published: 2026-07
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+unpackd-video-tortuga-superlite-review:
+  url: https://www.youtube.com/watch?v=KqdSXSIbYeg
+  kind: video
+  publisher: UnPack'D (YouTube)
+  title: 'Tortuga Superlite Review: No More Weight Penalty'
+  published: 2026-06
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+nitpacker-video-tortuga-superlite:
+  url: https://www.youtube.com/watch?v=F3Q7SqAcZCc
+  kind: video
+  publisher: nitpacker (YouTube)
+  title: Tortuga Superlite... minimalist travel perfection.
+  published: 2026-06
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+outen-the-lights-video-tortuga-superlite-pack-with-me:
+  url: https://www.youtube.com/watch?v=yjMmpeOiHuU
+  kind: video
+  publisher: outen the lights (YouTube)
+  title: Two Weeks, One Bag | Minimalist Pack With Me | Tortuga Superlite Backpack
+  published: 2026-06
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+the-perfect-bag-video-tortuga-superlite:
+  url: https://www.youtube.com/watch?v=TjgaLScG04Y
+  kind: video
+  publisher: The Perfect Bag (YouTube)
+  title: Brand New Tortuga SuperLite - Is it worth it?  Review & Detailed Walkthrough
+  published: 2026-06
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+kickstarter-superlite-backpack-comments:
+  url: https://www.kickstarter.com/projects/tortugabackpacks/the-superlite-backpack-by-tortuga/comments
+  kind: forum
+  publisher: Kickstarter backer comments (Superlite campaign page)
+  title: 'Comments, Superlite by Tortuga: Ultralight (2.2 lb) Carry On Backpack'
+  published: 2026-10
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+the-loam-wolf-review-douchebags-hugger-30l:
+  url: https://theloamwolf.com/reviews/gear/review-douchebags-hugger-30l/
+  kind: review
+  publisher: The Loam Wolf
+  title: Douchebags Hugger 30L
+  published: 2024-12
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through WebFetch on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+toms-lode-video-db-the-hugger-backpack-review:
+  url: https://www.youtube.com/watch?v=FxNh9jFP4MU
+  kind: video
+  publisher: Toms Lode (YouTube)
+  title: Db THE HUGGER backpack review
+  published: 2025-07
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+joris-van-der-kamp-video-db-journey-hugger-30l:
+  url: https://www.youtube.com/watch?v=cscXFUbxOiU
+  kind: video
+  publisher: Joris van der Kamp (YouTube)
+  title: DB Journey Hugger 30L Backpack - Unboxing & First Impressions
+  published: 2024-07
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+james-wright-video-douchebags-30l-hugger-1-year-review:
+  url: https://www.youtube.com/watch?v=avqy2_83zxE
+  kind: video
+  publisher: James Wright (YouTube)
+  title: DOUCHEBAGS 30L HUGGER / 1 YEAR REVIEW
+  published: 2018-08
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through Firecrawl on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+verkkokauppa-db-hugger-backpack-30-l:
+  url: https://www.verkkokauppa.com/en/product/910624/Db-Hugger-Backpack-30-l-backpack-reflective-black/reviews
+  kind: retailer
+  publisher: Verkkokauppa.com (customer reviews)
+  title: 'Customer reviews: Db Hugger Backpack 30 l, reflective black'
+  published: 2024-08
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through WebFetch on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl
+active-traveller-douchebag-the-hugger-30l-backpack:
+  url: https://www.active-traveller.com/gear-reviews/douchebag-the-hugger-30l-backpack
+  kind: review
+  publisher: Active Traveller
+  title: Douchebag The Hugger 30L backpack
+  published: 2018-07
+  archived: null
+  last_ok: '2026-11-17'
+  opened_by: Research subagent, page opened through WebFetch on 17 Nov 2026; re-opened by a separate checking subagent through Firecrawl

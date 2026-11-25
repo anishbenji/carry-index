@@ -1,0 +1,715 @@
+migration:
+  source: Ultra Carry Index page, Rev AE (v20)
+  migrated: '2026-11-13'
+  claims: Anish read every line on 13 Nov 2026, one question at a time; approved lines are the ones he kept as shown. Lines from another build name the build. Old wording and search results are under legacy.claims.
+  photos: model.photos lists every photo the old page used, as its code and footer describe them; permission is none for all
+  sources_search: Claims and spec gaps were searched on 13 Nov 2026; see evidence on each claim and reports/sources-search-2026-11-13.md
+  proposals: Applied on 13 Nov 2026 by tools/migrate/apply_decisions.py, following Anish's rulings of that day.
+  availability: Removed on 13 Nov 2026. Each build links out instead; the old strings stay under legacy.
+model:
+  id: aer-city-pack-pro-2-24l
+  legacy_id: cpp2
+  brand: aer
+  label: City Pack Pro 2 24L
+  family: City Pack Pro 2
+  category: backpack
+  use:
+  - edc
+  - travel
+  build_class: structured
+  drawings:
+  - file: drawings/cpp2/sketch/cpp2-sketch-front.svg
+    kind: drawing
+    view: front
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/cpp2/sketch/cpp2-sketch-iso.svg
+    kind: drawing
+    view: three-quarter
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/cpp2/sketch/cpp2-sketch-back.svg
+    kind: drawing
+    view: back
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/cpp2/sketch/cpp2-sketch-side.svg
+    kind: drawing
+    view: side
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  photos:
+  - file: img/maker/f25be559-AER28064_1_citypackpro2ultra24l_34hero_1200x1200.jpg
+    role: card main
+    view: three-quarter
+    credit_text: aersf.com
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: AER28064 City Pack Pro 2 Ultra 24L, 3/4 hero 1200x1200'
+    permission: none
+  - file: img/maker/d79aafe7-AER28064_2_citypackpro2ultra24l_front.jpg
+    role: hero strip
+    view: front
+    credit_text: null
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: City Pack Pro 2 Ultra 24L front'
+    permission: none
+  - file: img/maker/3d213038-AER28064_1_citypackpro2ultra24l_34hero.jpg
+    role: hero strip
+    view: three-quarter
+    credit_text: null
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: City Pack Pro 2 Ultra 24L 3/4 hero'
+    permission: none
+  reviews:
+  - source: stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+    covers: same build; about three months of use; bag supplied by Aer
+    used_for:
+    - cpp2-pro-1
+    - cpp2-pro-2
+    - cpp2-pro-3
+    - cpp2-pro-4-b
+    - cpp2-con-1
+    - cpp2-con-3
+    - cpp2-con-4
+  - source: pack-hacker-city-pack-pro-2
+    covers: 'City Pack Pro 2 24L, 1680D CORDURA ballistic nylon, black; usage timeline covers initial use and 2 weeks; by Kristyne Defever, published 2025-03-10, updated 2026-09-22. Discloses: Reader-supported, may earn affiliate commission; Check Price links are affiliate (awin). Nothing stated about whether the bag was a sample.'
+    used_for:
+    - cpp2-con-5
+    - cpp2-con-6
+  - source: t3-i-tested-5-of-the-best-high-end-edc-backpack
+    covers: 'Group test section ''Best for structure'': City Pack Pro 2 24L in EcoPak, brown; author Max Freeman-Mills. Page title now says 6 backpacks (updated 2026-10-19). Discloses: Author says Aer offered to send one to test; site may earn affiliate commission; affiliate links in section.'
+    used_for:
+    - cpp2-pro-5
+  - source: gizmodo-japan-aer-city-pack-pro-2-ultra
+    covers: 'City Pack Pro 2 Ultra (about 24L, Ultra400X), JPY 59,400; the card build; by Yuichi Udagawa, 2025-08-23; first-person but no test period or real-use tests. Discloses: No disclosure of how the bag was obtained; ''Source: Aer'' credit and site advertisement labels; reads largely promotional.'
+    used_for: []
+  - source: nomads-nation-evergoods-ctb26-review
+    covers: 420D nylon build, not ULTRA (updated 2026-11-09); affiliate site whose author promotes his own bag brand
+    used_for: []
+  - source: the-mountainborn-video-aer-city-pack-pro-v2
+    covers: 'City Pack Pro 2 24L, base 1680D nylon, black; about a month of use; reviewer also shows his first-generation City Pack Pro Ultra for comparison only. Discloses: Description: provided by Aer for review, not shown to Aer before release, none of the links are affiliate links. Spoken: Aer sent the bag.'
+    used_for: []
+  - source: john-scott-video-aer-city-pack-pro-2-review
+    covers: 'City Pack Pro 2 24L, 1680D Cordura ballistic nylon; two months daily use, three trips. Notes that only the Ultra and X-Pac versions have AquaGuard zippers throughout. Discloses: Spoken: Aer sent the bag for review, no money changed hands, Aer does not see the video first. Description has Aer links and bhpho.to / geni.us short links (affiliate status not stated).'
+    used_for:
+    - cpp2-pro-1
+  - source: gearbywomen-video-aer-city-pack-pro-2-24l-review
+    covers: 'City Pack Pro 2 24L, Cordura ballistic nylon, black; pack-out, fit check (reviewer 5ft 6), EasyJet sizer test, short water test; no stated use period. Discloses: Asks viewers to buy via channel links (go.gearbywomen.com), says it helps the channel. Description: some content may include free products from brands; not stated for this bag.'
+    used_for:
+    - cpp2-pro-1
+  - source: the-z-standard-video-aer-city-pack-pro-2
+    covers: 'City Pack Pro 2 24L (''2025 version''); fabric not stated in the video, weight given as 2.8-2.9 lb, consistent with the nylon version; daily-use owner; reviewer about 6ft, long torso. Discloses: Owner post: bought it himself from a New York retailer with a 10-15% discount code. No sponsorship or affiliate statement.'
+    used_for:
+    - cpp2-pro-2
+    - cpp2-con-5
+    - cpp2-con-6
+  - source: aidil-azeman-video-aer-city-pack-pro-2-x-pac-24l
+    covers: 'City Pack Pro 2 24L X-Pac; owner who had just received it and carried it about twice; rode a motorcycle in rain with it. Discloses: Owner post, his first bag review. Nothing on samples or affiliate links.'
+    used_for:
+    - cpp2-pro-5
+  - source: rei-aer-city-pack-pro-2-24-l
+    covers: 'REI listing for City Pack Pro 2 24L, 1,680-denier CORDURA version; one customer review (Frank78, 5 stars, 1 month ago); item listed as not available/pre-order. Discloses: Retailer customer review; nothing on samples.'
+    used_for: []
+  sourcing: Based on Stranded Variable's review of this build, reviews of other City Pack Pro 2 builds from Pack Hacker and T3, four video reviews of other builds, plus Aer's own pages.
+variants:
+- id: city-pack-pro-2-ultra-24l
+  name: City Pack Pro 2 Ultra 24L
+  page: aer-city-pack-pro-2-ultra-24l
+  link:
+    url: https://aersf.com/products/city-pack-pro-2-ultra-24l
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - ultra-400x
+    shell_as_written: Ultra400X exterior by Challenge Sailcloth
+    lining: Lightweight ripstop nylon interior (bluesign® approved)
+    other: YKK® waterproof zippers
+  volume_l: 24
+  weight_g: 1170
+  dims_cm:
+    h: 46
+    w: 30.5
+    d: 18
+  as_written:
+    weight: 2.57 lbs on the US page; 1.17 kg (2.57 lbs) on Aer's UK store
+    dims: 'Height: 18" (46 cm), Width: 12" (30.5 cm), Depth: 7" (18 cm)'
+  laptop:
+    max_in: 16
+    type: padded, suspended pocket
+  opening: Lay-flat main compartment
+  price:
+    amount: 269
+    currency: USD
+    seller: aer
+  release: regular
+  colourways:
+  - name: Ultra
+  media:
+  - file: img/maker/f25be559-AER28064_1_citypackpro2ultra24l_34hero_1200x1200.jpg
+    kind: photo
+    view: unknown
+    shows_variant: null
+    credit: aersf.com
+    source: https://aersf.com/products/city-pack-pro-2-ultra-24l
+    permission: none
+  checks:
+  - date: '2026-11-13'
+    source: aer-city-pack-pro-2-ultra-24l
+    basis: page
+    method: Page opened and read by Claude through WebFetch; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - laptop
+    - fabric.shell
+    - fabric.lining
+    - colourways
+  - date: '2026-11-13'
+    source: aer-city-pack-pro-2-ultra-24l
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - opening
+    note: Aer's wording; "clamshell" appears only in reviews of the Cordura build
+  - date: '2026-11-13'
+    source: rushfaster-aer-city-pack-pro-2-ultra-24l
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - made_in
+    note: From a retailer; Aer's FAQ says only that soft goods are made in China and Vietnam
+  - date: '2026-11-15'
+    source: aer-city-pack-pro-2-ultra-24l
+    basis: page
+    method: Search subagent, page opened through WebFetch on 15 Nov 2026
+    fields:
+    - release
+    note: 'Read as a regular catalogue item: no limited, drop or pre-order wording on the product page or Aer''s Ultra Collection page, which offers back-in-stock sign-ups.'
+  - date: '2026-11-15'
+    source: aer-uk-city-pack-pro-2-ultra-24l
+    basis: page
+    method: Search subagent, page opened through WebFetch on 15 Nov 2026
+    fields:
+    - weight_g
+    note: 'Aer''s UK store prints 1.17 kg (2.57 lbs). Anish''s call, 15 Nov 2026: use it as the maker''s own metric figure (was 1166 g, our conversion of 2.57 lbs).'
+  made_in: China
+  units:
+    weight:
+      metric:
+        g: 1170
+        from: maker
+      imperial:
+        lb: 2.57
+        from: maker
+    dims:
+      metric:
+        cm:
+        - 46
+        - 30.5
+        - 18
+        from: maker
+      imperial:
+        in:
+        - 18
+        - 12
+        - 7
+        from: maker
+- id: city-pack-pro-2-24l
+  name: City Pack Pro 2 24L
+  record: comparison
+  page: aer-city-pack-pro-2-24l
+  link:
+    url: https://aersf.com/products/city-pack-pro-2-24l
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - cordura-1680d-ballistic-nylon
+    shell_as_written: 1680D CORDURA ballistic nylon
+  volume_l: 24
+  weight_g: 1297
+  dims_cm:
+    h: 46
+    w: 30.5
+    d: 18
+  as_written:
+    weight: 2.86 lbs (the page gives no grams; 1297 g is our conversion)
+  price:
+    amount: 219
+    currency: USD
+    seller: aer
+  checks:
+  - date: '2026-11-13'
+    source: aer-city-pack-pro-2-24l
+    basis: page
+    method: Page opened and read by Claude through WebFetch on 13 Nov 2026; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - fabric.shell
+  units:
+    weight:
+      metric:
+        g: 1297
+        from: converted
+      imperial:
+        lb: 2.86
+        from: maker
+features:
+- id: cpp2-feat-1
+  text: Removable keychain that can be repositioned.
+  scope: design
+  sources:
+  - aer-city-pack-pro-2-ultra-24l
+  applies_to:
+  - city-pack-pro-2-ultra-24l
+  status: approved
+claims:
+- id: cpp2-pro-1
+  kind: pro
+  text: Comfortable to carry.
+  voice: reviewers
+  support: three reviews agree
+  scope: design
+  basis: review
+  sources:
+  - stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+  - john-scott-video-aer-city-pack-pro-2-review
+  - gearbywomen-video-aer-city-pack-pro-2-24l-review
+  observed_on:
+  - city-pack-pro-2-ultra-24l
+  status: approved
+  source_notes:
+  - source: stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+    about: same build; about three months of use; bag supplied by Aer
+  - source: john-scott-video-aer-city-pack-pro-2-review
+    about: 1680D Cordura ballistic nylon build, not Ultra; two months of daily use; bag sent by Aer, no payment
+  - source: gearbywomen-video-aer-city-pack-pro-2-24l-review
+    about: Cordura ballistic nylon build, not Ultra; channel purchase links, says some products are sent free by brands
+  other_builds:
+  - source: pack-hacker-city-pack-pro-2
+    about: 24L; fabric tested not stated, weight quoted is the ballistic nylon one, so apparently not Ultra (updated 2026-09-22)
+  replaces: cpp2-pro-1
+  wording_note: 'One Stranded Variable review of this build. ''Zero issues across a dozen packs'' has no source; ranking against Able Carry left out. 17 Nov 2026: support widened with John Scott, GearByWomen (research/reviews-2026-11-17/merged/cpp2.json point 0); was ''one review''. John Scott (1680D Cordura ballistic nylon, loads of 30 to 35 lb, two months) and GearByWomen (Cordura ballistic nylon) both call it very comfortable. Build label ''Also from video reviews of the Cordura ballistic nylon build'' added because the new sources cover other builds. Reworded the same day from ''Comfort rated very good after about three months of daily carry.'' to ''Comfortable to carry.''. Anish accepted this wording on 17 Nov 2026 (''ok''), so that the line says only what all its sources back.'
+  from_build:
+    label: Also from video reviews of the Cordura ballistic nylon build
+    decided: '2026-11-17'
+- id: cpp2-pro-2
+  kind: pro
+  text: Self-stands loaded or empty
+  voice: reviewers
+  support: two reviews
+  scope: design
+  basis: review
+  sources:
+  - stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+  - the-z-standard-video-aer-city-pack-pro-2
+  observed_on:
+  - city-pack-pro-2-ultra-24l
+  status: approved
+  source_notes:
+  - source: stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+    about: same build; about three months of use; bag supplied by Aer
+  - source: the-z-standard-video-aer-city-pack-pro-2
+    about: City Pack Pro 2 24L, fabric not stated (weight given matches the nylon build); owner who bought it himself
+  other_builds:
+  - source: t3-i-tested-5-of-the-best-high-end-edc-backpack
+    about: City Pack Pro 2 24L in a different fabric (a brown version), not Ultra; short group test
+  replaces: cpp2-pro-2
+  wording_note: 'Stranded Variable says this of the Ultra build. T3''s matching finding is on another fabric, so not counted towards agreement. 17 Nov 2026: support widened with The Z Standard (research/reviews-2026-11-17/merged/cpp2.json point 1); was ''one review''. The Z Standard (owner video, fabric not stated) says it stands with the front pouch loaded. The Mountainborn (1680D nylon) says it stands ''for the most part'', depending on load, and was not counted. Build label ''Also from a video review that doesn''t name its fabric'' added because the new sources cover other builds.'
+  from_build:
+    label: Also from a video review that doesn't name its fabric
+    decided: '2026-11-17'
+- id: cpp2-pro-3
+  kind: pro
+  text: The laptop compartment stayed dry in a sudden downpour.
+  voice: reviewers
+  support: one review
+  scope: material
+  basis: review
+  sources:
+  - stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+  observed_on:
+  - city-pack-pro-2-ultra-24l
+  status: approved
+  source_notes:
+  - source: stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+    about: same build; about three months of use; bag supplied by Aer
+  other_builds:
+  - source: gizmodo-japan-aer-city-pack-pro-2-ultra
+    about: 2025 release of the City Pack Pro 2 Ultra (24L), the earlier listing of this bag
+  replaces: cpp2-pro-3
+  wording_note: No soak test exists; the evidence is one monsoon downpour in one review. States that finding instead.
+- id: cpp2-pro-4-b
+  kind: pro
+  text: Weighed 1.1 kg in testing, close to the listed 1.17 kg (2.57 lb).
+  voice: reviewers
+  support: one review
+  scope: material
+  basis: review
+  sources:
+  - stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+  observed_on:
+  - city-pack-pro-2-ultra-24l
+  status: approved
+  source_notes:
+  - source: stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+    about: same build; about three months of use; bag supplied by Aer
+  other_builds:
+  - source: aer-city-pack-pro-2-24l
+    about: 1680D Cordura version, same size
+  replaces: cpp2-pro-4
+  wording_note: 'Split from pro-4: Stranded Variable''s scale read 1.1 kg against the 1.17 kg spec.'
+- id: cpp2-con-1
+  kind: con
+  text: 'Zippers are inconsistent: the main one is annoying to operate, the top, admin and laptop ones smooth.'
+  voice: reviewers
+  support: one review
+  scope: design
+  basis: review
+  sources:
+  - stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+  observed_on:
+  - city-pack-pro-2-ultra-24l
+  status: approved
+  source_notes:
+  - source: stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+    about: same build; about three months of use; bag supplied by Aer
+  other_builds:
+  - source: pack-hacker-city-pack-pro-2
+    about: 24L; fabric tested not stated, weight quoted is the ballistic nylon one, so apparently not Ultra (updated 2026-09-22)
+  replaces: cpp2-con-1
+  wording_note: 'One reviewer, not ''reviewed as''. Adds which zipper: Stranded Variable calls the main one ''genuinely annoying to operate''.'
+- id: cpp2-con-3
+  kind: con
+  text: The Ultra400X look, with a light crinkle and paper-like feel, is polarising.
+  voice: reviewers
+  support: one review
+  scope: material
+  basis: review
+  sources:
+  - stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+  observed_on:
+  - city-pack-pro-2-ultra-24l
+  status: approved
+  source_notes:
+  - source: stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+    about: same build; about three months of use; bag supplied by Aer
+  other_builds:
+  - source: gizmodo-japan-aer-city-pack-pro-2-ultra
+    about: 2025 release of the City Pack Pro 2 Ultra (24L), the earlier listing of this bag
+  replaces: cpp2-con-3
+  wording_note: '''Casual, not corporate'' was the site''s own reading. Stranded Variable calls the look polarising, possibly a dealbreaker.'
+- id: cpp2-con-4
+  kind: con
+  text: Only one colourway, a washed black.
+  voice: reviewers
+  support: one review
+  scope: general
+  basis: review
+  sources:
+  - stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+  - aer-city-pack-pro-2-ultra-24l
+  observed_on:
+  - city-pack-pro-2-ultra-24l
+  status: approved
+  source_notes:
+  - source: stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+    about: same build; about three months of use; bag supplied by Aer
+  - source: aer-city-pack-pro-2-ultra-24l
+    about: same build; no customer reviews visible on the page
+  replaces: cpp2-con-4
+  wording_note: British spelling. Aer shows a single option labelled Ultra; 'washed black' is Stranded Variable's description of it.
+- id: cpp2-pro-5
+  kind: pro
+  text: 'Good laptop protection: a false bottom keeps the laptop off the base.'
+  voice: reviewers
+  support: two reviews
+  scope: design
+  basis: sibling
+  sources:
+  - aidil-azeman-video-aer-city-pack-pro-2-x-pac-24l
+  - t3-i-tested-5-of-the-best-high-end-edc-backpack
+  observed_on: []
+  from_build:
+    label: From reviews of the X-Pac and EcoPak builds
+    generation: Same generation (City Pack Pro 2)
+    size: Same, 24L
+    fabric: X-Pac and EcoPak
+    found: The laptop sleeve is part of the City Pack Pro 2 pattern that the fabric builds share; no review of the Ultra build mentions it.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: aidil-azeman-video-aer-city-pack-pro-2-x-pac-24l
+    about: X-Pac build, not Ultra; owner's first impressions after carrying it about twice
+  - source: t3-i-tested-5-of-the-best-high-end-edc-backpack
+    about: EcoPak build, not Ultra; short group test; Aer offered to send the bag, affiliate links; quotes confirmed through WebFetch only
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. Aidil Azeman: "it doesn''t go right at the bottom of the back"; T3: "A laptop sleeve with a false bottom protects your tech nicely"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search as ''Laptop sleeve has a false bottom, so the laptop sits above the base.''. Anish reworded and approved it the same day (his comment on the reading list: ''Yes - see if you can include good  laptop protection''). research/reviews-2026-11-17/merged/cpp2.json point 3.'
+  added_in: reviews-2026-11-17
+- id: cpp2-con-5
+  kind: con
+  text: Front pockets get snug once the main compartment is packed.
+  voice: reviewers
+  support: two reviews
+  scope: design
+  basis: sibling
+  sources:
+  - the-z-standard-video-aer-city-pack-pro-2
+  - pack-hacker-city-pack-pro-2
+  observed_on: []
+  from_build:
+    label: From reviews of the 1680D nylon build; one doesn't name its fabric
+    generation: Same generation (City Pack Pro 2)
+    size: Same, 24L
+    fabric: 1680D ballistic nylon (Pack Hacker); not stated (The Z Standard)
+    found: The front pockets share space with the main compartment by layout, which is the same on every fabric build.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: the-z-standard-video-aer-city-pack-pro-2
+    about: City Pack Pro 2 24L, fabric not stated (weight given matches the nylon build); owner who bought it himself
+  - source: pack-hacker-city-pack-pro-2
+    about: 1680D CORDURA ballistic nylon build, not Ultra; affiliate links, sample status not stated
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. The Z Standard: "this pouch really gets little little snug"; Pack Hacker: "hard to fill all the pockets at once"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''yes''). research/reviews-2026-11-17/merged/cpp2.json point 15.'
+  added_in: reviews-2026-11-17
+- id: cpp2-con-6
+  kind: con
+  text: The key leash in the front pocket is awkward to reach.
+  voice: reviewers
+  support: two reviews
+  scope: design
+  basis: sibling
+  sources:
+  - pack-hacker-city-pack-pro-2
+  - the-z-standard-video-aer-city-pack-pro-2
+  observed_on: []
+  from_build:
+    label: From reviews of the 1680D nylon build; one doesn't name its fabric
+    generation: Same generation (City Pack Pro 2)
+    size: Same, 24L
+    fabric: 1680D ballistic nylon (Pack Hacker); not stated (The Z Standard)
+    found: Where the key leash sits is a layout point shared by the fabric builds.
+    decided: '2026-11-17'
+  status: held
+  source_notes:
+  - source: pack-hacker-city-pack-pro-2
+    about: 1680D CORDURA ballistic nylon build, not Ultra; affiliate links, sample status not stated
+  - source: the-z-standard-video-aer-city-pack-pro-2
+    about: City Pack Pro 2 24L, fabric not stated (weight given matches the nylon build); owner who bought it himself
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. Pack Hacker: "hard to reach the key leash in the front pocket"; The Z Standard: "I find it hard to get my keys in here"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish took it off the card the same day (his comment on the reading list: ''Drop, since the tightness of the pocket is mentioned already.''). research/reviews-2026-11-17/merged/cpp2.json point 16.'
+  added_in: reviews-2026-11-17
+computed:
+- replaces: cpp2-pro-4
+  was: Lighter than the Cordura version; about 1.1 kg on a reviewer’s scale
+  rule: Weight against the other builds of the same bag, from their records.
+  state: Built. Weight against the 1680D CORDURA build, from the two records (tools/summary_lines.py).
+legacy:
+  verdict: Costs $156 less than the Evergoods and does most of the same job.
+  price_note: 'aersf.com · sold out · 20 L: $249'
+  avail: Regular line · sold out
+  origin: USA
+  laptop: 16"
+  fabric: ULTRA 400X
+  opening: Lay-flat clamshell
+  brand: Aer
+  src: https://aersf.com/products/city-pack-pro-2-ultra-24l
+  claims:
+  - id: cpp2-pro-1
+    kind: pro
+    text: Comfort stands out in testing; one long-term tester had zero issues across a dozen packs
+    scope: design
+    basis: review
+    sources:
+    - stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+    - pack-hacker-city-pack-pro-2
+    evidence:
+      status: partly
+      note: Stranded Variable rates comfort very good after about three months, second to Able Carry Daily Plus. No source found for 'zero issues across a dozen packs'.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+      about: same build; about three months of use; bag supplied by Aer
+    - source: pack-hacker-city-pack-pro-2
+      about: 24L; fabric tested not stated, weight quoted is the ballistic nylon one, so apparently not Ultra (updated 2026-09-22)
+    outcome:
+    - 'cpp2-pro-1: reworded.'
+  - id: cpp2-pro-2
+    kind: pro
+    text: Self-stands loaded or empty
+    scope: design
+    basis: review
+    sources:
+    - stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+    - t3-i-tested-5-of-the-best-high-end-edc-backpack
+    evidence:
+      status: supported
+      note: Stranded Variable says it self-stands reliably, loaded or empty; T3 says the same of the 24L in another fabric.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+      about: same build; about three months of use; bag supplied by Aer
+    - source: t3-i-tested-5-of-the-best-high-end-edc-backpack
+      about: City Pack Pro 2 24L in a different fabric (a brown version), not Ultra; short group test
+    outcome:
+    - 'cpp2-pro-2: kept.'
+  - id: cpp2-pro-3
+    kind: pro
+    text: Water resistance rated top-notch in soak tests
+    scope: material
+    basis: review
+    sources:
+    - stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+    - gizmodo-japan-aer-city-pack-pro-2-ultra
+    evidence:
+      status: partly
+      note: Stranded Variable calls water resistance top-notch, but the evidence is one monsoon downpour with a dry laptop compartment. No soak test in any source found.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+      about: same build; about three months of use; bag supplied by Aer
+    - source: gizmodo-japan-aer-city-pack-pro-2-ultra
+      about: 2025 release of the City Pack Pro 2 Ultra (24L), the earlier listing of this bag
+    outcome:
+    - 'cpp2-pro-3: reworded.'
+  - id: cpp2-pro-4
+    kind: pro
+    text: Lighter than the Cordura version; about 1.1 kg on a reviewer’s scale
+    scope: material
+    basis: review
+    sources:
+    - stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+    - aer-city-pack-pro-2-ultra-24l
+    - aer-city-pack-pro-2-24l
+    evidence:
+      status: supported
+      note: Aer lists 2.57 lb for Ultra against 2.86 lb for Cordura; Stranded Variable's scale read 1.1 kg against the 1.17 kg spec.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+      about: same build; about three months of use; bag supplied by Aer
+    - source: aer-city-pack-pro-2-ultra-24l
+      about: same build; no customer reviews visible on the page
+    - source: aer-city-pack-pro-2-24l
+      about: 1680D Cordura version, same size
+    outcome:
+    - 'cpp2-pro-4: computed from data. Built. Weight against the 1680D CORDURA build, from the two records (tools/summary_lines.py).'
+    - 'cpp2-pro-4-b: reworded.'
+  - id: cpp2-con-1
+    kind: con
+    text: Zippers reviewed as the one part that does not match the build
+    scope: design
+    basis: review
+    sources:
+    - stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+    - pack-hacker-city-pack-pro-2
+    evidence:
+      status: supported
+      note: 'Stranded Variable says the zippers do not match the build: main and front pocket zippers are rough, others smooth. One reviewer only; Pack Hacker (Cordura) has no zipper complaint.'
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+      about: same build; about three months of use; bag supplied by Aer
+    - source: pack-hacker-city-pack-pro-2
+      about: 24L; fabric tested not stated, weight quoted is the ballistic nylon one, so apparently not Ultra (updated 2026-09-22)
+    outcome:
+    - 'cpp2-con-1: reworded.'
+  - id: cpp2-con-2
+    kind: con
+    text: Top and side handles run stiff; reviewers question the plastic insert
+    scope: design
+    basis: review
+    sources:
+    - stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+    - pack-hacker-city-pack-pro-2
+    - nomads-nation-evergoods-ctb26-review
+    evidence:
+      status: not_found
+      note: No source found for stiff handles or a plastic insert. Stranded Variable calls the handles plush, Pack Hacker cushioned. Nomads Nation says this of the Evergoods CTB26 side handle instead.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+      about: same build; about three months of use; bag supplied by Aer
+    - source: pack-hacker-city-pack-pro-2
+      about: 24L; fabric tested not stated, weight quoted is the ballistic nylon one, so apparently not Ultra (updated 2026-09-22)
+    - source: nomads-nation-evergoods-ctb26-review
+      about: 420D nylon build, not ULTRA (updated 2026-11-09); affiliate site whose author promotes his own bag brand
+    outcome:
+    - 'cpp2-con-2: dropped. Not found. Reviews call the handles plush and cushioned; the stiff-handle remark is from a review of the Evergoods CTB26.'
+  - id: cpp2-con-3
+    kind: con
+    text: Crinkly Ultra texture reads casual, not corporate
+    scope: material
+    basis: review
+    sources:
+    - stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+    - gizmodo-japan-aer-city-pack-pro-2-ultra
+    evidence:
+      status: partly
+      note: Stranded Variable describes a light crinkle, paper-like feel and a polarising look. It does not judge casual versus corporate; that reading is the site's own.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+      about: same build; about three months of use; bag supplied by Aer
+    - source: gizmodo-japan-aer-city-pack-pro-2-ultra
+      about: 2025 release of the City Pack Pro 2 Ultra (24L), the earlier listing of this bag
+    outcome:
+    - 'cpp2-con-3: reworded.'
+  - id: cpp2-con-4
+    kind: con
+    text: Single washed-black colorway
+    scope: general
+    basis: review
+    sources:
+    - stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+    - aer-city-pack-pro-2-ultra-24l
+    evidence:
+      status: supported
+      note: Stranded Variable says washed black is the only colourway; Aer's page offers a single option, labelled Ultra, without naming the colour.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: stranded-variable-review-aer-city-pack-pro-2-24l-ultra
+      about: same build; about three months of use; bag supplied by Aer
+    - source: aer-city-pack-pro-2-ultra-24l
+      about: same build; no customer reviews visible on the page
+    outcome:
+    - 'cpp2-con-4: reworded.'

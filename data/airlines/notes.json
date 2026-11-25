@@ -1,0 +1,753 @@
+{
+ "_about": "Other criteria and limitations per airline, from the airline's own page (see the source URL in airlines.json). co = carry-on, pi = personal item, gen = applies to both / fares / cabins. Keep each note short and factual; add the date if it is a future change.",
+ "Air India": {
+  "pi": [
+   "Must also fit under the seat; max 90 cm total"
+  ],
+  "gen": [
+   "Same for Economy and Premium Economy; Business/First 10 kg"
+  ],
+  "co": [
+   "Also max 115 cm total (L+W+H)"
+  ]
+ },
+ "Air India Express": {
+  "co": [
+   "Size includes handles, wheels and side pockets",
+   "The 7 kg includes laptop and personal items"
+  ],
+  "pi": [
+   "No separate personal item: one piece only"
+  ],
+  "gen": [
+   "Xpress Lite fares are cabin-only",
+   "Xtra Carry-on add-on raises cabin weight to 12 kg"
+  ]
+ },
+ "IndiGo": {
+  "pi": [
+   "Purse or laptop bag up to 3 kg; no size published"
+  ]
+ },
+ "SpiceJet": {
+  "co": [
+   "Q400 aircraft: max 50 × 35 × 23 cm (108 cm total)"
+  ],
+  "pi": [
+   "Laptop bag or purse allowed if total cabin weight stays within 7 kg"
+  ]
+ },
+ "Akasa Air": {
+  "pi": [
+   "Must fit under the seat; up to 3 kg"
+  ],
+  "gen": [
+   "Same for domestic and international"
+  ]
+ },
+ "Emirates": {
+  "co": [
+   "Flights departing India: one piece, max 115 cm total",
+   "Flights from Brazil: 10 kg"
+  ],
+  "pi": [
+   "No Economy personal item listed"
+  ],
+  "gen": [
+   "Business/First add a 7 kg briefcase (45 × 35 × 20 cm)"
+  ]
+ },
+ "Etihad Airways": {
+  "pi": [
+   "Economy: one cabin bag only"
+  ],
+  "gen": [
+   "Business/First add a smaller bag up to 5 kg (39 × 23 × 19 cm)"
+  ]
+ },
+ "Qatar Airways": {
+  "pi": [
+   "Small purse or briefcase allowed; no size or weight published"
+  ],
+  "gen": [
+   "Business/First: 2 pieces, 15 kg total",
+   "Brazil Economy: 10 kg"
+  ]
+ },
+ "flydubai": {
+  "pi": [
+   "Counts within the hand-baggage allowance; must fit under the seat"
+  ],
+  "gen": [
+   "Same on Lite fares",
+   "Business: 2 pieces, 7 kg each"
+  ]
+ },
+ "Air Arabia": {},
+ "Saudia": {
+  "pi": [
+   "Handbag, tablet or coat; no size published"
+  ],
+  "gen": [
+   "Figures are Guest (Economy) class",
+   "Business/First: 12 kg bag plus 9 kg briefcase",
+   "From USA/Canada: 16 lb and 45 in"
+  ]
+ },
+ "Oman Air": {
+  "co": [
+   "All Economy fares: 1 piece, 7 kg, max 115 cm total"
+  ],
+  "pi": [
+   "No personal item listed"
+  ],
+  "gen": [
+   "Business: 2 pieces, 7 kg each"
+  ]
+ },
+ "Gulf Air": {
+  "co": [
+   "Size and weight vary by class and fare; site points to a calculator"
+  ],
+  "pi": [
+   "Handbag or laptop allowed free; no size published"
+  ]
+ },
+ "SriLankan Airlines": {
+  "co": [
+   "Max 115 cm total (L+W+H)"
+  ],
+  "pi": [
+   "Laptop and handbag allowed in addition; no size or weight published"
+  ],
+  "gen": [
+   "Business: 2 pieces at the same limit"
+  ]
+ },
+ "Turkish Airlines": {
+  "gen": [
+   "Business: 2 cabin bags of 8 kg plus the personal item"
+  ]
+ },
+ "Singapore Airlines": {
+  "co": [
+   "Max 115 cm total (L+W+H) per piece"
+  ],
+  "pi": [
+   "An extra item over 80 cm total counts as a cabin bag"
+  ],
+  "gen": [
+   "Premium Economy: same as Economy",
+   "Business, First and Suites: 2 pieces"
+  ]
+ },
+ "Scoot": {
+  "co": [
+   "Also max 115 cm total"
+  ],
+  "gen": [
+   "Economy: 2 pieces, 10 kg combined; ScootPlus 15 kg"
+  ]
+ },
+ "Cathay Pacific": {
+  "gen": [
+   "Allowance varies by cabin class and membership tier; published only through the Baggage Calculator"
+  ]
+ },
+ "Thai Airways": {
+  "co": [
+   "Page also states one bag up to 7 kg or 45 in (≈115 cm) total"
+  ]
+ },
+ "Malaysia Airlines": {
+  "co": [
+   "Max 115 cm total; goes in the overhead locker"
+  ],
+  "pi": [
+   "Briefcase, handbag or laptop bag; size from the under-seat stowage rule"
+  ],
+  "gen": [
+   "Economy: 7 kg total for both pieces"
+  ]
+ },
+ "Air Asia": {
+  "gen": [
+   "Two cabin bags, 7 kg combined",
+   "Xtra Carry-On add-on raises the limit"
+  ]
+ },
+ "VietJet Air": {
+  "pi": [
+   "Laptop bag 40 × 30 × 10 cm, or handbag 30 × 20 × 10 cm"
+  ],
+  "gen": [
+   "7 kg varies by fare and route"
+  ]
+ },
+ "ANA": {
+  "co": [
+   "Size includes wheels and handles; also max 115 cm total"
+  ],
+  "gen": [
+   "Same limits in all cabins; 10 kg covers both pieces"
+  ]
+ },
+ "Japan Airlines": {
+  "co": [
+   "Also max 115 cm total"
+  ],
+  "pi": [
+   "Must fit under the seat; no size published"
+  ],
+  "gen": [
+   "10 kg covers both pieces; international rules (domestic not checked)"
+  ]
+ },
+ "Korean Air": {
+  "co": [
+   "Size includes handles and wheels; or max 115 cm total"
+  ],
+  "gen": [
+   "10 kg in total for bag + personal item",
+   "First/Prestige: 2 bags, 18 kg total"
+  ]
+ },
+ "EVA Air": {
+  "co": [
+   "Or max 115 cm total"
+  ],
+  "pi": [
+   "Max 80 cm total"
+  ],
+  "gen": [
+   "Business: 2 pieces"
+  ]
+ },
+ "Qantas": {
+  "pi": [
+   "Must fit under the seat; no size published"
+  ],
+  "gen": [
+   "International Economy figures",
+   "Domestic: overhead bag + under-seat bag (48 × 34 × 23 cm) + personal item, 14 kg total, max 10 kg each"
+  ]
+ },
+ "Jetstar": {
+  "pi": [
+   "Must fit under the seat; no size published"
+  ],
+  "gen": [
+   "Starter fares: 2 items, 7 kg combined; 14 kg with add-on or bundle",
+   "Rules change on Jetstar Airways (JQ) flights from 2 Feb 2027"
+  ]
+ },
+ "Air New Zealand": {
+  "co": [
+   "Q300 aircraft: depth max 22 cm",
+   "Also max 118 cm total"
+  ],
+  "pi": [
+   "Small personal item; no size or weight published"
+  ]
+ },
+ "Virgin Australia": {
+  "gen": [
+   "Same domestic and international",
+   "Business, Economy X and some Velocity tiers: two small bags, 14 kg total"
+  ]
+ },
+ "British Airways": {
+  "co": [
+   "Size includes wheels and handles",
+   "No cabin-bag weight found on the checked page"
+  ]
+ },
+ "Lufthansa": {
+  "gen": [
+   "Economy Basic: personal item only"
+  ]
+ },
+ "Air France": {
+  "co": [
+   "Economy: 0 or 1 cabin bag depending on fare"
+  ],
+  "gen": [
+   "12 kg total for both pieces; Business/La Première 18 kg"
+  ]
+ },
+ "KLM": {
+  "co": [
+   "Size includes handles and wheels"
+  ],
+  "gen": [
+   "12 kg combined for bag + accessory"
+  ]
+ },
+ "Virgin Atlantic": {
+  "gen": [
+   "All Economy and Premium fares: 1 bag, 10 kg",
+   "Upper Class: up to 2 bags"
+  ]
+ },
+ "SWISS": {
+  "gen": [
+   "Economy Basic: personal item only"
+  ]
+ },
+ "Finnair": {
+  "gen": [
+   "Page gives 8/12 kg combined for both pieces; 8 kg read as the Economy limit (the fare table has no Economy row)",
+   "Economy Superlight: small bag only"
+  ]
+ },
+ "Ryanair": {
+  "co": [
+   "Paid: Priority / 10 kg bag"
+  ],
+  "pi": [
+   "Free on all fares; must fit under the seat"
+  ]
+ },
+ "easyJet": {
+  "co": [
+   "Paid: large cabin bag via add-on, bundle, easyJet Plus or Inclusive Plus; an Up Front or Extra Legroom seat alone does not include it"
+  ],
+  "pi": [
+   "Free; size includes handles and wheels; up to 15 kg"
+  ]
+ },
+ "Wizz Air": {
+  "co": [
+   "Paid: WIZZ Priority trolley bag"
+  ],
+  "pi": [
+   "Free; must fit under the seat"
+  ]
+ },
+ "United Airlines": {
+  "pi": [
+   "Must fit under the seat"
+  ],
+  "gen": [
+   "Basic Economy: personal item only, except to South America and across the Atlantic or Pacific"
+  ]
+ },
+ "American Airlines": {
+  "gen": [
+   "Main Cabin; some partner and regional routes differ"
+  ]
+ },
+ "Delta Airlines": {
+  "co": [
+   "Also max 114 cm (45 in) total"
+  ],
+  "pi": [
+   "Must fit under the seat; no size published"
+  ]
+ },
+ "Southwest": {
+  "co": [
+   "Page presents this limit as part of a policy change; check whether it is in force"
+  ],
+  "pi": [
+   "Must fit under the seat; no size published"
+  ]
+ },
+ "Air Canada": {
+  "co": [
+   "No weight limit for carry-on baggage"
+  ],
+  "pi": [
+   "No weight limit stated"
+  ]
+ },
+ "Air Astana": {
+  "co": [
+   "Business: 2 pieces, 8 kg each"
+  ],
+  "pi": [
+   "Handbag, small briefcase or backpack: up to 3 kg, max 80 cm total"
+  ]
+ },
+ "Bangkok Airways": {
+  "co": [
+   "ATR72 aircraft: max 50 × 36 × 23 cm"
+  ],
+  "pi": [
+   "Page lists one cabin item; no personal item mentioned"
+  ]
+ },
+ "Peach": {
+  "co": [
+   "Size includes handles, pockets and wheels"
+  ],
+  "gen": [
+   "1 bag plus 1 personal item, 7 kg total for both"
+  ]
+ },
+ "Biman Bangladesh": {
+  "co": [
+   "Size includes handle, pockets and wheels"
+  ],
+  "pi": [
+   "Ladies' handbag, notebook, small camera etc. allowed on top of the allowance; no size published"
+  ],
+  "gen": [
+   "Business: 2 pieces, 10 kg total"
+  ]
+ },
+ "Pakistan International Airlines": {
+  "co": [
+   "Same for domestic and international Economy"
+  ],
+  "pi": [
+   "No personal item listed"
+  ]
+ },
+ "SunExpress Airlines": {
+  "gen": [
+   "SunLight fare: only the 40 × 30 × 20 cm, 4 kg small bag is included; the 8 kg bag can be added"
+  ]
+ },
+ "EgyptAir": {
+  "co": [
+   "Also max 118 cm total (55 + 40 + 23)"
+  ],
+  "gen": [
+   "Business: 2 pieces of 8 kg"
+  ],
+  "pi": [
+   "Not covered on the checked page"
+  ]
+ },
+ "Air Serbia": {
+  "pi": [
+   "Up to 4 kg; no size published"
+  ]
+ },
+ "Air Tahiti": {
+  "co": [
+   "Eco: 5 kg within French Polynesia, 7 kg to Rarotonga; Premium 10 kg"
+  ],
+  "pi": [
+   "One accessory allowed in addition; no size or weight published"
+  ]
+ },
+ "Azul": {
+  "co": [
+   "Max 115 cm total, including pockets, wheels and handles"
+  ],
+  "pi": [
+   "Max 100 cm total; no weight limit"
+  ]
+ },
+ "Copa Airlines": {
+  "co": [
+   "22 × 14 × 10 in; Copa prints 56 × 36 × 26 cm; max 118 cm total incl. handles and wheels"
+  ],
+  "pi": [
+   "17 × 10 × 9 in (43 × 25 × 22 cm), max 90 cm total"
+  ]
+ },
+ "Corendon Airlines": {
+  "gen": [
+   "PROMO and LITE fares: only the personal item is free"
+  ]
+ },
+ "Enter Air": {
+  "co": [
+   "Only a 115 cm total is set; 55 × 40 × 20 cm is the page’s example"
+  ],
+  "pi": [
+   "Not covered on the checked page"
+  ],
+  "gen": [
+   "Page is in Polish"
+  ]
+ },
+ "Fiji Airways": {
+  "co": [
+   "Max 118 cm total; Business 126 cm, max 56 × 45 × 25 cm"
+  ],
+  "pi": [
+   "One laptop bag, purse or handbag up to 4 kg on top; no size published"
+  ]
+ },
+ "LATAM Airlines": {
+  "co": [
+   "Small bag included in Light, Full, Standard and Premium fares; 16 kg in Premium cabins"
+  ],
+  "pi": [
+   "Included in all fares"
+  ]
+ },
+ "Viva": {
+  "co": [
+   "22 × 16 × 10 in incl. wheels and handles; 10 kg on Switch, 15 kg on Smart"
+  ],
+  "pi": [
+   "18 × 14 × 8 in, under the seat"
+  ]
+ },
+ "Norse Atlantic Airways": {
+  "gen": [
+   "Carry-on and personal item included in all fares",
+   "Premium: 15 kg carry-on, personal item 45 × 36 × 22 cm"
+  ]
+ },
+ "Porter Airlines": {
+  "co": [
+   "No weight limit stated on the page"
+  ],
+  "pi": [
+   "13 × 17 × 6 in"
+  ]
+ },
+ "Smartwings": {
+  "gen": [
+   "Lite fare: cabin bag only (no small personal item)",
+   "Business: 2 × 8 kg"
+  ]
+ },
+ "Avianca": {
+  "co": [
+   "Includes wheels and handles; not included on Basic fares"
+  ],
+  "pi": [
+   "Purse, backpack or laptop bag; included in all fares"
+  ]
+ },
+ "Vueling": {
+  "co": [
+   "Overhead bag only with the 2-pieces service, Space seats or Fly / Fly Grande / Fly Pro bundles"
+  ],
+  "pi": [
+   "Free on all fares; under the seat"
+  ]
+ },
+ "Air Seychelles": {
+  "co": [
+   "Regional flights; domestic flights 5 kg"
+  ],
+  "pi": [
+   "No personal item listed"
+  ]
+ },
+ "Pegasus Airlines": {
+  "co": [
+   "International and Cyprus flights: the 55×40×23 cm, 8 kg bag comes with a fare package or as an add-on"
+  ],
+  "pi": [
+   "International base fare includes only this under-seat item (40×30×15 cm, 3 kg)"
+  ],
+  "gen": [
+   "Domestic flights: one 55×40×23 cm piece"
+  ]
+ },
+ "flynas": {
+  "pi": [
+   "No personal item size or weight published"
+  ]
+ },
+ "flyadeal": {
+  "gen": [
+   "Same for fly, fly+ and flyMax fares"
+  ]
+ },
+ "Jazeera Airways": {
+  "gen": [
+   "Business: 2 pieces, 15 kg combined"
+  ],
+  "pi": [
+   "No personal item allowance published"
+  ]
+ },
+ "Riyadh Air": {
+  "pi": [
+   "Its carry-on page says 5 kg; its baggage-allowance page says under 7 kg. 5 kg used here"
+  ],
+  "gen": [
+   "Premium Economy 12 kg, Business 15 kg; started flying Jun 2026"
+  ]
+ },
+ "ZIPAIR": {
+  "gen": [
+   "Up to 15 kg total for a fee (paid 24 h ahead)"
+  ]
+ },
+ "Jeju Air": {
+  "pi": [
+   "One personal item (laptop, briefcase, handbag) allowed; no size given; counts toward the 10 kg"
+  ]
+ },
+ "Jin Air": {
+  "pi": [
+   "No personal item size or weight published"
+  ]
+ },
+ "Air Busan": {
+  "pi": [
+   "Laptop bag or small handbag within 60 cm total; 10 kg shared with the carry-on"
+  ]
+ },
+ "Citilink": {
+  "co": [
+   "ATR 72-600 flights: 41×34×17 cm (92 cm total)"
+  ],
+  "pi": [
+   "A small item allowed; no size given; 7 kg shared with the main bag"
+  ]
+ },
+ "STARLUX Airlines": {
+  "gen": [
+   "First/Business: 2 pieces, 14 kg total, 10 kg max per piece"
+  ]
+ },
+ "Edelweiss": {
+  "gen": [
+   "Business: 2 pieces"
+  ]
+ },
+ "Discover Airlines": {
+  "co": [
+   "Foldable garment bag 57×54×15 cm instead"
+  ],
+  "gen": [
+   "Business: 2 pieces"
+  ]
+ },
+ "Widerøe": {
+  "gen": [
+   "Mini fare: small bag only; hand luggage can be added"
+  ]
+ },
+ "Loganair": {
+  "pi": [
+   "A small handbag allowed on every fare; no size given. Fly Flex+ adds a slimline laptop bag"
+  ]
+ },
+ "Avelo Airlines": {
+  "co": [
+   "Paid add-on"
+  ]
+ },
+ "Flair Airlines": {
+  "co": [
+   "Paid add-on or part of a bundle"
+  ]
+ },
+ "JetSMART": {
+  "co": [
+   "Paid add-on; sizes include wheels, handles and pockets"
+  ]
+ },
+ "Arajet": {
+  "pi": [
+   "10 kg on flights to/from Brazil"
+  ],
+  "co": [
+   "Paid add-on on the Basic fare"
+  ]
+ },
+ "Air Mauritius": {
+  "gen": [
+   "Rodrigues flights: 1 piece, 5 kg"
+  ]
+ },
+ "Alliance Air": {
+  "co": [
+   "5–10 kg allowed with excess charges at the airport"
+  ],
+  "pi": [
+   "Policy also says a laptop counts toward the 5 kg"
+  ]
+ },
+ "Nepal Airlines": {
+  "pi": [
+   "Handbag, laptop and similar items allowed free; no size given"
+  ]
+ },
+ "Drukair": {
+  "gen": [
+   "Business 7 kg"
+  ],
+  "pi": [
+   "Handbag or purse allowed free; no size given"
+  ]
+ },
+ "Trinity Airways": {
+  "gen": [
+   "Formerly T'way Air (twayair.com redirects here)",
+   "Business: 2 bags, 10 kg each, 20 kg total"
+  ]
+ },
+ "AJet": {
+  "co": [
+   "International Basic package: no cabin bag, only the under-seat bag; Ecojet, Flex and Premium include it"
+  ],
+  "gen": [
+   "Suit cover 114×60×11 cm counts as the cabin bag"
+  ]
+ },
+ "Tigerair Taiwan": {
+  "pi": [
+   "Handbag, laptop bag or duty-free; no size given"
+  ]
+ },
+ "FlySafair": {
+  "pi": [
+   "A slimline laptop bag or a handbag, not both"
+  ],
+  "gen": [
+   "Carry-on included on all fares, Lite too"
+  ]
+ },
+ "Iberia Express": {
+  "pi": [
+   "Small handbag, purse or laptop allowed; no size given"
+  ],
+  "gen": [
+   "London Heathrow flights: separate rules (personal item 40×26×20 cm on its Heathrow page)"
+  ]
+ },
+ "Thai Lion Air": {
+  "pi": [
+   "Terms allow a combination of two of: cabin bag, laptop bag, handbag; no size for the second item"
+  ]
+ },
+ "Sichuan Airlines": {
+  "gen": [
+   "Business: 2 pieces"
+  ],
+  "pi": [
+   "No personal item size published"
+  ]
+ },
+ "US-Bangla Airlines": {
+  "co": [
+   "Dash8-Q400 and ATR 72-600 flights: 72 cm total, 7 kg"
+  ],
+  "pi": [
+   "Laptop allowed free in addition; no size given"
+  ]
+ },
+ "Caribbean Airlines": {
+  "pi": [
+   "Handbag, backpack, briefcase or laptop bag; duty-free counts toward it"
+  ]
+ },
+ "Air Premia": {
+  "gen": [
+   "Wide Premium: 2 pieces of 10 kg",
+   "Personal item weight counts within the carry-on allowance"
+  ]
+ },
+ "SalamAir": {
+  "co": [
+   "Paid \"Trolley Bag\" add-on, 10 kg; no size published"
+  ],
+  "pi": [
+   "The free allowance: laptop bag, small plastic bag or small ladies' bag"
+  ]
+ }
+}

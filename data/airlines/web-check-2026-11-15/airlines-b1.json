@@ -1,0 +1,602 @@
+[
+ {
+  "name": "Aegean Airlines",
+  "result": "changed",
+  "source": "https://en.aegeanair.com/travel-info/travelling-with-aegean/baggage/cabin-baggage/",
+  "opened_by": "WebFetch",
+  "quote": "Airbus fleet: 56 cm x 45 cm x 25 cm; Turboprop fleet: 55 cm x 40 cm x 23 cm. Personal item: Women's/men's handbag or thin laptop case.",
+  "carryOn": {
+   "dims_cm": [
+    56,
+    45,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": true,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Size 56x45x25 confirmed for Airbus fleet (turboprop 55x40x23). Page lists NO carry-on weight limit (8 kg on file not found). Personal item has no size given."
+ },
+ {
+  "name": "Aeroflot",
+  "result": "unverified",
+  "source": "https://www.aeroflot.com/ru-en/information/preparation/luggage (302 to aeroflot.ru, which returned an access-blocked notice)",
+  "opened_by": "WebFetch",
+  "quote": "",
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Site blocks automated access (tried .com and .ru, 3 attempts); search found no aeroflot-own page. Figures on file not verified."
+ },
+ {
+  "name": "Aerolineas Argentinas",
+  "result": "unverified",
+  "source": "https://www.aerolineas.com.ar/en-us/baggage-allowance; https://www.aerolineas.com.ar/es-ar/equipaje/equipaje-de-mano",
+  "opened_by": "WebFetch",
+  "quote": "",
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Stored page returned only meta tags (no figures); es-ar path failed. No Firecrawl left. Not verified."
+ },
+ {
+  "name": "Aeromexico",
+  "result": "changed",
+  "source": "https://www.aeromexico.com/en-us/travel-information/baggage/carry-on-baggage",
+  "opened_by": "Firecrawl",
+  "quote": "You are allowed to carry 1 carry-on baggage plus 1 personal article, weighting a maximum of 10 to 15kg together, depending on your fare. | Basic: Carry on 10 kg | Classic: Carry on 15 kg | Flex: Carry on 15 kg. Personal items ... must fit under the seat in the cabin.",
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": true,
+   "allowed": true
+  },
+  "combined_kg": 15,
+  "combined_lb": null,
+  "notes": "Page gives NO carry-on dimensions (55x40x25 on file not found). Combined carry-on + personal weight depends on fare: Basic 10 kg (Light: purchase option 10 kg), Classic/Flex 15 kg. Standard (non-basic) economy = 15 kg; 10 kg on file is the Basic figure. Page region selector defaults vary by route; read default view only. Personal item under seat only (confirmed)."
+ },
+ {
+  "name": "Air Caraibes",
+  "result": "unverified",
+  "source": "https://www.aircaraibes.com/avant-voyage/bagages/franchise-format",
+  "opened_by": "WebFetch",
+  "quote": "",
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Partial: page confirms accessory 40 x 30 x 15 and 1 bag + 1 accessory sharing 12 kg total (transatlantic; regional network 5 kg), quote 'L'ensemble ne doit pas dépasser 12 kg' and '40 X 30 X 15 au maximum'. Carry-on size 55x35x25 NOT found in page text (probably in an image). Treat as unverified for carry-on size."
+ },
+ {
+  "name": "Air Transat",
+  "result": "confirmed",
+  "source": "https://www.airtransat.com/en-US/travel-information/baggage/weight-dimensions",
+  "opened_by": "Firecrawl",
+  "quote": "Carry-on baggage maximum dimensions: 40 cm/15.5\" in length, 23 cm/9\" in width and 55 cm/21.5\" in height. Personal item maximum dimensions: 43 cm/17\" in length, 13 cm/5\" in width and 31 cm/12\" in height (1 per passenger).",
+  "carryOn": {
+   "dims_cm": [
+    40,
+    23,
+    55
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": [
+    15.5,
+    9,
+    21.5
+   ],
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": [
+    43,
+    13,
+    31
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": [
+    17,
+    5,
+    12
+   ],
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Printed order is L x W x H; same numbers as on file (55x40x23, 43x31x13). No weight limit stated beyond 'light enough to lift unassisted'. Carry-on not permitted on Eco Budget (Promo) fares to/from South, Florida and within Canada."
+ },
+ {
+  "name": "Alaska Airlines",
+  "result": "confirmed",
+  "source": "https://www.alaskaair.com/content/travel-info/baggage/baggage-carryon",
+  "opened_by": "WebFetch",
+  "quote": "Carry-on bag: maximum dimension 22\" x 14\" x 9\" or 45 linear inches, including wheels and handle. Personal item: One small personal item such as a purse, briefcase, or laptop bag",
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": [
+    22,
+    14,
+    9
+   ],
+   "linear_in": 45,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": true,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Page prints inches only (cm on file = conversions). No weight limit and no personal-item size stated; the personal item is a 'small personal item' with no number (recorded as under-seat only per standard rule; page does not literally say 'under the seat' in the excerpt read). Original stored URL failed; this is the current URL found via search."
+ },
+ {
+  "name": "Batik Air",
+  "result": "unverified",
+  "source": "https://www.batikair.com.my/experience/baggage; https://www.batikair.com.my/baggage; https://www.batikair.com/experience/baggage",
+  "opened_by": "WebFetch",
+  "quote": "",
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "All three Batik Air URLs failed (client error). Not verified."
+ },
+ {
+  "name": "Boliviana de Aviacion",
+  "result": "unverified",
+  "source": "https://www.boa.bo/Contenido/baggage-cc5xiep3",
+  "opened_by": "WebFetch",
+  "quote": "",
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Page returned only a noindex meta tag, no figures. Not verified."
+ },
+ {
+  "name": "Breeze Airways",
+  "result": "unverified",
+  "source": "https://www.flybreeze.com/support?a=Carry-On-Bags---id--XBxygfEbS9mEI6P36iGuew; https://www.flybreeze.com/support",
+  "opened_by": "WebFetch",
+  "quote": "",
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Both URLs failed (client error). Not verified."
+ },
+ {
+  "name": "Cathay Pacific",
+  "result": "unverified",
+  "source": "https://www.cathaypacific.com/cx/en_US/faqs/baggage/cabin-baggage-allowance/what-is-my-carry-on-baggage-allowance.html; https://flights.cathaypacific.com/en_US/baggage/baggage-calculator.html",
+  "opened_by": "WebFetch",
+  "quote": "",
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "FAQ page says allowance varies by cabin class and membership tier and gives no numbers; the baggage calculator is dynamic and showed no figures. Page confirms 'one piece of carry-on baggage and one additional small item'. Not verified."
+ },
+ {
+  "name": "Cayman Airways",
+  "result": "confirmed",
+  "source": "https://www.caymanairways.com/baggage-policy",
+  "opened_by": "WebFetch",
+  "quote": "International Jet Service - Baggage: 51 inches (24\"L x 16\"W x 11\"H); Personal item: 38 inches (14\"L x 14\"W x 10\"H) and 15lbs",
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": [
+    24,
+    16,
+    11
+   ],
+   "linear_in": 51,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": [
+    14,
+    14,
+    10
+   ],
+   "linear_in": 38,
+   "weight_lb": 15,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Page prints inches only (cm on file are conversions: 60.9x40.6x27.9 and 35.6x35.6x25.4 match). Personal item also has a 15 lb weight limit (not on file). Domestic jet: carry-on 45 in linear; propeller (Twin Otter/Saab): only one 15 lb carry-on of 38 in."
+ },
+ {
+  "name": "Cebu Pacific",
+  "result": "changed",
+  "source": "https://help.cebupacificair.com/article/hand-carry-baggage-guidelines-272309",
+  "opened_by": "WebFetch",
+  "quote": "Hand carry item (overhead bin): 56cm (H) x 36cm (L) x 23cm (W). Personal item (under the seat in front): 20cm (H) x 35cm (L) x 20cm (W). The total weight of your hand carry item and personal item must not exceed: Cebu Pacific (5J): 10kg combined; Cebgo (DG): 7kg combined",
+  "carryOn": {
+   "dims_cm": [
+    56,
+    36,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": [
+    20,
+    35,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": 10,
+  "combined_lb": null,
+  "notes": "Combined weight now 10 kg for Cebu Pacific (5J) flights departing on/after 15 Sep 2026 (was 7 kg); Cebgo (DG) stays 7 kg. Personal item now has a printed size 20x35x20 (on file: under-seat only). Opened the help-centre article on the airline's own domain; the main baggage-information page returned no content."
+ },
+ {
+  "name": "China Airlines",
+  "result": "unverified",
+  "source": "https://www.china-airlines.com/us/en/fly/prepare-for-the-fly/baggage/carry-on-baggage",
+  "opened_by": "WebFetch",
+  "quote": "",
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Page gives no numeric carry-on size/weight (only 'comply with specified dimensions and weight limits'; valuables shoulder/waist bag total dimensions not exceeding 60 cm). 56x36x23 / 7 kg on file not found. Not verified."
+ },
+ {
+  "name": "China Eastern",
+  "result": "confirmed",
+  "source": "https://www.ceair.com/global/en_static/Announcement/BaggageService/CarryonBaggage/",
+  "opened_by": "WebFetch",
+  "quote": "Economy: Weight ≤8kg; A≤55cm(22 in) B≤40cm(16 in) C≤20cm(8 in). Personal item: can be placed under the front seat; reference space 35 × 32 × 18 cm.",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 8,
+   "dims_in": [
+    22,
+    16,
+    8
+   ],
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": true,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Size now found (earlier checker miss). Personal item must fit under front seat; page mentions reference under-seat space 35x32x18 cm (not a stated item limit)."
+ },
+ {
+  "name": "China Southern Airlines",
+  "result": "confirmed",
+  "source": "https://www.csair.com/us/en/tourguide/luggage_service/carryon_luggage/",
+  "opened_by": "WebFetch",
+  "quote": "Maximum Weight per Piece 8kg. The length, width and height of each carry-on shall not exceed :55 * 40 * 20 cm (or 22 * 16 * 8 inches). Free extra item: A small computer bag, camera bag, briefcase or handbag, which must be placed under the front seat",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 8,
+   "dims_in": [
+    22,
+    16,
+    8
+   ],
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": true,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Economy, one piece, domestic and international."
+ },
+ {
+  "name": "EL AL",
+  "result": "confirmed",
+  "source": "https://www.elal.com/eng/baggage/hand-baggage",
+  "opened_by": "Firecrawl",
+  "quote": "The maximum carry-on bag size on EL AL flights is up to 56 cm (length), 45 cm (width), and 25 cm (depth), not exceeding a total dimension of 115 cm. Personal bag dimensions should not exceed 18x38x30 cm. Classic - entitled to one carry-on, maximum 8 kg.",
+  "carryOn": {
+   "dims_cm": [
+    56,
+    45,
+    25
+   ],
+   "linear_cm": 115,
+   "weight_kg": 8,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": [
+    18,
+    38,
+    30
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Economy Lite to/from Europe and UAE: carry-on must be sent to the hold at no cost (Matmid Silver+ exempt). Flex: two carry-ons, 8 kg each, 12 kg total. Subject to overhead space."
+ },
+ {
+  "name": "Garuda Indonesia",
+  "result": "confirmed",
+  "source": "https://www.garuda-indonesia.com/id/id/garuda-indonesia-experience/baggage-info",
+  "opened_by": "WebFetch",
+  "quote": "dengan ukuran maksimum yang diperbolehkan adalah barang dengan panjang 56 cm, lebar 36 cm atau tebal 23 cm, namun jumlah dari tiga dimensi tersebut tidak melebihi 115 cm atau berat 7kg",
+  "carryOn": {
+   "dims_cm": [
+    56,
+    36,
+    23
+   ],
+   "linear_cm": 115,
+   "weight_kg": 7,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": true,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Read the Indonesian-language (id/id) path; stored hk/tw URL failed. Exception: Economy on CRJ and ATR aircraft 41x34x17 cm, sum 92 cm, 7 kg. Personal item allowance not seen in the excerpt retrieved, so 'under-seat only' on file is not verified."
+ },
+ {
+  "name": "GOL Linhas Aéreas",
+  "result": "unverified",
+  "source": "https://www.voegol.com.br/informacoes/bagagem",
+  "opened_by": "WebFetch",
+  "quote": "",
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "dims_in": null,
+   "linear_in": null,
+   "weight_lb": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "combined_lb": null,
+  "notes": "Firecrawl scrape returned the page shell; the 'Bagagem de mão' tab content (sizes/weights) was not in the output. Not verified."
+ }
+]

@@ -1,0 +1,797 @@
+migration:
+  source: Ultra Carry Index page, Rev AE (v20)
+  migrated: '2026-11-13'
+  claims: Anish read every line on 13 Nov 2026, one question at a time; approved lines are the ones he kept as shown. Lines from another build name the build. Old wording and search results are under legacy.claims.
+  photos: model.photos lists every photo the old page used, as its code and footer describe them; permission is none for all
+  sources_search: Claims and spec gaps were searched on 13 Nov 2026; see evidence on each claim and reports/sources-search-2026-11-13.md
+  proposals: Applied on 13 Nov 2026 by tools/migrate/apply_decisions.py, following Anish's rulings of that day.
+  availability: Removed on 13 Nov 2026. Each build links out instead; the old strings stay under legacy.
+model:
+  id: aer-travel-pack-4-28l
+  legacy_id: tp4
+  brand: aer
+  label: Travel Pack 4 28L
+  family: Travel Pack 4
+  category: backpack
+  use:
+  - edc
+  - travel
+  build_class: structured
+  drawings:
+  - file: drawings/tp4/sketch/tp4-sketch-front.svg
+    kind: drawing
+    view: front
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/tp4/sketch/tp4-sketch-iso.svg
+    kind: drawing
+    view: three-quarter
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/tp4/sketch/tp4-sketch-back.svg
+    kind: drawing
+    view: back
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/tp4/sketch/tp4-sketch-side.svg
+    kind: drawing
+    view: side
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  photos:
+  - file: img/maker/a943992d-AER28070_1_travelpack4ultra28l_34hero_1200x1200.jpg
+    role: card main
+    view: three-quarter
+    credit_text: aersf.com
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: AER28070 Travel Pack 4 Ultra 28L, 3/4 hero 1200x1200'
+    permission: none
+  - file: img/maker/6c9179d3-AER28070_2_travelpack4ultra28l_front.jpg
+    role: hero strip
+    view: front
+    credit_text: null
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: Travel Pack 4 Ultra 28L front'
+    permission: none
+  - file: img/maker/348aa701-AER28070_1_travelpack4ultra28l_34hero.jpg
+    role: hero strip
+    view: three-quarter
+    credit_text: null
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: Travel Pack 4 Ultra 28L 3/4 hero'
+    permission: none
+  reviews:
+  - source: better-trail-aer-travel-pack-4-review
+    covers: '35L in 1680D Cordura (other size and fabric); weeklong LA to East Coast trip; 2026-08-12. Discloses: May receive commission on links; no sample statement'
+    used_for:
+    - tp4-pro-2
+    - tp4-pro-3-b
+    - tp4-pro-5
+  - source: stranded-variable-review-aer-travel-pack-4-35l
+    covers: '35L in black 1680D Cordura (other size and fabric); comfort stress test plus weekend trip; metadata datePublished 2026-05-05. Discloses: Aer provided the pack before release; no payment, reviewer keeps it, Aer did not preview; no affiliate links'
+    used_for:
+    - tp4-pro-2
+    - tp4-pro-3-b
+    - tp4-pro-4
+    - tp4-con-6
+  - source: pack-hacker-travel-pack-4-28l
+    covers: '28L in X-Pac VX-42, not Ultra; published 2026-03-09, updated 2026-10-19; includes 2-week usage timeline. Discloses: Reader-supported, may earn affiliate commission; sample status not stated'
+    used_for:
+    - tp4-pro-2
+    - tp4-pro-4
+    - tp4-con-7
+  - source: visionswell-aer-travel-pack-4-ultra
+    covers: 'Travel Pack 4 Ultra 28L (Ultra400X), hands-on with one-week packing demo; published 2026-03-09, modified 2026-11-12. Discloses: No sample or sponsorship statement; affiliate links (tidd.ly, amzn.to) and discount codes on page'
+    used_for:
+    - tp4-con-1
+    - tp4-pro-6
+    - tp4-con-5
+    - tp4-con-6
+  - source: the-modern-xplorer-aer-travel-pack-4-ultra-review
+    covers: 'Travel Pack 4 Ultra 28L (Ultra 400X), ten days in Costa Rica, June 2026; published 2026-07-13. Discloses: ''Why I Bought It'' section, so he bought it himself; product images courtesy of Aer; ''Affiliate disclosure to be added when links go live''. The researcher''s ''reader-supported, may earn commission'' wording is not in the main content'
+    used_for:
+    - tp4-con-2
+    - tp4-pro-5
+    - tp4-con-5
+    - tp4-con-7
+  - source: nomads-nation-aer-travel-pack-4-28l-vs-35l-review
+    covers: '28L and 35L, both 1680D Cordura, not Ultra; published 2026-04-05, updated 2026-11-10. Discloses: No sample statement; affiliate/deal links throughout (Black Friday deal links, awin, uppromote); author says he founded Fyro, a competing bag brand promoted on the page'
+    used_for:
+    - tp4-con-1
+    - tp4-con-2
+    - tp4-pro-4
+  - source: rei-aer-travel-pack-4-28-l
+    covers: 'REI listing for the 28L in 1680D Cordura; one 5-star customer review by ''Luke'', ''1 month ago''. Discloses: Retailer page; no verified-purchaser label on the review'
+    used_for: []
+  - source: everyday-carry-and-tech-video-aer-travel-pack-4-ultra-28l
+    covers: 'Travel Pack 4 Ultra 28L, about two months of use; uploaded 2026-10-11. Discloses: Nothing said about a sample or sponsorship in transcript or description; no affiliate links in description'
+    used_for:
+    - tp4-pro-2
+    - tp4-pro-4
+    - tp4-con-5
+  - source: emeralds-daily-carry-video-aer-travel-pack-4-full-review
+    covers: 'Travel Pack 4 Ultra 28L, 25 days of use; uploaded 2026-03-09. Discloses: Aer sent the bag, no money exchanged, Aer did not see the video first; affiliate links in description; YouTube shows an ''Includes paid promotion'' label'
+    used_for: []
+  - source: george-defined-video-aer-travel-pack-4
+    covers: 'Travel Pack 4 28L and 35L, both in Ultra; features demonstrated on the 28L; uploaded 2026-03-09. Discloses: Thanks Aer for sending the bags; Amazon and alnk affiliate links in description'
+    used_for:
+    - tp4-pro-6
+    - tp4-con-6
+  - source: desy-cheng-video-aer-travel-pack-4-honest-review
+    covers: 'Travel Pack 4 28L and 35L; fabric not stated in transcript or description; uploaded 2026-03-09. Discloses: Aer sent the bags, not paid, keeps them, Aer did not preview; Aer referral link plus Amazon/ShareASale/other affiliate links'
+    used_for:
+    - tp4-con-2
+    - tp4-pro-5
+  sourcing: Based on reviews of this build from visionswell and The Modern Xplorer, video reviews from Everyday Carry and Tech, George DEFINED and Desy Cheng, reviews of other Travel Pack 4 builds from Better Trail, Stranded Variable, Pack Hacker and Nomads Nation, plus Aer's own pages.
+variants:
+- id: travel-pack-4-ultra-28l
+  name: Travel Pack 4 Ultra 28L
+  page: aer-travel-pack-4-ultra-28l
+  link:
+    url: https://aersf.com/products/travel-pack-4-ultra-28l
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - ultra-400x
+    shell_as_written: Ultra400X exterior by Challenge Sailcloth
+    lining: Nylon ripstop interior liner (bluesign® approved)
+    other: YKK® zippers (lockable)
+  volume_l: 28
+  weight_g: 1480
+  dims_cm:
+    h: 49
+    w: 32
+    d: 20
+  as_written:
+    weight: 3.28 lbs on the US page; 1.48 kg (3.28 lbs) on Aer's UK store
+    dims: Height 19.25" (49 cm), Width 12.75" (32 cm), Depth 8" (20 cm)
+  laptop:
+    max_in: 16
+  opening: Lay-flat main compartment
+  price:
+    amount: 289
+    currency: USD
+    seller: aer
+  release: regular
+  colourways:
+  - name: Ultra
+  media:
+  - file: img/maker/a943992d-AER28070_1_travelpack4ultra28l_34hero_1200x1200.jpg
+    kind: photo
+    view: unknown
+    shows_variant: null
+    credit: aersf.com
+    source: https://aersf.com/products/travel-pack-4-ultra-28l
+    permission: none
+  checks:
+  - date: '2026-11-13'
+    source: aer-travel-pack-4-ultra-28l
+    basis: page
+    method: Page opened and read by Claude through WebFetch; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - laptop
+    - fabric.shell
+    - fabric.lining
+    - colourways
+  - date: '2026-11-13'
+    source: aer-travel-pack-4-ultra-28l
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - opening
+    note: Aer's wording; "clamshell" appears only in reviews of the Cordura build
+  - date: '2026-11-13'
+    source: rushfaster-aer-travel-pack-4-ultra-28l
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - made_in
+    note: From a retailer; Aer's FAQ says only that soft goods are made in China and Vietnam
+  - date: '2026-11-15'
+    source: aer-travel-pack-4-ultra-28l
+    basis: page
+    method: Search subagent, page opened through WebFetch on 15 Nov 2026
+    fields:
+    - release
+    note: 'Read as a regular catalogue item: no limited, drop or pre-order wording on the product page or Aer''s Ultra Collection page, which offers back-in-stock sign-ups.'
+  - date: '2026-11-15'
+    source: aer-uk-travel-pack-4-ultra-28l
+    basis: page
+    method: Search subagent, page opened through WebFetch on 15 Nov 2026
+    fields:
+    - weight_g
+    note: 'Aer''s UK store prints 1.48 kg (3.28 lbs). Anish''s call, 15 Nov 2026: use it as the maker''s own metric figure (was 1488 g, our conversion of 3.28 lbs).'
+  made_in: China
+  units:
+    weight:
+      metric:
+        g: 1480
+        from: maker
+      imperial:
+        lb: 3.28
+        from: maker
+    dims:
+      metric:
+        cm:
+        - 49
+        - 32
+        - 20
+        from: maker
+      imperial:
+        in:
+        - 19.25
+        - 12.75
+        - 8
+        from: maker
+- id: travel-pack-4-28l
+  name: Travel Pack 4 28L
+  record: comparison
+  page: aer-travel-pack-4-28l
+  link:
+    url: https://aersf.com/products/travel-pack-4-28l
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - cordura-1680d-ballistic-nylon
+    shell_as_written: 1680D CORDURA ballistic nylon
+  volume_l: 28
+  weight_g: 1597
+  dims_cm:
+    h: 49
+    w: 32
+    d: 20
+  as_written:
+    weight: 3.52 lbs (the page gives no grams; 1597 g is our conversion)
+  price:
+    amount: 239
+    currency: USD
+    seller: aer
+  checks:
+  - date: '2026-11-13'
+    source: aer-travel-pack-4-28l
+    basis: page
+    method: Page opened and read by Claude through WebFetch on 13 Nov 2026; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - fabric.shell
+  notes:
+    other_builds: Aer also sells a 28L X-Pac VX-42 build; its figures have not been read from Aer's page, so it is not on file.
+  units:
+    weight:
+      metric:
+        g: 1597
+        from: converted
+      imperial:
+        lb: 3.52
+        from: maker
+features:
+- id: tp4-feat-3
+  text: Load lifters, an internal framesheet and hip-belt attachment points.
+  scope: design
+  sources:
+  - aer-travel-pack-4-ultra-28l
+  applies_to:
+  - travel-pack-4-ultra-28l
+  replaces: tp4-pro-3
+  was_kind: pro
+  status: approved
+claims:
+- id: tp4-pro-2
+  kind: pro
+  text: Organisation for travel is a strong point.
+  voice: reviewers
+  support: four reviews agree
+  scope: design
+  basis: sibling
+  sources:
+  - better-trail-aer-travel-pack-4-review
+  - stranded-variable-review-aer-travel-pack-4-35l
+  - pack-hacker-travel-pack-4-28l
+  - everyday-carry-and-tech-video-aer-travel-pack-4-ultra-28l
+  observed_on:
+  - travel-pack-4-ultra-28l
+  from_build:
+    label: Mostly from reviews of the 35L 1680D Cordura and 28L X-Pac VX-42 builds
+    generation: Same generation (Travel Pack 4)
+    size: 28L for the X-Pac VX-42 review; 35L for the two Cordura reviews
+    fabric: X-Pac VX-42 and 1680D Cordura
+    assigned: 'yes'
+    found: Aer's pages list the same pockets and compartments for the 28L Ultra and the 28L Cordura.
+    decided: '2026-11-13'
+  status: approved
+  source_notes:
+  - source: better-trail-aer-travel-pack-4-review
+    about: 35L in 1680D Cordura, not Ultra and not 28L
+  - source: stranded-variable-review-aer-travel-pack-4-35l
+    about: 35L in 1680D Cordura, not Ultra and not 28L
+  - source: pack-hacker-travel-pack-4-28l
+    about: 28L in X-Pac VX-42, not Ultra (updated 2026-10-19)
+  - source: everyday-carry-and-tech-video-aer-travel-pack-4-ultra-28l
+    about: same build; about two months of use; no sample, sponsor or affiliate statement
+  replaces: tp4-pro-2
+  wording_note: 'Praise is on other builds. ''Three independent compartments'' has no source; ''among the best at this size'' is an unsourced ranking. 17 Nov 2026: support widened with Everyday Carry and Tech (research/reviews-2026-11-17/merged/tp4.json point 3); was ''reviewers agree''. Everyday Carry and Tech, on the Ultra 28L, says ''there''s lots of pockets in here. Ample storage''. Build label changed from ''From reviews of the 35L 1680D Cordura and 28L X-Pac VX-42 builds'' to ''Mostly from reviews of the 35L 1680D Cordura and 28L X-Pac VX-42 builds'' to fit the wider sources.'
+- id: tp4-pro-3-b
+  kind: pro
+  text: Load lifters and comfortable straps help keep a heavy load comfortable.
+  voice: reviewers
+  support: two reviews
+  scope: design
+  basis: sibling
+  sources:
+  - better-trail-aer-travel-pack-4-review
+  - stranded-variable-review-aer-travel-pack-4-35l
+  observed_on: []
+  from_build:
+    label: From reviews of the 35L 1680D Cordura build
+    generation: Same generation (Travel Pack 4)
+    size: 35L, larger than this bag
+    fabric: 1680D Cordura
+    assigned: 'yes'
+    found: Aer lists load lifters, a framesheet and hip-belt points on the 28L Ultra too. The 25 lb test was on the 35L.
+    decided: '2026-11-13'
+  status: approved
+  source_notes:
+  - source: better-trail-aer-travel-pack-4-review
+    about: 35L in 1680D Cordura, not Ultra and not 28L
+  - source: stranded-variable-review-aer-travel-pack-4-35l
+    about: 35L in 1680D Cordura, not Ultra and not 28L; bag sent by Aer before release, no payment, no affiliate links
+  replaces: tp4-pro-3
+  wording_note: 'Split from pro-3. Better Trail''s 25 lb carry was on the 35L Cordura; no Ultra 28L load test exists. 17 Nov 2026: support widened with Stranded Variable (research/reviews-2026-11-17/merged/tp4.json point 1); was ''one review''. Stranded Variable (35L in 1680D Cordura) carried 21 lb on a two-hour walk and says the load lifters and sternum strap ''help distribute weight extremely well''. Reworded the same day from ''Load lifters and framesheet kept a 25 lb (11 kg) load comfortable.'' to ''Load lifters and comfortable straps help keep a heavy load comfortable.''. Anish wrote this wording on 17 Nov 2026 (''Load lifters, comfortable straps help keep a heavy load comfortable.''; ''and'' added for grammar). Better Trail''s review, opened again through WebFetch the same day, credits the load lifters and ''generously padded shoulder straps'' with upwards of 25 pounds; the 25 lb figure and the framesheet are no longer in the line.'
+- id: tp4-con-1
+  kind: con
+  text: Feels smaller than the listed 28 L once loaded.
+  voice: reviewers
+  support: two reviews
+  scope: design
+  basis: review
+  sources:
+  - visionswell-aer-travel-pack-4-ultra
+  - nomads-nation-aer-travel-pack-4-28l-vs-35l-review
+  observed_on:
+  - travel-pack-4-ultra-28l
+  status: approved
+  source_notes:
+  - source: visionswell-aer-travel-pack-4-ultra
+    about: same build; hands-on with packing demo (page also shows 2026-11-05)
+  - source: nomads-nation-aer-travel-pack-4-28l-vs-35l-review
+    about: 28L and 35L in 1680D Cordura, not Ultra; affiliate links, and the author runs his own bag brand
+  other_builds:
+  - source: nomads-nation-aer-travel-pack-4-28l-vs-35l-review
+    about: 28L and 35L in 1680D Cordura, not Ultra (updated 2026-11-10)
+  replaces: tp4-con-1
+  wording_note: 'visionswell''s subjective, unmeasured impression. The Modern Xplorer only relays ''other reviewers'', so not independent; ''true capacity'' overstated. 17 Nov 2026: support widened with Nomads Nation (research/reviews-2026-11-17/merged/tp4.json point 5); was ''one review''. Nomads Nation (28L in 1680D Cordura) lists ''28L feels tighter than expected'' as a con. Build label ''Also from a review of the 28L 1680D Cordura build'' added because the new sources cover other builds. Reworded the same day from ''Feels closer to 26 L than the listed 28 L in use.'' to ''Feels smaller than the listed 28 L once loaded.''. Anish accepted this wording on 17 Nov 2026 (''ok''), so that the line says only what both sources back; the 26 L figure was visionswell''s alone.'
+  from_build:
+    label: Also from a review of the 28L 1680D Cordura build
+    decided: '2026-11-17'
+- id: tp4-con-2
+  kind: con
+  text: Packs snug, with no room to overpack.
+  voice: reviewers
+  support: three reviews agree
+  scope: design
+  basis: review
+  sources:
+  - the-modern-xplorer-aer-travel-pack-4-ultra-review
+  - nomads-nation-aer-travel-pack-4-28l-vs-35l-review
+  - desy-cheng-video-aer-travel-pack-4-honest-review
+  observed_on:
+  - travel-pack-4-ultra-28l
+  status: approved
+  source_notes:
+  - source: the-modern-xplorer-aer-travel-pack-4-ultra-review
+    about: same build; ten-day trip report
+  - source: nomads-nation-aer-travel-pack-4-28l-vs-35l-review
+    about: 28L and 35L in 1680D Cordura, not Ultra; affiliate links, and the author runs his own bag brand
+  - source: desy-cheng-video-aer-travel-pack-4-honest-review
+    about: 28L and 35L, fabric not stated; bags sent by Aer, not paid, affiliate links
+  replaces: tp4-con-2
+  wording_note: 'No source ties this to a stiff shell or says stiffness protects contents. Keeps the Modern Xplorer finding only. 17 Nov 2026: support widened with Nomads Nation, Desy Cheng (research/reviews-2026-11-17/merged/tp4.json point 6); was ''one review''. Nomads Nation (28L Cordura) says it ''does not feel overly spacious once everything is loaded in''; Desy Cheng (28L, fabric not stated) found it ''crammed to its max'' with a larger loadout. Build label ''Also from a 28L 1680D Cordura review and one that doesn''t name its fabric'' added because the new sources cover other builds.'
+  from_build:
+    label: Also from a 28L 1680D Cordura review and one that doesn't name its fabric
+    decided: '2026-11-17'
+- id: tp4-pro-4
+  kind: pro
+  text: Very comfortable to carry.
+  voice: reviewers
+  support: four reviews agree
+  scope: design
+  basis: review
+  sources:
+  - everyday-carry-and-tech-video-aer-travel-pack-4-ultra-28l
+  - nomads-nation-aer-travel-pack-4-28l-vs-35l-review
+  - pack-hacker-travel-pack-4-28l
+  - stranded-variable-review-aer-travel-pack-4-35l
+  observed_on:
+  - travel-pack-4-ultra-28l
+  from_build:
+    label: Also from reviews of the 1680D Cordura (28L and 35L) and X-Pac builds
+    generation: Same generation (Travel Pack 4)
+    size: 28L and 35L
+    fabric: Ultra (Everyday Carry and Tech), 1680D Cordura (Nomads Nation, Stranded Variable), X-Pac VX-42 (Pack Hacker)
+    found: Everyday Carry and Tech carried the Ultra 28L; the harness is the same design on the other builds.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: everyday-carry-and-tech-video-aer-travel-pack-4-ultra-28l
+    about: same build; about two months of use; no sample, sponsor or affiliate statement
+  - source: nomads-nation-aer-travel-pack-4-28l-vs-35l-review
+    about: 28L and 35L in 1680D Cordura, not Ultra; affiliate links, and the author runs his own bag brand
+  - source: pack-hacker-travel-pack-4-28l
+    about: 28L in X-Pac VX-42, not Ultra; affiliate links, sample status not stated
+  - source: stranded-variable-review-aer-travel-pack-4-35l
+    about: 35L in 1680D Cordura, not Ultra and not 28L; bag sent by Aer before release, no payment, no affiliate links
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. Everyday Carry and Tech: "This is an extremely comfortable backpack."; Nomads Nation: "Very comfortable carry system"; Pack Hacker: "Even when packed out for a weekend trip, it remains comfortable for all-day wear."; Stranded Variable: "Despite the heavy weight, the Travel Pack 4 is very comfortable."'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''yes''). research/reviews-2026-11-17/merged/tp4.json point 0.'
+  added_in: reviews-2026-11-17
+- id: tp4-pro-5
+  kind: pro
+  text: The lay-flat clamshell opens like a suitcase and makes packing easy.
+  voice: reviewers
+  support: three reviews agree
+  scope: design
+  basis: review
+  sources:
+  - the-modern-xplorer-aer-travel-pack-4-ultra-review
+  - better-trail-aer-travel-pack-4-review
+  - desy-cheng-video-aer-travel-pack-4-honest-review
+  observed_on:
+  - travel-pack-4-ultra-28l
+  from_build:
+    label: Also from reviews of the 35L 1680D Cordura build and another 28L build
+    generation: Same generation (Travel Pack 4)
+    size: 28L and 35L
+    fabric: Ultra (The Modern Xplorer), 1680D Cordura (Better Trail), not stated (Desy Cheng)
+    found: The Modern Xplorer describes the same lay-flat clamshell on the Ultra 28L.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: the-modern-xplorer-aer-travel-pack-4-ultra-review
+    about: same build; ten-day trip; the author bought it himself
+  - source: better-trail-aer-travel-pack-4-review
+    about: 35L in 1680D Cordura, not Ultra and not 28L; week-long trip; affiliate links
+  - source: desy-cheng-video-aer-travel-pack-4-honest-review
+    about: 28L and 35L, fabric not stated; bags sent by Aer, not paid, affiliate links
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. The Modern Xplorer: "The main compartment is a lay-flat clamshell that opens like a suitcase"; Better Trail: "A large clamshell opening makes packing easy and feels like loading a suitcase."; Desy Cheng: "I really like about this bag is just the lay flat design"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''yes''). research/reviews-2026-11-17/merged/tp4.json point 2.'
+  added_in: reviews-2026-11-17
+- id: tp4-pro-6
+  kind: pro
+  text: The laptop compartment is well done, with a false bottom for drop protection.
+  voice: reviewers
+  support: two reviews
+  scope: design
+  basis: review
+  sources:
+  - visionswell-aer-travel-pack-4-ultra
+  - george-defined-video-aer-travel-pack-4
+  observed_on:
+  - travel-pack-4-ultra-28l
+  status: approved
+  source_notes:
+  - source: visionswell-aer-travel-pack-4-ultra
+    about: same build; hands-on with a one-week packing demo; affiliate links, no sample statement
+  - source: george-defined-video-aer-travel-pack-4
+    about: same build (shows the 28L and 35L, both in Ultra); bags sent by Aer, affiliate links
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. visionswell: "a proper false bottom for drop protection"; George DEFINED: "For me, 2026, this is the way to do it"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''yes''). research/reviews-2026-11-17/merged/tp4.json point 21.'
+  added_in: reviews-2026-11-17
+- id: tp4-con-5
+  kind: con
+  text: Not a light bag.
+  voice: reviewers
+  support: three reviews agree
+  scope: material
+  basis: review
+  sources:
+  - visionswell-aer-travel-pack-4-ultra
+  - the-modern-xplorer-aer-travel-pack-4-ultra-review
+  - everyday-carry-and-tech-video-aer-travel-pack-4-ultra-28l
+  observed_on:
+  - travel-pack-4-ultra-28l
+  status: approved
+  source_notes:
+  - source: visionswell-aer-travel-pack-4-ultra
+    about: same build; hands-on with a one-week packing demo; affiliate links, no sample statement
+  - source: the-modern-xplorer-aer-travel-pack-4-ultra-review
+    about: same build; ten-day trip; the author bought it himself
+  - source: everyday-carry-and-tech-video-aer-travel-pack-4-ultra-28l
+    about: same build; about two months of use; no sample, sponsor or affiliate statement
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. visionswell: "At 3.28 lbs, this isn’t a featherweight bag."; The Modern Xplorer: "If you count grams, this number will bother you every time you read it."; Everyday Carry and Tech: "It''s not a light bag at all."'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''yes''). research/reviews-2026-11-17/merged/tp4.json point 4.'
+  added_in: reviews-2026-11-17
+- id: tp4-con-6
+  kind: con
+  text: Lower front pocket gets tight and hard to reach when the bag is full.
+  voice: reviewers
+  support: three reviews agree
+  scope: design
+  basis: review
+  sources:
+  - visionswell-aer-travel-pack-4-ultra
+  - george-defined-video-aer-travel-pack-4
+  - stranded-variable-review-aer-travel-pack-4-35l
+  observed_on:
+  - travel-pack-4-ultra-28l
+  from_build:
+    label: Also from a review of the 35L 1680D Cordura build
+    generation: Same generation (Travel Pack 4)
+    size: 28L and 35L
+    fabric: Ultra (two sources), 1680D Cordura (Stranded Variable)
+    found: Two of the three sources describe the Ultra 28L; Stranded Variable found the same pocket's opening tight on the 35L.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: visionswell-aer-travel-pack-4-ultra
+    about: same build; hands-on with a one-week packing demo; affiliate links, no sample statement
+  - source: george-defined-video-aer-travel-pack-4
+    about: same build (shows the 28L and 35L, both in Ultra); bags sent by Aer, affiliate links
+  - source: stranded-variable-review-aer-travel-pack-4-35l
+    about: 35L in 1680D Cordura, not Ultra and not 28L; bag sent by Aer before release, no payment, no affiliate links
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. visionswell: "When fully packed, the bottom pocket gets tight"; George DEFINED: "when you have the bag packed out, it gets tough to get inside"; Stranded Variable: "accessing the contents is difficult, as the opening is very tight."'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''yes''). research/reviews-2026-11-17/merged/tp4.json point 19.'
+  added_in: reviews-2026-11-17
+- id: tp4-con-7
+  kind: con
+  text: Bulky, and can feel cumbersome on smaller frames.
+  voice: reviewers
+  support: two reviews
+  scope: design
+  basis: review
+  sources:
+  - pack-hacker-travel-pack-4-28l
+  - the-modern-xplorer-aer-travel-pack-4-ultra-review
+  observed_on:
+  - travel-pack-4-ultra-28l
+  from_build:
+    label: Also from a review of the 28L X-Pac VX-42 build
+    generation: Same generation (Travel Pack 4)
+    size: Same, 28L
+    fabric: Ultra (The Modern Xplorer), X-Pac VX-42 (Pack Hacker)
+    found: The Modern Xplorer calls the Ultra 28L 'still a bulky bag'; Pack Hacker's 28L has the same outer size.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: pack-hacker-travel-pack-4-28l
+    about: 28L in X-Pac VX-42, not Ultra; affiliate links, sample status not stated
+  - source: the-modern-xplorer-aer-travel-pack-4-ultra-review
+    about: same build; ten-day trip; the author bought it himself
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. Pack Hacker: "The size feels cumbersome on smaller frames"; The Modern Xplorer: "it''s still a bulky bag."'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''yes''). research/reviews-2026-11-17/merged/tp4.json point 18.'
+  added_in: reviews-2026-11-17
+computed:
+- replaces: tp4-pro-1
+  was: Lightest fabric option in the TP4 range
+  rule: Weight against the other builds of the same bag, from their records.
+  state: Built. Weight against the 1680D CORDURA build, from the two records. The X-Pac VX-42 build is not on file, so "lightest 28 L option" is not claimed.
+- replaces: tp4-con-3
+  was: 19.25" height exceeds some personal-item limits
+  rule: From the airline-fit data, list the airlines whose personal-item limit the maker's 49 x 32 x 20 cm (19.25 in tall) dimensions exceed.
+  state: Built. Airline fit per build in tools/airline_fit.py. The counts are in reports/airline-fit.md and on the page's airline-fit widget.
+legacy:
+  verdict: The same idea as the CTB26, aimed at travel, at two-thirds the price.
+  price_note: aersf.com · sold out
+  avail: Regular line · sold out
+  origin: USA
+  laptop: 16"
+  fabric: ULTRA 400X
+  opening: Full clamshell + 3 compartments
+  brand: Aer
+  src: https://aersf.com/products/travel-pack-4-ultra-28l
+  claims:
+  - id: tp4-pro-1
+    kind: pro
+    text: Lightest fabric option in the TP4 range
+    scope: material
+    basis: maker
+    sources:
+    - aer-travel-pack-4-ultra-28l
+    - aer-travel-pack-4-28l
+    - rushfaster-aer-travel-pack-4-xpac-28l
+    - pack-hacker-travel-pack-4-28l
+    - visionswell-aer-travel-pack-4-ultra
+    flags:
+    - list-comparison
+    evidence:
+      status: supported
+      note: Aer lists 3.28 lb for Ultra and 3.52 lb for Cordura; X-Pac is 3.45 to 3.53 lb per Pack Hacker and Rushfaster. visionswell also calls Ultra the lightest 28L option.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: aer-travel-pack-4-ultra-28l
+      about: same build; no customer reviews visible on the page
+    - source: aer-travel-pack-4-28l
+      about: 1680D Cordura version, same size
+    - source: rushfaster-aer-travel-pack-4-xpac-28l
+      about: X-Pac VX-42 version, same size
+    - source: pack-hacker-travel-pack-4-28l
+      about: 28L in X-Pac VX-42, not Ultra (updated 2026-10-19)
+    - source: visionswell-aer-travel-pack-4-ultra
+      about: same build; hands-on with packing demo (page also shows 2026-11-05)
+    outcome:
+    - 'tp4-pro-1: computed from data. Built. Weight against the 1680D CORDURA build, from the two records. The X-Pac VX-42 build is not on file, so "lightest 28 L option" is not claimed.'
+  - id: tp4-pro-2
+    kind: pro
+    text: Three independent compartments; reviewers rate the travel organization among the best at this size
+    scope: design
+    basis: sibling
+    sources:
+    - better-trail-aer-travel-pack-4-review
+    - stranded-variable-review-aer-travel-pack-4-35l
+    - pack-hacker-travel-pack-4-28l
+    - aer-travel-pack-4-ultra-28l
+    evidence:
+      status: partly
+      note: Organisation is praised (Better Trail 5/5, Stranded Variable, Pack Hacker), all on other builds. No source counts three independent compartments or ranks it among the best at this size.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: better-trail-aer-travel-pack-4-review
+      about: 35L in 1680D Cordura, not Ultra and not 28L
+    - source: stranded-variable-review-aer-travel-pack-4-35l
+      about: 35L in 1680D Cordura, not Ultra and not 28L
+    - source: pack-hacker-travel-pack-4-28l
+      about: 28L in X-Pac VX-42, not Ultra (updated 2026-10-19)
+    - source: aer-travel-pack-4-ultra-28l
+      about: same build; no customer reviews visible on the page
+    outcome:
+    - 'tp4-pro-2: reworded; from another build, waiting on a call.'
+  - id: tp4-pro-3
+    kind: pro
+    text: Load lifters, frame sheet and hip-belt points give real structure under load
+    scope: design
+    basis: maker
+    sources:
+    - aer-travel-pack-4-ultra-28l
+    - better-trail-aer-travel-pack-4-review
+    - visionswell-aer-travel-pack-4-ultra
+    evidence:
+      status: supported
+      note: Aer lists load lifters, internal framesheet and hip-belt attachment points. Better Trail (35L Cordura) credits lifters and framesheet for a comfortable 25 lb carry; no Ultra 28L load test.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: aer-travel-pack-4-ultra-28l
+      about: same build; no customer reviews visible on the page
+    - source: better-trail-aer-travel-pack-4-review
+      about: 35L in 1680D Cordura, not Ultra and not 28L
+    - source: visionswell-aer-travel-pack-4-ultra
+      about: same build; hands-on with packing demo (page also shows 2026-11-05)
+    outcome:
+    - 'tp4-pro-3: moved to features (maker statement).'
+    - 'tp4-pro-3-b: reworded; from another build, waiting on a call.'
+  - id: tp4-con-1
+    kind: con
+    text: Reviewers peg true capacity nearer 26 L
+    scope: design
+    basis: review
+    sources:
+    - visionswell-aer-travel-pack-4-ultra
+    - the-modern-xplorer-aer-travel-pack-4-ultra-review
+    - nomads-nation-aer-travel-pack-4-28l-vs-35l-review
+    evidence:
+      status: supported
+      note: visionswell says the Ultra 28L feels closer to 26 L in practice, a subjective call, not measured. Modern Xplorer repeats it; Nomads Nation (Cordura) says 25 to 28 L.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: visionswell-aer-travel-pack-4-ultra
+      about: same build; hands-on with packing demo (page also shows 2026-11-05)
+    - source: the-modern-xplorer-aer-travel-pack-4-ultra-review
+      about: same build; ten-day trip report
+    - source: nomads-nation-aer-travel-pack-4-28l-vs-35l-review
+      about: 28L and 35L in 1680D Cordura, not Ultra (updated 2026-11-10)
+    outcome:
+    - 'tp4-con-1: reworded.'
+  - id: tp4-con-2
+    kind: con
+    text: The stiff Ultra shell protects contents but gives almost no stretch for overpacking
+    scope: material
+    basis: review
+    sources:
+    - the-modern-xplorer-aer-travel-pack-4-ultra-review
+    - visionswell-aer-travel-pack-4-ultra
+    evidence:
+      status: partly
+      note: Modern Xplorer found it snug with no room to overpack. No source found tying that to a stiff, non-stretch Ultra shell or saying the stiffness protects contents.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: the-modern-xplorer-aer-travel-pack-4-ultra-review
+      about: same build; ten-day trip report
+    - source: visionswell-aer-travel-pack-4-ultra
+      about: same build; hands-on with packing demo (page also shows 2026-11-05)
+    outcome:
+    - 'tp4-con-2: reworded.'
+  - id: tp4-con-3
+    kind: con
+    text: 19.25" height exceeds some personal-item limits
+    scope: design
+    basis: review
+    sources:
+    - aer-travel-pack-4-ultra-28l
+    - visionswell-aer-travel-pack-4-ultra
+    - the-modern-xplorer-aer-travel-pack-4-ultra-review
+    evidence:
+      status: supported
+      note: Aer lists 19.25 in height; visionswell and Modern Xplorer both note it is over American Airlines' 18 in personal-item limit.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: aer-travel-pack-4-ultra-28l
+      about: same build; no customer reviews visible on the page
+    - source: visionswell-aer-travel-pack-4-ultra
+      about: same build; hands-on with packing demo (page also shows 2026-11-05)
+    - source: the-modern-xplorer-aer-travel-pack-4-ultra-review
+      about: same build; ten-day trip report
+    outcome:
+    - 'tp4-con-3: computed from data. Built. Airline fit per build in tools/airline_fit.py. The counts are in reports/airline-fit.md and on the page''s airline-fit widget.'
+  - id: tp4-con-4
+    kind: con
+    text: Nearly as heavy as the CTB26
+    scope: material
+    basis: unstated
+    sources:
+    - aer-travel-pack-4-ultra-28l
+    - evergoods-civic-travel-bag-ultra
+    - evergoods-civic-travel-bag-26l
+    flags:
+    - names-other-bag
+    evidence:
+      status: contradicted
+      note: 'Maker pages: TP4 Ultra 3.28 lb (about 1488 g) against CTB26 ULTRA 1459 g, so the Aer is slightly heavier. It is lighter only than the 420D CTB26 (1587 g).'
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: aer-travel-pack-4-ultra-28l
+      about: same build; no customer reviews visible on the page
+    - source: evergoods-civic-travel-bag-ultra
+      about: same build; maker specs plus 7 owner reviews dated 2026-09 to 2026-11
+    - source: evergoods-civic-travel-bag-26l
+      about: 420D nylon build, not ULTRA; maker specs plus owner reviews pooled across 20L/26L/35L (514 total, about 40 visible, dated 2026-07 to 2026-11); the owner reviews cited name the CTB26
+    outcome:
+    - 'tp4-con-4: dropped. Names another bag and is contradicted: 1488 g against the CTB26 ULTRA''s 1459 g, so the Aer is slightly heavier.'

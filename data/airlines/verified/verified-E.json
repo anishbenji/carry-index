@@ -1,0 +1,747 @@
+[
+ {
+  "name": "Trinity Airways",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    20
+   ],
+   "linear_cm": 115,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": [
+      "metric",
+      "imperial"
+     ],
+     "kg": null
+    },
+    "d_in": [
+     21.7,
+     15.7,
+     7.9
+    ],
+    "l_in": 45,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    15
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     15.7,
+     11.8,
+     5.9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": 10,
+  "fareNote": "",
+  "source": "https://www.trinityairways.com/app/serviceInfo/contents/1148",
+  "quote": "세 변의 합이 115cm(45in)이내 ※ 최대크기 가로 40cm × 세로 20cm x 높이 55cm 이내 (손잡이, 바퀴 포함) … 총 무게 10kg 이내",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed.",
+  "combinedUnits": {
+   "printed": {
+    "kg": [
+     "metric"
+    ]
+   },
+   "lb": 22,
+   "converted": [
+    "lb"
+   ],
+   "read": "2026-11-14",
+   "from": "quote"
+  }
+ },
+ {
+  "name": "AJet",
+  "region": [
+   "Europe",
+   "Middle East"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": 8,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     21.7,
+     15.7,
+     9.1
+    ],
+    "l_in": null,
+    "lb": 17.6,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    15
+   ],
+   "linear_cm": null,
+   "weight_kg": 4,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     15.7,
+     11.8,
+     5.9
+    ],
+    "l_in": null,
+    "lb": 8.8,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://ajet.com/en/corporate/rules-and-conditions/baggage",
+  "quote": "one (1) cabin bag with dimensions and weight not exceeding 55x40x23 cm and 8 kg is also permitted",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "Tigerair Taiwan",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    54,
+    38,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     21.3,
+     15,
+     9.1
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": 10,
+  "fareNote": "",
+  "source": "https://www.tigerairtw.com/en/welcome-on-board/baggage",
+  "quote": "one piece of hand baggage (size less than 54cm x 38cm x 23cm … ) and one personal belonging (such as handbags, computer bags, or duty-free goods) with combined weight must not exceed 10 kg",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed.",
+  "combinedUnits": {
+   "printed": {
+    "kg": [
+     "metric"
+    ]
+   },
+   "lb": 22,
+   "converted": [
+    "lb"
+   ],
+   "read": "2026-11-14",
+   "from": "quote"
+  }
+ },
+ {
+  "name": "FlySafair",
+  "region": [
+   "Africa"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    56,
+    36,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     22,
+     14.2,
+     9.1
+    ],
+    "l_in": null,
+    "lb": 15.4,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    20,
+    15
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     15.7,
+     7.9,
+     5.9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://www.flysafair.co.za/travel-tools/extras/luggage-policy",
+  "quote": "Your carry-on bag should not weigh more than 7kg … The dimensions should not exceed 56cm x 36cm x 23cm. … This personal item should not exceed 40cm x 15cm x 20cm",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "Iberia Express",
+  "region": [
+   "Europe"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    56,
+    40,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": 10,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     22,
+     15.7,
+     9.8
+    ],
+    "l_in": null,
+    "lb": 22,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://www.iberiaexpress.com/en/general-info/passenger-information/before-you-go/baggage/hand-baggage",
+  "quote": "The maximum size of the baggage up to 10kg is 56 cm x 40 cm x 25 cm, including handles, pockets and wheels.",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "Thai Lion Air",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    56,
+    36,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     22,
+     14.2,
+     9.1
+    ],
+    "l_in": null,
+    "lb": 15.4,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://www.lionairthai.com/terms",
+  "quote": "The cabin bag shall not exceed the dimensions of 56cm X 36cm X 23cm and must not weigh more than 7kg.",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "Sichuan Airlines",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 8,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     21.7,
+     15.7,
+     7.9
+    ],
+    "l_in": null,
+    "lb": 17.6,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://www.sichuanair.com/baggage-service/carry-on-baggage.html",
+  "quote": "每件手提行李的三边尺寸分别不超过20×40×55厘米，且重量不超过8公斤",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "US-Bangla Airlines",
+  "region": [
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": 115,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": [
+      "metric",
+      "imperial"
+     ],
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": null,
+    "l_in": 46,
+    "lb": 15.4,
+    "converted": [
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://www.usbair.com/terms-and-conditions",
+  "quote": "Cabin Bag Boeing 737-800 The sum of all dimensions (L+B+H) must not exit 115 cm or 46 inches Max weight 7 kgs",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "Caribbean Airlines",
+  "region": [
+   "North America",
+   "South America"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    56,
+    35,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": 10,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": [
+      "metric",
+      "imperial"
+     ]
+    },
+    "d_in": [
+     22,
+     14,
+     9
+    ],
+    "l_in": null,
+    "lb": 22,
+    "converted": [],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    43,
+    33,
+    15
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     16.9,
+     13,
+     5.9
+    ],
+    "l_in": null,
+    "lb": null,
+    "converted": [
+     "d_in"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://www.caribbean-airlines.com/#/baggage/carry-on",
+  "quote": "Max. Size -: L 22”x W 14” x H 9” (56cm x 35cm x 23cm) Max. Weight -: 10 kg/22lb",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ },
+ {
+  "name": "Air Premia",
+  "region": [
+   "Asia",
+   "North America"
+  ],
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    20
+   ],
+   "linear_cm": 115,
+   "weight_kg": null,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": [
+      "metric",
+      "imperial"
+     ],
+     "kg": null
+    },
+    "d_in": [
+     21.6,
+     15.7,
+     7.8
+    ],
+    "l_in": 45.2,
+    "lb": null,
+    "converted": [],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    50,
+    30,
+    20
+   ],
+   "linear_cm": 100,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     19.7,
+     11.8,
+     7.9
+    ],
+    "l_in": 39.4,
+    "lb": null,
+    "converted": [
+     "d_in",
+     "l_in"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": 10,
+  "fareNote": "",
+  "source": "https://www.airpremia.com/a/en/support/baggage/free-baggage",
+  "quote": "The total of the three dimensions must not exceed 115 cm (45.2 inches), with each dimension limited to a maximum of 55 cm (A, 21.6 inches), 40 cm (B, 15.7 inches), and 20 cm (C, 7.8 inches).",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed.",
+  "combinedUnits": {
+   "printed": {
+    "kg": null
+   },
+   "lb": 22,
+   "converted": [
+    "lb"
+   ],
+   "read": "2026-11-14",
+   "from": "quote"
+  }
+ },
+ {
+  "name": "SalamAir",
+  "region": [
+   "Middle East",
+   "Asia"
+  ],
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": 10,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": 22,
+    "converted": [
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    33,
+    25,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 5,
+   "underSeatOnly": true,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     13,
+     9.8,
+     7.9
+    ],
+    "l_in": null,
+    "lb": 11,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "",
+  "source": "https://www.salamair.com/en/plan/baggage-information",
+  "quote": "SalamAir hand baggage allowance is one piece of 5KGs (under the aircraft seat), with dimensions not exceeding (25cm x 33cm x 20cm).",
+  "checked": "2026-11-13",
+  "status": "verified",
+  "seedDiff": "Not in seed."
+ }
+]

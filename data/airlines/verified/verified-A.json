@@ -1,0 +1,630 @@
+[
+ {
+  "name": "Air India",
+  "region": "Asia",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    20
+   ],
+   "linear_cm": 115,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     21.7,
+     15.7,
+     7.9
+    ],
+    "l_in": 45.3,
+    "lb": 15.4,
+    "converted": [
+     "d_in",
+     "l_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 3,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": [
+      "metric",
+      "imperial"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     15,
+     11,
+     7
+    ],
+    "l_in": null,
+    "lb": 6.6,
+    "converted": [
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Same for Economy and Premium Economy; Business/First 10 kg. Personal item must also fit under the seat (max 90 cm total).",
+  "source": "https://www.airindia.com/in/en/travel-information/baggage-guidelines/cabin-baggage.html",
+  "quote": "The maximum dimensions for these bags are 40 cm/15 in x 30 cm/11 in x 20 cm/7 in each.",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "Personal item depth is 20 cm, not 10 cm (40x30x20); carry-on matches.",
+  "render": "static",
+  "anchor": "The total dimensions of the bag must not exceed 115 cm"
+ },
+ {
+  "name": "Air India Express",
+  "region": "Asia",
+  "carryOn": {
+   "dims_cm": [
+    56,
+    36,
+    23
+   ],
+   "linear_cm": 115,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     22,
+     14.2,
+     9.1
+    ],
+    "l_in": 45.3,
+    "lb": 15.4,
+    "converted": [
+     "d_in",
+     "l_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": false
+  },
+  "combined_kg": null,
+  "fareNote": "One piece only; the 7 kg includes laptop and personal items. Xpress Lite is cabin-only; Xtra Carry-on add-on raises cabin weight to 12 kg.",
+  "source": "https://www.airindiaexpress.com/support/faqs/baggage",
+  "quote": "One piece of cabin baggage must not exceed 56cm x 36cm x 23 cm including the handles, wheels, and side pockets",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "Not in seed.",
+  "render": "js",
+  "anchor": "including a laptop and personal items"
+ },
+ {
+  "name": "IndiGo",
+  "region": "Asia",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    35,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     21.7,
+     13.8,
+     9.8
+    ],
+    "l_in": null,
+    "lb": 15.4,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": 3,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": null,
+    "l_in": null,
+    "lb": 6.6,
+    "converted": [
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Same on Lite fare and domestic/international; personal article (purse/laptop) limited by weight only, no size given.",
+  "source": "https://www.goindigo.in/information/baggage-policy.html",
+  "quote": "permitted to carry only 1 (one) Hand Baggage weighing a maximum of 7 (seven) kg",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "Matches (seed flagged personal as under-seat; policy page gives only the 3 kg limit).",
+  "render": "static",
+  "anchor": "One Hand Bag Rule"
+ },
+ {
+  "name": "SpiceJet",
+  "region": "Asia",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    35,
+    25
+   ],
+   "linear_cm": 115,
+   "weight_kg": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": 7,
+  "fareNote": "Boeing size shown; Q400 flights limit 50x35x23 cm (108 cm). Laptop bag/purse allowed if total cabin weight stays within 7 kg.",
+  "source": "https://corporate.spicejet.com/airtravelbaggagefaq.aspx",
+  "quote": "55 cm + 35 cm + 25 cm (L+W+H; total 115 cm)",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "Matches.",
+  "render": "static",
+  "anchor": "provided the total weight of cabin baggage does not exceed 7kg"
+ },
+ {
+  "name": "Akasa Air",
+  "region": "Asia",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    35,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": 7
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": 3,
+   "underSeatOnly": true,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "Same for domestic and international.",
+  "source": "https://www.akasaair.com/quick-links/conditions-of-carriage",
+  "quote": "such articles fit under the seat in front of them and not weigh more than 3 kgs (6lbs)",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "Not in seed.",
+  "render": "static",
+  "anchor": "length - 55cm + width- 35cm + height- 25cm"
+ },
+ {
+  "name": "Emirates",
+  "region": "Middle East",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    38,
+    22
+   ],
+   "linear_cm": null,
+   "weight_kg": 7
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": false
+  },
+  "combined_kg": null,
+  "fareNote": "No Economy personal item listed. Business/First add a 7 kg briefcase (45x35x20). Departing India: one piece, 115 cm linear; from Brazil 10 kg.",
+  "source": "https://www.emirates.com/us/english/before-you-fly/baggage/cabin-baggage-rules/",
+  "quote": "Carry-on dimensions should not exceed 55 x 38 x 22cm",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "Matches.",
+  "render": "static",
+  "anchor": "Carry-on dimensions should not exceed"
+ },
+ {
+  "name": "Etihad Airways",
+  "region": "Middle East",
+  "carryOn": {
+   "dims_cm": [
+    56,
+    36,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": 7
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": false
+  },
+  "combined_kg": null,
+  "fareNote": "Economy: one cabin bag only. Business/First add a smaller bag up to 5 kg (39x23x19).",
+  "source": "https://www.etihad.com/en/help/faq/baggage",
+  "quote": "It must weigh no more than 7kg and be no bigger than 56cm x 36cm x 23cm.",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "Matches; seed URL page has no numbers, figures are on the baggage FAQ page.",
+  "render": "static",
+  "anchor": "you're entitled to one cabin bag"
+ },
+ {
+  "name": "Qatar Airways",
+  "region": "Middle East",
+  "carryOn": {
+   "dims_cm": [
+    50,
+    37,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": 7
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "Personal items (e.g. small purse or briefcase) allowed with no stated size/weight. Business/First 2 pieces, 15 kg total; Brazil Economy 10 kg.",
+  "source": "https://www.qatarairways.com/en-us/baggage/allowance.html",
+  "quote": "The maximum dimensions for carry-on baggage is 50cm (length) x 37cm (width) x 25cm (depth).",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "Matches (page does not say the personal item must fit under the seat).",
+  "render": "static",
+  "anchor": "One small purse or small briefcase"
+ },
+ {
+  "name": "flydubai",
+  "region": "Middle East",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    38,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 7
+  },
+  "personal": {
+   "dims_cm": [
+    33,
+    25,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "Same on Lite fare; Business 2 pieces, 7 kg each (14 kg total). Personal item counts as part of hand baggage allowance; no weight stated.",
+  "source": "https://www.flydubai.com/en/flying-with-us/baggage/hand-baggage",
+  "quote": "Your personal item must not exceed 25 × 33 × 20 cm and fit under the seat in front of you.",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "Matches.",
+  "render": "static",
+  "anchor": "Your personal item must not exceed"
+ },
+ {
+  "name": "Air Arabia",
+  "region": "Middle East",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 7
+  },
+  "personal": {
+   "dims_cm": [
+    33,
+    25,
+    20
+   ],
+   "linear_cm": null,
+   "weight_kg": 3,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "No fare-based differences stated on the page.",
+  "source": "https://www.airarabia.com/en/hand-baggage",
+  "quote": "1 cabin bag: max 55 × 40 × 20 cm (up to 7kg).",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "Matches.",
+  "render": "static",
+  "anchor": "1 personal item (e.g., laptop bag/handbag)"
+ },
+ {
+  "name": "Saudia",
+  "region": "Middle East",
+  "carryOn": {
+   "dims_cm": [
+    56,
+    45,
+    25
+   ],
+   "linear_cm": null,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     22,
+     17.7,
+     9.8
+    ],
+    "l_in": null,
+    "lb": 15.4,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "Guest (Economy) class. Business/First 12 kg bag plus 9 kg briefcase; from USA/Canada 16 lb and 45 in. Personal item (handbag, tablet, coat) has no stated size.",
+  "source": "https://www.saudia.com/en/manage/baggage/carry-on-baggage",
+  "quote": "Guest Class | One hand bag or briefcase | 1 | Maximum dimensions: 56 × 45 × 25 cm",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "Seed says no personal item; Saudia allows one free personal item (handbag, tablet, coat). Carry-on matches.",
+  "render": "js",
+  "anchor": "Guests may carry one personal item in addition to their cabin baggage"
+ },
+ {
+  "name": "Oman Air",
+  "region": "Middle East",
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": 115,
+   "weight_kg": 7
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": false
+  },
+  "combined_kg": null,
+  "fareNote": "All Economy fares 1 piece 7 kg; Business 2 pieces 7 kg each. No personal item listed.",
+  "source": "https://www.omanair.com/en/baggage-policy/baggage-allowance",
+  "quote": "Hand baggage per guest of 7kg and a maximum dimension of linear 115 cm (45 in).",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "Seed gives 55x35x25; official page publishes only a 115 cm linear limit.",
+  "render": "static",
+  "anchor": "maximum dimension of linear 115 cm"
+ },
+ {
+  "name": "Gulf Air",
+  "region": "Middle East",
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "Site says cabin allowance varies by class/fare and points to a calculator; no adult cabin-bag size or weight published. Infant cabin bag 44x35x20 cm, 3 kg.",
+  "source": "https://www.gulfair.com/help/baggage/personal-items",
+  "quote": "In addition to the free cabin baggage allowance, each customer can carry any of the following personal items without additional charges",
+  "checked": "2026-11-02",
+  "status": "partial",
+  "seedDiff": "Seed 45x40x30 / 6 kg could not be confirmed on gulfair.com; left null.",
+  "render": "js",
+  "anchor": "The allowed hand baggage weight and size varies depending on your class of travel"
+ },
+ {
+  "name": "SriLankan Airlines",
+  "region": "Asia",
+  "carryOn": {
+   "dims_cm": null,
+   "linear_cm": 115,
+   "weight_kg": 7,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": [
+      "metric"
+     ],
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": null,
+    "l_in": 45.3,
+    "lb": 15.4,
+    "converted": [
+     "l_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": null,
+   "linear_cm": null,
+   "weight_kg": null,
+   "underSeatOnly": false,
+   "allowed": true
+  },
+  "combined_kg": null,
+  "fareNote": "Economy 1 piece; Business 2 pieces at same limit. Laptop and handbag allowed in addition, no size/weight given.",
+  "source": "https://www.srilankan.com/bgalw",
+  "quote": "Each piece of hand baggage must weigh no more than 7 kg and measure no more than a total of 115cm (l+h+w).",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "Seed gives 55x35x25; official page publishes only a 115 cm linear limit.",
+  "render": "static",
+  "anchor": "measure no more than a total of 115cm"
+ },
+ {
+  "name": "Turkish Airlines",
+  "region": "Middle East",
+  "carryOn": {
+   "dims_cm": [
+    55,
+    40,
+    23
+   ],
+   "linear_cm": null,
+   "weight_kg": 8,
+   "units": {
+    "printed": {
+     "d": [
+      "metric"
+     ],
+     "l": null,
+     "kg": [
+      "metric"
+     ]
+    },
+    "d_in": [
+     21.7,
+     15.7,
+     9.1
+    ],
+    "l_in": null,
+    "lb": 17.6,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "personal": {
+   "dims_cm": [
+    40,
+    30,
+    15
+   ],
+   "linear_cm": null,
+   "weight_kg": 4,
+   "underSeatOnly": false,
+   "allowed": true,
+   "units": {
+    "printed": {
+     "d": null,
+     "l": null,
+     "kg": null
+    },
+    "d_in": [
+     15.7,
+     11.8,
+     5.9
+    ],
+    "l_in": null,
+    "lb": 8.8,
+    "converted": [
+     "d_in",
+     "lb"
+    ],
+    "read": "2026-11-14",
+    "from": "quote"
+   }
+  },
+  "combined_kg": null,
+  "fareNote": "Business 2 cabin bags of 8 kg (16 kg total) plus the same personal item.",
+  "source": "https://www.turkishairlines.com/en-us/any-questions/carry-on-baggage/",
+  "quote": "one piece of cabin baggage with a maximum dimensions of 23x40x55 cm and a maximum weight of 8 kg",
+  "checked": "2026-11-02",
+  "status": "verified",
+  "seedDiff": "Matches.",
+  "render": "js",
+  "anchor": "For your Economy class travels"
+ }
+]

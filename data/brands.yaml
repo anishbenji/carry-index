@@ -1,0 +1,79 @@
+# Makers. country comes from the old page's "origin" field; country_checked says whether a page confirms it.
+# image_permission terms and contacts are from the 10 Nov 2026 handoff.
+evergoods:
+  name: Evergoods
+  site: https://evergoods.us
+  country: USA
+  country_checked: false
+  image_permission:
+    status: not_asked
+    terms: No reuse without written permission
+    terms_url: https://evergoods.us/policies/terms-of-service
+    contact: info@evergoods.us; runs an affiliate programme for gear review sites
+aer:
+  name: Aer
+  site: https://aersf.com
+  country: USA
+  country_checked: false
+  image_permission:
+    status: not_asked
+    terms: Personal, non-commercial viewing only; no copying or modifying
+    terms_url: https://aersf.com/pages/terms-and-conditions
+    contact: hello@aersf.com, given for press on its contact page
+ula-equipment:
+  name: ULA Equipment
+  site: https://www.ula-equipment.com
+  country: USA
+  country_checked: false
+  image_permission:
+    status: not_asked
+    terms: Publication prohibited without written permission
+    terms_url: https://www.ula-equipment.com/privacy-copyright/
+    contact: peter@ula-equipment.com, named there for permission requests
+ctactical:
+  name: Ctactical
+  site: https://ctactical.com
+  country: Vietnam
+  country_checked: true
+  image_permission:
+    status: not_asked
+    terms: Says nothing about images either way
+    terms_url: https://ctactical.com/policies/terms-of-service
+    contact: info@ctactical.com, on its contact page
+  country_note: 'About page (https://ctactical.com/pages/about-us), read in full 13 Nov 2026: invites visitors to Saigon and names chuyentactical.com as its website. That Vietnamese store is run by Công ty TNHH Saigon Outdoor Gear, Ho Chi Minh City.'
+matador:
+  name: Matador
+  site: https://www.matadorequipment.com
+  country: USA
+  country_checked: false
+  image_permission:
+    status: not_asked
+    terms: Other uses need prior written consent
+    terms_url: https://www.matadorequipment.com/policies/terms-of-service
+    contact: Creators and affiliates page; reviewers apply through AvantLink
+carryology:
+  name: Carryology
+  site: https://www.carryology.com
+  image_permission:
+    status: not_asked
+    terms: Not checked
+tortuga:
+  name: Tortuga
+  site: https://www.tortugabackpacks.com
+  country: USA
+  country_checked: false
+  image_permission:
+    status: not_asked
+    terms: Personal, non-commercial viewing only
+    terms_url: https://www.tortugabackpacks.com/pages/terms-of-service
+    contact: Contact page; the affiliate programme asks for 50,000 monthly visitors
+db-journey:
+  name: Db Journey
+  site: https://dbjourney.com
+  country: Norway
+  country_checked: false
+  image_permission:
+    status: not_asked
+    terms: Commercial or public reuse needs prior permission
+    terms_url: https://dbjourney.com/en-no/pages/terms-conditions
+    contact: Contact form; it has creator and partnership pages

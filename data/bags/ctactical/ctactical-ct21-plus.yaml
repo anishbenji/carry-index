@@ -1,0 +1,615 @@
+migration:
+  source: Ultra Carry Index page, Rev AE (v20)
+  migrated: '2026-11-13'
+  claims: Anish read every line on 13 Nov 2026, one question at a time; approved lines are the ones he kept as shown. Lines from another build name the build. Old wording and search results are under legacy.claims.
+  photos: model.photos lists every photo the old page used, as its code and footer describe them; permission is none for all
+  sources_search: Claims and spec gaps were searched on 13 Nov 2026; see evidence on each claim and reports/sources-search-2026-11-13.md
+  proposals: Applied on 13 Nov 2026 by tools/migrate/apply_decisions.py, following Anish's rulings of that day.
+  availability: Removed on 13 Nov 2026. Each build links out instead; the old strings stay under legacy.
+model:
+  id: ctactical-ct21-plus
+  legacy_id: ct21p
+  brand: ctactical
+  label: CT21 Plus
+  family: CT21
+  category: backpack
+  use:
+  - edc
+  - travel
+  build_class: structured
+  drawings:
+  - file: drawings/ct21p/sketch/ct21p-sketch-front.svg
+    kind: drawing
+    view: front
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/ct21p/sketch/ct21p-sketch-iso.svg
+    kind: drawing
+    view: three-quarter
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/ct21p/sketch/ct21p-sketch-back.svg
+    kind: drawing
+    view: back
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  - file: drawings/ct21p/sketch/ct21p-sketch-side.svg
+    kind: drawing
+    view: side
+    shows_variant: null
+    credit: Carry Journal
+    permission: own
+  photos:
+  - file: img/maker/2b7b430e-CT21PlusUltra400XBlack_1.jpg
+    role: card main
+    view: unknown
+    credit_text: ctactical.com
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: CT21 Plus Ultra400X Black _1'
+    permission: none
+  - file: img/maker/dd95c2b2-CT21PlusUltra400XBlack_1.jpg
+    role: hero strip
+    view: front
+    credit_text: null
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: CT21 Plus Ultra400X Black _1'
+    permission: none
+  - file: img/maker/aacc5b44-CT21PlusUltra400XBlack_2.jpg
+    role: hero strip
+    view: three-quarter
+    credit_text: null
+    credit_url: null
+    source_page: null
+    edits: null
+    shows: 'file name: CT21 Plus Ultra400X Black _2'
+    permission: none
+  reviews:
+  - source: visionswell-video-ctactical-ct21-plus-review
+    covers: 'CT21 Plus (title, description, tags ''ct21 plus 33l''; he says ''the CT21'' aloud, and gives 18.7 in height, matching the Plus) in navy Halley Stevensons P400 waxed canvas, light blue Robic nylon interior, $189. Fully loaded demo with a week of gear; he says he has used it ''a bunch''. Not an Ultra build. Discloses: Says twice in the video he bought this bag with his own money. Description: affiliate shortlinks, Amazon Associates, and ''Brands often provide me with free gear''.'
+    used_for:
+    - ct21p-pro-4
+    - ct21p-pro-5
+    - ct21p-pro-6
+    - ct21p-pro-7
+    - ct21p-pro-8
+    - ct21p-con-3
+  - source: pk-shiu-video-ctactical-ct21-plus-quick-look
+    covers: '2026 CT21 Plus in blue waxed canvas; 5-minute walkthrough, he says he is not doing a full review. Not an Ultra build. Discloses: Nothing said in the video about how he got it or about samples. Description: some bags shown are personally owned and may be sold; links to geareg.com. First check saw an AvantLink affiliate ID in the channel blurb.'
+    used_for:
+    - ct21p-pro-5
+    - ct21p-pro-6
+    - ct21p-pro-7
+    - ct21p-pro-8
+  - source: the-perfect-bag-video-ct21-plus-vs-ct21-lite
+    covers: 'Upgraded (2026) CT21 Plus beside the CT21 Lite; mainly dimensions and the extra Plus compartment. Waxed canvas colourways discussed (olive, slate, chestnut); no Ultra build. He measured the Plus at 7.5 in deep, panel to panel. Discloses: Says in the video he paid for both bags and they were not gifted by Ctactical. Description: no payments or affiliate links from bag makers; Amazon affiliate links are used.'
+    used_for: []
+  - source: ctactical-ct21-plus-ultra200x
+    covers: 'Ctactical product page for CT21 Plus - ULTRA200X, Black Magic, 33L, 1390 g, 18.7 x 13.4 x 8.4 in; regular price $245 (sale $232.75). One Judge.me review, 07/24/2026, by Randy Crocker. Discloses: Maker''s own page and review widget; review marked ''Review collected via store invitation''. Reviewer not individually labelled as a verified buyer.'
+    used_for:
+    - ct21p-pro-4
+  sourcing: Based on video reviews of the waxed canvas CT21 Plus from visionswell and PK Shiu, an owner review on Ctactical's site, plus Ctactical's own pages.
+variants:
+- id: ct21-plus-ultra400x
+  name: CT21 Plus - ULTRA400X
+  page: ctactical-ct21-plus-ultra400x
+  link:
+    url: https://ctactical.com/products/ct21-plus-ultra400x
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - ultra-400x
+    shell_as_written: Challenge Sailcloth ULTRA400X
+    lining: Challenge Sailcloth UltraGrid - Blue Wave
+    lining_material: ultragrid
+    base: EcoPak EPLX840 Black
+    base_material: ecopak-eplx840
+  volume_l: 33
+  weight_g: 1440
+  dims_cm:
+    h: 47.5
+    w: 34
+    d: 21.5
+  as_written:
+    weight: 1440 g (3.17 lb)
+    dims: 47.5 x 34 x 21.5 cm (18.7 x 13.4 x 8.4 in)
+  laptop:
+    max_in: 16
+  price:
+    amount: 240
+    currency: USD
+    seller: ctactical
+  release: regular
+  colourways:
+  - name: Black Magic
+  opening: Main compartment opens flat, up to 180°; separate Plus compartment
+  media:
+  - file: img/maker/2b7b430e-CT21PlusUltra400XBlack_1.jpg
+    kind: photo
+    view: unknown
+    shows_variant: null
+    credit: ctactical.com
+    source: https://ctactical.com/products/ct21-plus-ultra400x
+    permission: none
+  checks:
+  - date: '2026-11-13'
+    source: ctactical-ct21-plus-ultra400x
+    basis: page
+    method: Page opened and read by Claude through WebFetch; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - laptop
+    - fabric.shell
+    - fabric.lining
+    - fabric.base
+    - colourways
+  - date: '2026-11-13'
+    source: ctactical-ct21-plus-ultra400x
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - opening
+    note: Ctactical's wording; "panel-load" is not on the page
+  - date: '2026-11-13'
+    source: chuyentactical-balo-ct21-plus-ultra400x
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026; also opened by Claude through WebFetch
+    fields:
+    - made_in
+    note: 'The maker''s Vietnamese store lists "Xuất xứ: Việt Nam" (origin: Vietnam). The English ctactical.com page has no origin line.'
+  - date: '2026-11-15'
+    source: ctactical-ct21-plus-ultra400x
+    basis: page
+    method: Search subagent, page opened through WebFetch on 15 Nov 2026
+    fields:
+    - release
+    note: 'Read as a regular catalogue item: no limited, drop or pre-order wording; the page''s only timing phrase is a launch in 2026, now past.'
+  made_in: Vietnam
+  units:
+    weight:
+      metric:
+        g: 1440
+        from: maker
+      imperial:
+        lb: 3.17
+        from: maker
+    dims:
+      metric:
+        cm:
+        - 47.5
+        - 34
+        - 21.5
+        from: maker
+      imperial:
+        in:
+        - 18.7
+        - 13.4
+        - 8.4
+        from: maker
+- id: ct21-plus-ultra200x
+  name: CT21 Plus - ULTRA200X
+  page: ctactical-ct21-plus-ultra200x
+  link:
+    url: https://ctactical.com/products/ct21-plus-ultra200x
+    kind: product-page
+    affiliate_url: null
+  fabric:
+    shell:
+    - ultra-200x
+    shell_as_written: Challenge Sailcloth ULTRA200X
+    lining: Challenge Sailcloth UltraGrid - Blue Smoke
+    lining_material: ultragrid
+    base: EcoPak EPLX840 Black
+    base_material: ecopak-eplx840
+  volume_l: 33
+  weight_g: 1390
+  dims_cm:
+    h: 47.5
+    w: 34
+    d: 21.5
+  as_written:
+    weight: 1390 g (3.06 lb)
+    dims: 47.5 x 34 x 21.5 cm (18.7 x 13.4 x 8.4 in)
+  laptop:
+    max_in: 16
+  price:
+    amount: 245
+    currency: USD
+    seller: ctactical
+  release: regular
+  colourways:
+  - name: Black Magic
+  opening: Main compartment opens flat, up to 180°; separate Plus compartment
+  checks:
+  - date: '2026-11-13'
+    source: ctactical-ct21-plus-ultra200x
+    basis: page
+    method: Page opened and read by Claude through WebFetch; not yet spot-checked by Anish
+    fields:
+    - name
+    - price
+    - volume_l
+    - weight_g
+    - dims_cm
+    - laptop
+    - fabric.shell
+    - fabric.lining
+    - fabric.base
+    - colourways
+  - date: '2026-11-13'
+    source: chuyentactical-balo-ct21-plus-ultra200x
+    basis: page
+    method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    fields:
+    - made_in
+    note: 'The maker''s Vietnamese store lists "Xuất xứ: Việt Nam" (origin: Vietnam). The English ctactical.com page has no origin line.'
+  - date: '2026-11-13'
+    source: ctactical-ct21-plus-ultra200x
+    basis: page
+    method: Read on the build's own page by a search subagent and again by Claude, both through WebFetch, on 13 Nov 2026
+    fields:
+    - opening
+    note: 'Under "Internal": the main compartment opens flat, up to 180 degrees. The description calls the Plus section a separate compartment from the main one.'
+  - date: '2026-11-15'
+    source: ctactical-ct21-plus-ultra200x
+    basis: page
+    method: Search subagent, page opened through WebFetch on 15 Nov 2026
+    fields:
+    - release
+    note: 'Read as a regular catalogue item: no limited, drop or pre-order wording; the page''s only timing phrase is a launch in 2026, now past.'
+  made_in: Vietnam
+  units:
+    weight:
+      metric:
+        g: 1390
+        from: maker
+      imperial:
+        lb: 3.06
+        from: maker
+    dims:
+      metric:
+        cm:
+        - 47.5
+        - 34
+        - 21.5
+        from: maker
+      imperial:
+        in:
+        - 18.7
+        - 13.4
+        - 8.4
+        from: maker
+features:
+- id: ct21p-feat-1
+  text: A PLUS section for small accessories, alongside the front organiser and main-compartment mesh pockets.
+  scope: design
+  sources:
+  - ctactical-ct21-plus-ultra400x
+  - ctactical-ct21-plus-ultra200x
+  applies_to:
+  - ct21-plus-ultra200x
+  - ct21-plus-ultra400x
+  replaces: ct21p-pro-1
+  was_kind: pro
+  status: approved
+claims:
+- id: ct21p-pro-4
+  kind: pro
+  text: Well made.
+  voice: reviewers
+  support: one review and one owner review
+  scope: design
+  basis: review
+  sources:
+  - visionswell-video-ctactical-ct21-plus-review
+  - ctactical-ct21-plus-ultra200x
+  observed_on:
+  - ct21-plus-ultra200x
+  from_build:
+    label: Also from a review of the waxed canvas build
+    generation: Same generation (2026 CT21 Plus)
+    size: Same model and size
+    fabric: ULTRA200X (owner on Ctactical's page), waxed canvas (visionswell)
+    found: An owner of the ULTRA200X build says the same on Ctactical's page.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: visionswell-video-ctactical-ct21-plus-review
+    about: CT21 Plus in waxed canvas, not an Ultra build; he bought it himself; affiliate links
+  - source: ctactical-ct21-plus-ultra200x
+    about: same build (CT21 Plus - ULTRA200X); one owner review on Ctactical's own page, collected by store invitation
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. visionswell: "excellently crafted, super high-value, well-made, well-designed, awesome bag"; Ctactical: "Excellent quality very well made"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''ok (on the CT21 Plus heading)''). research/reviews-2026-11-17/merged/ct21p.json point 1.'
+  added_in: reviews-2026-11-17
+- id: ct21p-pro-5
+  kind: pro
+  text: A side zipper gives direct access to the laptop pocket.
+  voice: reviewers
+  support: two reviews
+  scope: design
+  basis: sibling
+  sources:
+  - visionswell-video-ctactical-ct21-plus-review
+  - pk-shiu-video-ctactical-ct21-plus-quick-look
+  observed_on: []
+  from_build:
+    label: From reviews of the waxed canvas build
+    generation: Same generation (2026 CT21 Plus)
+    size: Same model and size
+    fabric: Waxed canvas
+    found: Ctactical's ULTRA200X page lists the same side laptop access.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: visionswell-video-ctactical-ct21-plus-review
+    about: CT21 Plus in waxed canvas, not an Ultra build; he bought it himself; affiliate links
+  - source: pk-shiu-video-ctactical-ct21-plus-quick-look
+    about: 2026 CT21 Plus in waxed canvas, not an Ultra build; a five-minute walkthrough; no sample statement
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. visionswell: "there''s also side access to this pocket."; PK Shiu: "this side zipper gets me into the laptop pocket in the main compartment"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''ok (on the CT21 Plus heading)''). research/reviews-2026-11-17/merged/ct21p.json point 7.'
+  added_in: reviews-2026-11-17
+- id: ct21p-pro-6
+  kind: pro
+  text: Roomy enough for several days of one-bag travel.
+  voice: reviewers
+  support: two reviews
+  scope: design
+  basis: sibling
+  sources:
+  - visionswell-video-ctactical-ct21-plus-review
+  - pk-shiu-video-ctactical-ct21-plus-quick-look
+  observed_on: []
+  from_build:
+    label: From reviews of the waxed canvas build
+    generation: Same generation (2026 CT21 Plus)
+    size: Same model and size
+    fabric: Waxed canvas
+    found: Capacity comes from the size, which Ctactical lists as 33L for the ULTRA200X build too.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: visionswell-video-ctactical-ct21-plus-review
+    about: CT21 Plus in waxed canvas, not an Ultra build; he bought it himself; affiliate links
+  - source: pk-shiu-video-ctactical-ct21-plus-quick-look
+    about: 2026 CT21 Plus in waxed canvas, not an Ultra build; a five-minute walkthrough; no sample statement
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. visionswell: "This has a week''s worth of travel gear"; PK Shiu: "totally usable for a, you know, 2-3 days or even 4 days one-pack travel"; PK Shiu: "my everyday work carry doesn''t even fill this up"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''ok (on the CT21 Plus heading)''). research/reviews-2026-11-17/merged/ct21p.json point 9.'
+  added_in: reviews-2026-11-17
+- id: ct21p-pro-7
+  kind: pro
+  text: The hook-and-loop Plus panel takes your own pouches or patches.
+  voice: reviewers
+  support: two reviews
+  scope: design
+  basis: sibling
+  sources:
+  - visionswell-video-ctactical-ct21-plus-review
+  - pk-shiu-video-ctactical-ct21-plus-quick-look
+  observed_on: []
+  from_build:
+    label: From reviews of the waxed canvas build
+    generation: Same generation (2026 CT21 Plus)
+    size: Same model and size
+    fabric: Waxed canvas
+    found: Ctactical's ULTRA200X page lists hook-and-loop strips in the Plus section.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: visionswell-video-ctactical-ct21-plus-review
+    about: CT21 Plus in waxed canvas, not an Ultra build; he bought it himself; affiliate links
+  - source: pk-shiu-video-ctactical-ct21-plus-quick-look
+    about: 2026 CT21 Plus in waxed canvas, not an Ultra build; a five-minute walkthrough; no sample statement
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. visionswell: "hook and loop panel if you want to customize it to your tastes"; PK Shiu: "this is your secret wall to display all your um really cool patches"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''ok (on the CT21 Plus heading)''). research/reviews-2026-11-17/merged/ct21p.json point 5.'
+  added_in: reviews-2026-11-17
+- id: ct21p-pro-8
+  kind: pro
+  text: The hidden back pocket suits a passport or slim wallet.
+  voice: reviewers
+  support: two reviews
+  scope: design
+  basis: sibling
+  sources:
+  - visionswell-video-ctactical-ct21-plus-review
+  - pk-shiu-video-ctactical-ct21-plus-quick-look
+  observed_on: []
+  from_build:
+    label: From reviews of the waxed canvas build
+    generation: Same generation (2026 CT21 Plus)
+    size: Same model and size
+    fabric: Waxed canvas
+    found: Ctactical's ULTRA200X page lists the same passport pocket.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: visionswell-video-ctactical-ct21-plus-review
+    about: CT21 Plus in waxed canvas, not an Ultra build; he bought it himself; affiliate links
+  - source: pk-shiu-video-ctactical-ct21-plus-quick-look
+    about: 2026 CT21 Plus in waxed canvas, not an Ultra build; a five-minute walkthrough; no sample statement
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. visionswell: "It''s the perfect place to put my Pioneer Carry Passport Wallet"; PK Shiu: "good for uh small wallet or like as people keep saying passport"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''ok (on the CT21 Plus heading)''). research/reviews-2026-11-17/merged/ct21p.json point 10.'
+  added_in: reviews-2026-11-17
+- id: ct21p-con-3
+  kind: con
+  text: The soft top sunglasses pocket isn't very protective.
+  voice: reviewers
+  support: one review
+  scope: design
+  basis: sibling
+  sources:
+  - visionswell-video-ctactical-ct21-plus-review
+  observed_on: []
+  from_build:
+    label: From a review of the waxed canvas build
+    generation: Same generation (2026 CT21 Plus)
+    size: Same model and size
+    fabric: Waxed canvas
+    found: A pocket-lining point from the shared 2026 layout; not confirmed on an Ultra build.
+    decided: '2026-11-17'
+  status: approved
+  source_notes:
+  - source: visionswell-video-ctactical-ct21-plus-review
+    about: CT21 Plus in waxed canvas, not an Ultra build; he bought it himself; affiliate links
+  evidence:
+    status: supported
+    note: 'Confirmed quotes. visionswell: "It''s not super protective or padded"'
+    checked: '2026-11-17'
+    method: Research subagent found the sources; a separate checking subagent re-opened each one and confirmed the quotes.
+  wording_note: 'Added 17 Nov 2026 from the wider source search. Anish read and approved this wording the same day (his comment on the reading list: ''ok (on the CT21 Plus heading)''). research/reviews-2026-11-17/merged/ct21p.json point 15.'
+  added_in: reviews-2026-11-17
+computed:
+- replaces: ct21p-pro-3
+  was: Lighter than the 26–28 L US structured packs despite 33 L
+  rule: For each variant, whether weight_g is below every structured bag on the index rated 26 to 28 L; show only when true, noting 33 L.
+  state: Not built. Needs a volume band to compare within; pick the bands first.
+- replaces: ct21p-con-1
+  was: Too big for many airlines’ personal-item limits
+  rule: From the airline-fit data, count or list airlines whose personal-item limit any of the dimensions 47.5 x 34 x 21.5 cm exceeds.
+  state: Built. Airline fit per build in tools/airline_fit.py. The counts are in reports/airline-fit.md and on the page's airline-fit widget.
+legacy:
+  verdict: The most litres per dollar on the page.
+  price_note: 400X · ctactical.com · sold out
+  avail: Sold out · restocks
+  origin: Vietnam
+  laptop: 16"
+  fabric: ULTRA 200X / 400X
+  opening: Panel-load + Plus section
+  brand: Ctactical
+  src: https://ctactical.com/products/ct21-plus-ultra400x
+  gVar:
+  - g: 1440
+    tag: ULTRA400X
+  - g: 1390
+    tag: ULTRA200X
+  claims:
+  - id: ct21p-pro-1
+    kind: pro
+    text: Biggest organization in the Ctactical line
+    scope: design
+    basis: unstated
+    sources:
+    - ctactical-ct21-plus-ultra400x
+    - ctactical-ct21-plus-ultra200x
+    flags:
+    - list-comparison
+    evidence:
+      status: not_found
+      note: Maker pages list the Plus section on top of the main and front organisers at 33 L, but nothing ranks it against the rest of the line.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ctactical-ct21-plus-ultra400x
+      about: same build (ULTRA400X)
+    - source: ctactical-ct21-plus-ultra200x
+      about: same build (ULTRA200X)
+    outcome:
+    - 'ct21p-pro-1: moved to features (maker statement).'
+  - id: ct21p-pro-2
+    kind: pro
+    text: Both 200X and 400X builds
+    scope: material
+    basis: maker
+    sources:
+    - ctactical-ct21-plus-ultra400x
+    - ctactical-ct21-plus-ultra200x
+    outcome:
+    - 'ct21p-pro-2: dropped. It restates data already on the record (the list of builds).'
+  - id: ct21p-pro-3
+    kind: pro
+    text: Lighter than the 26–28 L US structured packs despite 33 L
+    scope: material
+    basis: unstated
+    sources:
+    - ctactical-ct21-plus-ultra200x
+    - ctactical-ct21-plus-ultra400x
+    flags:
+    - list-comparison
+    evidence:
+      status: not_found
+      note: Rests on maker weights of 1390 g (ULTRA200X) and 1440 g (ULTRA400X) at a stated 33 L; no source makes the comparison with US packs.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ctactical-ct21-plus-ultra200x
+      about: same build (ULTRA200X)
+    - source: ctactical-ct21-plus-ultra400x
+      about: same build (ULTRA400X)
+    outcome:
+    - 'ct21p-pro-3: computed from data. Not built. Needs a volume band to compare within; pick the bands first.'
+  - id: ct21p-con-1
+    kind: con
+    text: Too big for many airlines’ personal-item limits
+    scope: design
+    basis: maker
+    sources:
+    - ctactical-ct21-plus-ultra400x
+    - ctactical-ct21-plus-ultra200x
+    - easyjet-cabin-bag-and-hold-luggage
+    - united-carry-on-bags
+    evidence:
+      status: partly
+      note: 'Maker lists 47.5 x 34 x 21.5 cm. That exceeds the personal-item limits on the two airline pages opened: easyJet 45 x 36 x 20 cm and United 43 x 25 x 22 cm. "Many airlines" should come from the airline-fit data.'
+      checked: '2026-11-13'
+      method: Search subagent through WebFetch, then Claude through Firecrawl, 13 Nov 2026
+    source_notes:
+    - source: ctactical-ct21-plus-ultra400x
+      about: same build (ULTRA400X)
+    - source: ctactical-ct21-plus-ultra200x
+      about: same build (ULTRA200X)
+    - source: easyjet-cabin-bag-and-hold-luggage
+      about: 'not about the bag: airline cabin-bag size policy (no schema kind fits; nearest used)'
+    - source: united-carry-on-bags
+      about: airline policy page
+    outcome:
+    - 'ct21p-con-1: computed from data. Built. Airline fit per build in tools/airline_fit.py. The counts are in reports/airline-fit.md and on the page''s airline-fit widget.'
+  - id: ct21p-con-2
+    kind: con
+    text: 21.5 cm depth reads large as a daily bag
+    scope: design
+    basis: maker
+    sources:
+    - ctactical-ct21-plus-ultra400x
+    - ctactical-ct21-plus-ultra200x
+    evidence:
+      status: partly
+      note: Maker pages give 47.5 x 34 x 21.5 cm, so the 21.5 cm depth holds if the third figure is depth; the 'reads large' judgement has no source.
+      checked: '2026-11-13'
+      method: Search subagent, page opened through WebFetch on 13 Nov 2026
+    source_notes:
+    - source: ctactical-ct21-plus-ultra400x
+      about: same build (ULTRA400X)
+    - source: ctactical-ct21-plus-ultra200x
+      about: same build (ULTRA200X)
+    outcome:
+    - 'ct21p-con-2: dropped. ''Reads large'' has no source. What remains is the 21.5 cm depth, already in dims_cm.'
