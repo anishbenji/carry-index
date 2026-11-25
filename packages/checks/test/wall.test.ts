@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { declaredBindings, evaluateWall, WALL_CHECKS, type WallCheck } from "../src/wall.ts";
+import type { WallCheck } from "../src/wall.ts";
+import { declaredBindings, evaluateWall, WALL_CHECKS } from "../src/wall.ts";
 import { makeTree } from "./helpers.ts";
 
 let cleanups: Array<() => void> = [];

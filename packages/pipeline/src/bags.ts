@@ -1,4 +1,5 @@
-import { type Bag, bagSchema } from "@cj/schema";
+import type { Bag } from "@cj/schema";
+import { bagSchema } from "@cj/schema";
 import { parse } from "yaml";
 
 /** Parses a YAML list of bags and validates every entry against the schema, failing on the first bad one. */

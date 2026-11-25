@@ -21,7 +21,8 @@ export function findBuiltPages(root: string): string[] {
  */
 export function evaluateSizeGate(root: string): GateResult {
   const pages = findBuiltPages(root);
-  if (pages.length === 0) return { kind: "pass", lines: ["size: no pages yet (apps/web/dist has no HTML); nothing to measure"] };
+  if (pages.length === 0)
+    return { kind: "pass", lines: ["size: no pages yet (apps/web/dist has no HTML); nothing to measure"] };
   const targets = readRootPackage(root)["size-limit"];
   if (!Array.isArray(targets) || targets.length === 0) {
     return {
@@ -32,7 +33,11 @@ export function evaluateSizeGate(root: string): GateResult {
       ],
     };
   }
-  return { kind: "run", lines: [`size: ${pages.length} page(s), ${targets.length} size-limit target(s)`], command: ["size-limit"] };
+  return {
+    kind: "run",
+    lines: [`size: ${pages.length} page(s), ${targets.length} size-limit target(s)`],
+    command: ["size-limit"],
+  };
 }
 
 /**
@@ -41,7 +46,8 @@ export function evaluateSizeGate(root: string): GateResult {
  */
 export function evaluateE2eGate(root: string): GateResult {
   const pages = findBuiltPages(root);
-  if (pages.length === 0) return { kind: "pass", lines: ["test:e2e: no pages yet (apps/web/dist has no HTML); nothing to test"] };
+  if (pages.length === 0)
+    return { kind: "pass", lines: ["test:e2e: no pages yet (apps/web/dist has no HTML); nothing to test"] };
   if (!existsSync(join(root, "playwright.config.ts"))) {
     return {
       kind: "fail",
@@ -51,7 +57,11 @@ export function evaluateE2eGate(root: string): GateResult {
       ],
     };
   }
-  return { kind: "run", lines: [`test:e2e: ${pages.length} page(s); running Playwright`], command: ["playwright", "test"] };
+  return {
+    kind: "run",
+    lines: [`test:e2e: ${pages.length} page(s); running Playwright`],
+    command: ["playwright", "test"],
+  };
 }
 
 function readRootPackage(root: string): Record<string, unknown> {

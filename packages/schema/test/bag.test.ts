@@ -1,5 +1,6 @@
 import { describe, expect, expectTypeOf, it } from "vitest";
-import { type Bag, bagSchema } from "../src/index.ts";
+import type { Bag } from "../src/index.ts";
+import { bagSchema } from "../src/index.ts";
 
 const sample = {
   slug: "example-pack-30",

@@ -13,7 +13,14 @@ const YAML = `
 describe("readBags", () => {
   it("parses a YAML list of bags and validates each one", () => {
     expect(readBags(YAML)).toEqual([
-      { slug: "example-pack-30", name: "Example Pack 30", brand: "Example Brand", weightGrams: 812, capacityLitres: 30, fabric: "uhmwpe" },
+      {
+        slug: "example-pack-30",
+        name: "Example Pack 30",
+        brand: "Example Brand",
+        weightGrams: 812,
+        capacityLitres: 30,
+        fabric: "uhmwpe",
+      },
     ]);
   });
 

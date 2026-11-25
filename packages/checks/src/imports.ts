@@ -40,7 +40,11 @@ export function findValueImports(source: string, banned: readonly string[]): Val
 }
 
 /** Scans every TypeScript and JavaScript source under `dir` (skipping node_modules and dist). */
-export function scanImports(root: string, dir: string, banned: readonly string[]): Array<ValueImport & { file: string }> {
+export function scanImports(
+  root: string,
+  dir: string,
+  banned: readonly string[],
+): Array<ValueImport & { file: string }> {
   const files = listFiles(root, dir, (name) => /\.(m|c)?[jt]sx?$/.test(name), new Set(["dist"]));
   return files.flatMap((file) =>
     findValueImports(readFileSync(join(root, file), "utf8"), banned).map((f) => ({ file, ...f })),

@@ -32,5 +32,5 @@ export function listFiles(
     }
   };
   walk(join(root, dir));
-  return found.sort();
+  return found.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
 }

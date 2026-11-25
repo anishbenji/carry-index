@@ -51,7 +51,10 @@ describe("evaluateSizeGate", () => {
   });
 
   it("runs size-limit once pages and targets both exist", () => {
-    const pkg = JSON.stringify({ name: "carry-index", "size-limit": [{ path: "apps/web/dist/client/**/*.js", limit: "8 KB" }] });
+    const pkg = JSON.stringify({
+      name: "carry-index",
+      "size-limit": [{ path: "apps/web/dist/client/**/*.js", limit: "8 KB" }],
+    });
     const result = evaluateSizeGate(tree({ "package.json": pkg, "apps/web/dist/client/index.html": "x" }));
     expect(result).toMatchObject({ kind: "run", command: ["size-limit"] });
   });
@@ -72,7 +75,11 @@ describe("evaluateE2eGate", () => {
 
   it("runs Playwright once pages and playwright.config.ts both exist", () => {
     const result = evaluateE2eGate(
-      tree({ "package.json": ROOT_PKG, "playwright.config.ts": "export default {};", "apps/web/dist/client/index.html": "x" }),
+      tree({
+        "package.json": ROOT_PKG,
+        "playwright.config.ts": "export default {};",
+        "apps/web/dist/client/index.html": "x",
+      }),
     );
     expect(result).toMatchObject({ kind: "run", command: ["playwright", "test"] });
   });
