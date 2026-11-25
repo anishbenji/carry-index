@@ -36,6 +36,17 @@ describe("evaluateWall", () => {
     }
   });
 
+  it("also fails on other names Wrangler or its experimental config could load", () => {
+    for (const path of [
+      "apps/web/wrangler-preview.json",
+      "workers/kit/wrangler_kit.toml",
+      "apps/web/cloudflare.config.ts",
+      "apps/web/.wrangler/deploy/config.json",
+    ]) {
+      expect(evaluateWall([path]).ok, path).toBe(false);
+    }
+  });
+
   it("still fails on a tracked config once the checks are implemented", () => {
     const done: WallCheck[] = WALL_CHECKS.map((c) => ({ ...c, status: "implemented" }));
     expect(evaluateWall(["workers/kit/wrangler.jsonc"], done).ok).toBe(false);

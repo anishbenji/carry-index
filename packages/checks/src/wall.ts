@@ -33,8 +33,13 @@ export const WALL_CHECKS: readonly WallCheck[] = [
   },
 ];
 
-/** Any Wrangler config file name: wrangler.json, wrangler.jsonc, wrangler.toml and named variants of them. */
-const WRANGLER_CONFIG = /(^|\/)wrangler(\.[^/]+)?\.(json|jsonc|toml)$/i;
+/**
+ * Any file Wrangler or its experimental config could load as a Worker config: a JSON, JSONC or TOML file whose
+ * name starts `wrangler` (wrangler.jsonc, wrangler-preview.json, ...), any `cloudflare.config.*`, and the Vite
+ * plugin's `.wrangler/deploy/config.json` redirect.
+ */
+const WRANGLER_CONFIG =
+  /(^|\/)(wrangler[^/]*\.(json|jsonc|toml)|cloudflare\.config\.[^/]+|\.wrangler\/deploy\/config\.json)$/i;
 
 export interface WallResult {
   ok: boolean;
