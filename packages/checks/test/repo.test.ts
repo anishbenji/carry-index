@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import { listFiles } from "../src/files.ts";
 import { scanImports } from "../src/imports.ts";
 import { TYPE_ONLY_DIRS, TYPE_ONLY_MODULES, TYPE_ONLY_PATHS } from "../src/policy.ts";
-import { evaluateWall } from "../src/wall.ts";
+import { evaluateWall, trackedFiles } from "../src/wall.ts";
 
 const ROOT = fileURLToPath(new URL("../../../", import.meta.url).href);
 
@@ -23,7 +23,7 @@ describe("this repository", () => {
   });
 
   it("passes the privacy-wall check", () => {
-    expect(evaluateWall(ROOT).ok).toBe(true);
+    expect(evaluateWall(trackedFiles(ROOT)).ok).toBe(true);
   });
 });
 

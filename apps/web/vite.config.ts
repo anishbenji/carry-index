@@ -9,7 +9,8 @@ const repo = fileURLToPath(new URL("../../", import.meta.url).href);
 // switch on when spike PR 7 starts emitting prerendered HTML.
 export default defineConfig({
   plugins: [solid()],
-  // public/ stays (Vite's default) for spike PR 7's _headers; `bun run wall` fails on any file in it but _headers and the favicon.
+  // public/ stays (Vite's default) for spike PR 7's _headers; packages/deploy (privacy-wall design v2) will copy
+  // only allow-listed files from it into the sealed deploy artifact.
   // Loopback only: Vite 8.3.8 bundles a ws release open to a reply-flood DoS, and no fixed Vite 8 exists yet.
   server: {
     host: "localhost",

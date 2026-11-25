@@ -22,6 +22,10 @@ declare module "node:fs" {
   export function rmSync(path: string, options?: { recursive?: boolean; force?: boolean }): void;
 }
 
+declare module "node:child_process" {
+  export function execFileSync(file: string, args: string[], options: { cwd: string; encoding: "utf8" }): string;
+}
+
 declare module "node:path" {
   export const sep: string;
   export function join(...parts: string[]): string;
@@ -48,6 +52,11 @@ declare namespace NodeJS {
 declare const process: { exit(code?: number): never };
 
 declare const console: { log(...data: unknown[]): void };
+
+declare class URL {
+  constructor(url: string, base?: string | URL);
+  readonly href: string;
+}
 
 interface ImportMeta {
   readonly url: string;
