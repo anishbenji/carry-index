@@ -95,7 +95,8 @@ first use with no branch rule.
 
    The gate itself calls only that Worker's `settings`, `subdomain`, `deployments` and `versions` endpoints. Whether
    Wrangler 4.168 needs anything more for an assets-only deploy is proven only by the first deploy. An
-   authorisation failure shows in the log as `live-api-error` with status 401 or 403, or as `wrangler-auth-error`
+   authorisation failure shows in the log as `live-api-error: 401 "carry-journal"` (or 403), or as a
+   `wrangler-auth-error` line after a Wrangler run
    (see "When a deploy fails"). **Fallback, only then:** a user token with Account → **Workers Scripts → Edit** on this
    account only (design section 7, the Release 1 token). It can change any Worker in the account, Kit Watch
    included, so replace it with the scoped token as soon as the cause is fixed, and record the error.
@@ -131,7 +132,8 @@ days with no activity; re-enable it on the Actions tab if that happens.
 ## When a deploy fails
 
 The gate prints one line per problem, naming a path and a rule (never a file's contents or a secret), then a
-summary line. GitHub emails you when the job fails.
+summary line. Every `live-api-error` line carries the reply's HTTP status when there was one
+(`live-api-error: 403 "carry-journal"`): 401 or 403 means the token, whichever row it appears in. GitHub emails you when the job fails.
 
 | Summary line | What happened | What to do |
 |---|---|---|
@@ -139,8 +141,8 @@ summary line. GitHub emails you when the job fails.
 | `headers-missing: "_headers"` or `headers-weak: "_headers"` (with `bundle scan failed`) | The build has no `_headers` file or lacks a required security header (`headers-missing`), or a block weakens one: `'unsafe-inline'` in the CSP, COOP or CORP looser than same-origin, or a `! Name` line removing a required header (`headers-weak`). Nothing was uploaded | Fix `_headers` in `apps/web`, in a pull request. The required list is `REQUIRED_HEADERS` in `packages/deploy/src/headers.ts` |
 | `check 3 failed before upload; nothing was uploaded` | The dry run printed something other than "No bindings found." (a binding appeared, or Wrangler's output changed) | Nothing is live from this run. Find what changed; a Wrangler upgrade needs T6 and the recorded dry-run fixture re-checked |
 | `worker-missing: "carry-journal"`, then `the carry-journal Worker does not exist yet …` | The Worker has not been created; `wrangler versions upload` cannot create one. Nothing was uploaded | Do setup step 1.1 (create it in the dashboard), then step 4: a run with **apply_triggers**, then a normal run |
-| `could not read the active deployment; nothing was uploaded` | The deployments API failed before the upload. The `live-api-error` line above it carries the HTTP status | **401 or 403:** the token is wrong, expired or lacks access to `carry-journal`; fix it in the environment (setup step 1, then the fallback token only if the scoped one is refused). **Other statuses or none:** re-run once Cloudflare answers again |
-| `wrangler-auth-error: "carry-journal"` | Wrangler reported an authentication or authorisation error | As 401 or 403 above: fix the token, then re-run |
+| `live-api-error: 403 "carry-journal"` (or 401), then `could not read the active deployment; nothing was uploaded` | The deployments API refused or failed before the upload. The number is the reply's HTTP status; with no number there was no usable reply (a timeout, a network error or a malformed body) | **401 or 403:** the token is wrong, expired or lacks access to `carry-journal`; fix it in the environment (setup step 1, then the fallback token only if the scoped one is refused). **Other statuses or none:** re-run once Cloudflare answers again |
+| `wrangler-error: code …` lines, with `wrangler-auth-error` after them | A Wrangler run failed. The codes are Cloudflare's error codes from its output (nothing else of it is printed); `wrangler-auth-error` means one of them, or Wrangler's wording, is an authentication error (codes 10000 or 9109) | As 401 or 403 above: fix the token, then re-run. Without `wrangler-auth-error`, look the code up in Cloudflare's API error list |
 | `live-subdomain: "carry-journal"`, then `the workers.dev or preview-URL setting differs from the definition; run deploy-public with apply_triggers first` | workers.dev or preview URLs are on (a new Worker, or turned on in the dashboard). Nothing was uploaded | Run deploy-public with **apply_triggers**, check the settings in the dashboard, then run a normal deploy |
 | `could not read the workers.dev and preview-URL settings; nothing was uploaded` | The subdomain API failed three times before the upload | Re-run once Cloudflare answers again |
 | `wrangler versions upload exited with …`, then `no uploaded version to check; nothing was promoted` | The upload failed, or printed no version id (exit 124 means it timed out after 10 minutes) | Nothing changed live. A version may exist with no traffic; it is harmless. Re-run |
