@@ -15,9 +15,8 @@ Once Workers Builds is connected, each merge to `main` deploys the public site t
 The workers.dev copy is never indexed: `_headers` sends `X-Robots-Tag: noindex` only for the workers.dev
 hostname and its preview hosts (Cloudflare documents host-scoped `_headers` rules for this, e.g.
 `https://:version.:subdomain.workers.dev/*`), before and after go-live, and never on carryjournal.com. If the
-rule ever fails at the edge, the go-live PR removes the header and turns `workers_dev` off for the public Worker
-**while setting `preview_urls: true` explicitly**, because Version (preview) URLs are disabled by default once
-`workers_dev` is off and every merge gate runs on them.
+rule ever fails at the edge, that reverses the owner's decision of 25 Nov (noindex on workers.dev hosts) and goes
+back to the owner; the Playwright header test then follows whatever the owner chooses instead.
 
 ## Consequences
 

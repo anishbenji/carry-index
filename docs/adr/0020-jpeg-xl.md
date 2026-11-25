@@ -14,7 +14,8 @@ Test JPEG XL against AVIF on three sample photos in the spike. Offer it for larg
 
 ## Consequences
 
-The spike encodes three sample photos as AVIF and JPEG XL at matched quality. JPEG XL is offered for large review photos only if smaller; AVIF and WebP remain the automatic fallbacks.
+The build encodes three sample photos as AVIF and JPEG XL at matched quality, after the Thursday gate (the
+owner moved this test out of the spike). JPEG XL is offered for large review photos only if smaller; AVIF and WebP remain the automatic fallbacks.
 
 ## Why
 
