@@ -427,7 +427,7 @@ list, outside this repo.
 2. Accept the rule: page data never goes into an inline script; islands are plain TypeScript.
 3. N3: confirm inlining the stylesheet while under about 10 KB (ADR-0018).
 4. Q5: accept the build-time CSP, one hash set for every page, no `'unsafe-inline'`.
-5. Accept ADR-0046: the public Worker is assets-only, and the beacon is its own Worker on `carryjournal.com/api/*`.
+5. Accept ADR-0046: the public Worker is assets-only, and the beacon is its own Worker on `carryjournal.com/api/*` (changes the unified brief's "Two Workers" line).
 6. Accept ADR-0045's spike amendment: host-scoped `noindex` on workers.dev, confirmed at the edge after merge.
 7. Accept ADR-0047, the toolchain.
 8. Size gate (ADR-0017): count inline scripts per page, as `scripts/page-budget.ts` does; budgets unchanged.
