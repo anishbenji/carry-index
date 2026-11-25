@@ -440,8 +440,8 @@ list, outside this repo.
 11. Kit edge test (U4/U5, pending #11): it waits for the Kit minimum, with checks 1 and 2 in place, and `deploy-kit.yml` (ADR-0049, your decision #17 5A). PR 9's step 5, which deploys while checks 1 and 2 are pending, does not run. Then: the Access apps and secrets in the dashboard, the gated deploy, and the edge checks.
 12. The one free WAF rule: MCP `/register` and `/token` (recommended), combined with the beacon's `/api/*`, or the beacon only (ADR-0048); then add it (pending #11).
 13. R2: look at the dashboard and report whether it asks for a card (U3, pending #4).
-15. Source maps (ADR-0029 note): CI artifacts are public on a public repository, so source maps stay local to the build and are never uploaded until you approve private storage.
-14. Create the Cloudflare API token and set it as `CLOUDFLARE_API_TOKEN` in the GitHub environment `public-production` (`main` only, bypass off), with the account ID, as in ADR-0049's owner steps; never hand it to the spike or paste it in chat (U1, pending #2). The edge measurements then run through the approved workflow.
+14. Source maps (ADR-0029 note): CI artifacts are public on a public repository, so source maps stay local to the build and are never uploaded until you approve private storage.
+15. Create the Cloudflare API token and set it as `CLOUDFLARE_API_TOKEN` in the GitHub environment `public-production` (`main` only, bypass off), with the account ID, as in ADR-0049's owner steps; never hand it to the spike or paste it in chat (U1, pending #2). The edge measurements then run through the approved workflow.
 
 **Decided overnight by the director under your instruction (26 Nov), yours to reverse:** #13 `@types/bun` 1.4.2 and
 `happy-dom` 21.0.4 approved, dev only; #14.1 Node for the import check; #14.2 child rule 6 allows Zod in the
