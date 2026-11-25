@@ -365,3 +365,37 @@ describe("evaluateWall: Cloudflare plugin options are allow-listed", () => {
     }
   });
 });
+
+describe("evaluateWall: never echoes file contents", () => {
+  const CANARY = "CANARY-wall-7f3a9c";
+  // Phrases from Wrangler's own diagnostics, which quote file contents after them (cut off here only by length).
+  const WRANGLER_DIAGNOSTIC =
+    /Instead this file contains|Processing .* configuration|deploy configuration file was found/;
+
+  it("does not read a symlinked deploy redirect, so its target's contents never reach the output", () => {
+    const root = tree({
+      "shared/notes.json": `{ "note": "${CANARY}" }`,
+      "apps/web/wrangler.jsonc": '{ "name": "web" }',
+    });
+    mkdirSync(join(root, "apps/web/.wrangler/deploy"), { recursive: true });
+    symlinkSync(join(root, "shared/notes.json"), join(root, "apps/web/.wrangler/deploy/config.json"));
+    const result = evaluateWall(root);
+    expect(result.ok).toBe(false);
+    expect(result.lines.join("\n")).not.toContain(CANARY);
+    expect(result.lines.join("\n")).not.toMatch(WRANGLER_DIAGNOSTIC);
+    expect(result.lines.join("\n")).toMatch(/apps\/web\/\.wrangler\/deploy\/config\.json/);
+  });
+
+  it("names only the path and the rule when Wrangler rejects a config or a redirect", () => {
+    const rejected = evaluateWall(
+      tree({ "workers/kit/wrangler.jsonc": `{ "name": 42, "vars": { "X": "${CANARY}" } }` }),
+    );
+    expect(rejected.ok).toBe(false);
+    expect(rejected.lines.join("\n")).not.toContain(CANARY);
+    expect(rejected.lines.join("\n")).not.toMatch(WRANGLER_DIAGNOSTIC);
+    const redirect = evaluateWall(tree({ "apps/web/.wrangler/deploy/config.json": `{ "note": "${CANARY}" }` }));
+    expect(redirect.ok).toBe(false);
+    expect(redirect.lines.join("\n")).not.toContain(CANARY);
+    expect(redirect.lines.join("\n")).not.toMatch(WRANGLER_DIAGNOSTIC);
+  });
+});

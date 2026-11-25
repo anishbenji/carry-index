@@ -1,4 +1,4 @@
-import { existsSync, lstatSync, realpathSync } from "node:fs";
+import { existsSync, lstatSync, readFileSync, realpathSync } from "node:fs";
 import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import type { Node, SourceFile } from "typescript/unstable/ast";
 import { SyntaxKind } from "typescript/unstable/ast";
@@ -204,12 +204,19 @@ export function evaluateWall(root: string, checks: readonly WallCheck[] = WALL_C
     if (DEPLOY_REDIRECT.test(file)) continue;
     checked.add(file);
     const bindings = wranglerBindings(join(canonicalRoot, file));
-    if (typeof bindings === "string") problems.push(`${file}: Wrangler cannot read it (${bindings}); failing closed`);
+    if (bindings === undefined) problems.push(`${file}: Wrangler rejects this config; failing closed`);
     else if (anyPending && bindings.length > 0) {
       problems.push(`${file} declares ${bindings.join(", ")} while a privacy-wall check is still pending`);
     }
   }
-  for (const dir of WORKER_DIRS) problems.push(...checkDiscovery(canonicalRoot, dir, checked));
+  for (const dir of WORKER_DIRS) {
+    const link = symlinkOnPath(canonicalRoot, dir);
+    if (link) problems.push(`${dir}: ${link} is a symlink; Wrangler would follow it, so the wall does not allow it`);
+  }
+  // Wrangler's own discovery reads whatever it finds, so it runs only once every path above passed.
+  if (problems.length === 0) {
+    for (const dir of WORKER_DIRS) problems.push(...checkDiscovery(canonicalRoot, dir, checked));
+  }
   const viteConfigs = listFiles(canonicalRoot, ".", (name) => VITE_CONFIG.test(name));
   problems.push(...withParsedFiles(canonicalRoot, viteConfigs, (file, source) => checkViteConfig(file, source)).flat());
   lines.push(`wrangler configs checked: ${accepted}`);
@@ -220,10 +227,10 @@ export function evaluateWall(root: string, checks: readonly WallCheck[] = WALL_C
 
 /**
  * Bindings in a config as Wrangler reads it: the raw file (so `previews` and every `env.*` are seen as written)
- * and Wrangler's normalised config for the top level and each environment. Returns Wrangler's error message
- * instead if it rejects the file.
+ * and Wrangler's normalised config for the top level and each environment. Returns undefined if Wrangler rejects
+ * the file. Wrangler's diagnostics quote file contents, so they are never passed on.
  */
-function wranglerBindings(path: string): string[] | string {
+function wranglerBindings(path: string): string[] | undefined {
   try {
     const { rawConfig } = experimental_readRawConfig({ config: path });
     const found = new Set(declaredBindings(rawConfig));
@@ -236,62 +243,76 @@ function wranglerBindings(path: string): string[] | string {
       for (const binding of declaredBindings(config, env === undefined ? "" : `env.${env}.`)) found.add(binding);
     }
     return [...found];
-  } catch (error) {
-    return firstLine(error);
+  } catch {
+    return undefined;
   }
 }
 
 /**
- * Asks Wrangler which config it would load when run from `dir` (its find-up and `.wrangler/deploy` redirect
- * rules, `path.resolve` included), then requires the canonical file to be inside the checkout and checked. The
- * redirect's `auxiliaryWorkers` are held to the same rule.
+ * Checks which config Wrangler would load when run from `dir`. The deploy redirect there, and every path it names
+ * (`configPath` and each auxiliary Worker's), are first validated without Wrangler: plain JSON, no symlink on the
+ * way, resolved with `path.resolve` as Wrangler does, inside the checkout and among the configs checked. Only then
+ * is Wrangler's own discovery (find-up plus redirect) asked, and its answer must be one of those configs.
+ * Messages name paths and rules only, never file contents.
  */
 function checkDiscovery(root: string, dir: string, checked: ReadonlySet<string>): string[] {
   if (!existsSync(join(root, dir))) return [];
-  const link = symlinkOnPath(root, dir);
-  if (link) return [`${dir}: ${link} is a symlink; Wrangler would follow it, so the wall does not allow it`];
-  let found: { configPath?: string | undefined; deployConfigPath?: string | undefined };
+  const redirect = `${dir}/.wrangler/deploy/config.json`;
+  const allowedTargets = new Set<string>();
+  if (existsSync(join(root, redirect))) {
+    const redirectLink = symlinkOnPath(root, redirect);
+    if (redirectLink) return [`${redirect}: ${redirectLink} is a symlink; not read`];
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(readFileSync(join(root, redirect), "utf8"));
+    } catch {
+      return [`${redirect}: not plain JSON as the Cloudflare plugin writes it; not passed to Wrangler`];
+    }
+    if (!isRecord(parsed) || typeof parsed.configPath !== "string") {
+      return [`${redirect}: has no configPath string; not passed to Wrangler`];
+    }
+    const paths: unknown[] = [parsed.configPath];
+    if (Array.isArray(parsed.auxiliaryWorkers)) {
+      for (const worker of parsed.auxiliaryWorkers) paths.push(isRecord(worker) ? worker.configPath : undefined);
+    } else if (parsed.auxiliaryWorkers !== undefined) {
+      return [`${redirect}: auxiliaryWorkers is not a list; not passed to Wrangler`];
+    }
+    for (const path of paths) {
+      const target =
+        typeof path === "string" ? insideCheckout(root, resolve(join(root, dirname(redirect)), path)) : undefined;
+      if (target === undefined || !checked.has(target) || symlinkOnPath(root, target)) {
+        return [`${redirect}: points outside the configs the wall checked; not passed to Wrangler`];
+      }
+      allowedTargets.add(target);
+    }
+  }
+  let found: { configPath?: string | undefined };
   try {
     found = experimental_readRawConfig(
       { script: join(root, dir, "__wall_probe__.js") },
       { useRedirectIfAvailable: true },
     );
-  } catch (error) {
-    return [`${dir}: Wrangler cannot resolve its config from here (${firstLine(error)}); failing closed`];
+  } catch {
+    return [`${dir}: Wrangler cannot resolve a config from here; failing closed`];
   }
-  const targets = found.configPath === undefined ? [] : [found.configPath];
-  if (found.deployConfigPath !== undefined) {
-    try {
-      const { rawConfig } = experimental_readRawConfig({ config: found.deployConfigPath });
-      const aux: unknown = (rawConfig as Record<string, unknown>).auxiliaryWorkers;
-      if (Array.isArray(aux)) {
-        for (const worker of aux) {
-          const path = isRecord(worker) ? worker.configPath : undefined;
-          if (typeof path !== "string") return [`${dir}: an auxiliary Worker has no configPath; failing closed`];
-          targets.push(resolve(dirname(found.deployConfigPath), path));
-        }
-      } else if (aux !== undefined) {
-        return [`${dir}: auxiliaryWorkers in the deploy redirect is not a list; failing closed`];
-      }
-    } catch (error) {
-      return [`${dir}: Wrangler cannot read the deploy redirect (${firstLine(error)}); failing closed`];
-    }
+  if (found.configPath === undefined) return [];
+  let canonical: string;
+  try {
+    canonical = realpathSync(found.configPath);
+  } catch {
+    return [`${dir}: Wrangler would load a config that does not exist; failing closed`];
   }
-  const problems: string[] = [];
-  for (const target of targets) {
-    let canonical: string;
-    try {
-      canonical = realpathSync(target);
-    } catch {
-      problems.push(`${dir}: Wrangler would load ${target}, which does not exist; failing closed`);
-      continue;
-    }
-    const rel = relative(root, canonical).split(sep).join("/");
-    if (isAbsolute(rel) || rel.startsWith("../") || !checked.has(rel)) {
-      problems.push(`${dir}: Wrangler would load ${canonical}, a config the wall did not check`);
-    }
+  const rel = insideCheckout(root, canonical);
+  if (rel === undefined || !checked.has(rel) || (allowedTargets.size > 0 && !allowedTargets.has(rel))) {
+    return [`${dir}: Wrangler would load ${rel ?? "a file outside the checkout"}, a config the wall did not check`];
   }
-  return problems;
+  return [];
+}
+
+/** `path` relative to the checkout with forward slashes, or undefined if it lies outside. */
+function insideCheckout(root: string, path: string): string | undefined {
+  const rel = relative(root, path).split(sep).join("/");
+  return rel === "" || isAbsolute(rel) || rel === ".." || rel.startsWith("../") ? undefined : rel;
 }
 
 /** The first path component (from the root down to `path`) that is a symbolic link, if any. */
@@ -306,11 +327,6 @@ function symlinkOnPath(root: string, path: string): string | undefined {
     }
   }
   return undefined;
-}
-
-function firstLine(error: unknown): string {
-  const message = error instanceof Error ? error.message : String(error);
-  return message.replace(/\s+/g, " ").trim().slice(0, 300);
 }
 
 /**
