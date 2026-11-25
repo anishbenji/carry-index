@@ -1,9 +1,9 @@
 import { join } from "node:path";
-import { fileURLToPath } from "node:url";
 import type { GateResult } from "../gates.ts";
 
-/** The repository root, found from this file's location rather than the caller's working directory. */
-export const REPO_ROOT = fileURLToPath(new URL("../../../../", import.meta.url));
+import { REPO_ROOT } from "./root.ts";
+
+export { REPO_ROOT };
 
 /** Prints a gate's lines, runs its command from the repo's node_modules/.bin if it has one, and exits. */
 export function finishGate(result: GateResult): never {

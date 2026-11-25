@@ -45,7 +45,12 @@ export function scanImports(
   dir: string,
   banned: readonly string[],
 ): Array<ValueImport & { file: string }> {
-  const files = listFiles(root, dir, (name) => /\.(m|c)?[jt]sx?$/.test(name), new Set(["dist"]));
+  const files = listFiles(
+    root,
+    dir,
+    (name) => /\.(m|c)?[jt]sx?$/.test(name),
+    new Set(["dist", ".tsbuild", ".wrangler"]),
+  );
   return files.flatMap((file) =>
     findValueImports(readFileSync(join(root, file), "utf8"), banned).map((f) => ({ file, ...f })),
   );

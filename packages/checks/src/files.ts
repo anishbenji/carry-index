@@ -1,21 +1,23 @@
+import type { Dirent } from "node:fs";
 import { readdirSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 
-const SKIPPED_DIRS = new Set(["node_modules", ".git", ".wrangler"]);
+const ALWAYS_SKIPPED = new Set(["node_modules", ".git"]);
 
 /**
- * Lists files under `dir` (recursively) whose names pass `accept`, as sorted paths relative to `root`
- * with forward slashes. Skips node_modules, .git and .wrangler, plus any directory named in `skip`.
+ * Lists files under `dir` (recursively) that pass `accept`, as sorted paths relative to `root` with forward
+ * slashes. `accept` gets the file name and its repo-relative path. node_modules and .git are always skipped,
+ * plus any directory named in `skip`.
  */
 export function listFiles(
   root: string,
   dir: string,
-  accept: (name: string) => boolean,
+  accept: (name: string, path: string) => boolean,
   skip: ReadonlySet<string> = new Set(),
 ): string[] {
   const found: string[] = [];
   const walk = (abs: string): void => {
-    let entries: import("node:fs").Dirent[];
+    let entries: Dirent[];
     try {
       entries = readdirSync(abs, { withFileTypes: true });
     } catch (error) {
@@ -25,9 +27,10 @@ export function listFiles(
     for (const entry of entries) {
       const full = join(abs, entry.name);
       if (entry.isDirectory()) {
-        if (!SKIPPED_DIRS.has(entry.name) && !skip.has(entry.name)) walk(full);
-      } else if (entry.isFile() && accept(entry.name)) {
-        found.push(relative(root, full).split(sep).join("/"));
+        if (!ALWAYS_SKIPPED.has(entry.name) && !skip.has(entry.name)) walk(full);
+      } else if (entry.isFile()) {
+        const path = relative(root, full).split(sep).join("/");
+        if (accept(entry.name, path)) found.push(path);
       }
     }
   };

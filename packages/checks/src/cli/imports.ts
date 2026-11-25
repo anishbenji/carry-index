@@ -1,6 +1,6 @@
 import { scanImports } from "../imports.ts";
 import { TYPE_ONLY_DIRS, TYPE_ONLY_MODULES } from "../policy.ts";
-import { REPO_ROOT } from "./run.ts";
+import { REPO_ROOT } from "./root.ts";
 
 let failures = 0;
 for (const dir of TYPE_ONLY_DIRS) {

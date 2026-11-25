@@ -69,9 +69,33 @@ composite project that emits declarations only, into its own ignored `.tsbuild/`
 | `lint` | `biome ci .`, then the import ban | passes |
 | `test` | `vitest run` in every workspace that has tests | 42 tests pass |
 | `build` | `vite build` in apps/web and apps/kit | passes, no HTML emitted |
-| `wall` | lists the three privacy-wall checks as `pending: <milestone>`; fails if any `wrangler.json(c)` declares a binding while one is pending, and on any `wrangler.toml` or unreadable config | passes, 0 configs |
+| `wall` | lists the three privacy-wall checks as `pending: <milestone>`; fails if any Wrangler config declares a binding while one is pending (see below) | passes, 0 Wrangler configs, 2 Vite configs |
 | `size` | "no pages yet" until `apps/web/dist` holds HTML; then fails without `size-limit` targets, else runs size-limit | passes, no pages |
 | `test:e2e` | "no pages yet" until `apps/web/dist` holds HTML; then fails without `playwright.config.ts`, else runs Playwright | passes, no pages |
+
+## Privacy wall: what it reads, and what the deploy must do
+
+`bun run wall` reads every Wrangler config it can find outside node_modules: any `wrangler*.json`,
+`wrangler*.jsonc` or `wrangler*.toml`, any other `.jsonc` (except `biome.jsonc` and `tsconfig*.jsonc`), any
+`.toml` except `bunfig.toml` (TOML fails closed), the configs `@cloudflare/vite-plugin` generates under
+`dist/**/wrangler.json`, and its `.wrangler/deploy/config.json` redirect, which must point only at configs the
+wall read. A key counts as a binding unless it is on an allow-list of non-binding keys built from wrangler
+4.168's config schema; empty values (recursively, so the plugin's `durable_objects: { bindings: [] }` default)
+are not bindings. The top level, `previews`, every `env.<name>` and each environment's `previews` are checked.
+It also fails if any `vite.config.*` passes `config` or `configPath` to the Cloudflare plugin, or passes options
+it cannot read.
+
+The wall cannot prove that a deploy uses the config it checked. **Requirement for the CI deploy workflow
+(PR 10):** build, then run `bun run wall` on the generated config in the same job, immediately before
+`wrangler deploy`, and deploy with that generated config (the plugin's `.wrangler/deploy/config.json`
+redirect, no `--config` override and no `--env` the wall did not see). A deploy step that cannot meet this must
+not run.
+
+The wall and import checks parse source with TypeScript 7's own parser. TypeScript 7 has no in-process
+`createSourceFile`; its JavaScript API (`typescript/unstable/sync`) drives the native compiler over a pipe and
+reads Node's stream internals, so it fails under Bun (`TypeError: undefined is not an object (evaluating
+'stdout._handle.fd')`). Those two CLIs therefore run with `node` (26.13.0 strips the TypeScript types). The API
+is marked unstable: pin `typescript` exactly and expect changes on upgrade.
 
 ## Commands and results
 

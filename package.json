@@ -14,7 +14,7 @@
     "build": "bun run --filter '*' build",
     "test:e2e": "bun packages/checks/src/cli/e2e.ts",
     "size": "bun packages/checks/src/cli/size.ts",
-    "wall": "bun packages/checks/src/cli/wall.ts"
+    "wall": "node packages/checks/src/cli/wall.ts"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.14.1",
