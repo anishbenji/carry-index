@@ -20,6 +20,10 @@ cannot deploy. Three jobs, each a check name you can require in branch protectio
 
 Node comes from `.node-version`; Bun is pinned to 1.4.2.
 
+`bun run test` also builds the app: `packages/deploy/test/web-build.slow.test.ts` runs the real `apps/web` Vite
+build into a temp folder and puts it through the gate's `check`. On this machine, run the suite under the
+heavy-job lock (`bin/heavy-run.sh` in the director's reports folder), like any other whole-app build.
+
 ### `.github/workflows/deploy-public.yml`: build, then deploy
 
 Runs on every push to `main`, once a day at 04:17 UTC (so `/performance` stays current, decision #17), and by hand
