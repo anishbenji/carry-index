@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { listFiles } from "../src/files.ts";
@@ -64,6 +64,21 @@ describe("Vite dev file access", () => {
         ".dev.vars",
         ".dev.vars.*",
       ]);
+    }
+  });
+});
+
+describe("Vite dev server reach", () => {
+  it("serves only the app folder, the workspace packages it imports and node_modules, with CORS off", async () => {
+    for (const app of ["web", "kit"]) {
+      const module = (await import(`../../../apps/${app}/vite.config.ts`)) as {
+        default: { server?: { cors?: unknown; fs?: { allow?: unknown } } };
+      };
+      const allow = module.default.server?.fs?.allow;
+      expect(Array.isArray(allow), app).toBe(true);
+      const relativeAllow = (allow as string[]).map((p) => relative(ROOT, p).split(sep).join("/").replace(/\/$/, ""));
+      expect(relativeAllow, app).toEqual([`apps/${app}`, "packages/schema", "node_modules"]);
+      expect(module.default.server?.cors, app).toBe(false);
     }
   });
 });
