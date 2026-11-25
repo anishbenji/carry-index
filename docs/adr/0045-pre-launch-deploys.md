@@ -12,10 +12,17 @@ Saturday 28 Nov (ADR-0012).
 ## Decision
 
 Once Workers Builds is connected, each merge to `main` deploys the public site to its workers.dev address.
-Until go-live, `_headers` sends `X-Robots-Tag: noindex` on every page; a go-live pull request removes it.
+The workers.dev copy is never indexed: `_headers` sends `X-Robots-Tag: noindex` only for the workers.dev
+hostname, before and after go-live, and never on carryjournal.com. (Host-scoped rules in `_headers` for
+Workers Static Assets are to be confirmed in spike PR 7; if they are not supported, the go-live PR removes the
+header and turns `workers_dev` off for the public Worker instead.)
 
 ## Consequences
 
-Checks run against a deployed site all week. The go-live PR touches `_headers`, so it waits for the owner's
+Checks run against a deployed site all week. Lighthouse's crawlability audit cannot pass on a host that sends
+`noindex`, so until go-live the SEO gate on workers.dev runs every other SEO audit at 100, and a Playwright
+test asserts that workers.dev sends `noindex` and that the carryjournal.com build does not. From go-live the
+full SEO gate, crawlability included, runs against carryjournal.com. This is an open point for the owner to
+confirm, because it narrows one Lighthouse audit on preview hosts. Any `_headers` change waits for the owner's
 review. The private Worker is not deployed until Cloudflare Access protects its hostname, and it disables
 its workers.dev and preview URLs so it is never reachable unprotected.

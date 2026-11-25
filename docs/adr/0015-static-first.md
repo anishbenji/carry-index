@@ -14,7 +14,7 @@ Content pages (bag, fabric, article, about) ship no framework script; only an in
 
 ## Consequences
 
-Content pages ship only an inline theme and units snippet under 1 KB. Interactive parts (sort and filter, airline widget, weight chart, compare picker) are islands loaded when idle or on first use. Solid 2 still renders every page at build and runs the private app. Fallback if start mode cannot omit the client entry: a plain Vite server build plus a short prerender script. Provisional: the spike builds the listing and one bag page both ways and the owner confirms at the Thursday gate.
+Content pages ship no framework runtime and no page-wide hydration. Before first paint they carry only an inline theme and units snippet under 1 KB; after it, only the metrics beacon and, on first use, widget islands such as the airline widget, all inside the 8 KB content-page budget (ADR-0017). Interactive parts (sort and filter, airline widget, weight chart, compare picker) are islands loaded when idle or on first use. Solid 2 still renders every page at build and runs the private app. Fallback if start mode cannot omit the client entry: a plain Vite server build plus a short prerender script. Provisional: the spike builds the listing and one bag page both ways and the owner confirms at the Thursday gate.
 
 ## Why
 
