@@ -10,6 +10,8 @@
       "apps/**",
       "packages/**",
       "workers/**",
+      "playwright.config.ts",
+      "e2e/**",
       "*.json",
       "!**/dist",
       "!**/.tsbuild",

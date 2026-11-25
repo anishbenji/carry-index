@@ -131,3 +131,14 @@ describe("the built public app", () => {
     expect(zodInBuild(ROOT)).toEqual([]);
   });
 });
+
+describe("end-to-end sources", () => {
+  it("are linted by Biome and type-checked by a project the root references", () => {
+    const biome = JSON.parse(readFileSync(join(ROOT, "biome.json"), "utf8")) as { files: { includes: string[] } };
+    expect(biome.files.includes).toEqual(expect.arrayContaining(["playwright.config.ts", "e2e/**"]));
+    const root = JSON.parse(readFileSync(join(ROOT, "tsconfig.json"), "utf8")) as { references: { path: string }[] };
+    expect(root.references.map((r) => r.path)).toContain("tsconfig.e2e.json");
+    const e2e = JSON.parse(readFileSync(join(ROOT, "tsconfig.e2e.json"), "utf8")) as { include: string[] };
+    expect(e2e.include).toEqual(expect.arrayContaining(["playwright.config.ts", "e2e"]));
+  });
+});

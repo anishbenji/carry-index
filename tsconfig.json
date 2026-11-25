@@ -27,6 +27,9 @@
     },
     {
       "path": "workers/kit"
+    },
+    {
+      "path": "tsconfig.e2e.json"
     }
   ]
 }
