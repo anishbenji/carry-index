@@ -1,0 +1,44 @@
+# ADR-0046: The public Worker is assets-only; the beacon is its own Worker
+
+- **Status:** Proposed (spike results, 2026-11-26)
+- **Date:** 2026-11-26
+- **Source:** spike PR 7, `docs/spike/deploy-hydrated.md` on `spike/07-deploy-hydrated` at `4c2c820`; summary in
+  [`docs/spike/results.md`](../spike/results.md) (Q1, Q4, Q6)
+
+## Context
+
+The architecture doc's spike question 1 asks which Worker is `main`, with the aim that an unknown URL gets the
+static 404 page without invoking a Worker. Questions 4 and 6 ask for clean hydration with theme and units set
+before first paint, and for the airline widget's data with no Worker call.
+
+PR 7 served the same build twice under `wrangler dev` (local, at `b5d4fd5`). Assets-only, every unknown URL got
+404 and `404.html`. With a `main` Worker, browser navigations still got `404.html`, but requests without
+`Sec-Fetch-Mode: navigate` (curl, most bots, `fetch()`) ran the Worker. Each such run counts against the
+account's 100,000 daily Worker requests.
+
+## Decision
+
+- `apps/web/wrangler.jsonc` has no `main`. The public site is an assets-only Worker with
+  `assets.not_found_handling: "404-page"` and `html_handling: "drop-trailing-slash"`. Unknown URLs get `404.html`
+  with a 404 status, without a Worker.
+- The metrics beacon (ADR-0035) is a separate Worker on its own route, `carryjournal.com/api/*`. It is never the
+  public site's `main`.
+- Theme and units are set before first paint by one inline snippet at the top of `<head>` (228 bytes in PR 7).
+  Both unit systems and both theme labels are in the markup, and CSS shows one, so server and client HTML match.
+- The airline widget's data is one static JSON file per model, `data/fit/<model>.json`, fetched once when the
+  widget opens. It is not a `prerendered()` call.
+
+## Consequences
+
+- No code runs for public page requests, so crawlers and scanners cost nothing against the daily request limit.
+- Any server behaviour on the public host needs its own route and Worker, as the beacon does.
+- The 404 page must render correctly for any path, including a well-formed but unknown bag slug. PR 7's review
+  found it did not (P1: hydration rendered the address bar's route, not the 404 route). PR 8 fixes this, and an
+  end-to-end test must open `/bags/no-such-bag` in a browser and see the "Page not found" heading.
+- The widget's loading and error text needs a live region, and a retry must clear the error (PR 7 review, P3).
+- Proven only locally. The first deploy confirms `not_found_handling` at the edge.
+
+## Why
+
+Proposed — for the user at the gate. It keeps the public site free of runtime code and of request costs, as the
+static-first plan (ADR-0015) intends, whichever way N1 is decided.
