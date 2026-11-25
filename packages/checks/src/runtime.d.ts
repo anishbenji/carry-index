@@ -8,7 +8,11 @@ declare module "node:fs" {
     name: string;
     isDirectory(): boolean;
     isFile(): boolean;
+    isSymbolicLink(): boolean;
   }
+  export function lstatSync(path: string): { isSymbolicLink(): boolean };
+  export function realpathSync(path: string): string;
+  export function symlinkSync(target: string, path: string): void;
   export function readFileSync(path: string, encoding: "utf8"): string;
   export function readdirSync(path: string, options: { withFileTypes: true }): Dirent[];
   export function existsSync(path: string): boolean;
@@ -23,6 +27,8 @@ declare module "node:path" {
   export function join(...parts: string[]): string;
   export function relative(from: string, to: string): string;
   export function dirname(path: string): string;
+  export function resolve(...parts: string[]): string;
+  export function isAbsolute(path: string): boolean;
 }
 
 declare module "node:os" {
@@ -42,11 +48,6 @@ declare namespace NodeJS {
 declare const process: { exit(code?: number): never };
 
 declare const console: { log(...data: unknown[]): void };
-
-declare class URL {
-  constructor(url: string, base?: string | URL);
-  readonly href: string;
-}
 
 interface ImportMeta {
   readonly url: string;

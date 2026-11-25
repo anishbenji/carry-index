@@ -1,5 +1,5 @@
-import { existsSync, readFileSync } from "node:fs";
-import { dirname, join, relative, sep } from "node:path";
+import { existsSync, lstatSync, realpathSync } from "node:fs";
+import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import type { Node, SourceFile } from "typescript/unstable/ast";
 import { SyntaxKind } from "typescript/unstable/ast";
 import {
@@ -15,8 +15,8 @@ import {
   isShorthandPropertyAssignment,
   isStringLiteral,
 } from "typescript/unstable/ast/is";
+import { experimental_readRawConfig, unstable_readConfig } from "wrangler";
 import { listFiles } from "./files.ts";
-import { parseJsonc } from "./jsonc.ts";
 import { lineOf, walk, withParsedFiles } from "./parse.ts";
 
 export interface WallCheck {
@@ -110,6 +110,7 @@ export const NON_BINDING_KEYS: ReadonlySet<string> = new Set([
   "topLevelName",
   "definedEnvironments",
   "auxiliaryWorkers",
+  "targetEnvironment",
 ]);
 
 /** Keys checked recursively rather than as bindings. */
@@ -143,83 +144,187 @@ export interface WallResult {
   lines: string[];
 }
 
-const DEPLOY_REDIRECT = /(^|\/)\.wrangler\/deploy\/config\.json$/;
 const VITE_CONFIG = /^vite\.config\.(c|m)?[jt]s$/;
 const CLOUDFLARE_PLUGIN = "@cloudflare/vite-plugin";
 
+/** The folders a Worker may be configured in. Wrangler run from any of them finds only that folder's config. */
+export const WORKER_DIRS = ["apps/web", "apps/kit", "workers/web", "workers/kit"] as const;
+/** The only source Worker configs allowed: `wrangler.jsonc` in each Worker folder. */
+const FIXED_CONFIG = /^(apps|workers)\/(web|kit)\/wrangler\.jsonc$/;
+/** What `@cloudflare/vite-plugin` writes: one config per Worker under dist/, and the deploy redirect. */
+const GENERATED_CONFIG = /^(apps|workers)\/(web|kit)\/dist\/[^/]+\/wrangler\.json$/;
+const DEPLOY_REDIRECT = /^(apps|workers)\/(web|kit)\/\.wrangler\/deploy\/config\.json$/;
+
 /**
- * Which files the wall reads as Wrangler configs: any `wrangler*.json(c)` or `wrangler*.toml`, any other
- * `.jsonc` or `.toml` (Wrangler accepts any name through `--config`) except the tool configs named here, and
- * the Vite plugin's `.wrangler/deploy/config.json` redirect. Generated configs under dist/ are included.
+ * Files Wrangler (or its experimental config) could load as a Worker config, wherever they are: any name
+ * starting `wrangler`, any `cloudflare.config.*`, any `.wrangler/deploy/config.json`, and, to be safe, any other
+ * `.jsonc` (except biome and tsconfig files) and any `.toml` except `bunfig.toml`.
  */
-function isWranglerConfig(name: string, path: string): boolean {
-  if (DEPLOY_REDIRECT.test(path)) return true;
-  if (/^wrangler.*\.(json|jsonc|toml)$/i.test(name)) return true;
+function isConfigCandidate(name: string, path: string): boolean {
+  if (/^wrangler/i.test(name) || /^cloudflare\.config\./i.test(name)) return true;
+  if (/(^|\/)\.wrangler\/deploy\//.test(path) && name === "config.json") return true;
   if (name.endsWith(".jsonc")) return !/^(biome|tsconfig.*)\.jsonc$/.test(name);
   if (name.endsWith(".toml")) return name !== "bunfig.toml";
   return false;
 }
 
 /**
- * Prints each wall check's status and fails if any Wrangler config in the repo declares a binding while a
- * check is still pending. Fails closed on TOML (it cannot read it), on unparseable configs, on a deploy
- * redirect that points at a config the wall did not check, and on a Vite config that hands the Cloudflare plugin
- * a config the wall cannot see (`config`, `configPath`, or options it cannot read).
+ * Prints each wall check's status and fails if Wrangler would load a binding while a check is still pending.
+ *
+ * Worker configs may exist only as `wrangler.jsonc` in the four Worker folders, plus the Cloudflare plugin's
+ * generated `dist/<worker>/wrangler.json` and `.wrangler/deploy/config.json` redirect there; any other file
+ * Wrangler could pick up fails, as does a symlink at or on the way to a config. Every allowed config is read by
+ * Wrangler itself (`experimental_readRawConfig` for the file as written, `unstable_readConfig` for the
+ * top level and each environment as Wrangler normalises them), and a config Wrangler rejects fails closed. For
+ * each Worker folder the check then asks Wrangler which config it would load from there (its own find-up and
+ * redirect rules) and requires that file to be one it checked. A Vite config that hands the Cloudflare plugin
+ * anything beyond a short list of known-safe options also fails.
  */
 export function evaluateWall(root: string, checks: readonly WallCheck[] = WALL_CHECKS): WallResult {
   const lines = checks.map((c) => `${c.id}: ${c.status === "pending" ? `pending: ${c.milestone}` : "implemented"}`);
   const anyPending = checks.some((c) => c.status === "pending");
   const problems: string[] = [];
-  const configs = listFiles(root, ".", isWranglerConfig);
-  const checked = new Set(configs);
-  for (const file of configs) {
-    if (file.endsWith(".toml")) {
-      problems.push(`${file}: TOML is not allowed for Wrangler configs; use wrangler.jsonc so this check can read it`);
+  const canonicalRoot = realpathSync(root);
+  const candidates = listFiles(canonicalRoot, ".", isConfigCandidate);
+  const checked = new Set<string>();
+  let accepted = 0;
+  for (const file of candidates) {
+    if (!FIXED_CONFIG.test(file) && !GENERATED_CONFIG.test(file) && !DEPLOY_REDIRECT.test(file)) {
+      problems.push(
+        `${file}: Wrangler could load this as a Worker config; configs live only at ${WORKER_DIRS.map((d) => `${d}/wrangler.jsonc`).join(", ")}`,
+      );
       continue;
     }
-    let config: unknown;
-    try {
-      config = parseJsonc(readFileSync(join(root, file), "utf8"));
-    } catch (error) {
-      problems.push(`${file}: cannot be parsed (${(error as Error).message}); failing closed`);
+    const link = symlinkOnPath(canonicalRoot, file);
+    if (link) {
+      problems.push(`${file}: ${link} is a symlink; Wrangler would follow it, so the wall does not allow it`);
       continue;
     }
-    const bindings = declaredBindings(config);
-    if (anyPending && bindings.length > 0) {
+    accepted++;
+    if (DEPLOY_REDIRECT.test(file)) continue;
+    checked.add(file);
+    const bindings = wranglerBindings(join(canonicalRoot, file));
+    if (typeof bindings === "string") problems.push(`${file}: Wrangler cannot read it (${bindings}); failing closed`);
+    else if (anyPending && bindings.length > 0) {
       problems.push(`${file} declares ${bindings.join(", ")} while a privacy-wall check is still pending`);
     }
-    if (DEPLOY_REDIRECT.test(file)) problems.push(...checkRedirect(root, file, config, checked));
   }
-  const viteConfigs = listFiles(root, ".", (name) => VITE_CONFIG.test(name));
-  problems.push(...withParsedFiles(root, viteConfigs, (file, source) => checkViteConfig(file, source)).flat());
-  lines.push(`wrangler configs checked: ${configs.length}`);
+  for (const dir of WORKER_DIRS) problems.push(...checkDiscovery(canonicalRoot, dir, checked));
+  const viteConfigs = listFiles(canonicalRoot, ".", (name) => VITE_CONFIG.test(name));
+  problems.push(...withParsedFiles(canonicalRoot, viteConfigs, (file, source) => checkViteConfig(file, source)).flat());
+  lines.push(`wrangler configs checked: ${accepted}`);
   lines.push(`vite configs checked: ${viteConfigs.length}`);
   for (const p of problems) lines.push(`FAIL ${p}`);
   return { ok: problems.length === 0, lines };
 }
 
-/** The deploy redirect must point only at configs inside the repo that this run checked. */
-function checkRedirect(root: string, file: string, config: unknown, checked: ReadonlySet<string>): string[] {
-  if (!isRecord(config)) return [`${file}: not an object`];
-  const targets: unknown[] = [config.configPath];
-  if (Array.isArray(config.auxiliaryWorkers)) {
-    for (const aux of config.auxiliaryWorkers) targets.push(isRecord(aux) ? aux.configPath : aux);
+/**
+ * Bindings in a config as Wrangler reads it: the raw file (so `previews` and every `env.*` are seen as written)
+ * and Wrangler's normalised config for the top level and each environment. Returns Wrangler's error message
+ * instead if it rejects the file.
+ */
+function wranglerBindings(path: string): string[] | string {
+  try {
+    const { rawConfig } = experimental_readRawConfig({ config: path });
+    const found = new Set(declaredBindings(rawConfig));
+    const envs = isRecord(rawConfig.env) ? Object.keys(rawConfig.env) : [];
+    for (const env of [undefined, ...envs]) {
+      const config = unstable_readConfig(
+        { config: path, ...(env === undefined ? {} : { env }) },
+        { hideWarnings: true },
+      );
+      for (const binding of declaredBindings(config, env === undefined ? "" : `env.${env}.`)) found.add(binding);
+    }
+    return [...found];
+  } catch (error) {
+    return firstLine(error);
+  }
+}
+
+/**
+ * Asks Wrangler which config it would load when run from `dir` (its find-up and `.wrangler/deploy` redirect
+ * rules, `path.resolve` included), then requires the canonical file to be inside the checkout and checked. The
+ * redirect's `auxiliaryWorkers` are held to the same rule.
+ */
+function checkDiscovery(root: string, dir: string, checked: ReadonlySet<string>): string[] {
+  if (!existsSync(join(root, dir))) return [];
+  const link = symlinkOnPath(root, dir);
+  if (link) return [`${dir}: ${link} is a symlink; Wrangler would follow it, so the wall does not allow it`];
+  let found: { configPath?: string | undefined; deployConfigPath?: string | undefined };
+  try {
+    found = experimental_readRawConfig(
+      { script: join(root, dir, "__wall_probe__.js") },
+      { useRedirectIfAvailable: true },
+    );
+  } catch (error) {
+    return [`${dir}: Wrangler cannot resolve its config from here (${firstLine(error)}); failing closed`];
+  }
+  const targets = found.configPath === undefined ? [] : [found.configPath];
+  if (found.deployConfigPath !== undefined) {
+    try {
+      const { rawConfig } = experimental_readRawConfig({ config: found.deployConfigPath });
+      const aux: unknown = (rawConfig as Record<string, unknown>).auxiliaryWorkers;
+      if (Array.isArray(aux)) {
+        for (const worker of aux) {
+          const path = isRecord(worker) ? worker.configPath : undefined;
+          if (typeof path !== "string") return [`${dir}: an auxiliary Worker has no configPath; failing closed`];
+          targets.push(resolve(dirname(found.deployConfigPath), path));
+        }
+      } else if (aux !== undefined) {
+        return [`${dir}: auxiliaryWorkers in the deploy redirect is not a list; failing closed`];
+      }
+    } catch (error) {
+      return [`${dir}: Wrangler cannot read the deploy redirect (${firstLine(error)}); failing closed`];
+    }
   }
   const problems: string[] = [];
   for (const target of targets) {
-    if (typeof target !== "string") {
-      problems.push(`${file}: a configPath is missing or not a string; failing closed`);
+    let canonical: string;
+    try {
+      canonical = realpathSync(target);
+    } catch {
+      problems.push(`${dir}: Wrangler would load ${target}, which does not exist; failing closed`);
       continue;
     }
-    const resolved = relative(root, join(root, dirname(file), target))
-      .split(sep)
-      .join("/");
-    if (resolved.startsWith("../") || !existsSync(join(root, resolved)) || !checked.has(resolved)) {
-      problems.push(`${file} points at ${target}, a config this check did not read; failing closed`);
+    const rel = relative(root, canonical).split(sep).join("/");
+    if (isAbsolute(rel) || rel.startsWith("../") || !checked.has(rel)) {
+      problems.push(`${dir}: Wrangler would load ${canonical}, a config the wall did not check`);
     }
   }
   return problems;
 }
+
+/** The first path component (from the root down to `path`) that is a symbolic link, if any. */
+function symlinkOnPath(root: string, path: string): string | undefined {
+  const parts = path.split("/");
+  for (let i = 1; i <= parts.length; i++) {
+    const prefix = parts.slice(0, i).join("/");
+    try {
+      if (lstatSync(join(root, prefix)).isSymbolicLink()) return prefix;
+    } catch {
+      return undefined;
+    }
+  }
+  return undefined;
+}
+
+function firstLine(error: unknown): string {
+  const message = error instanceof Error ? error.message : String(error);
+  return message.replace(/\s+/g, " ").trim().slice(0, 300);
+}
+
+/**
+ * Cloudflare plugin options (from @cloudflare/vite-plugin 1.70.1's PluginConfig) that cannot bring in another
+ * Worker, another config or a public tunnel. `auxiliaryWorkers`, `experimental` (its prerender Worker carries a
+ * config), `tunnel`, `config` and `configPath` fail, as does any option added later.
+ */
+const SAFE_PLUGIN_OPTIONS: ReadonlySet<string> = new Set([
+  "viteEnvironment",
+  "persistState",
+  "inspectorPort",
+  "remoteBindings",
+  "assetsOnly",
+]);
 
 /**
  * Finds every use of the Cloudflare Vite plugin in a Vite config and fails on `config` or `configPath`, and on
@@ -288,6 +393,10 @@ function checkViteConfig(file: string, source: SourceFile): string[] {
       } else if (key === "config" || key === "configPath") {
         problems.push(
           `${where} passes ${key} to the Cloudflare plugin; keep the Worker config in a wrangler.jsonc the wall reads`,
+        );
+      } else if (!SAFE_PLUGIN_OPTIONS.has(key)) {
+        problems.push(
+          `${where} passes ${key} to the Cloudflare plugin; the wall allows only ${[...SAFE_PLUGIN_OPTIONS].join(", ")}`,
         );
       }
     }

@@ -1,4 +1,5 @@
-import { readFileSync } from "node:fs";
+import { mkdirSync, readFileSync, symlinkSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterEach, describe, expect, it } from "vitest";
 import type { WallCheck } from "../src/wall.ts";
@@ -84,7 +85,7 @@ describe("evaluateWall", () => {
   });
 
   it("allows bindings only once every check is implemented", () => {
-    const root = tree({ "workers/kit/wrangler.jsonc": '{ "d1_databases": [{ "binding": "DB" }] }' });
+    const root = tree({ "workers/kit/wrangler.jsonc": VALID_D1 });
     const done: WallCheck[] = WALL_CHECKS.map((c) => ({ ...c, status: "implemented" }));
     expect(evaluateWall(root, done).ok).toBe(true);
     const oneLeft: WallCheck[] = done.map((c, i) => (i === 1 ? { ...c, status: "pending" } : c));
@@ -92,8 +93,12 @@ describe("evaluateWall", () => {
   });
 });
 
+/** A config Wrangler's validator accepts, with one D1 binding (synthetic ids). */
+const VALID_D1 =
+  '{ "name": "kit", "d1_databases": [{ "binding": "DB", "database_name": "x", "database_id": "00000000-0000-0000-0000-000000000000" }] }';
+
 const GENERATED = readFileSync(
-  fileURLToPath(new URL("./fixtures/cloudflare-vite-plugin-1.70.1-wrangler.json", import.meta.url)),
+  fileURLToPath(new URL("./fixtures/cloudflare-vite-plugin-1.70.1-wrangler.json", import.meta.url).href),
   "utf8",
 );
 
@@ -254,5 +259,109 @@ describe("evaluateWall: Cloudflare plugin options in Vite configs", () => {
     }
     const namespace = vite("cf.cloudflare({ configPath: 'x' })", 'import * as cf from "@cloudflare/vite-plugin";');
     expect(evaluateWall(tree({ "apps/web/vite.config.ts": namespace })).ok).toBe(false);
+  });
+});
+
+describe("evaluateWall: Worker configs only at fixed paths, read by Wrangler", () => {
+  it("reads the four fixed config paths and reports their bindings", () => {
+    expect(
+      evaluateWall(tree({ "apps/web/wrangler.jsonc": '{ "name": "web", "assets": { "directory": "./dist" } }' })).ok,
+    ).toBe(true);
+    const result = evaluateWall(tree({ "workers/kit/wrangler.jsonc": VALID_D1 }));
+    expect(result.ok).toBe(false);
+    expect(result.lines.join("\n")).toMatch(/workers\/kit\/wrangler\.jsonc declares d1_databases/);
+  });
+
+  it("fails on any other file Wrangler could load as a config, even one without bindings", () => {
+    for (const path of [
+      "wrangler.json",
+      "workers/kit/sub/wrangler.jsonc",
+      "apps/web/wrangler.json",
+      "apps/web/wrangler.toml",
+      "apps/web/wrangler.config.ts",
+      "apps/web/cloudflare.config.ts",
+      "apps/web/.wrangler/deploy/elsewhere/config.json",
+      ".wrangler/deploy/config.json",
+    ]) {
+      const result = evaluateWall(tree({ [path]: '{ "name": "w" }' }));
+      expect(result.ok, path).toBe(false);
+      expect(result.lines.join("\n"), path).toContain(path);
+    }
+  });
+
+  it("parses with Wrangler's own JSONC reader, so a comment ended by a bare carriage return hides nothing", () => {
+    const text = '{ "name": "kit", // note\r "r2_buckets": [{ "binding": "B", "bucket_name": "bucket-1" }] }';
+    const result = evaluateWall(tree({ "workers/kit/wrangler.jsonc": text }));
+    expect(result.ok).toBe(false);
+    expect(result.lines.join("\n")).toMatch(/declares r2_buckets/);
+  });
+
+  it("judges each environment as Wrangler loads it", () => {
+    const text =
+      '{ "name": "kit", "env": { "staging": { "d1_databases": [{ "binding": "DB", "database_name": "x", "database_id": "00000000-0000-0000-0000-000000000000" }] } } }';
+    const result = evaluateWall(tree({ "workers/kit/wrangler.jsonc": text }));
+    expect(result.ok).toBe(false);
+    expect(result.lines.join("\n")).toMatch(/env\.staging\.d1_databases/);
+  });
+
+  it("fails closed when Wrangler rejects a config", () => {
+    const result = evaluateWall(tree({ "workers/kit/wrangler.jsonc": '{ "name": 42 }' }));
+    expect(result.ok).toBe(false);
+  });
+
+  it("fails on a symlink at a config path or on the way to one", () => {
+    const root = tree({ "shared/public.json": '{ "name": "w", "kv_namespaces": [{ "binding": "K", "id": "1" }] }' });
+    mkdirSync(join(root, "workers/web"), { recursive: true });
+    symlinkSync(join(root, "shared/public.json"), join(root, "workers/web/wrangler.jsonc"));
+    expect(evaluateWall(root).ok).toBe(false);
+
+    const other = tree({ "elsewhere/web/wrangler.jsonc": '{ "name": "w" }' });
+    mkdirSync(join(other, "apps"), { recursive: true });
+    symlinkSync(join(other, "elsewhere/web"), join(other, "apps/web"));
+    const result = evaluateWall(other);
+    expect(result.ok).toBe(false);
+    expect(result.lines.join("\n")).toMatch(/symlink/);
+  });
+
+  it("does not join an absolute redirect path onto the redirect's folder", () => {
+    const root = tree({
+      "apps/web/.wrangler/deploy/dist/public/wrangler.json": GENERATED,
+      "apps/web/.wrangler/deploy/config.json": '{ "configPath": "/dist/public/wrangler.json" }',
+    });
+    expect(evaluateWall(root).ok).toBe(false);
+  });
+
+  it("resolves a deploy redirect as Wrangler does and fails on an absolute path outside the checked set", () => {
+    const outside = tree({ "x/wrangler.json": "{}" });
+    writeFileSync(join(outside, "x/wrangler.json"), '{ "name": "outside" }');
+    const root = tree({
+      "apps/web/dist/public/wrangler.json": GENERATED,
+      "apps/web/.wrangler/deploy/config.json": JSON.stringify({ configPath: join(outside, "x/wrangler.json") }),
+    });
+    const result = evaluateWall(root);
+    expect(result.ok).toBe(false);
+    expect(result.lines.join("\n")).toMatch(/apps\/web/);
+  });
+});
+
+describe("evaluateWall: Cloudflare plugin options are allow-listed", () => {
+  const vite = (options: string) =>
+    `import { cloudflare } from "@cloudflare/vite-plugin";\nexport default { plugins: [cloudflare(${options})] };\n`;
+
+  it("accepts the options that cannot bring in another Worker or config", () => {
+    const options =
+      '{ persistState: false, inspectorPort: false, remoteBindings: false, viteEnvironment: { name: "ssr" }, assetsOnly: false }';
+    expect(evaluateWall(tree({ "apps/web/vite.config.ts": vite(options) })).ok).toBe(true);
+  });
+
+  it("fails on auxiliaryWorkers, tunnel, experimental and any option it does not know", () => {
+    for (const options of [
+      '{ auxiliaryWorkers: [{ configPath: "./aux/wrangler.jsonc" }] }',
+      "{ tunnel: true }",
+      "{ experimental: { headersAndRedirectsDevModeSupport: true } }",
+      "{ somethingNew: 1 }",
+    ]) {
+      expect(evaluateWall(tree({ "apps/web/vite.config.ts": vite(options) })).ok, options).toBe(false);
+    }
   });
 });

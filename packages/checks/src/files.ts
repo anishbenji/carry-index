@@ -7,7 +7,7 @@ const ALWAYS_SKIPPED = new Set(["node_modules", ".git"]);
 /**
  * Lists files under `dir` (recursively) that pass `accept`, as sorted paths relative to `root` with forward
  * slashes. `accept` gets the file name and its repo-relative path. node_modules and .git are always skipped,
- * plus any directory named in `skip`.
+ * plus any directory named in `skip`. Symbolic links are listed (if accepted) but never followed.
  */
 export function listFiles(
   root: string,
@@ -28,7 +28,7 @@ export function listFiles(
       const full = join(abs, entry.name);
       if (entry.isDirectory()) {
         if (!ALWAYS_SKIPPED.has(entry.name) && !skip.has(entry.name)) walk(full);
-      } else if (entry.isFile()) {
+      } else if (entry.isFile() || entry.isSymbolicLink()) {
         const path = relative(root, full).split(sep).join("/");
         if (accept(entry.name, path)) found.push(path);
       }
