@@ -26,9 +26,10 @@ on:
 permissions:
   contents: read
 
-# One deploy at a time; a running deploy is never cancelled (a newer run waits).
+# One deploy at a time per ref; a running deploy is never cancelled (a newer run waits). Per ref, so a manual run on
+# another branch cannot displace a main deploy that is waiting.
 concurrency:
-  group: deploy-public
+  group: deploy-public-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -69,8 +70,9 @@ jobs:
     # An apply_triggers run only applies triggers: the gate refuses an upload while preview URLs are on.
     if: github.ref == 'refs/heads/main' && !inputs.apply_triggers
     runs-on: ubuntu-24.04
-    # Four Wrangler runs (dry run, upload, promote, rollback) at the gate's 10-minute limit each, plus the API checks.
-    timeout-minutes: 50
+    # Four Wrangler runs (dry run, upload, promote, rollback) at the gate's 10-minute limit each, plus API reads of
+    # up to 60 s with three tries each on the rollback path: about 70 minutes at worst.
+    timeout-minutes: 75
     environment: public-production
     permissions:
       contents: read

@@ -16,7 +16,7 @@ cannot deploy. Three jobs, each a check name you can require in branch protectio
 |---|---|
 | `script contract` | `bun install --frozen-lockfile --ignore-scripts`, then `typecheck`, `lint`, `test`, `build`, `wall`, `size`, the gate's `check` on the build (`node packages/deploy/src/bin.ts check apps/web/dist/client`), Playwright Chromium and `test:e2e` |
 | `data validator` | `tools/validate.py` and the `tools/test_validate_*.py` tests through `uv run --no-project --with pyyaml==6.0.4 --with jsonschema==4.26.0` (the versions uv resolved on 26 Nov 2026; their own dependencies are not pinned). The private `data/my-notes.yaml` is never in the repository, so the validator skips the `my_note` links, as it does on any machine without that file. **Needs PR #4 on `main` first:** the skip and the `tools/test_validate_*.py` tests arrive with it. Before that, the job fails on every clean checkout (two `my_note` errors, and discovery that finds no tests exits 5). That is intended: Python is pinned to 3.12 or later so "no tests" fails, and no step masks a failure (T10) |
-| `secret scan` | gitleaks 8.30.1 over the whole history, downloaded from its GitHub release and checked against the release's SHA-256. Inline `gitleaks:allow` comments are ignored (`--ignore-gitleaks-allow`), and the job fails if the checkout holds a `.gitleaksignore` or `.gitleaks.toml`, so a change cannot quiet the scan. It reads every ref, merge commits against their first parent (so a key added while resolving a merge is seen) and files Git attributes mark as binary (`--log-opts="--full-history --all --diff-filter=tuxdb --text --diff-merges=first-parent"`). Its rules come from `.github/gitleaks.toml`: gitleaks' own default config, copied unchanged except that the global allowlist no longer skips text files (SVG, lockfiles, glTF and the like); the header of that file says how to refresh it. The same job then fails if any tracked file holds an email address outside the noreply and example domains, printing only the paths. **Needs PR #4 on `main` first:** until then it names `data/brands.yaml` and `tools/migrate/migrate.py`, whose brand addresses PR #4 removes. The binary is used rather than `gitleaks/gitleaks-action`: the action's README (github.com/gitleaks/gitleaks-action) has it read the repository token on pull requests and asks organisation accounts for a licence key, and since v2 the action is not under an open-source licence. The binary needs no token and no key |
+| `secret scan` | gitleaks 8.30.1 over the whole history, downloaded from its GitHub release and checked against the release's SHA-256. Inline `gitleaks:allow` comments are ignored (`--ignore-gitleaks-allow`), and the job fails if the checkout holds a `.gitleaksignore` or `.gitleaks.toml`, so a change cannot quiet the scan. It reads every ref, merge commits against their first parent (so a key added while resolving a merge is seen), file type changes (a symlink replaced by a file) and files Git attributes mark as binary (`--log-opts="--full-history --all --diff-filter=uxdb --text --diff-merges=first-parent"`). Its rules come from `.github/gitleaks.toml`: gitleaks' own default config, copied unchanged except that the global allowlist no longer skips text files (SVG, lockfiles, glTF and the like); the header of that file says how to refresh it. The same job then fails if any tracked file holds an email address outside the noreply and example domains, printing only the paths. It ignores case, reads binary-marked files as text, allows package versions (`name@1.2.3`) and image density suffixes (`logo@2x.png`), and skips images, fonts and `bun.lock`. **Needs PR #4 on `main` first:** until then it names `data/brands.yaml` and `tools/migrate/migrate.py`, whose brand addresses PR #4 removes. The binary is used rather than `gitleaks/gitleaks-action`: the action's README (github.com/gitleaks/gitleaks-action) has it read the repository token on pull requests and asks organisation accounts for a licence key, and since v2 the action is not under an open-source licence. The binary needs no token and no key |
 
 Node comes from `.node-version`; Bun is pinned to 1.4.2.
 
@@ -58,14 +58,15 @@ Runs on every push to `main`, once a day at 04:17 UTC (so `/performance` stays c
    triggers, and the gate refuses an upload while workers.dev or preview URLs differ from the definition (rule
    `live-subdomain`; preview URLs would serve even a version the gate then refuses). So this job runs
    `node packages/deploy/src/bin.ts triggers "$RUNNER_TEMP/public-site"`: the same check 1, seal, scan and dry
-   run, then `wrangler triggers deploy --config <sealed>/wrangler.json`, which turns workers.dev and preview URLs
-   off as the definition says. It uploads and promotes nothing, then checks the live Worker's bindings and its
+   run, then `wrangler triggers deploy --config <sealed>/wrangler.json`, which sets them as the definition says:
+   **workers.dev on** and **preview URLs off** (`workers.ts`). It uploads and promotes nothing, then checks the live Worker's bindings and its
    workers.dev and preview-URL settings. The config has
    no routes, so routes and custom domains attached in the dashboard are left as they are (Wrangler 4.168 publishes
    routes and domains only when the config lists some).
 
 One deploy runs at a time and a running deploy is never cancelled. If more runs arrive while one is deploying,
-GitHub keeps only the newest waiting run, which is the newest `main`.
+GitHub keeps only the newest waiting run for that ref, which is the newest `main`. Runs on other branches have
+their own group, so a manual run there cannot displace a waiting `main` deploy.
 
 Every action in both files is pinned by its full commit SHA with the version in a comment, and only the approved
 actions are used (`actions/checkout`, `actions/setup-node`, `oven-sh/setup-bun`, `astral-sh/setup-uv`,
@@ -74,7 +75,10 @@ keeps the repository token in the working copy. To update an action, change the 
 
 ## Setup only the owner can do
 
-About 20 minutes, once, before the first deploy.
+About 20 minutes, once, before the first deploy. **Create and restrict the `public-production` environment
+(step 2) before merging the PR that adds these workflows.** Otherwise every push to `main` and the daily run
+start `deploy` and fail for lack of a token, emailing you each time, and GitHub creates `public-production` on
+first use with no branch rule.
 
 1. **Create the Cloudflare API token, scoped to the one Worker.** Since 15 Sep 2026 an account-owned API token
    can be limited to individual Workers ([changelog](https://developers.cloudflare.com/changelog/post/2026-09-15-granular-worker-permissions/),
@@ -89,9 +93,10 @@ About 20 minutes, once, before the first deploy.
       role **Editor**, scope **Specified Workers** → `carry-journal`. Nothing else (no zone, DNS, D1, KV or R2
       permissions, and no route permissions: routes are attached by hand in step 4).
 
-   The gate itself calls only that Worker's `settings`, `subdomain`, `deployments` and `versions` endpoints. Whether Wrangler 4.168
-   needs anything more for an assets-only deploy is proven only by the first deploy. **Fallback, only if that
-   deploy fails with an authorisation error:** a user token with Account → **Workers Scripts → Edit** on this
+   The gate itself calls only that Worker's `settings`, `subdomain`, `deployments` and `versions` endpoints. Whether
+   Wrangler 4.168 needs anything more for an assets-only deploy is proven only by the first deploy. An
+   authorisation failure shows in the log as `live-api-error` with status 401 or 403, or as `wrangler-auth-error`
+   (see "When a deploy fails"). **Fallback, only then:** a user token with Account → **Workers Scripts → Edit** on this
    account only (design section 7, the Release 1 token). It can change any Worker in the account, Kit Watch
    included, so replace it with the scoped token as soon as the cause is fixed, and record the error.
 2. **Create the environment `public-production`.** GitHub → the repository → Settings → Environments → New
@@ -110,9 +115,9 @@ About 20 minutes, once, before the first deploy.
    `secret scan`). They appear in the list once `ci.yml` has run once.
 4. **First deploy, from GitHub, in two runs.** The token stays in the environment; nothing runs from the Mac.
    1. **Triggers first:** Actions → deploy-public → Run workflow → branch `main`, tick **apply_triggers**, Run.
-      This run does `build` then `triggers` and skips `deploy`: the gate applies `workers_dev: false` and
-      `preview_urls: false` (the Hello World placeholder has workers.dev on). Check afterwards: dashboard →
-      Workers & Pages → `carry-journal` → Settings → Domains & Routes shows workers.dev and Preview URLs disabled.
+      This run does `build` then `triggers` and skips `deploy`: the gate applies `workers_dev: true` and
+      `preview_urls: false`. Check afterwards: dashboard → Workers & Pages → `carry-journal` → Settings → Domains
+      & Routes shows workers.dev **enabled** and Preview URLs **disabled**.
    2. **Then deploy:** Run workflow again on `main` with **apply_triggers** left off (or merge to `main`). This
       run does `build` then `deploy`, and replaces the placeholder with the site.
    3. Attach `carryjournal.com` and the `/api/*` route in the dashboard (design section 6).
@@ -134,7 +139,8 @@ summary line. GitHub emails you when the job fails.
 | `headers-missing: "_headers"` or `headers-weak: "_headers"` (with `bundle scan failed`) | The build has no `_headers` file or lacks a required security header (`headers-missing`), or a block weakens one: `'unsafe-inline'` in the CSP, COOP or CORP looser than same-origin, or a `! Name` line removing a required header (`headers-weak`). Nothing was uploaded | Fix `_headers` in `apps/web`, in a pull request. The required list is `REQUIRED_HEADERS` in `packages/deploy/src/headers.ts` |
 | `check 3 failed before upload; nothing was uploaded` | The dry run printed something other than "No bindings found." (a binding appeared, or Wrangler's output changed) | Nothing is live from this run. Find what changed; a Wrangler upgrade needs T6 and the recorded dry-run fixture re-checked |
 | `worker-missing: "carry-journal"`, then `the carry-journal Worker does not exist yet …` | The Worker has not been created; `wrangler versions upload` cannot create one. Nothing was uploaded | Do setup step 1.1 (create it in the dashboard), then step 4: a run with **apply_triggers**, then a normal run |
-| `could not read the active deployment; nothing was uploaded` | The deployments API failed before the upload | Re-run once Cloudflare answers again |
+| `could not read the active deployment; nothing was uploaded` | The deployments API failed before the upload. The `live-api-error` line above it carries the HTTP status | **401 or 403:** the token is wrong, expired or lacks access to `carry-journal`; fix it in the environment (setup step 1, then the fallback token only if the scoped one is refused). **Other statuses or none:** re-run once Cloudflare answers again |
+| `wrangler-auth-error: "carry-journal"` | Wrangler reported an authentication or authorisation error | As 401 or 403 above: fix the token, then re-run |
 | `live-subdomain: "carry-journal"`, then `the workers.dev or preview-URL setting differs from the definition; run deploy-public with apply_triggers first` | workers.dev or preview URLs are on (a new Worker, or turned on in the dashboard). Nothing was uploaded | Run deploy-public with **apply_triggers**, check the settings in the dashboard, then run a normal deploy |
 | `could not read the workers.dev and preview-URL settings; nothing was uploaded` | The subdomain API failed three times before the upload | Re-run once Cloudflare answers again |
 | `wrangler versions upload exited with …`, then `no uploaded version to check; nothing was promoted` | The upload failed, or printed no version id (exit 124 means it timed out after 10 minutes) | Nothing changed live. A version may exist with no traffic; it is harmless. Re-run |
@@ -146,14 +152,15 @@ summary line. GitHub emails you when the job fails.
 | `version … is not the active one; not rolling back. Check the live Worker now` | After promotion, another version is active (the promotion did not take, or something else deployed) | Check what is active in the dashboard and whether it is clean, then re-run |
 | `wrangler rollback to … exited with 0`, then `rollback confirmed: version … is live and shows the expected bindings` | The promoted version showed a binding or tail consumer that its checked version did not (a change after promotion). The gate went back to the verified previous version | Nothing is wrong live. Remove the extra binding or tail consumer in the dashboard, then re-run |
 | `live-after-rollback`, with `no verified previous version to return to` or `the live Worker still does not match after the rollback` | The live Worker is wrong and the gate could not fix it: there was no previous version (the first deploy), the previous one is not clean itself, or the rollback did not take | Act now: roll back by hand to the last good version in the dashboard, or remove the extra binding; then re-run |
-| `wrangler triggers deploy exited with …` non-zero (triggers job) | Wrangler could not apply workers.dev or preview URL settings (often the token's scope) | Nothing else changed. Read the error, fix the token or set workers.dev and Preview URLs off in the dashboard by hand, then re-run with **apply_triggers** |
-| `the live Worker does not match its definition; nothing was rolled back. Check it by hand now` (triggers job) | After `triggers deploy`, the live Worker shows a binding (`live-bindings`, which triggers cannot change, so it was already wrong), or workers.dev or preview URLs are still on (`live-subdomain`) | Fix what the rule names in the dashboard (remove the binding, or turn workers.dev and Preview URLs off), then run with **apply_triggers** again |
+| `wrangler triggers deploy exited with …` non-zero (triggers job) | Wrangler could not apply the workers.dev or preview-URL settings. With `wrangler-auth-error` beside it, the token's scope is the cause | Nothing else changed. Fix the token (or set workers.dev **on** and Preview URLs **off** in the dashboard by hand), then re-run with **apply_triggers** |
+| `the live Worker does not match its definition; nothing was rolled back. Check it by hand now` (triggers job) | After `triggers deploy`, the live Worker shows a binding (`live-bindings`, which triggers cannot change, so it was already wrong), or workers.dev or preview URLs differ from the definition (`live-subdomain`) | Fix what the rule names in the dashboard (remove the binding, or set workers.dev **on** and Preview URLs **off**), then run with **apply_triggers** again |
 | `the carry-journal Worker does not exist yet …` (triggers job) | As `worker-missing` above | Create the Worker in the dashboard, then re-run with **apply_triggers** |
 | any `wrangler … exited with 124` | That Wrangler run was still going after 10 minutes and was killed with its process group | Read the next line as in the rows above. If it recurs, check Cloudflare's status page before re-running |
 
 The gate changes the live Worker only by promoting a version it has just checked, or by rolling back to a
-previous version it has checked; an API error never leads to a change. The deploy job's 50-minute limit leaves
-room for its four Wrangler runs (dry run, upload, promote, rollback) at their 10-minute limit each.
+previous version it has checked; an API error never leads to a change. The deploy job's 75-minute limit leaves
+room for its four Wrangler runs (dry run, upload, promote, rollback) at their 10-minute limit each, plus API reads
+of up to 60 seconds with three tries each on the rollback path.
 
 ## Not yet covered
 

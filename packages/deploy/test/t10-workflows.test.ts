@@ -266,7 +266,8 @@ describe("T10 the token is only in the gate step's env", () => {
     const { concurrency } = file("deploy-public.yml").workflow;
     expect(typeof concurrency).toBe("object");
     if (typeof concurrency !== "object") return;
-    expect(concurrency.group).toMatch(/^[a-z-]+$/);
+    // One group per ref (independent Fable review, P3): a run on another branch cannot displace a waiting main deploy.
+    expect(concurrency.group).toBe(`deploy-public-${expr("github.ref")}`);
     expect(concurrency["cancel-in-progress"]).toBe(false);
   });
 
@@ -476,9 +477,8 @@ describe("T10 the secret scan reads every change, with a trusted policy (securit
     expect(run).toContain(`--config ${POLICY}`);
     expect(POLICY.startsWith(".github/")).toBe(true);
     const logOpts = /--log-opts="([^"]*)"/.exec(run)?.[1]?.split(" ") ?? [];
-    expect(logOpts).toEqual(
-      expect.arrayContaining(["--full-history", "--all", "--text", "--diff-merges=first-parent"]),
-    );
+    // Exact (independent Fable review, P2): `t` stays in, so a key added through a file type change is read.
+    expect(logOpts).toEqual(["--full-history", "--all", "--diff-filter=uxdb", "--text", "--diff-merges=first-parent"]);
   });
 
   test("the scan's checkout has the whole history", () => {
@@ -552,6 +552,34 @@ describe("T10 no email address in a tracked file (security review, Sol round 1, 
   test("passes when the only addresses are noreply or example ones", () => {
     const text = `${at("someone", "users.noreply.github.com")}\n${at("someone", "example.com")}\nlogo@2x.png\n`;
     expect(runIn({ "readme.txt": text }).status).toBe(0);
+  });
+
+  test.each([
+    ["a version", "pkg@1.2.3-beta\n"],
+    ["an image density suffix", "logo@3x.webp\n"],
+    ["a subdomain of example.org", `${at("someone", "mail.example.org")}\n`],
+  ])("passes on %s", (_shape, text) => {
+    expect(runIn({ "readme.txt": text }).status).toBe(0);
+  });
+
+  test.each([
+    ["an upper-case address", "readme.txt", `${at("SYNTHETIC.PERSON", "MAIL-PROVIDER.TEST")}\n`],
+    ["a domain that starts with a digit", "readme.txt", `${at("someone", "163mail.test")}\n`],
+    ["noreply in the local part only", "readme.txt", `${at("noreply-person", "mail-provider.test")}\n`],
+    ["a lock file other than bun.lock", "other.lock", `${at("someone", "mail-provider.test")}\n`],
+    ["a file marked binary", "data.bin", `\u0000${at("someone", "mail-provider.test")}\n`],
+  ])("fails on %s (independent Fable review, P3)", (_shape, name, text) => {
+    const { status, output } = runIn({ ".gitattributes": "*.bin binary\n", [name]: text });
+    expect(status).not.toBe(0);
+    expect(output).toContain(name);
+  });
+
+  test.each([
+    ["bun.lock", `${at("someone", "mail-provider.test")}\n`],
+    ["icon.PNG", `${at("someone", "mail-provider.test")}\n`],
+    ["font.woff2", `${at("someone", "mail-provider.test")}\n`],
+  ])("skips %s", (name, text) => {
+    expect(runIn({ [name]: text }).status).toBe(0);
   });
 
   test("passes on a repository with no address at all", () => {

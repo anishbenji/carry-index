@@ -116,14 +116,20 @@ jobs:
         run: >-
           "$RUNNER_TEMP/gitleaks/gitleaks" git --redact --no-banner --ignore-gitleaks-allow
           --config .github/gitleaks.toml
-          --log-opts="--full-history --all --diff-filter=tuxdb --text --diff-merges=first-parent"
+          --log-opts="--full-history --all --diff-filter=uxdb --text --diff-merges=first-parent"
           --exit-code 1 .
-      # Prints only the paths, never the addresses. noreply and example.com/org/net addresses are allowed.
+      # Prints only the paths, never the addresses. Allowed: noreply and example.com/org/net domains, package
+      # versions (name@1.2.3) and image density suffixes (logo@2x.png). Case-insensitive; binary-marked files are
+      # read as text; images, fonts and bun.lock (package integrity hashes) are skipped.
       - name: No email addresses in tracked files
         run: |
           pattern='[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z0-9.-]*[a-z]{2,}'
-          allowed=':[^:]*(noreply|example\.(com|org|net)|@(2x|3x)|@[0-9])[^:]*$'
-          paths=$({ git grep -IoE "$pattern" -- . ':!*.lock' || test $? = 1; } | { grep -viE "$allowed" || test $? = 1; } | sed 's/:[^:]*$//' | sort -u)
+          allowed=':[^:@]*@([^:@]*\.)?(noreply\.[^:@]*|example\.(com|org|net))$|:[^:@]*@[0-9]+(\.[0-9]+)+(-[a-z0-9.]+)?$|:[^:@]*@[23]x\.(png|jpe?g|gif|webp|avif|svg)$'
+          skip=(':!bun.lock')
+          for ext in png jpg jpeg gif webp avif ico bmp tif tiff woff woff2 ttf otf eot; do
+            skip+=(":(exclude,icase)*.$ext")
+          done
+          paths=$({ git grep --text --ignore-case --only-matching --extended-regexp "$pattern" -- . "${skip[@]}" || test $? = 1; } | { grep -viE "$allowed" || test $? = 1; } | sed 's/:[^:]*$//' | sort -u)
           if [ -n "$paths" ]; then
             printf '%s\n' "$paths" | sed 's/^/email address in tracked file: /' >&2
             exit 1
