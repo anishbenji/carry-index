@@ -2,3 +2,6 @@
 dist/
 .tsbuild/
 .wrangler/
+# Wrangler local secrets.
+.dev.vars
+.dev.vars.*
