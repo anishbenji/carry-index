@@ -20,5 +20,4 @@ Proposed — for the user at the gate: keep host-scoped `noindex`. The local res
 26 Nov decision there are no edge previews before merge on Saturday
 ([amendment](0045-no-edge-previews.md)), so the first check at the edge runs after the first merge: the
 workers.dev host sends `noindex` and carryjournal.com does not. Preview hosts are checked once previews return in
-Release 1.1. ADR-0045's fallback (remove the header and turn `workers_dev` off) is needed only if the edge
-disagrees.
+Release 1.1. If the edge disagrees, it goes back to the owner, as ADR-0045 says.

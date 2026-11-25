@@ -1,8 +1,8 @@
 # Amendment to ADR-0045: no edge previews before merge on Saturday
 
 - **Status:** Accepted (user, 2026-11-26)
-- **Amends:** [ADR-0045](../0045-pre-launch-deploys.md). Supersedes its "The SEO merge gate always runs on the pull
-  request's own preview build".
+- **Amends:** [ADR-0045](../0045-pre-launch-deploys.md). Supersedes the part of its Consequences that says "the merge
+  gates run on workers.dev preview hosts": on Saturday no merge gate runs on a preview host.
 - **Source:** the director's `proposals/privacy-wall-design.md`, question 2, option A; see
   [ADR-0049](../0049-privacy-wall-seal.md)
 
@@ -20,6 +20,4 @@
 ## Consequences
 
 - Edge-only behaviour (host-scoped `noindex`, edge headers) is first seen after merge.
-- ADR-0045's fallback of setting `preview_urls: true` when `workers_dev` is off no longer serves a merge gate on
-  Saturday; the public site's definition sets `preview_urls: false` (ADR-0049).
 - From go-live the post-deploy check still runs the full SEO audit, crawlability included, on carryjournal.com.
