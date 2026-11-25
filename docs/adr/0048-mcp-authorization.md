@@ -99,11 +99,11 @@ the shared Worker quota, an owner sign-in lockout until midnight UTC, and a revo
 location for 60 seconds or more. It also found four P2s: OAuth codes in logs, a failed reconnect revoking a
 working connector, MCP batches over D1's per-request query limit, and unbounded Access responses. PR 9's commits
 up to `65c11a6` address all of them except the shared quota. Options considered for #16: A (taken), Access on the
-interactive OAuth routes; B, MCP on its own Worker, which isolates the app's quota but leaves the lockout; C, MCP
+interactive OAuth routes; B, MCP on its own Worker, which changes routing but not quota (the free plan's daily Worker requests are per
+account, shared by every Worker, the public beacon included) and leaves the lockout; C, MCP
 out of Release 1. The first version of A also put `/register` behind Access; the director dropped that the same
-night because it would break Claude's server-to-server registration. Splitting MCP into its own Worker stays an
-option for 1.1 if the edge test shows pressure on the shared quota; Workers Paid (ADR-0014) is the answer if a
-daily limit is actually hit.
+night because it would break Claude's server-to-server registration. A separate Worker is not a fix for shared-quota
+pressure, for the same reason; Workers Paid (ADR-0014) is the answer if a daily limit is actually hit.
 
 Other consequences:
 
