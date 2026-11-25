@@ -18,7 +18,7 @@ export function findBuiltPages(root: string): string[] {
 /**
  * `bun run size`: runs size-limit whenever the root package.json has `size-limit` targets. Without targets it
  * passes with a "no pages yet" line only while apps/web/dist holds neither HTML nor JavaScript, and fails once
- * it holds either, so built code is never left unmeasured.
+ * it holds either, so built code is never left unmeasured. Once pages exist, some target must measure HTML.
  */
 export function evaluateSizeGate(root: string): GateResult {
   const targets = readRootPackage(root)["size-limit"];
@@ -36,6 +36,21 @@ export function evaluateSizeGate(root: string): GateResult {
       lines: [
         `size: apps/web emits ${output.length} HTML or JavaScript file(s) but the root package.json has no "size-limit" targets.`,
         "Add the N2 budgets as size-limit entries before building.",
+      ],
+    };
+  }
+  const pages = output.filter((file) => file.endsWith(".html"));
+  const measuresHtml = targets.some((target: unknown) => {
+    const path = typeof target === "object" && target !== null ? (target as { path?: unknown }).path : undefined;
+    const paths = Array.isArray(path) ? path : [path];
+    return paths.some((p) => typeof p === "string" && p.includes(".html"));
+  });
+  if (pages.length > 0 && !measuresHtml) {
+    return {
+      kind: "fail",
+      lines: [
+        `size: apps/web emits ${pages.length} HTML page(s) but no "size-limit" target measures HTML.`,
+        "Add the N2 HTML budgets as size-limit entries before building pages.",
       ],
     };
   }

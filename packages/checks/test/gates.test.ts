@@ -67,9 +67,34 @@ describe("evaluateSizeGate", () => {
   it("runs size-limit once pages and targets both exist", () => {
     const pkg = JSON.stringify({
       name: "carry-index",
-      "size-limit": [{ path: "apps/web/dist/client/**/*.js", limit: "8 KB" }],
+      "size-limit": [
+        { path: "apps/web/dist/client/**/*.js", limit: "8 KB" },
+        { path: "apps/web/dist/client/**/*.html", limit: "14 KB" },
+      ],
     });
     const result = evaluateSizeGate(tree({ "package.json": pkg, "apps/web/dist/client/index.html": "x" }));
+    expect(result).toMatchObject({ kind: "run", command: ["size-limit"] });
+  });
+});
+
+describe("evaluateSizeGate: HTML coverage", () => {
+  const js = { path: "apps/web/dist/client/assets/*.js", limit: "15 kB" };
+  const html = { path: "apps/web/dist/client/**/*.html", limit: "14 kB" };
+  const pkg = (targets: unknown[]) => JSON.stringify({ name: "carry-index", "size-limit": targets });
+
+  it("fails once pages exist and no target measures HTML, even with a JavaScript target", () => {
+    const result = evaluateSizeGate(tree({ "package.json": pkg([js]), "apps/web/dist/client/index.html": "x" }));
+    expect(result.kind).toBe("fail");
+    expect(result.lines.join("\n")).toMatch(/HTML/);
+  });
+
+  it("runs once pages exist and a target measures HTML", () => {
+    const result = evaluateSizeGate(tree({ "package.json": pkg([js, html]), "apps/web/dist/client/index.html": "x" }));
+    expect(result).toMatchObject({ kind: "run", command: ["size-limit"] });
+  });
+
+  it("keeps the JavaScript-only scaffold green while there are no pages", () => {
+    const result = evaluateSizeGate(tree({ "package.json": pkg([js]), "apps/web/dist/client/assets/main.js": "x" }));
     expect(result).toMatchObject({ kind: "run", command: ["size-limit"] });
   });
 });
