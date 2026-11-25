@@ -530,6 +530,23 @@ describe("evaluateWall: the Cloudflare plugin call stays in vite.config.*", () =
     }
   });
 
+  it("accepts only bare package names and node: built-ins, failing closed on anything it cannot pin down", () => {
+    for (const line of [
+      'import helper from "FILE:///tmp/cf.ts";',
+      'import helper from "data:text/javascript,export default 1";',
+      'import helper from "#cf-plugin";',
+      'import helper from "..\\shared\\cf.ts";',
+      'import { createRequire } from "node:module";',
+      'import Module from "module";',
+      'import helper = require("./cf-plugin.ts");',
+      "const helper = require(name);",
+      "const helper = await import(`./${name}.ts`);",
+    ]) {
+      const source = `${line}\nexport default { plugins: [] };\n`;
+      expect(evaluateWall(tree({ "apps/web/vite.config.ts": source })).ok, line).toBe(false);
+    }
+  });
+
   it("accepts imports of installed packages and Node built-ins", () => {
     const source =
       'import { fileURLToPath } from "node:url";\nimport solid from "@solidjs/vite-plugin";\nimport { defineConfig } from "vite";\nexport default defineConfig({ plugins: [solid()] });\n';

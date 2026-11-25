@@ -6,8 +6,10 @@ import { SyntaxKind } from "typescript/unstable/ast";
 import {
   isCallExpression,
   isExportDeclaration,
+  isExternalModuleReference,
   isIdentifier,
   isImportDeclaration,
+  isImportEqualsDeclaration,
   isNamedImports,
   isNamespaceImport,
   isNoSubstitutionTemplateLiteral,
@@ -443,8 +445,14 @@ const SAFE_PLUGIN_OPTIONS: ReadonlySet<string> = new Set([
   "assetsOnly",
 ]);
 
-/** Module specifiers that point at code in this checkout: relative or absolute paths, file URLs, workspaces. */
-const LOCAL_MODULE = /^(\.|\/|file:|@cj\/)/;
+/**
+ * What a Vite config may import: `node:` built-ins and bare names of installed packages, but not the `@cj/`
+ * workspaces or `module`. Everything else fails: paths, any URL scheme, `#` subpath imports, backslashes.
+ */
+const ALLOWED_VITE_IMPORT =
+  /^(?!@cj\/|module$|node:module$)(node:[a-z_/]+|(@[a-z0-9-]+\/)?[a-z0-9][a-z0-9._-]*(\/[A-Za-z0-9._-]+)*)$/;
+/** Identifiers that load modules around the import checks. */
+const LOADER_NAMES: ReadonlySet<string> = new Set(["createRequire"]);
 
 /**
  * Finds every use of the Cloudflare Vite plugin in a Vite config and fails on `config` or `configPath`, and on
@@ -454,18 +462,27 @@ const LOCAL_MODULE = /^(\.|\/|file:|@cj\/)/;
 function checkViteConfig(file: string, source: SourceFile): string[] {
   const problems: string[] = [];
   walk(source, (node) => {
-    let specifier: string | undefined;
+    const where = `${file}:${lineOf(source, node)}`;
+    let specifier: string | null | undefined; // null: a module is loaded but its name is not a literal
     if ((isImportDeclaration(node) || isExportDeclaration(node)) && node.moduleSpecifier) {
-      specifier = isStringLiteral(node.moduleSpecifier) ? node.moduleSpecifier.text : undefined;
+      specifier = isStringLiteral(node.moduleSpecifier) ? node.moduleSpecifier.text : null;
+    } else if (isImportEqualsDeclaration(node)) {
+      const ref = node.moduleReference;
+      specifier = isExternalModuleReference(ref) && isStringLiteral(ref.expression) ? ref.expression.text : null;
     } else if (isCallExpression(node)) {
       const callee = node.expression;
-      const isLoader = callee.kind === SyntaxKind.ImportKeyword || (isIdentifier(callee) && callee.text === "require");
-      const arg = node.arguments[0];
-      if (isLoader && arg && (isStringLiteral(arg) || isNoSubstitutionTemplateLiteral(arg))) specifier = arg.text;
+      if (callee.kind === SyntaxKind.ImportKeyword || (isIdentifier(callee) && callee.text === "require")) {
+        const arg = node.arguments[0];
+        specifier = arg && (isStringLiteral(arg) || isNoSubstitutionTemplateLiteral(arg)) ? arg.text : null;
+      }
+    } else if (isIdentifier(node) && LOADER_NAMES.has(node.text)) {
+      problems.push(`${where} uses ${node.text}; a Vite config may not load modules by other means`);
     }
-    if (specifier !== undefined && LOCAL_MODULE.test(specifier)) {
+    if (specifier === null) {
+      problems.push(`${where} loads a module whose name is not a literal; failing closed`);
+    } else if (specifier !== undefined && !ALLOWED_VITE_IMPORT.test(specifier)) {
       problems.push(
-        `${file}:${lineOf(source, node)} imports ${specifier}; a Vite config may import only installed packages, so the Cloudflare plugin call stays here where the wall can read it`,
+        `${where} imports ${specifier}; a Vite config may import only installed packages and node: built-ins, so the Cloudflare plugin call stays here where the wall can read it`,
       );
     }
   });
