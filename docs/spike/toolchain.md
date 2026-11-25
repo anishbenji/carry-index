@@ -59,6 +59,14 @@ toolchain therefore sits in `apps/web` beside Solid: `vite`, `@solidjs/vite-plug
 `vitest`, `@playwright/test`, `@axe-core/playwright`, `@lhci/cli`, `size-limit`, `@size-limit/file`,
 `browserslist`, `wrangler` and `@cloudflare/workers-types`.
 
+**Two Wrangler versions are installed.** The approved pin, `wrangler` 4.168.0, is declared at the root and in
+`apps/web`; it is what `wrangler` commands (and a deploy) run. `@cloudflare/vite-plugin` 1.70.1 lists `wrangler`
+4.164.0 and `miniflare` 5.20261117.0-beta as exact dependencies of its own (with `wrangler ^4.164.0` as a peer), so
+Bun installs 4.164.0 beside it (`node_modules/.bun/wrangler@4.164.0…`) and the plugin reads the Worker config with
+that copy when it builds. They cannot be deduplicated without changing an approved pin. Their top-level config
+schemas are identical today (an independent review diffed the two `config-schema.json` files), so there is no
+behavioural gap now; the user can align the pair later (wrangler 4.164.0, or a plugin release that pins 4.168.0).
+
 TypeScript settings live in `tsconfig.base.json` (strict, `noUncheckedIndexedAccess`,
 `exactOptionalPropertyTypes`, `verbatimModuleSyntax`, `module: preserve`, bundler resolution). Each workspace is a
 composite project that emits declarations only, into its own ignored `.tsbuild/`.
@@ -69,7 +77,7 @@ composite project that emits declarations only, into its own ignored `.tsbuild/`
 |---|---|---|
 | `typecheck` | `tsc --build` | passes |
 | `lint` | `biome ci --error-on-warnings .` (any warning fails, so the whole types domain gates, not only the two promise rules), then the import ban (`node`, TypeScript 7 parser) | passes |
-| `test` | `vitest run` in every workspace that has tests | 89 tests pass |
+| `test` | `vitest run` in every workspace that has tests | 51 tests pass |
 | `build` | `vite build` in apps/web and apps/kit | passes, no HTML emitted |
 | `wall` | lists the three privacy-wall checks as `pending: packages/deploy (privacy-wall design v2)`; fails if git tracks any `wrangler.*` config | passes, 265 tracked files, none a Wrangler config |
 | `size` | runs size-limit whenever the root `size-limit` list has targets; without targets, "no pages yet" until `apps/web/dist` holds HTML or JavaScript, then fails; once pages exist, a target must measure HTML | passes: 10.45 kB gzip and 9.54 kB Brotli, each of 15 kB |
@@ -134,7 +142,7 @@ All run in the branch checkout. Build and end-to-end runs went through `heavy-ru
 | `/usr/bin/time -p biome ci --error-on-warnings .` | real 0.23 s, 50 files |
 | `biome lint` on a scratch file with an unawaited promise, an async `forEach` callback and a promise in an `if` | `noFloatingPromises` (1), `noMisusedPromises` (2) and `noUnnecessaryConditions` (1) reported (file removed afterwards) |
 | `biome ci` with `noRestrictedImports` on `zod` and `@cj/schema` under `apps/web` | errors on `import type { Bag } from "@cj/schema"` in both files that use it; override removed |
-| `bun run test` | checks 78, schema 6, pipeline 3, web 2: all pass |
+| `bun run test` | checks 40, schema 6, pipeline 3, web 2: all pass |
 | `heavy-run.sh … bun run build` | exit 0; Vite reports apps/web `main-*.js` 25.06 kB (10.54 kB gzip), apps/kit 24.58 kB (10.32 kB gzip) |
 | `heavy-run.sh … bun run size` (after the build) | exit 0; "Size limit: 15 kB / Size: 9.54 kB brotlied" |
 | `wc -c`, `brotli -c -q 11 … \| wc -c`, `gzip -9 -c … \| wc -c` on each bundle | apps/web: 25,069 B raw, 9,540 B Brotli, 10,439 B gzip; apps/kit: 24,586 B raw, 9,353 B Brotli, 10,220 B gzip |
@@ -193,6 +201,8 @@ workspaces", recording:
 
 ## For the user
 
+- Decide whether to align `wrangler` with `@cloudflare/vite-plugin`'s own copy: two versions are installed today
+  (4.168.0 approved, 4.164.0 pulled by the plugin); see "Layout".
 - Approve a Node/Bun types package (recommended: `@types/bun`, exact pin) so `runtime.d.ts` can be deleted.
 - Approve a DOM environment for component tests before any Solid component test is written (recommended:
   `happy-dom` or Vitest browser mode with Playwright, exact pin).
