@@ -405,8 +405,8 @@ merge on Saturday ([ADR-0045](../adr/amendments/0045-github-actions-deploys.md),
 
 ## For the user at the gate
 
-One line each. Each item is Proposed until you decide it. "USER #n" and "pending #n" are entries in the director's
-decision list, outside this repo.
+One line each: what you still decide or do. "USER #n" and "pending #n" are entries in the director's decision
+list, outside this repo.
 
 1. N1: confirm static first (ADR-0015), built with the fallback (plain Vite build plus prerender script).
 2. Accept the rule: page data never goes into an inline script; islands are plain TypeScript.
@@ -414,16 +414,16 @@ decision list, outside this repo.
 4. Q5: accept the build-time CSP, one hash set for every page, no `'unsafe-inline'`.
 5. Accept ADR-0046: the public Worker is assets-only, and the beacon is its own Worker on `carryjournal.com/api/*`.
 6. Accept ADR-0045's spike amendment: host-scoped `noindex` on workers.dev, confirmed at the edge after merge.
-7. Accept ADR-0047, the toolchain, including Node 26 for the import check (pending #14.1).
-8. Zod in the private Worker through the MCP SDK: amend child rule 6, or write a JSON-RPC handler (pending #14.2).
-9. MCP shape (#16): A, the OAuth routes behind Access (recommended); B, MCP on its own Worker; or C, no MCP in Release 1.
-10. Accept ADR-0048 with that choice, plus a revocation check in a strongly consistent store.
-11. Add the free WAF rate-limiting rule for `/register` and `/authorize` (pending #11).
-12. Accept the ADR-0036 and ADR-0037 amendments, and do the Access and D1 steps for PR 9's edge test (U4/U5, pending #11; steps 4 and 5 now go through `deploy-kit.yml`).
+7. Accept ADR-0047, the toolchain.
+8. Size gate (ADR-0017): count inline scripts per page, as `scripts/page-budget.ts` does; budgets unchanged.
+9. Accept that Q2's edge numbers and Q3 (navigation) move into the build.
+10. Accept the ADR-0036 and ADR-0037 amendments.
+11. Do the Access and D1 steps for PR 9's edge test (U4/U5, pending #11): step 4 in the dashboard, step 5 through `deploy-kit.yml`.
+12. Add the free WAF rate-limiting rule for `/register` and `/authorize` (pending #11).
 13. R2: look at the dashboard and report whether it asks for a card (U3, pending #4); until then CI artifacts.
 14. Give the Cloudflare API token so the spike can measure at the edge (U1, pending #2).
-15. Approve `@types/bun` and a DOM test environment (pending #13).
-16. Round the two fractional Cicada weights, or allow one decimal place for grams (pending #15).
-17. Size gate (ADR-0017): count inline scripts per page, as `scripts/page-budget.ts` does; budgets unchanged.
-18. Accept that Q2's edge numbers and Q3 (navigation) move into the build.
-19. N5 needs nothing now: you moved it to after the gate (USER #3); ADR-0020 waits for the build's measurement.
+
+**Decided overnight by the director under your instruction (26 Nov), yours to reverse:** #13 `@types/bun` 1.4.2 and
+`happy-dom` 21.0.4 approved, dev only; #14.1 Node for the import check; #14.2 child rule 6 allows Zod in the
+private Worker; #15 the two Cicada weights rounded to 800 g and 870 g; #16 MCP shape (ADR-0048). **Decided by you
+(26 Nov):** the privacy wall and deploy design (#17, ADR-0049). N5 waits for the build's measurement (USER #3).
