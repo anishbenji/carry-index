@@ -68,6 +68,9 @@
         "@cj/schema": "workspace:*",
         "zod": "4.6.7",
       },
+      "devDependencies": {
+        "yaml": "2.9.1",
+      },
     },
     "packages/pipeline": {
       "name": "@cj/pipeline",
