@@ -26,6 +26,7 @@
     "@lhci/cli": "0.16.1",
     "@playwright/test": "1.65.1",
     "@size-limit/file": "14.3.0",
+    "@types/bun": "1.4.2",
     "browserslist": "4.29.6",
     "size-limit": "14.3.0",
     "typescript": "7.0.2",
