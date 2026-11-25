@@ -7,7 +7,7 @@ import { scanImports } from "../src/imports.ts";
 import { TYPE_ONLY_DIRS, TYPE_ONLY_MODULES } from "../src/policy.ts";
 import { evaluateWall } from "../src/wall.ts";
 
-const ROOT = fileURLToPath(new URL("../../../", import.meta.url));
+const ROOT = fileURLToPath(new URL("../../../", import.meta.url).href);
 
 describe("this repository", () => {
   it("apps/web imports Zod and @cj/schema by `import type` only", () => {
@@ -44,5 +44,26 @@ describe("size budgets", () => {
     expect(pkg["size-limit"]).toContainEqual(
       expect.objectContaining({ path: "apps/web/dist/client/assets/*.js", brotli: true, limit: "15 kB" }),
     );
+  });
+});
+
+describe("Vite dev file access", () => {
+  it("denies Wrangler local secret files while keeping Vite's default deny list", async () => {
+    for (const app of ["web", "kit"]) {
+      const module = (await import(`../../../apps/${app}/vite.config.ts`)) as {
+        default: { server?: { fs?: { deny?: unknown } } };
+      };
+      // Vite 8.3.8's own defaults (configDefaults.server.fs.deny), which a configured list replaces, then ours.
+      expect(module.default.server?.fs?.deny, app).toEqual([
+        ".env",
+        ".env.*",
+        "*.{crt,pem,key,p12,pfx,cer,der}",
+        ".npmrc",
+        ".yarnrc.yml",
+        "**/.git/**",
+        ".dev.vars",
+        ".dev.vars.*",
+      ]);
+    }
   });
 });
