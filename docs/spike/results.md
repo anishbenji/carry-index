@@ -12,11 +12,12 @@ deployed, so there are no edge numbers yet.
 |---|---|---|---|
 | PR 4, toolchain (Q7) | `spike/04-scaffold` | `docs/spike/toolchain.md` | `463dbf8` |
 | PR 7, hydrated build (Q1, Q4, Q6, N1 baseline) | `spike/07-deploy-hydrated` | `docs/spike/deploy-hydrated.md` | `4c2c820` (numbers measured at `b5d4fd5`) |
-| PR 8, static first and CSP (N1, N3, Q5) | `spike/08-static-csp` | not yet written | pending |
-| PR 9, Kit Watch: Access, D1, MCP | `spike/09-kit-access-d1-mcp` | `docs/spike/kit-access-d1-mcp.md` | `2f052c4` |
+| PR 8, static first and CSP (N1, N3, Q5) | `spike/08-static-csp` | `docs/spike/static-csp.md` | `b0f40c4` |
+| PR 9, Kit Watch: Access, D1, MCP | `spike/09-kit-access-d1-mcp` | `docs/spike/kit-access-d1-mcp.md` | `0c7e568` (review round 2) |
 
-Review findings for PR 7 are in the director's review folder (`reviews/07-hydrated/`, outside this repo). The R2
-card finding comes from the director's scout (`proposals/r2-card-scout.md`, outside this repo).
+Review findings for PR 7 and PR 9 are in the director's review folders (`reviews/07-hydrated/`,
+`reviews/09-kit/`, outside this repo). The R2 card finding comes from the director's scout
+(`proposals/r2-card-scout.md`, outside this repo).
 
 ## Q1. Does the build deploy to Workers Static Assets, and which Worker is `main`?
 
@@ -41,9 +42,10 @@ account's 100,000 daily requests. With no `main`, none does.
 **Host-scoped `_headers` (ADR-0045's open point).** A rule on `https://:worker.:account.workers.dev/*` adds
 `X-Robots-Tag: noindex` only for the workers.dev host. Verified only in `wrangler dev`'s asset server.
 
-**Known bug.** The PR 7 review found a P1: a browser opening a missing bag URL (`/bags/no-such-bag`) gets the 404
-status but then an error message instead of the "Page not found" page. Hydration renders the address bar's route,
-not the route the page was built for. The fix is in PR 8. Plain unknown paths (`/no-such-page`) are fine.
+**Bug found and fixed.** The PR 7 review found a P1: a browser opening a missing bag URL (`/bags/no-such-bag`)
+got the 404 status but then an error message instead of the "Page not found" page, because hydration rendered the
+address bar's route. PR 8 fixed it in the hydrated build (commit `0370d31`: the route is written on
+`<main data-route>`), with a browser test on both builds. The static build never had the problem.
 
 **Not verified.** Edge behaviour of `not_found_handling` and of host-scoped `_headers` rules. Whether
 `.assetsignore` keeps `wrangler.json` out of the upload at the edge (locally `/wrangler.json` answers 404).
@@ -56,7 +58,7 @@ rule and confirm it at the edge on the first deploy.
 ## Q2. JS, HTML and LCP for the listing and one bag page, on the preview URL
 
 **Answer: local numbers only.** No preview URL exists yet. The edge numbers wait for the Cloudflare API token
-(user step U1). The local numbers for the hydrated build are under N1 below. The static build's numbers are PR 8's.
+(user step U1). The local numbers for both builds are under N1 below.
 
 **ADR change.** None of its own. The numbers feed N1 (ADR-0015) and N3 (ADR-0018).
 
@@ -90,15 +92,35 @@ under `vite dev`, not by a test. Firefox and WebKit were not run.
 
 ## Q5. Does a hash-based CSP hold with Solid's inline scripts?
 
-**Answer: from PR 8 (pending).**
+**Answer: on the static build, yes; on the hydrated build, only until about 30 pages.** (PR 8, local, at
+`b0f40c4`.)
 
-What PR 7 shows: each hydrated page carries 4 inline scripts, and the data script differs per page. A hash-based
-policy would need per-page hashes. PR 7's shipped policy sets no `default-src`, `script-src` or `style-src`, and
-no `'unsafe-inline'`. The PR 7 security review rated that a P2: no live exploit, but no script restriction
-either. A `script-src` without `'unsafe-inline'` must be in place before any production deploy.
+- **Static build.** Every page carries one inline script (the shared snippet) and, with inlined CSS, one
+  `<style>`, identical on all 14 pages. `build-static.ts` hashes every inline script and style, fails the build
+  unless all pages give the same set, and writes `_headers` from it. The header line is 398 characters.
+- **Hydrated build.** Each page has four inline scripts. Three are the same everywhere; the serialized page data
+  differs on every page (13 more hashes). `_headers` cannot give the 404 page its own rule, so the `/*` rule holds
+  the union: 16 hashes, a 1,155-character header line, growing by one 53-character hash per page. Cloudflare
+  documents a 2,000-character limit per header for Pages; PR 8 assumed Workers Static Assets is the same and did
+  not check. At that limit the hydrated policy stops fitting at about 30 pages.
+- **Test.** `e2e/csp.spec.ts` (Playwright, Chromium) checks the policy on the listing, a bag page and the 404
+  page, runs every interactive part, and fails on any violation. Result: zero violations, 6 of 6 pass (3 pages ×
+  2 builds).
 
-**ADR change.** Proposed — for the user at the gate: [ADR-0018 amendment](../adr/amendments/0018-spike-results.md),
-"from PR 8 (pending)".
+The policy (inline-CSS variant) is `default-src 'self'; script-src 'self' 'sha256-<snippet>'; style-src 'self'
+'sha256-<stylesheet>'`, plus `'none'` for objects, frames, fonts, forms and the rest. No `'unsafe-inline'`. This
+closes the PR 7 security review's P2 (no `script-src`), and an end-to-end test now asserts `script-src` is present
+(commit `33072a1`).
+
+**Proposed rule.** Content pages carry only the shared inline snippet and the shared inline stylesheet. Page data
+never goes into an inline script. That rule is what keeps one hash set.
+
+**Not verified.** The 2,000-character limit for Workers Static Assets. Whether the edge honours the generated
+`_headers` exactly as `wrangler dev` does. Firefox and WebKit.
+
+**ADR change.** Proposed — for the user at the gate: [ADR-0018 amendment](../adr/amendments/0018-spike-results.md)
+(the CSP is generated at build time, one hash set) and [ADR-0015 amendment](../adr/amendments/0015-spike-results.md)
+(page data never goes into an inline script).
 
 ## Q6. Does the airline widget load its data from a static file, with no Worker call?
 
@@ -113,8 +135,9 @@ same-origin static JSON request.
 `prerendered()` was not used for the widget. The crawler captures only calls made while rendering, and a closed
 widget makes none. A plain static file is simpler and works in either build.
 
-**Not verified.** The widget's loading and error text are not announced to screen readers, and the error text
-stays up during a retry (PR 7 review, P3). The axe tests never open the widget.
+**Fixed since.** The PR 7 review (P3) found the widget's loading and error text were not announced and the error
+stayed up during a retry. PR 8 put them in a persistent `role="status"` paragraph and resets it on retry, in both
+builds (commit `8d6e2b4`). How screen readers announce it was not tested.
 
 **ADR change.** Proposed — for the user at the gate: part of new [ADR-0046](../adr/0046-public-site-delivery.md).
 
@@ -158,11 +181,59 @@ TypeScript 7, Biome, Vitest, Bun workspaces".
 
 ## N1. Static first against full hydration
 
-**Answer: half measured.** PR 7 measured the fully hydrated build. The static-first build and the comparison are
-PR 8's, pending.
+**Answer: static first meets every N2 budget measured; full hydration misses both JavaScript budgets.** (PR 8,
+local, at `b0f40c4`.)
 
-**Key numbers: full hydration (local, PR 7 at `b5d4fd5`, served by `bunx wrangler dev --port 8799 --ip
-127.0.0.1`; sizes deterministic, timings the median of 5).**
+**How static first was built.** With N1's fallback: a plain Vite build and a short prerender script
+(`bun apps/web/build-static.ts`), not start mode. In `@solidjs/vite-plugin` 3.0.1 the generated server entry always
+injects the client entry script, and its URL cannot be blanked. An authored entry pair was not tried. The script
+renders a known route list from the pipeline, so `prerender-crawler`, `prerendered()` and `@solidjs/meta` are not
+used. The private app can stay on start mode.
+
+**Islands are plain TypeScript, not Solid.** A Solid version of the airline island, built as a size probe only,
+costs 12,928 B brotli (34,903 B raw) on its own, because Solid 2's client runtime comes with it. That alone is over
+the 8 KB content-page budget.
+
+**Key numbers: both builds (local, PR 8 at `b0f40c4`).** All three sites (hydrated, static inline CSS, static
+external CSS) were measured in one heavy-lock session, interleaved, same machine and Chromium, median of 5.
+"Hydrated" is PR 7's build plus the review fixes; "static" is the inline-CSS site.
+
+| Measure | Hydrated, listing | Static, listing | Hydrated, bag | Static, bag | N2 budget (ADR-0017) |
+|---|---|---|---|---|---|
+| Script files loaded before a widget opens | 1 (client entry) | 1 (sort island) | 1 (client entry) | 0 | |
+| Script files, brotli / gzip / raw | 35,394 / 39,136 / 105,993 B | 341 / 413 / 693 B | 35,394 / 39,136 / 105,993 B | 0 | |
+| Inline scripts: count, brotli / gzip / raw | 4: 1,933 / 2,275 / 8,900 B | 1: 398 / 487 / 1,032 B | 4: 952 / 1,129 / 2,474 B | 1: 398 / 487 / 1,032 B | |
+| Page JS, brotli (files + inline) | 37,327 B: fail | 739 B: pass | 36,346 B: fail | 398 B: pass | listing < 15 KB; content < 8 KB |
+| Page JS after the airline widget opens | n/a | n/a | 36,346 B (no extra script) | 915 B (+517 B island) | content < 8 KB |
+| HTML, brotli / gzip / raw | 3,348 / 4,125 / 22,574 B | 2,951 / 3,570 / 16,788 B (CSS inlined) | 1,788 / 2,216 / 6,278 B | 1,980 / 2,443 / 6,814 B (CSS inlined) | listing < 40 KB; content < 14 KB with CSS |
+| CSS, brotli | 867 B (file) | 866 B (inline) | 867 B (file) | 866 B (inline) | < 10 KB |
+| Lighthouse mobile LCP (simulated) | 795 ms (776–830) | 634 ms (625–670) | 1,734 ms (1,549–1,783) | 1,233 ms (1,217–1,251) | field < 1.0 s (not comparable) |
+| LCP observed (unthrottled, local) | 53 ms | 54 ms | 95 ms | 80 ms | |
+| Lighthouse TBT | 5 ms (0–24) | 0 ms (0–37) | 0 ms (0–30) | 0 ms (0–13) | listing < 50 ms; content 0 ms |
+| Lighthouse CLS | 0 | 0 | 0 | 0 | 0 in the lab |
+| Lighthouse Performance | 100 | 100 | 100 | 100 | |
+| INP, sort control, 4x CPU | 32 ms (16–40) | 24 ms (8–48) | n/a | n/a | < 50 ms |
+
+Commands (from the PR 8 doc):
+
+```sh
+heavy-run.sh "ci-spike-static measure A/B" bash -c \
+  'RUNS=1 bash scripts/measure-ab.sh smoke.json && RUNS=5 bash scripts/measure-ab.sh measure-ab.json'
+bun scripts/page-budget.ts   # per page, script files plus inline scripts; exits 1 on the hydrated misses
+bunx size-limit
+```
+
+Reading it: static first ships 0.7 KB of JavaScript on the listing and 0.4 KB on a bag page (0.9 KB once the
+airline widget opens), leaving 7.1–7.6 KB of the content budget for the metrics beacon. The static bag page's
+simulated LCP is about 0.5 s lower. Nothing a visitor sees changes: same markup, same sort, same widget, zero
+console problems, zero CSP violations, axe clean in both themes. The hydrated entry is 35,394 B here against
+PR 7's 35,275 B, because of the review fixes; builds of the same source varied by up to 48 B.
+
+**Proposed rule.** Page data never goes into an inline script (see Q5).
+
+**Baseline: full hydration alone (local, PR 7 at `b5d4fd5`, served by `bunx wrangler dev --port 8799 --ip
+127.0.0.1`; sizes deterministic, timings the median of 5).** Kept for the record; PR 8's table above supersedes it
+for the comparison.
 
 | Measure | Listing `/uhmwpe-backpacks` | Bag `/bags/ula-dragonfly-30l` | N2 budget (ADR-0017) |
 |---|---|---|---|
@@ -195,29 +266,52 @@ and INP are inside their budgets. The page data is in the HTML twice: once as ma
 
 Lighthouse's LCP is a simulated slow-4G figure, not comparable with the field target.
 
-**Known gaps.** The size gate measures only the client entry, not the 4 inline scripts that N2 counts (PR 7
-review, P2). `bun run size` cannot read `.size-limit.json` yet; `bunx size-limit` was used.
+**Size gate.** `size-limit` measures files only, so it missed the inline scripts that N2 counts (PR 7 review, P2).
+PR 8 added `scripts/page-budget.ts` (commit `436ec67`): per page, loaded script files plus all inline scripts,
+brotli, against N2, exiting 1 on a miss. Budgets unchanged.
 
-**Not verified.** Anything at the edge. Firefox and WebKit. Back/forward cache: not proven either way. The
-composition of the 105.8 KB entry. The beacon (not built).
+**Not verified.** Anything at the edge, including real TTFB and field LCP and INP. Firefox and WebKit. Back/forward
+cache restore (not re-tested in PR 8). The metrics beacon (not built, so in neither build's figures). Start mode
+with an authored entry pair. Dev mode for the static build (there is no `vite dev` path for it).
 
-**ADR change.** Proposed — for the user at the gate: [ADR-0015 amendment](../adr/amendments/0015-spike-results.md),
-with the PR 7 numbers filled in and "N1 numbers: from PR 8 (pending)".
+**ADR change.** Proposed — for the user at the gate: [ADR-0015 amendment](../adr/amendments/0015-spike-results.md)
+(confirm static first, built with the fallback) and [ADR-0017 amendment](../adr/amendments/0017-spike-results.md)
+(the size gate counts inline scripts per page).
 
 ## N3. Inlined CSS under a hash-based CSP
 
-**Answer: from PR 8 (pending).** PR 7's one site stylesheet is 867 B brotli, far under the 10 KB limit.
+**Answer: inlining wins on the text-led listing and makes no difference on the image-led bag page.** (PR 8, local,
+at `b0f40c4`; same session, interleaved, median of 5, both under the hash CSP.)
 
-**ADR change.** Proposed — for the user at the gate: [ADR-0018 amendment](../adr/amendments/0018-spike-results.md),
-"from PR 8 (pending)".
+| Measure | Listing, inline | Listing, external | Bag, inline | Bag, external |
+|---|---|---|---|---|
+| Lighthouse LCP (simulated, cold) | 634 ms (625–670) | 791 ms (783–959) | 1,233 ms (1,217–1,251) | 1,222 ms (1,133–1,231) |
+| FCP | 634 ms | 791 ms | 626 ms | 778 ms |
+| LCP observed (unthrottled, local) | 54 ms | 56 ms | 80 ms | 94 ms |
+| HTML, brotli | 2,951 B | 2,120 B + 867 B CSS file | 1,980 B | 1,169 B + 867 B CSS file |
+
+Inlining removes the one render-blocking request: about 150 ms earlier first paint on both pages under simulated
+4G. On the listing LCP is text, so LCP moves with it (−157 ms). On the bag page LCP is the first drawing, so it
+does not move. The cost is about 830 B brotli more HTML per page, re-sent on every navigation. Inlining adds one
+`style-src` hash, the same on every page.
+
+**Compression (local only).** `wrangler dev` serves `br` when offered, else `gzip`, never `zstd`. Sizes in this
+document are brotli q11 and gzip -9 computed from the files. Cloudflare's own compression was not measured.
+
+**Not verified.** A warm second page with the external stylesheet already cached: only cold loads were measured.
+Edge compression, zstd and Early Hints.
+
+**ADR change.** Proposed — for the user at the gate: [ADR-0018 amendment](../adr/amendments/0018-spike-results.md)
+(confirm inlining, keep the "under about 10 KB" condition).
 
 ## N5. JPEG XL against AVIF
 
-**Answer: not run.** Deferred to after the gate by the user (USER #3). N5 concerns review photos, which are not in
-Release 1.
+**Answer: not run in the spike.** The user moved the test to after the gate (USER #3). N5 concerns review photos,
+which are not needed before milestone 5. ADR-0020 now says it is confirmed or reversed with the build's JPEG XL
+measurement, not at the gate.
 
-**ADR change.** Proposed — for the user at the gate: [ADR-0020 amendment](../adr/amendments/0020-spike-results.md)
-recording the deferral.
+**ADR change.** Proposed — for the user at the gate: [ADR-0020 amendment](../adr/amendments/0020-spike-results.md),
+a note only; nothing to decide at the gate.
 
 ## R2. Does enabling R2 ask for a payment card?
 
