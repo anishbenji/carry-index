@@ -47,7 +47,8 @@ The **enforcing check** runs at deploy time on what is uploaded. The CI deploy j
 `bun run wall` on the generated config in the same job immediately before `wrangler deploy`, and deploy with that
 generated config: the plugin's `.wrangler/deploy/config.json` redirect, no `--config` override and no `--env`
 the wall did not see. A deploy step that cannot meet this must not run. The full requirements are in
-`docs/spike/toolchain.md`.
+`docs/spike/toolchain.md`. The deploy-time gate is being redesigned (the director's
+`proposals/privacy-wall-design.md`, outside this repo): redesign under review, decision at the gate.
 
 ## Consequences
 

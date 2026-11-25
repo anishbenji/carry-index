@@ -325,7 +325,8 @@ user's own look at the dashboard settles it (user step U3). Nothing was enabled.
 
 ## Kit Watch: Access and D1
 
-**Answer: locally, yes. The edge is not proven.** (PR 9, local, workerd through Wrangler 4.168.0.)
+**Answer: locally, yes. The edge is not proven.** (PR 9, local, workerd through Wrangler 4.168.0; doc at
+`0c7e568`.)
 
 - One private Worker, `kit-watch`, serves two hostnames and routes by hostname. `kit.carryjournal.com` serves the
   Solid 2 SPA and its API. Any other hostname, and any plain-http request, gets 404.
@@ -334,11 +335,11 @@ user's own look at the dashboard settles it (user step U3). Nothing was enabled.
 - D1 holds one synthetic table. `GET /api/items` reads; `POST /api/items` writes JSON only, exact fields, body at
   most 4 KB, `Origin` must be `https://kit.carryjournal.com`.
 
-**Key numbers (local, PR 9, doc at `2f052c4`).**
+**Key numbers (local, PR 9, doc at `0c7e568`).**
 
 | Command | Result |
 |---|---|
-| `bun run test` in `workers/kit` (`/usr/bin/time -p`) | 2 files, 32 tests pass; real 1.23 s (round 1: 4 files, 51 tests) |
+| `bun run test` in `workers/kit` (`/usr/bin/time -p`) | 2 files, 32 tests pass; real 1.23 s (round 1: 4 files, 51 tests; round 2: 8 files, 71 tests, real 7.83 s, mostly the one-second callback hold) |
 | `heavy-run.sh … bun run build` | `apps/kit` `index-*.js` 43.29 kB (17.74 kB gzip), CSS 0.86 kB, `index.html` 0.50 kB, no inline script |
 | `Bun.build` of `workers/kit/src/index.ts`, minified | before the Ajv alias 425.8 kB (121.0 kB gzip); after 291.3 kB (79.7 kB gzip), no Ajv |
 | `wrangler dev --local --local-upstream kit.carryjournal.com` | `/api/items` 401 without a JWT, 200 with three synthetic rows; `/` 200 with the CSP |
@@ -361,10 +362,22 @@ outside the Access self-hosted application. It is guarded by OAuth tokens from
 store only the Access `sub`. One read-only tool, `list_items`, needs scope `mcp:read`. The Access JWT is not
 accepted as an MCP token (tested).
 
-**Risk: the free KV write quota.** `/register` and `/authorize` must be open, and each call writes to KV. The
-free plan allows about 1,000 KV writes a day. Once they are spent, the owner's own sign-ins and token refreshes
-fail until the daily reset. The Worker now rate-limits both routes to 10 calls per 60 s per IP (Rate Limiting
-binding), which answers 429 before any KV write. That does not cap the daily total.
+**Risk: the open routes.** `/register` and `/authorize` must be open, and each call writes to KV. The free plan
+allows about 1,000 KV writes a day. The Worker rate-limits both routes to 10 calls per 60 s per IP, and review
+round 2 added a daily budget: 300 requests per UTC day from everyone, counted in D1, which leaves about 400 KV
+writes for the owner. Registration now accepts only Claude's connector callback.
+
+PR 9's second security review round still found three P1s:
+
+1. Anonymous traffic to discovery and `/mcp` can spend the Worker's 100,000 daily requests, which the private
+   app shares.
+2. Invalid requests can spend the daily budget, so the owner cannot start a new sign-in until midnight UTC.
+3. A revoked MCP token can still read at another Cloudflare location until its cached KV record expires (60 s
+   or more).
+
+The user decides the shape at the gate (open decision #16). **A (recommended):** put `/authorize`, `/callback` and
+`/register` behind the owner-only Access policy, leaving only `/token` and `/mcp` open. **B:** give MCP its own
+Worker. **C:** take MCP out of Release 1. Until then PR 9 stays local only, with no edge deploy.
 
 **Not verified.** Access for SaaS at the edge (its real endpoints, claims and PKCE). A real MCP client (Claude)
 connecting. The Rate Limiting binding and the WAF rule at the edge.
@@ -383,6 +396,11 @@ generated config in the same job, immediately before `wrangler deploy`, and depl
 `--config` override, no `--env` the wall did not see). A deploy step that cannot meet this must not run. The full
 requirements are in `docs/spike/toolchain.md` on `spike/04-scaffold`.
 
+**Redesign under review, decision at the gate.** The deploy-time gate is being redesigned in the director's
+`proposals/privacy-wall-design.md` (outside this repo). Until that gate exists and passes, a plain `wrangler
+deploy` is not a privacy gate: PR 9 deploys only its synthetic spike data, and only on the director's explicit
+approval.
+
 Today `bun run wall` fails on PR 7 (empty binding blocks in the generated config; fix on `spike/04-scaffold`) and
 on PR 9 (bindings declared while checks are pending, as expected).
 
@@ -393,20 +411,23 @@ on PR 9 (bindings declared while checks are pending, as expected).
 One line each. Each item is Proposed until you decide it. "USER #n" and "pending #n" are entries in the director's
 decision list, outside this repo.
 
-1. N1: confirm or reverse static first (ADR-0015) with PR 8's numbers against PR 7's full-hydration baseline.
-2. N3: inline the stylesheet or keep an external file (ADR-0018), with PR 8's numbers.
-3. Q5: accept PR 8's hash-based CSP, and require `script-src` without `'unsafe-inline'` before any production deploy.
-4. Accept ADR-0046: the public Worker is assets-only, and the beacon is its own Worker on `carryjournal.com/api/*`.
-5. Accept ADR-0045's amendment: keep host-scoped `noindex` on workers.dev and confirm it at the edge.
-6. Accept ADR-0047, the toolchain, including Node 26 for the wall and import checks (pending #14.1).
-7. Zod in the private Worker through the MCP SDK: amend child rule 6, or write a JSON-RPC handler (pending #14.2).
-8. Accept ADR-0048, MCP authorization, and pick how to cap the daily KV writes.
-9. Add the free WAF rate-limiting rule for `/register` and `/authorize` (pending #11).
-10. Accept the ADR-0036 and ADR-0037 amendments, and do the Access and D1 steps for PR 9's edge test (U4/U5, pending #11).
-11. R2: look at the dashboard and report whether it asks for a card (U3, pending #4); until then CI artifacts.
-12. Give the Cloudflare API token so the spike can measure at the edge (U1, pending #2).
-13. Approve `@types/bun` and a DOM test environment (pending #13).
-14. Round the two fractional Cicada weights, or allow one decimal place for grams (pending #15).
-15. Size gate: count the inline scripts in the JS budget, and let the gate read `.size-limit.json` or the root `package.json`.
-16. Accept that Q2's edge numbers and Q3 (navigation) move into the build.
-17. N5 needs nothing now: you deferred it to after the gate (USER #3).
+1. N1: confirm static first (ADR-0015), built with the fallback (plain Vite build plus prerender script).
+2. Accept the rule: page data never goes into an inline script; islands are plain TypeScript.
+3. N3: confirm inlining the stylesheet while under about 10 KB (ADR-0018).
+4. Q5: accept the build-time CSP, one hash set for every page, no `'unsafe-inline'`.
+5. Accept ADR-0046: the public Worker is assets-only, and the beacon is its own Worker on `carryjournal.com/api/*`.
+6. Accept ADR-0045's amendment: keep host-scoped `noindex` on workers.dev and confirm it at the edge.
+7. Accept ADR-0047, the toolchain, including Node 26 for the wall and import checks (pending #14.1).
+8. Zod in the private Worker through the MCP SDK: amend child rule 6, or write a JSON-RPC handler (pending #14.2).
+9. MCP shape (#16): A, the OAuth routes behind Access (recommended); B, MCP on its own Worker; or C, no MCP in Release 1.
+10. Accept ADR-0048 with that choice, plus a revocation check in a strongly consistent store.
+11. Add the free WAF rate-limiting rule for `/register` and `/authorize` (pending #11).
+12. Accept the ADR-0036 and ADR-0037 amendments, and do the Access and D1 steps for PR 9's edge test (U4/U5, pending #11).
+13. R2: look at the dashboard and report whether it asks for a card (U3, pending #4); until then CI artifacts.
+14. Give the Cloudflare API token so the spike can measure at the edge (U1, pending #2).
+15. Approve `@types/bun` and a DOM test environment (pending #13).
+16. Round the two fractional Cicada weights, or allow one decimal place for grams (pending #15).
+17. Size gate (ADR-0017): count inline scripts per page, as `scripts/page-budget.ts` does; budgets unchanged.
+18. Accept that Q2's edge numbers and Q3 (navigation) move into the build.
+19. N5 needs nothing now: you moved it to after the gate (USER #3); ADR-0020 waits for the build's measurement.
+20. Privacy wall: the deploy-gate redesign in `proposals/privacy-wall-design.md`.
