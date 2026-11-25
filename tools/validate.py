@@ -181,7 +181,10 @@ def main():
 
     # ---- my notes
     notes_path = os.path.join(DATA, 'my-notes.yaml')
-    notes = load(notes_path) if os.path.exists(notes_path) else []
+    # my-notes.yaml is private (ignored by git), so it exists only in the owner's main checkout.
+    # Without it (worktrees, CI) the my_note links cannot be checked; say so instead of failing.
+    notes_present = os.path.exists(notes_path)
+    notes = load(notes_path) if notes_present else []
     check_schema(notes, 'notesFile', 'my-notes.yaml')
     note_ids = {n['id'] for n in notes}
     for n in notes:
@@ -191,7 +194,7 @@ def main():
             errors.append(f'my-notes.yaml: {n["id"]}: about "{n["about"]}" is not a line on a card')
     for label, b in bags:
         for c in b['claims']:
-            if c.get('my_note') and c['my_note'] not in note_ids:
+            if c.get('my_note') and notes_present and c['my_note'] not in note_ids:
                 errors.append(f'{label}: {c["id"]}: my_note "{c["my_note"]}" is not in my-notes.yaml')
 
     owned_path = os.path.join(DATA, 'my-bags.yaml')
@@ -314,6 +317,8 @@ def main():
     print(f'{len(bags)} models, {len(variant_ids) - n_cmp} builds in sections, {n_cmp} comparison builds, '
           f'{n_claims} pros and cons, {n_features} features, {n_computed} computed')
     print(f'{verified_total} checked field values, {unverified_total} unverified')
+    if not notes_present:
+        print('skipped: my_note links not checked (data/my-notes.yaml is private and not present here)')
     print(f'{len(errors)} errors, {len(warnings)} warnings -> {os.path.relpath(args.report, ROOT)}')
     for e in errors:
         print('ERROR', e)
