@@ -93,3 +93,12 @@ describe("Vite public folders", () => {
     expect((await load("web")).publicDir ?? "public").toBe("public");
   });
 });
+
+describe("Node version", () => {
+  it("is declared in .node-version and in engines, which agree", () => {
+    const pinned = readFileSync(join(ROOT, ".node-version"), "utf8").trim();
+    const pkg = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8")) as { engines?: { node?: string } };
+    expect(pinned).toMatch(/^\d+\.\d+\.\d+$/);
+    expect(pkg.engines?.node).toBe(`>=${pinned}`);
+  });
+});

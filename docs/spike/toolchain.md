@@ -30,7 +30,7 @@ Two things do not work as the architecture doc assumed:
 | Tool | Version | Where |
 |---|---|---|
 | Bun | 1.4.2 | machine |
-| Node | 26.13.0 | machine (Vitest and Vite run on it through their `node` shebangs) |
+| Node | 26.13.0 | declared in `.node-version` and `engines.node: ">=26.13.0"`; `lint` and `wall` run `.ts` files with `node` (built-in type stripping), and Vitest and Vite run on it through their `node` shebangs |
 | typescript | 7.0.2 | root |
 | @biomejs/biome | 2.6.9 | root |
 | vitest | 5.1.1 | root |
