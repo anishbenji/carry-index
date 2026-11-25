@@ -1,0 +1,101 @@
+# Checks for every pull request and every push to main. No credentials and no environment: nothing here can
+# deploy (ADR-0049, privacy-wall design v2 section 8). Each action is pinned by commit SHA; packages install
+# without running their scripts. The structure is tested by packages/deploy/test/t10-workflows.test.ts.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: script contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: 1.4.2
+      - name: Install (frozen lockfile, no package scripts)
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Type check
+        run: bun run typecheck
+      - name: Lint
+        run: bun run lint
+      - name: Unit and contract tests
+        run: bun run test
+      - name: Build
+        run: bun run build
+      - name: Interim wall guard
+        run: bun run wall
+      - name: Size budgets
+        run: bun run size
+      - name: Deploy gate check on the build (checks 1 and 2, seal and scan; spawns nothing)
+        run: node packages/deploy/src/bin.ts check apps/web/dist/client
+      - name: Install Playwright Chromium
+        run: bun x playwright install --with-deps chromium
+      - name: End-to-end tests
+        run: bun run test:e2e
+
+  data:
+    name: data validator
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version: 0.13.6
+          enable-cache: false
+      - name: Validate the catalogue data
+        run: uv run --no-project --with pyyaml --with jsonschema python tools/validate.py --report "$RUNNER_TEMP/validation-report.md"
+      - name: Validator tests
+        run: uv run --no-project --with pyyaml --with jsonschema python -m unittest discover -s tools -p "test_validate_*.py"
+
+  secret-scan:
+    name: secret scan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    env:
+      GITLEAKS_VERSION: 8.30.1
+      # SHA-256 of gitleaks_8.30.1_linux_x64.tar.gz, from the release's checksums file.
+      GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Install gitleaks (pinned release, checksum verified)
+        run: |
+          set -euo pipefail
+          archive="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl -fsSL --proto '=https' -o "$RUNNER_TEMP/$archive" \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/${archive}"
+          echo "${GITLEAKS_SHA256}  $RUNNER_TEMP/$archive" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/gitleaks"
+          tar -xzf "$RUNNER_TEMP/$archive" -C "$RUNNER_TEMP/gitleaks" gitleaks
+      - name: Scan the whole history
+        run: '"$RUNNER_TEMP/gitleaks/gitleaks" git --redact --no-banner --exit-code 1 .'
