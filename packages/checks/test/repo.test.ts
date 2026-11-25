@@ -39,11 +39,13 @@ describe("Vite dev servers", () => {
 });
 
 describe("size budgets", () => {
-  it("hold apps/web client JavaScript to the N2 listing limit, measured in Brotli as Cloudflare serves it", () => {
+  it("hold apps/web client JavaScript to the N2 listing limit in both gzip and Brotli, so the larger one gates", () => {
+    // Cloudflare recompresses at gzip level 8 or Brotli level 4 (blog.cloudflare.com/this-is-brotli-from-origin);
+    // size-limit measures gzip at level 9 and Brotli at quality 11, so both are reported and both must pass.
     const pkg = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8")) as { "size-limit"?: unknown };
-    expect(pkg["size-limit"]).toContainEqual(
-      expect.objectContaining({ path: "apps/web/dist/client/assets/*.js", brotli: true, limit: "15 kB" }),
-    );
+    const path = "apps/web/dist/client/assets/*.js";
+    expect(pkg["size-limit"]).toContainEqual(expect.objectContaining({ path, gzip: true, limit: "15 kB" }));
+    expect(pkg["size-limit"]).toContainEqual(expect.objectContaining({ path, brotli: true, limit: "15 kB" }));
   });
 });
 

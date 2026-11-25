@@ -31,7 +31,13 @@
   },
   "size-limit": [
     {
-      "name": "apps/web client JavaScript (N2 listing limit, ADR-0017)",
+      "name": "apps/web client JavaScript, gzip (N2 listing limit, ADR-0017)",
+      "path": "apps/web/dist/client/assets/*.js",
+      "gzip": true,
+      "limit": "15 kB"
+    },
+    {
+      "name": "apps/web client JavaScript, Brotli (N2 listing limit, ADR-0017)",
       "path": "apps/web/dist/client/assets/*.js",
       "brotli": true,
       "limit": "15 kB"
