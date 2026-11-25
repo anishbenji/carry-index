@@ -107,19 +107,54 @@ describe("scanImports: resolved paths", () => {
 
 describe("type-only policy", () => {
   it("covers every public-facing workspace and every module that carries Zod", async () => {
-    const { TYPE_ONLY_DIRS, TYPE_ONLY_MODULES, TYPE_ONLY_PATHS } = await import("../src/policy.ts");
+    const { publicDirs, TYPE_ONLY_MODULES, TYPE_ONLY_PATHS } = await import("../src/policy.ts");
     const t = makeTree({
       "workers/web/src/index.ts": 'import { bagSchema } from "@cj/schema";\n',
       "apps/web/src/a.ts": 'import { readBags } from "@cj/pipeline";\n',
       "apps/web/src/b.ts": 'import { readBags } from "../../../packages/pipeline/src/bags.ts";\n',
     });
     try {
-      const found = TYPE_ONLY_DIRS.flatMap((dir) => scanImports(t.root, dir, TYPE_ONLY_MODULES, TYPE_ONLY_PATHS));
+      const found = publicDirs(t.root).flatMap((dir) => scanImports(t.root, dir, TYPE_ONLY_MODULES, TYPE_ONLY_PATHS));
       expect(found.map((f) => f.file).sort()).toEqual([
         "apps/web/src/a.ts",
         "apps/web/src/b.ts",
         "workers/web/src/index.ts",
       ]);
+    } finally {
+      t.cleanup();
+    }
+  });
+});
+
+describe("publicDirs", () => {
+  it("is every apps/* and workers/* folder except the private app and Worker", async () => {
+    const { publicDirs } = await import("../src/policy.ts");
+    const t = makeTree({
+      "apps/web/package.json": "{}",
+      "apps/kit/package.json": "{}",
+      "workers/web/package.json": "{}",
+      "workers/kit/package.json": "{}",
+      "workers/beacon/package.json": "{}",
+      "apps/.gitignore": "dist/\n",
+    });
+    try {
+      expect(publicDirs(t.root)).toEqual(["apps/web", "workers/beacon", "workers/web"]);
+    } finally {
+      t.cleanup();
+    }
+  });
+});
+
+describe("zodInBuild", () => {
+  it("names each built apps/web file that contains Zod, and nothing when the build is clean", async () => {
+    const { zodInBuild } = await import("../src/bundle.ts");
+    const t = makeTree({
+      "apps/web/dist/client/assets/main.js": "export const x = 1;",
+      "apps/web/dist/client/assets/chunk.js": 'class e extends Error{name="$ZodError"}',
+      "apps/web/dist/client/index.html": "<!doctype html><p>ok</p>",
+    });
+    try {
+      expect(zodInBuild(t.root)).toEqual(["apps/web/dist/client/assets/chunk.js"]);
     } finally {
       t.cleanup();
     }

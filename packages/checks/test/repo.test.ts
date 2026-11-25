@@ -4,14 +4,14 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { listFiles } from "../src/files.ts";
 import { scanImports } from "../src/imports.ts";
-import { TYPE_ONLY_DIRS, TYPE_ONLY_MODULES, TYPE_ONLY_PATHS } from "../src/policy.ts";
+import { publicDirs, TYPE_ONLY_MODULES, TYPE_ONLY_PATHS } from "../src/policy.ts";
 import { evaluateWall, repoFiles } from "../src/wall.ts";
 
 const ROOT = fileURLToPath(new URL("../../../", import.meta.url).href);
 
 describe("this repository", () => {
   it("apps/web imports Zod and @cj/schema by `import type` only", () => {
-    for (const dir of TYPE_ONLY_DIRS) expect(scanImports(ROOT, dir, TYPE_ONLY_MODULES, TYPE_ONLY_PATHS)).toEqual([]);
+    for (const dir of publicDirs(ROOT)) expect(scanImports(ROOT, dir, TYPE_ONLY_MODULES, TYPE_ONLY_PATHS)).toEqual([]);
   });
 
   it("apps/web uses at least one schema type, so the check above guards a real import", () => {
@@ -122,5 +122,12 @@ describe("TypeScript projects for the apps", () => {
       expect(tooling.include, app).toContain("vite.config.ts");
       expect(rootRefs, app).toContain(`apps/${app}/tsconfig.node.json`);
     }
+  });
+});
+
+describe("the built public app", () => {
+  it("contains no Zod in apps/web/dist", async () => {
+    const { zodInBuild } = await import("../src/bundle.ts");
+    expect(zodInBuild(ROOT)).toEqual([]);
   });
 });
