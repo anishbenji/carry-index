@@ -203,11 +203,15 @@ export function evaluateWall(root: string, checks: readonly WallCheck[] = WALL_C
     accepted++;
     if (DEPLOY_REDIRECT.test(file)) continue;
     checked.add(file);
-    const bindings = wranglerBindings(join(canonicalRoot, file));
-    if (bindings === undefined) problems.push(`${file}: Wrangler rejects this config; failing closed`);
-    else if (anyPending && bindings.length > 0) {
-      problems.push(`${file} declares ${bindings.join(", ")} while a privacy-wall check is still pending`);
+    const read = wranglerBindings(join(canonicalRoot, file));
+    if (read === undefined) {
+      problems.push(`${file}: Wrangler rejects this config; failing closed`);
+      continue;
     }
+    if (anyPending && read.bindings.length > 0) {
+      problems.push(`${file} declares ${read.bindings.join(", ")} while a privacy-wall check is still pending`);
+    }
+    problems.push(...assetsProblems(canonicalRoot, file, read.raw));
   }
   for (const dir of WORKER_DIRS) {
     const link = symlinkOnPath(canonicalRoot, dir);
@@ -230,7 +234,7 @@ export function evaluateWall(root: string, checks: readonly WallCheck[] = WALL_C
  * and Wrangler's normalised config for the top level and each environment. Returns undefined if Wrangler rejects
  * the file. Wrangler's diagnostics quote file contents, so they are never passed on.
  */
-function wranglerBindings(path: string): string[] | undefined {
+function wranglerBindings(path: string): { bindings: string[]; raw: Record<string, unknown> } | undefined {
   try {
     const { rawConfig } = experimental_readRawConfig({ config: path });
     const found = new Set(declaredBindings(rawConfig));
@@ -242,10 +246,44 @@ function wranglerBindings(path: string): string[] | undefined {
       );
       for (const binding of declaredBindings(config, env === undefined ? "" : `env.${env}.`)) found.add(binding);
     }
-    return [...found];
+    return { bindings: [...found], raw: rawConfig as Record<string, unknown> };
   } catch {
     return undefined;
   }
+}
+
+/**
+ * Every `assets.directory` (top level, `previews`, each `env.<name>` and its `previews`) must resolve, as Wrangler
+ * resolves it from the config's folder, to the Worker folder's own build output, `dist/client`, with no symlink on
+ * the way, so Wrangler can upload nothing else. A Pages output directory fails outright.
+ */
+function assetsProblems(root: string, file: string, raw: Record<string, unknown>): string[] {
+  const folder = file.split("/").slice(0, 2).join("/");
+  const approved = `${folder}/dist/client`;
+  const scopes: Array<[string, unknown]> = [["", raw]];
+  if (isRecord(raw.env)) for (const [name, env] of Object.entries(raw.env)) scopes.push([`env.${name}.`, env]);
+  for (const [prefix, scope] of [...scopes]) {
+    if (isRecord(scope) && isRecord(scope.previews)) scopes.push([`${prefix}previews.`, scope.previews]);
+  }
+  const problems: string[] = [];
+  for (const [prefix, scope] of scopes) {
+    if (!isRecord(scope)) continue;
+    if (!isEmpty(scope.pages_build_output_dir)) {
+      problems.push(`${file}: ${prefix}pages_build_output_dir is not allowed; Workers assets come from ${approved}`);
+    }
+    if (!isRecord(scope.assets) || scope.assets.directory === undefined) continue;
+    const directory = scope.assets.directory;
+    const rel =
+      typeof directory === "string" ? insideCheckout(root, resolve(root, dirname(file), directory)) : undefined;
+    if (rel !== approved) {
+      problems.push(`${file}: ${prefix}assets.directory must be ${approved}, the app's build output`);
+    } else if (symlinkOnPath(root, approved)) {
+      problems.push(`${file}: ${prefix}assets.directory ${approved} is or passes through a symlink`);
+    } else if (existsSync(join(root, approved)) && realpathSync(join(root, approved)) !== join(root, approved)) {
+      problems.push(`${file}: ${prefix}assets.directory ${approved} does not resolve to itself`);
+    }
+  }
+  return problems;
 }
 
 /**

@@ -265,7 +265,8 @@ describe("evaluateWall: Cloudflare plugin options in Vite configs", () => {
 describe("evaluateWall: Worker configs only at fixed paths, read by Wrangler", () => {
   it("reads the four fixed config paths and reports their bindings", () => {
     expect(
-      evaluateWall(tree({ "apps/web/wrangler.jsonc": '{ "name": "web", "assets": { "directory": "./dist" } }' })).ok,
+      evaluateWall(tree({ "apps/web/wrangler.jsonc": '{ "name": "web", "assets": { "directory": "./dist/client" } }' }))
+        .ok,
     ).toBe(true);
     const result = evaluateWall(tree({ "workers/kit/wrangler.jsonc": VALID_D1 }));
     expect(result.ok).toBe(false);
@@ -397,5 +398,37 @@ describe("evaluateWall: never echoes file contents", () => {
     expect(redirect.ok).toBe(false);
     expect(redirect.lines.join("\n")).not.toContain(CANARY);
     expect(redirect.lines.join("\n")).not.toMatch(WRANGLER_DIAGNOSTIC);
+  });
+});
+
+describe("evaluateWall: assets come only from the app's build output", () => {
+  const assets = (dir: string) => `{ "name": "w", "assets": { "directory": "${dir}" } }`;
+
+  it("accepts dist/client under the Worker's own folder, as written or as the plugin generates it", () => {
+    expect(evaluateWall(tree({ "apps/web/wrangler.jsonc": assets("./dist/client") })).ok).toBe(true);
+    expect(evaluateWall(tree({ "workers/web/wrangler.jsonc": assets("dist/client") })).ok).toBe(true);
+    expect(evaluateWall(tree({ "apps/web/dist/public/wrangler.json": GENERATED })).ok).toBe(true);
+  });
+
+  it("fails on any other directory, in an environment too, and on a Pages output directory", () => {
+    for (const config of [
+      assets("./public"),
+      assets("../../data"),
+      assets("./dist"),
+      assets("../kit/dist/client"),
+      '{ "name": "w", "env": { "staging": { "assets": { "directory": "./src" } } } }',
+      '{ "name": "w", "pages_build_output_dir": "./dist/client" }',
+    ]) {
+      const result = evaluateWall(tree({ "apps/web/wrangler.jsonc": config }));
+      expect(result.ok, config).toBe(false);
+      expect(result.lines.join("\n"), config).toMatch(/apps\/web\/wrangler\.jsonc/);
+    }
+  });
+
+  it("fails when the build output directory is a symlink to somewhere else", () => {
+    const root = tree({ "apps/web/wrangler.jsonc": assets("./dist/client"), "private/notes.txt": "x" });
+    mkdirSync(join(root, "apps/web/dist"), { recursive: true });
+    symlinkSync(join(root, "private"), join(root, "apps/web/dist/client"));
+    expect(evaluateWall(root).ok).toBe(false);
   });
 });
