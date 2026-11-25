@@ -9,7 +9,7 @@ name only; never use it on the public site.
 - `docs/brief/unified-brief.md`: the plan for both apps, the shared data model, the publish step and Release 1.
   Where it differs from `docs/brief/architecture.md`, it wins.
 - `docs/brief/architecture.md`: the public site plan (rendering, pipeline, quality gates).
-- `docs/brief/decisions.md` and `docs/adr/` (from PR #1): decisions already made. Do not reopen them; a change needs a new
+- `docs/brief/decisions.md` and `docs/adr/` (one record per entry, by the same id, e.g. N2 is ADR-0017): decisions already made. Do not reopen them; a change needs a new
   ADR the owner accepts.
 
 ## You are in the right folder
@@ -52,6 +52,9 @@ The repository is public. Private records never enter it.
 - Every external input (hand-entered specs, airline-checker output, private API requests) is parsed with its
   schema before use; malformed input stops the build or is rejected, never passed on.
 - TypeScript 7 strict, Biome, Bun workspaces. Exact pins; no new dependency without the owner's OK.
+- Ask the owner first before a new paid service, any change to the never-public list, or any change to a public
+  URL (routes such as `/bags/<model>` are fixed by decision A3). The paths that never auto-merge are listed in
+  `docs/brief/unified-brief.md` (standing rules).
 - Measurements are whole millimetres and grams; every spec has a source link. A failed source check is
   recorded, never dropped.
 - Budgets (ADR-0017), accessibility checks, security headers and the three privacy-wall checks are never
@@ -65,6 +68,9 @@ The repository is public. Private records never enter it.
 - The old Kit Watch page stays the working tool until milestone 7. Do not touch it without asking.
 
 ## Reference: the HTML mock workflow (retired)
+
+`README.md` still describes this retired workflow ("Use this one" page, `design/` layout) until it is rewritten;
+where it disagrees with this file, this file wins.
 
 Until 25 Nov 2026 the site was worked out as single-page HTML mocks in `design/` (`ultra-carry-index-v1…v20`,
 then `carry-journal-vNN.html`), each built by a `design/build/build_vNN.py` script from the previous one, with
