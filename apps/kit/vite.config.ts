@@ -7,6 +7,8 @@ const repo = fileURLToPath(new URL("../../", import.meta.url).href);
 
 export default defineConfig({
   plugins: [solid()],
+  // No static assets yet; a public folder would be copied into the build past server.fs.deny.
+  publicDir: false,
   // Loopback only: Vite 8.3.8 bundles a ws release open to a reply-flood DoS, and no fixed Vite 8 exists yet.
   server: {
     host: "localhost",

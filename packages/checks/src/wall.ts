@@ -1,4 +1,5 @@
-import { existsSync, lstatSync, readFileSync, realpathSync } from "node:fs";
+import type { Dirent } from "node:fs";
+import { existsSync, lstatSync, readdirSync, readFileSync, realpathSync } from "node:fs";
 import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import type { Node, SourceFile } from "typescript/unstable/ast";
 import { SyntaxKind } from "typescript/unstable/ast";
@@ -213,6 +214,7 @@ export function evaluateWall(root: string, checks: readonly WallCheck[] = WALL_C
     }
     problems.push(...assetsProblems(canonicalRoot, file, read.raw));
   }
+  problems.push(...uploadFolderProblems(canonicalRoot));
   for (const dir of WORKER_DIRS) {
     const link = symlinkOnPath(canonicalRoot, dir);
     if (link) problems.push(`${dir}: ${link} is a symlink; Wrangler would follow it, so the wall does not allow it`);
@@ -345,6 +347,46 @@ function checkDiscovery(root: string, dir: string, checked: ReadonlySet<string>)
     return [`${dir}: Wrangler would load ${rel ?? "a file outside the checkout"}, a config the wall did not check`];
   }
   return [];
+}
+
+/** Vite copies apps/web/public into the build as is, past `server.fs.deny`. */
+const PUBLIC_DIR = "apps/web/public";
+const LOCAL_SECRETS = /^\.dev\.vars(\..*)?$/;
+
+/**
+ * Folders whose files end up uploaded: apps/web/public (copied into the build) may hold no dotfile or dot-folder
+ * and no symlink; each Worker folder's dist/client may hold no symlink and no Wrangler local-secrets file (the
+ * plugin's own `.assetsignore` is allowed there). Paths only, never contents.
+ */
+function uploadFolderProblems(root: string): string[] {
+  const problems: string[] = [];
+  const scan = (folder: string, bad: (name: string) => boolean, rule: string): void => {
+    const link = symlinkOnPath(root, folder);
+    if (link) {
+      problems.push(`${folder}: ${link} is a symlink; ${rule}`);
+      return;
+    }
+    const walk = (rel: string): void => {
+      let entries: Dirent[];
+      try {
+        entries = readdirSync(join(root, rel), { withFileTypes: true });
+      } catch {
+        return;
+      }
+      for (const entry of entries) {
+        const path = `${rel}/${entry.name}`;
+        if (entry.isSymbolicLink()) problems.push(`${path}: symlinks are not allowed here; ${rule}`);
+        else if (bad(entry.name)) problems.push(`${path}: not allowed here; ${rule}`);
+        else if (entry.isDirectory()) walk(path);
+      }
+    };
+    walk(folder);
+  };
+  scan(PUBLIC_DIR, (name) => name.startsWith("."), "apps/web/public is copied into the public build");
+  for (const dir of WORKER_DIRS) {
+    scan(`${dir}/dist/client`, (name) => LOCAL_SECRETS.test(name), "dist/client is what Wrangler uploads");
+  }
+  return problems;
 }
 
 /** `path` relative to the checkout with forward slashes, or undefined if it lies outside. */

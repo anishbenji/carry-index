@@ -432,3 +432,36 @@ describe("evaluateWall: assets come only from the app's build output", () => {
     expect(evaluateWall(root).ok).toBe(false);
   });
 });
+
+describe("evaluateWall: apps/web/public holds no hidden or linked files", () => {
+  it("accepts ordinary files such as _headers", () => {
+    expect(evaluateWall(tree({ "apps/web/public/_headers": "/*\n  X-Content-Type-Options: nosniff\n" })).ok).toBe(true);
+  });
+
+  it("fails on any dotfile or dot-folder, Wrangler local secrets included, naming only the path", () => {
+    for (const path of [
+      "apps/web/public/.dev.vars",
+      "apps/web/public/.dev.vars.staging",
+      "apps/web/public/assets/.notes",
+      "apps/web/public/.well-known/security.txt",
+    ]) {
+      const result = evaluateWall(tree({ [path]: "SECRET_TOKEN=canary-public-41" }));
+      expect(result.ok, path).toBe(false);
+      expect(result.lines.join("\n"), path).not.toContain("canary-public-41");
+    }
+  });
+
+  it("fails on a symlink or a Wrangler local-secrets file inside a build output, but allows the plugin's .assetsignore", () => {
+    expect(evaluateWall(tree({ "apps/web/dist/client/.assetsignore": "wrangler.json\n" })).ok).toBe(true);
+    expect(evaluateWall(tree({ "apps/kit/dist/client/.dev.vars": "x" })).ok).toBe(false);
+    const root = tree({ "apps/web/dist/client/index.js": "", "private/notes.txt": "x" });
+    symlinkSync(join(root, "private/notes.txt"), join(root, "apps/web/dist/client/notes.txt"));
+    expect(evaluateWall(root).ok).toBe(false);
+  });
+
+  it("fails on a symlink inside public/", () => {
+    const root = tree({ "apps/web/public/_headers": "", "private/notes.txt": "x" });
+    symlinkSync(join(root, "private/notes.txt"), join(root, "apps/web/public/notes.txt"));
+    expect(evaluateWall(root).ok).toBe(false);
+  });
+});

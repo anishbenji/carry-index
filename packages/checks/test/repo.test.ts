@@ -82,3 +82,12 @@ describe("Vite dev server reach", () => {
     }
   });
 });
+
+describe("Vite public folders", () => {
+  it("apps/kit copies no public folder; apps/web keeps public/ for PR 7's _headers", async () => {
+    const load = async (app: string) =>
+      ((await import(`../../../apps/${app}/vite.config.ts`)) as { default: { publicDir?: unknown } }).default;
+    expect((await load("kit")).publicDir).toBe(false);
+    expect((await load("web")).publicDir ?? "public").toBe("public");
+  });
+});
