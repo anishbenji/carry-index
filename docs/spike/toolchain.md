@@ -71,7 +71,7 @@ composite project that emits declarations only, into its own ignored `.tsbuild/`
 | `test` | `vitest run` in every workspace that has tests | 42 tests pass |
 | `build` | `vite build` in apps/web and apps/kit | passes, no HTML emitted |
 | `wall` | lists the three privacy-wall checks as `pending: <milestone>`; fails if any Wrangler config declares a binding while one is pending (see below) | passes, 0 Wrangler configs, 2 Vite configs |
-| `size` | "no pages yet" until `apps/web/dist` holds HTML; then fails without `size-limit` targets, else runs size-limit | passes, no pages |
+| `size` | runs size-limit whenever the root `size-limit` list has targets; without targets, "no pages yet" until `apps/web/dist` holds HTML or JavaScript, then fails | passes: 9.54 kB Brotli of 15 kB |
 | `test:e2e` | "no pages yet" until `apps/web/dist` holds HTML; then fails without `playwright.config.ts`, else runs Playwright | passes, no pages |
 
 ## Privacy wall: what it reads, and what the deploy must do
@@ -124,7 +124,9 @@ All run in the branch checkout. Build and end-to-end runs went through `heavy-ru
 | `biome lint` on a scratch file with an unawaited promise, an async `forEach` callback and a promise in an `if` | `noFloatingPromises` (1), `noMisusedPromises` (2) and `noUnnecessaryConditions` (1) reported (file removed afterwards) |
 | `biome ci` with `noRestrictedImports` on `zod` and `@cj/schema` under `apps/web` | errors on `import type { Bag } from "@cj/schema"` in both files that use it; override removed |
 | `bun run test` | checks 31, schema 6, pipeline 3, web 2: all pass |
-| `heavy-run.sh … bun run build` | exit 0; apps/web `main-*.js` 25.06 kB (10.54 kB gzip), apps/kit 24.58 kB (10.32 kB gzip) |
+| `heavy-run.sh … bun run build` | exit 0; Vite reports apps/web `main-*.js` 25.06 kB (10.54 kB gzip), apps/kit 24.58 kB (10.32 kB gzip) |
+| `heavy-run.sh … bun run size` (after the build) | exit 0; "Size limit: 15 kB / Size: 9.54 kB brotlied" |
+| `wc -c`, `brotli -c -q 11 … \| wc -c`, `gzip -9 -c … \| wc -c` on each bundle | apps/web: 25,069 B raw, 9,540 B Brotli, 10,439 B gzip; apps/kit: 24,586 B raw, 9,353 B Brotli, 10,220 B gzip |
 | `grep -ril zod apps/web/dist` | no match: no Zod code in the web bundle |
 | `bun run wall` / `size` / `test:e2e` | each exit 0 with the lines shown above |
 | same three with a scratch `apps/web/dist/client/index.html`, then a scratch `workers/kit/wrangler.jsonc` declaring `d1_databases` | `size` and `test:e2e` exit 1 with their "add targets/config" lines; `wall` exits 1 naming the file and binding (scratch files removed) |
@@ -133,11 +135,22 @@ Test-first: the checks tests were seen failing with "Cannot find module '../src/
 schema, pipeline and web tests likewise; and the repository test "apps/web uses at least one schema type" failed
 with "expected 0 to be greater than 0" before `apps/web/src` existed.
 
+## Size against the N2 budgets
+
+Cloudflare serves Brotli, so the size gate measures Brotli (size-limit's `brotli: true`, quality 11). The root
+`size-limit` list holds `apps/web/dist/client/assets/*.js` to 15 kB, the N2 listing limit in ADR-0017
+(15,000 bytes: size-limit reads kB as 1,000 bytes). That limit is never raised.
+
+**Solid 2's runtime plus one `render` of one component is already 9,540 bytes Brotli, over the 8 KB content-page
+budget**, before hydration, a router, any island or the metrics beacon (which N2 counts). It also takes 64% of the
+15 kB listing limit. This is input for N1 (static first, ADR-0015) and PR 8: content pages can only meet 8 KB by
+shipping no Solid runtime at all, which is what N1 plans; the listing's islands have about 5.4 kB left.
+
 ## Not verified here
 
 - Solid start mode, `@solidjs/prerender`, `prerender-crawler`, `@cloudflare/vite-plugin` and a Worker deploy:
   installed, not exercised. That is spike PR 7.
-- Size-limit, Playwright, axe, Lighthouse CI and web-vitals: installed, not run (no pages yet). Playwright's
+- Playwright, axe, Lighthouse CI and web-vitals: installed, not run (no pages yet). Playwright's
   browsers are not downloaded. That is PR 8.
 - Component tests with `@solidjs/testing-library`: it needs a DOM environment (jsdom, happy-dom or Vitest browser
   mode), and none of those is approved.
