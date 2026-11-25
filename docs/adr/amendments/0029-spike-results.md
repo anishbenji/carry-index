@@ -12,5 +12,6 @@ likely, but this is not confirmed. The user's look at the R2 page in the dashboa
 
 ## Proposed change
 
-Proposed — for the user at the gate: CI artifacts stay the fallback. Source maps are built, not deployed, and kept
-per release as CI artifacts until R2 is shown to need no card. If it needs none, a later record moves them to R2.
+Proposed — for the user at the gate: source maps are built, not deployed, and kept local to the build, never
+uploaded (CI artifacts are public on a public repo, see ADR-0029's note), until private storage is approved or R2
+is shown to need no card. If it needs none, a later record moves them to R2.

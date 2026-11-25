@@ -19,5 +19,6 @@ with errors when exceeded; no official page says whether they need a card.
 ## Proposed change
 
 Proposed — for the user at the gate: ADR-0014's open spike item stays open until the dashboard look. Nothing
-needs R2 in Release 1: CI artifacts stay the fallback for source maps (ADR-0029). If a card is required, R2 stays
+needs R2 in Release 1: source maps stay local to the build and are never uploaded (ADR-0029's note: CI artifacts
+are public on a public repo). If a card is required, R2 stays
 off, because R2 overage is billed rather than capped.
