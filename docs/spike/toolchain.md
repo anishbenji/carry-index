@@ -46,7 +46,7 @@ Every other approved package PRs 7 and 8 need is installed at its approved pin (
 
 - `packages/schema`: a strict Zod 4 bag schema and its inferred `Bag` type.
 - `packages/pipeline`: `readBags`, which parses YAML (`yaml` 2.9.1) and validates each entry.
-- `packages/checks`: the privacy-wall check, the size and end-to-end gates and the import ban, all test-first.
+- `packages/checks`: the interim wall guard, the size and end-to-end gates and the import ban, all test-first.
 - `apps/web`: a Solid 2 component that takes a `Bag` by `import type`; the Vite build emits a client bundle and
   no HTML, so the size and end-to-end gates stay in their "no pages yet" state until PR 7 emits pages.
 - `apps/kit`: a placeholder Solid 2 entry for the private app.
@@ -71,95 +71,29 @@ composite project that emits declarations only, into its own ignored `.tsbuild/`
 | `lint` | `biome ci .`, then the import ban (`node`, TypeScript 7 parser) | passes |
 | `test` | `vitest run` in every workspace that has tests | 89 tests pass |
 | `build` | `vite build` in apps/web and apps/kit | passes, no HTML emitted |
-| `wall` | lists the three privacy-wall checks as `pending: <milestone>`; fails if any Wrangler config declares a binding while one is pending (see below) | passes, 0 Wrangler configs, 2 Vite configs |
+| `wall` | lists the three privacy-wall checks as `pending: packages/deploy (privacy-wall design v2)`; fails if git tracks any `wrangler.*` config | passes, 265 tracked files, none a Wrangler config |
 | `size` | runs size-limit whenever the root `size-limit` list has targets; without targets, "no pages yet" until `apps/web/dist` holds HTML or JavaScript, then fails; once pages exist, a target must measure HTML | passes: 9.54 kB Brotli of 15 kB |
 | `test:e2e` | "no pages yet" until `apps/web/dist` holds HTML; then fails without `playwright.config.ts`, else runs Playwright | passes, no pages |
 
-## Privacy wall: what it reads, and what the deploy must do
+## Privacy wall: replaced by design v2
 
-`bun run wall` judges what Wrangler itself would load, using Wrangler 4.168's own exported readers rather than
-a parser of ours:
+On 2026-11-26 the user chose privacy-wall design v2 (`carry-index-reports/proposals/privacy-wall-design.md`,
+question 6): the three wall checks are built in a new `packages/deploy` (tasks T1 to T13), which seals the deploy
+artifact and generates every Worker config from code. This spike's static config scan, which tried to predict
+what Wrangler would load, was removed from this PR before merge, with its tests.
 
-- **Fixed locations.** A Worker config may exist only as `wrangler.jsonc` in `apps/web`, `apps/kit`,
-  `workers/web` or `workers/kit`. The only other config files allowed are what `@cloudflare/vite-plugin` writes
-  in those folders: `dist/<worker>/wrangler.json` and the `.wrangler/deploy/config.json` redirect. Any other file
-  Wrangler could pick up fails, wherever it is outside node_modules: any name starting `wrangler`, any
-  `cloudflare.config.*`, any other `.wrangler/deploy/config.json`, and (to be safe) any other `.jsonc` except
-  `biome.jsonc`/`tsconfig*.jsonc` and any `.toml` except `bunfig.toml`. A symlink at a config path, or on the
-  way to one, fails too, because Wrangler would follow it.
-- **Read by Wrangler.** Each allowed config is read with `experimental_readRawConfig` (Wrangler's own JSONC/TOML
-  reader, so a `//` comment ended by a bare carriage return means what it means to Wrangler) and with
-  `unstable_readConfig` for the top level and for each `env.<name>`, as Wrangler normalises and validates them.
-  A config Wrangler rejects fails closed. Both are exports of the `wrangler` package (`wrangler-dist/cli.js`).
-- **Bindings.** A key counts as a binding unless it is on an allow-list of non-binding keys built from wrangler
-  4.168's config schema; empty values (recursively, so the plugin's `durable_objects: { bindings: [] }` default)
-  are not bindings. The top level, `previews`, every `env.<name>` and each environment's `previews` are checked.
-- **Discovery and redirects.** For each of the four Worker folders the wall asks Wrangler which config it would
-  load when run there (`experimental_readRawConfig({ script }, { useRedirectIfAvailable: true })`: Wrangler's own
-  find-up and redirect rules, `path.resolve` included), takes the real path, and requires it to be inside the
-  checkout and one of the configs it checked. The redirect's `auxiliaryWorkers` must meet the same rule. A folder's
-  redirect may target only that folder's own `dist/`, never another Worker's config. Once the paths pass, Wrangler's
-  validating reader also reads the config in redirect mode (`unstable_readConfig({ script },
-  { useRedirectIfAvailable: true })`), as a flagless `wrangler deploy` would, and a rejection fails.
-- **Vite.** Any `vite.config.*` that passes the Cloudflare plugin anything beyond `viteEnvironment`,
-  `persistState`, `inspectorPort`, `remoteBindings` and `assetsOnly` fails: `config`, `configPath`,
-  `auxiliaryWorkers`, `experimental` (its prerender Worker carries a config), `tunnel` and any option added
-  later, as do options it cannot read. The plugin call must stay in `vite.config.*` itself: a Vite config may
-  import only `node:` built-ins and bare names of installed packages, so local paths, `@cj/` workspaces, URL
-  schemes, `#` imports, `node:module`/`createRequire` and loaders with a non-literal name all fail.
-- **Assets.** Every `assets.directory` (top level, `previews`, each environment) must resolve, from the config's
-  folder, to that folder's own `dist/client`, with no symlink on the way; `pages_build_output_dir` fails.
-- **What gets uploaded.** `apps/web/public` (copied into the build past `server.fs.deny`) may hold only
-  `_headers`, `favicon.ico` and `favicon.svg`: no other file, no folder, no symlink; each Worker folder's `dist/client` may hold no symlink and no `.dev.vars*` (the plugin's `.assetsignore` is
-  allowed). `apps/kit` sets `publicDir: false`.
-- **No contents in output.** Messages name a path and the rule broken, never Wrangler's diagnostics (which quote
-  the file). A deploy redirect and every path it names are checked without Wrangler first (plain JSON, no symlink,
-  inside the checkout, among the checked configs), and Wrangler's own discovery runs only when every path check
-  has passed.
+Until `packages/deploy` lands, `bun run wall` is a small guard: it lists the three checks as
+`pending: packages/deploy (privacy-wall design v2)` and fails if git tracks any `wrangler.*` config (JSON, JSONC
+or TOML), because the new design tracks none. The deploy-time requirements (scan the sealed artifact, assets and
+Worker bundle, for private files and the canary; deploy only the config that was checked) now live in the design.
 
-The wall is a guard rail over the working tree, not the enforcement point; see "Deploy-time privacy checks".
+## TypeScript 7's parser from Node
 
-## Deploy-time privacy checks (PR 10 / milestone 3)
-
-The real enforcement is a check of the exact artifact being deployed, in the CI deploy job. Requirements:
-
-1. **Scan the upload artifact: assets and Worker bundle.** After the build and immediately before
-   `wrangler deploy`, in the same job, scan everything Wrangler will upload: the static assets in `dist/client`
-   (after applying `.assetsignore`) **and** the Worker bundle, its `main` entry and every module beside it in
-   `dist/<worker>/` (what `wrangler deploy --dry-run --outdir` lists is the authority). Fail on: any dotfile or
-   dot-folder other than the plugin's `.assetsignore`; any symlink; `.dev.vars*`, `.env*`, key and certificate
-   files; any file not produced by the build from tracked sources (compare against the build's file list); and
-   the canary record's marker string anywhere in any asset or module, since a marker inlined into the server
-   bundle could reach a response just as an asset could.
-2. **Deploy only the config the wall checked.** Run `bun run wall` in the same job on the generated config, then
-   deploy with that config: the plugin's `.wrangler/deploy/config.json` redirect, no `--config`, no `--env` the
-   wall did not judge, no `--assets` or other flag that changes what is uploaded or bound. A deploy step that
-   cannot meet this must not run.
-3. **Check the result.** After deploy, compare the deployed Worker's bindings (`wrangler deployments` or the API)
-   with the checked config, and fail the job on any difference.
-
-Limits of the static wall that the deploy-time check has to cover:
-
-- It reads the working tree at one moment; a later build step, a CI cache or a plugin can change files after it.
-- It cannot see `wrangler` command-line flags (`--config`, `--env`, `--assets`, `--var`), environment variables
-  that change Wrangler's behaviour, or bindings added through the Cloudflare dashboard or API.
-- It judges `dist/client` by name and type only, never by contents, and only the files present when it ran.
-- Wrangler's find-up continues above the checkout; the wall reports such a file only as "outside the checkout".
-- It relies on `unstable_`/`experimental_` Wrangler exports and an unstable TypeScript API, both of which can
-  change on upgrade.
-- Vite config checks see only literal options; a config built by code the wall cannot read fails closed, which
-  can block legitimate changes until the wall learns them.
-
-The wall and import checks parse source with TypeScript 7's own parser. TypeScript 7 has no in-process
-`createSourceFile`; its JavaScript API (`typescript/unstable/sync`) drives the native compiler over a pipe and
-reads Node's stream internals, so it fails under Bun (`TypeError: undefined is not an object (evaluating
-'stdout._handle.fd')`). Those two CLIs therefore run with `node` (26.13.0 strips the TypeScript types). The API
-is marked unstable: pin `typescript` exactly and expect changes on upgrade. Wrangler's readers are `unstable_`
-and `experimental_` exports too, so the same applies to `wrangler`.
-
-Importing `wrangler` brings its type declarations, which load `@types/node` 22.15.17 (a dependency of wrangler,
-not of ours) into the checks project. The hand-written `runtime.d.ts` still covers what the checks call, minus
-its `URL` class, which clashed with Node's.
+The import ban reads source with TypeScript 7's own parser. TypeScript 7 has no in-process `createSourceFile`;
+its JavaScript API (`typescript/unstable/sync`) drives the native compiler over a pipe and reads Node's stream
+internals, so it fails under Bun (`TypeError: undefined is not an object (evaluating 'stdout._handle.fd')`). The
+import CLI therefore runs with `node` (26.13.0 strips the TypeScript types), and so does the wall CLI. The API is
+marked unstable: pin `typescript` exactly and expect changes on upgrade.
 
 ## Development servers stay on loopback
 
@@ -206,7 +140,8 @@ All run in the branch checkout. Build and end-to-end runs went through `heavy-ru
 | `wc -c`, `brotli -c -q 11 … \| wc -c`, `gzip -9 -c … \| wc -c` on each bundle | apps/web: 25,069 B raw, 9,540 B Brotli, 10,439 B gzip; apps/kit: 24,586 B raw, 9,353 B Brotli, 10,220 B gzip |
 | `grep -ril zod apps/web/dist` | no match: no Zod code in the web bundle |
 | `bun run wall` / `size` / `test:e2e` | each exit 0 with the lines shown above |
-| same three with a scratch `apps/web/dist/client/index.html`, then a scratch `workers/kit/wrangler.jsonc` declaring `d1_databases` | `size` and `test:e2e` exit 1 with their "add targets/config" lines; `wall` exits 1 naming the file and binding (scratch files removed) |
+| `size` and `test:e2e` with a scratch `apps/web/dist/client/index.html` | each exits 1 with its "add targets/config" line (scratch file removed) |
+| `bun run wall` with a scratch `workers/web/wrangler.jsonc` added with `git add -N` | exit 1: "FAIL workers/web/wrangler.jsonc: Worker configs are generated by packages/deploy; do not track a Wrangler config"; exit 0 after `git rm --cached` and removing it |
 
 Test-first: the checks tests were seen failing with "Cannot find module '../src/…'" before `src/` existed; the
 schema, pipeline and web tests likewise; and the repository test "apps/web uses at least one schema type" failed
