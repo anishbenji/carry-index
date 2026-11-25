@@ -68,7 +68,7 @@ composite project that emits declarations only, into its own ignored `.tsbuild/`
 | Script | What it runs | Today |
 |---|---|---|
 | `typecheck` | `tsc --build` | passes |
-| `lint` | `biome ci .`, then the import ban (`node`, TypeScript 7 parser) | passes |
+| `lint` | `biome ci --error-on-warnings .` (any warning fails, so the whole types domain gates, not only the two promise rules), then the import ban (`node`, TypeScript 7 parser) | passes |
 | `test` | `vitest run` in every workspace that has tests | 89 tests pass |
 | `build` | `vite build` in apps/web and apps/kit | passes, no HTML emitted |
 | `wall` | lists the three privacy-wall checks as `pending: packages/deploy (privacy-wall design v2)`; fails if git tracks any `wrangler.*` config | passes, 265 tracked files, none a Wrangler config |
@@ -131,7 +131,7 @@ All run in the branch checkout. Build and end-to-end runs went through `heavy-ru
 | `/usr/bin/time -p tsc --build` | real 0.09 s (nothing changed) |
 | `tsc --build apps/web` with a scratch file passing `{ slug: 1 }` as a `Bag` and reading `e.currentTarget.nope` in an `onClick` | two errors: TS2322 "Type 'number' is not assignable to type 'string'" and TS2339 "Property 'nope' does not exist on type 'EventTarget & HTMLDivElement'" (file removed afterwards) |
 | `bun run lint` | exit 0; "imports: apps/web checked for value imports of zod, @cj/schema: 0 found" |
-| `/usr/bin/time -p biome ci .` | real 0.50 s, 50 files |
+| `/usr/bin/time -p biome ci --error-on-warnings .` | real 0.23 s, 50 files |
 | `biome lint` on a scratch file with an unawaited promise, an async `forEach` callback and a promise in an `if` | `noFloatingPromises` (1), `noMisusedPromises` (2) and `noUnnecessaryConditions` (1) reported (file removed afterwards) |
 | `biome ci` with `noRestrictedImports` on `zod` and `@cj/schema` under `apps/web` | errors on `import type { Bag } from "@cj/schema"` in both files that use it; override removed |
 | `bun run test` | checks 78, schema 6, pipeline 3, web 2: all pass |

@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "typecheck": "tsc --build",
-    "lint": "biome ci . && node packages/checks/src/cli/imports.ts",
+    "lint": "biome ci --error-on-warnings . && node packages/checks/src/cli/imports.ts",
     "test": "bun run --filter '*' test",
     "build": "bun run --filter '*' build",
     "test:e2e": "bun packages/checks/src/cli/e2e.ts",
