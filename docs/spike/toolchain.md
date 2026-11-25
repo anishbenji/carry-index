@@ -21,9 +21,11 @@ Two things do not work as the architecture doc assumed:
    The ban is enforced instead by a checker in `packages/checks` that reads each file with TypeScript 7's own
    parser (run by `bun run lint` and by a test). It resolves relative and `file:` paths too, so a value import
    that reaches `packages/schema` or Zod's folder under `node_modules` by path is banned like one by name.
-2. **No Node or Bun type package is approved.** The checks package uses `node:fs` and `Bun.spawnSync`, so it
-   carries a hand-written declaration file (`packages/checks/src/runtime.d.ts`) for the dozen APIs it calls.
-   That file goes away once `@types/bun` (or `@types/node`) is approved; see "For the user" below.
+2. **`@solidjs/testing-library` 0.8.10 does not work with Solid 2.** It imports `solid-js/web`, which Solid 2 no
+   longer exports (`Error: "./web" is not exported … from package solid-js`). Component tests therefore render with
+   Solid 2's own `render` from `@solidjs/web` into happy-dom 21.0.4 (`apps/web/vitest.config.ts`); see
+   `apps/web/test/BagSummary.test.tsx`. `@types/bun` 1.4.2 (decision #13) replaced the hand-written
+   `runtime.d.ts` the checks package used to carry.
 
 ## Versions
 
@@ -38,6 +40,8 @@ Two things do not work as the architecture doc assumed:
 | @solidjs/vite-plugin | 3.0.1 | apps/web, apps/kit |
 | solid-js, @solidjs/web | 2.0.4 | apps/web, apps/kit |
 | zod | 4.6.7 | packages/schema, packages/pipeline |
+| @types/bun | 1.4.2 | root (decision #13) |
+| happy-dom | 21.0.4 | apps/web, Vitest environment (decision #13) |
 
 Every other approved package PRs 7 and 8 need is installed at its approved pin (see "Layout"); nothing outside
 `approved-dependencies.md` was added, and none of the PR-9-only packages or hono.
@@ -63,13 +67,17 @@ toolchain therefore sits in `apps/web` beside Solid: `vite`, `@solidjs/vite-plug
 `apps/web`; it is what `wrangler` commands (and a deploy) run. `@cloudflare/vite-plugin` 1.70.1 lists `wrangler`
 4.164.0 and `miniflare` 5.20261117.0-beta as exact dependencies of its own (with `wrangler ^4.164.0` as a peer), so
 Bun installs 4.164.0 beside it (`node_modules/.bun/wrangler@4.164.0…`) and the plugin reads the Worker config with
-that copy when it builds. They cannot be deduplicated without changing an approved pin. Their top-level config
-schemas are identical today (an independent review diffed the two `config-schema.json` files), so there is no
-behavioural gap now; the user can align the pair later (wrangler 4.164.0, or a plugin release that pins 4.168.0).
+that copy when it builds. They cannot be deduplicated without changing an approved pin. Their config schemas have
+the same top-level keys but are not identical: in 4.168.0 `images` gains `url_transformations` (checked by diffing
+the two `config-schema.json` files). That key is unused here, so there is no behavioural gap today; the user can
+align the pair later (wrangler 4.164.0, or a plugin release that pins 4.168.0).
 
 TypeScript settings live in `tsconfig.base.json` (strict, `noUncheckedIndexedAccess`,
 `exactOptionalPropertyTypes`, `verbatimModuleSyntax`, `module: preserve`, bundler resolution). Each workspace is a
-composite project that emits declarations only, into its own ignored `.tsbuild/`.
+composite project that emits declarations only, into its own ignored `.tsbuild/`. Each app has two: `tsconfig.json`
+for `src` alone (DOM libraries, no ambient types, so `process` or `Buffer` in browser code fails), and
+`tsconfig.node.json` for its Vite and Vitest configs and tests. `tsconfig.e2e.json` covers `playwright.config.ts`
+and `e2e/`.
 
 ## Root scripts
 
@@ -77,16 +85,15 @@ composite project that emits declarations only, into its own ignored `.tsbuild/`
 |---|---|---|
 | `typecheck` | `tsc --build` | passes |
 | `lint` | `biome ci --error-on-warnings .` (any warning fails, so the whole types domain gates, not only the two promise rules), then the import ban (`node`, TypeScript 7 parser) | passes |
-| `test` | `vitest run` in every workspace that has tests | 51 tests pass |
+| `test` | `vitest run` in every workspace that has tests | 59 tests pass |
 | `build` | `vite build` in apps/web and apps/kit | passes, no HTML emitted |
-| `wall` | lists the three privacy-wall checks as `pending: packages/deploy (privacy-wall design v2)`; fails if git tracks any `wrangler.*` config | passes, 265 tracked files, none a Wrangler config |
+| `wall` | lists the three privacy-wall checks as `pending: packages/deploy (privacy-wall design v2)`; fails if any file git does not ignore is a Wrangler-style config, or if the built apps/web contains Zod | passes, 272 files, none a Wrangler config; no Zod in the build |
 | `size` | runs size-limit whenever the root `size-limit` list has targets; without targets, "no pages yet" until `apps/web/dist` holds HTML or JavaScript, then fails; once pages exist, a target must measure HTML | passes: 10.45 kB gzip and 9.54 kB Brotli, each of 15 kB |
 | `test:e2e` | "no pages yet" while there is neither a page nor `playwright.config.ts`; fails if one exists without the other (a config with no built pages means the build was skipped); else runs Playwright | passes, no pages and no config |
 
 ## Privacy wall: replaced by design v2
 
-On 2026-11-26 the user chose privacy-wall design v2 (`carry-index-reports/proposals/privacy-wall-design.md`,
-question 6): the three wall checks are built in a new `packages/deploy` (tasks T1 to T13), which seals the deploy
+On 2026-11-26 the user chose privacy-wall design v2 (ADR-0049, question 6): the three wall checks are built in a new `packages/deploy` (tasks T1 to T13), which seals the deploy
 artifact and generates every Worker config from code. This spike's static config scan, which tried to predict
 what Wrangler would load, was removed from this PR before merge, with its tests.
 
@@ -149,11 +156,11 @@ All run in the branch checkout. Build and end-to-end runs went through `heavy-ru
 | `/usr/bin/time -p tsc --build --force` | real 0.27 s (all seven projects, cold) |
 | `/usr/bin/time -p tsc --build` | real 0.09 s (nothing changed) |
 | `tsc --build apps/web` with a scratch file passing `{ slug: 1 }` as a `Bag` and reading `e.currentTarget.nope` in an `onClick` | two errors: TS2322 "Type 'number' is not assignable to type 'string'" and TS2339 "Property 'nope' does not exist on type 'EventTarget & HTMLDivElement'" (file removed afterwards) |
-| `bun run lint` | exit 0; "imports: apps/web checked for value imports of zod, @cj/schema: 0 found" |
+| `bun run lint` | exit 0; "imports: apps/web, workers/web checked for value imports of zod, @cj/schema, @cj/pipeline: 0 found" |
 | `/usr/bin/time -p biome ci --error-on-warnings .` | real 0.23 s, 50 files |
 | `biome lint` on a scratch file with an unawaited promise, an async `forEach` callback and a promise in an `if` | `noFloatingPromises` (1), `noMisusedPromises` (2) and `noUnnecessaryConditions` (1) reported (file removed afterwards) |
 | `biome ci` with `noRestrictedImports` on `zod` and `@cj/schema` under `apps/web` | errors on `import type { Bag } from "@cj/schema"` in both files that use it; override removed |
-| `bun run test` | checks 40, schema 6, pipeline 3, web 2: all pass |
+| `bun run test` | checks 46, schema 6, pipeline 3, web 4: all pass |
 | `heavy-run.sh … bun run build` | exit 0; Vite reports apps/web `main-*.js` 25.06 kB (10.54 kB gzip), apps/kit 24.58 kB (10.32 kB gzip) |
 | `heavy-run.sh … bun run size` (after the build) | exit 0; "Size limit: 15 kB / Size: 9.54 kB brotlied" |
 | `wc -c`, `brotli -c -q 11 … \| wc -c`, `gzip -9 -c … \| wc -c` on each bundle | apps/web: 25,069 B raw, 9,540 B Brotli, 10,439 B gzip; apps/kit: 24,586 B raw, 9,353 B Brotli, 10,220 B gzip |
@@ -192,8 +199,8 @@ can only meet 8 KB by shipping no Solid runtime at all, which is what N1 plans; 
   installed, not exercised. That is spike PR 7.
 - Playwright, axe, Lighthouse CI and web-vitals: installed, not run (no pages yet). Playwright's
   browsers are not downloaded. That is PR 8.
-- Component tests with `@solidjs/testing-library`: it needs a DOM environment (jsdom, happy-dom or Vitest browser
-  mode), and none of those is approved.
+- Component tests beyond the one `BagSummary` render: `@solidjs/testing-library` 0.8.10 cannot run on Solid 2 (see
+  "Answer"), so a Solid 2 testing library is still needed for interaction tests.
 - `tsc --build` in watch mode and editor (language server) behaviour with TypeScript 7.
 - Running Vitest or Vite under Bun's runtime (`--bun`); both ran on Node 26.13.0.
 
@@ -214,6 +221,6 @@ workspaces", recording:
 
 - Decide whether to align `wrangler` with `@cloudflare/vite-plugin`'s own copy: two versions are installed today
   (4.168.0 approved, 4.164.0 pulled by the plugin); see "Layout".
-- Approve a Node/Bun types package (recommended: `@types/bun`, exact pin) so `runtime.d.ts` can be deleted.
-- Approve a DOM environment for component tests before any Solid component test is written (recommended:
-  `happy-dom` or Vitest browser mode with Playwright, exact pin).
+- Replace `@solidjs/testing-library` 0.8.10 on the approved list: it imports Solid 1's `solid-js/web` and cannot
+  run on Solid 2. A release that supports Solid 2 (or none, keeping Solid 2's `render` plus happy-dom) is the
+  choice.
