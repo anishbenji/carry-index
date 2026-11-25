@@ -14,7 +14,7 @@ The public site accepts no submissions and stays fully static, with no runtime A
 
 ## Consequences
 
-The public site accepts no submissions. Each bag page links 'Suggest a correction' to a pre-filled GitHub issue (bag, field, source link). The about page shows a dedicated alias on carryjournal.com that forwards privately; the personal address is never published or committed and the forwarding target is set in the Cloudflare dashboard.
+The public site accepts no submissions and its pages stay static, with no runtime API for content. This does not cover the first-party metrics and error beacons (ADR-0035), which post to their own small Worker on `/api/*`. Each bag page links 'Suggest a correction' to a pre-filled GitHub issue (bag, field, source link). The about page shows a dedicated alias on carryjournal.com that forwards privately; the personal address is never published or committed and the forwarding target is set in the Cloudflare dashboard.
 
 ## Why
 

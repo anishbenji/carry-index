@@ -19,7 +19,7 @@ authoritative checklist, and each row is a failing check: field LCP (p75) under 
 100 ms on text-led and 300 ms on image-led pages; LCP when moving between pages in Chromium under 200 ms; INP
 (p75) under 50 ms; CLS 0 in the lab on every template and under 0.01 in the field; total blocking time at 4x CPU
 0 ms on content pages and under 50 ms on the listing; JavaScript under 8 KB compressed on content pages
-(beacon included, none before first paint) and under 15 KB compressed on the listing before a widget opens;
+(beacon included; the one script before first paint is ADR-0015's inline theme and units snippet, under 1 KB and counted in the 8 KB) and under 15 KB compressed on the listing before a widget opens;
 whole-site CSS under 10 KB compressed; content-page HTML with inlined CSS under 14 KB compressed; listing HTML
 under 40 KB compressed with everything above the fold in the first 14 KB; 1 request before LCP on text-led and
 2 on image-led pages; 0 KB of web fonts; 0 third-party requests; every page restores from the back/forward

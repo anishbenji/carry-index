@@ -14,7 +14,7 @@ Release 1 targets Saturday 28 Nov 2026 evening. Public site live: home, UHMWPE l
 
 ## Consequences
 
-Public: home, UHMWPE listing, 12 bag pages, fabric pages, about and sources, sitemap and 404, every budget and gate in CI, metrics beacon from day one. Private: Access sign-in, D1 schema and migrations, the import (dry run then real), read-only item pages and search. Not in Release 1: carry logging, publishing, watchlist and alerts, review pages. Cut scope, never quality, in this order: compare page, private search screen, fabric comparison page, live performance figures.
+Public: home, UHMWPE listing, `/performance` with its early-data note (ADR-0026; only live figures may be cut), 12 bag pages, fabric pages, about and sources, sitemap and 404, every budget and gate in CI, metrics beacon from day one. Private: Access sign-in, D1 schema and migrations, the import (dry run then real), read-only item pages and search. Not in Release 1: carry logging, publishing, watchlist and alerts, review pages. Cut scope, never quality, in this order: compare page, private search screen, fabric comparison page, live performance figures.
 
 ## Why
 

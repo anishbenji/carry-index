@@ -14,7 +14,7 @@ Two ages. An airline cabin limit not re-checked within 60 days, or a bag spec no
 
 ## Consequences
 
-An airline limit not re-checked within 60 days, or a bag spec within 180 days, gets a 'last checked' note on the page and a CI warning. Stale data never blocks a deploy.
+An airline limit not re-checked within 60 days, or a bag spec not re-checked within 180 days, gets a 'last checked' note on the page and a CI warning. Stale data never blocks a deploy.
 
 ## Why
 

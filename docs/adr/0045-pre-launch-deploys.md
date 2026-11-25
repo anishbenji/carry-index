@@ -21,8 +21,9 @@ header and turns `workers_dev` off for the public Worker instead.)
 
 Checks run against a deployed site all week. Lighthouse's crawlability audit cannot pass on a host that sends
 `noindex`, so until go-live the SEO gate on workers.dev runs every other SEO audit at 100, and a Playwright
-test asserts that workers.dev sends `noindex` and that the carryjournal.com build does not. From go-live the
-full SEO gate, crawlability included, runs against carryjournal.com. This is an open point for the owner to
+test asserts that workers.dev sends `noindex` and that the carryjournal.com build does not. The SEO merge gate
+always runs on the pull request's own preview build, before and after go-live; from go-live a separate
+post-deploy check also runs the full SEO audit, crawlability included, on carryjournal.com. This is an open point for the owner to
 confirm, because it narrows one Lighthouse audit on preview hosts. Any `_headers` change waits for the owner's
 review. The private Worker is not deployed until Cloudflare Access protects its hostname, and it disables
 its workers.dev and preview URLs so it is never reachable unprotected.
