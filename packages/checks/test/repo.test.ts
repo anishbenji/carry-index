@@ -102,3 +102,25 @@ describe("Node version", () => {
     expect(pkg.engines?.node).toBe(`>=${pinned}`);
   });
 });
+
+describe("TypeScript projects for the apps", () => {
+  it("type-check browser source on its own, without Node globals, and the tooling configs in a separate project", () => {
+    const rootRefs = (
+      JSON.parse(readFileSync(join(ROOT, "tsconfig.json"), "utf8")) as { references: { path: string }[] }
+    ).references.map((r) => r.path);
+    for (const app of ["web", "kit"]) {
+      const browser = JSON.parse(readFileSync(join(ROOT, `apps/${app}/tsconfig.json`), "utf8")) as {
+        include: string[];
+        compilerOptions: { types?: string[]; lib?: string[] };
+      };
+      expect(browser.include, app).toEqual(["src"]);
+      expect(browser.compilerOptions.types, app).toEqual([]);
+      expect(browser.compilerOptions.lib, app).toContain("dom");
+      const tooling = JSON.parse(readFileSync(join(ROOT, `apps/${app}/tsconfig.node.json`), "utf8")) as {
+        include: string[];
+      };
+      expect(tooling.include, app).toContain("vite.config.ts");
+      expect(rootRefs, app).toContain(`apps/${app}/tsconfig.node.json`);
+    }
+  });
+});

@@ -1,12 +1,13 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": ".tsbuild",
+    "outDir": ".tsbuild/browser",
     "lib": ["es2023", "dom", "dom.iterable"],
+    "types": [],
     "jsx": "preserve",
     "jsxImportSource": "@solidjs/web"
   },
-  "include": ["src", "test", "vite.config.ts"],
+  "include": ["src"],
   "references": [
     {
       "path": "../../packages/schema"
