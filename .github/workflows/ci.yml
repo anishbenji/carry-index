@@ -67,6 +67,8 @@ jobs:
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
           version: 0.13.6
+          # 3.12 or later, where unittest discovery that finds no tests exits 5 and fails the step.
+          python-version: "3.12"
           enable-cache: false
       # Exact versions, as uv resolved them on 26 Nov 2026; their own dependencies still resolve at run time.
       - name: Validate the catalogue data
@@ -108,5 +110,21 @@ jobs:
               exit 1
             fi
           done
+      # Every ref, merge commits against their first parent, and files Git attributes mark as binary, with the
+      # trusted policy under .github/ (gitleaks' default rules without its skips for text files).
       - name: Scan the whole history
-        run: '"$RUNNER_TEMP/gitleaks/gitleaks" git --redact --no-banner --ignore-gitleaks-allow --exit-code 1 .'
+        run: >-
+          "$RUNNER_TEMP/gitleaks/gitleaks" git --redact --no-banner --ignore-gitleaks-allow
+          --config .github/gitleaks.toml
+          --log-opts="--full-history --all --diff-filter=tuxdb --text --diff-merges=first-parent"
+          --exit-code 1 .
+      # Prints only the paths, never the addresses. noreply and example.com/org/net addresses are allowed.
+      - name: No email addresses in tracked files
+        run: |
+          pattern='[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z0-9.-]*[a-z]{2,}'
+          allowed=':[^:]*(noreply|example\.(com|org|net)|@(2x|3x)|@[0-9])[^:]*$'
+          paths=$({ git grep -IoE "$pattern" -- . ':!*.lock' || test $? = 1; } | { grep -viE "$allowed" || test $? = 1; } | sed 's/:[^:]*$//' | sort -u)
+          if [ -n "$paths" ]; then
+            printf '%s\n' "$paths" | sed 's/^/email address in tracked file: /' >&2
+            exit 1
+          fi

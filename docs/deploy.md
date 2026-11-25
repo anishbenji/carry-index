@@ -15,8 +15,8 @@ cannot deploy. Three jobs, each a check name you can require in branch protectio
 | Job | What it runs |
 |---|---|
 | `script contract` | `bun install --frozen-lockfile --ignore-scripts`, then `typecheck`, `lint`, `test`, `build`, `wall`, `size`, the gate's `check` on the build (`node packages/deploy/src/bin.ts check apps/web/dist/client`), Playwright Chromium and `test:e2e` |
-| `data validator` | `tools/validate.py` and the `tools/test_validate_*.py` tests through `uv run --no-project --with pyyaml==6.0.4 --with jsonschema==4.26.0` (the versions uv resolved on 26 Nov 2026; their own dependencies are not pinned). The private `data/my-notes.yaml` is never in the repository, so the validator skips the `my_note` links, as it does on any machine without that file |
-| `secret scan` | gitleaks 8.30.1 over the whole history, downloaded from its GitHub release and checked against the release's SHA-256. Inline `gitleaks:allow` comments are ignored (`--ignore-gitleaks-allow`), and the job fails if the checkout holds a `.gitleaksignore` or `.gitleaks.toml`, so a change cannot quiet the scan. The binary is used rather than `gitleaks/gitleaks-action`: the action's README (github.com/gitleaks/gitleaks-action) has it read the repository token on pull requests and asks organisation accounts for a licence key, and since v2 the action is not under an open-source licence. The binary needs no token and no key |
+| `data validator` | `tools/validate.py` and the `tools/test_validate_*.py` tests through `uv run --no-project --with pyyaml==6.0.4 --with jsonschema==4.26.0` (the versions uv resolved on 26 Nov 2026; their own dependencies are not pinned). The private `data/my-notes.yaml` is never in the repository, so the validator skips the `my_note` links, as it does on any machine without that file. **Needs PR #4 on `main` first:** the skip and the `tools/test_validate_*.py` tests arrive with it. Before that, the job fails on every clean checkout (two `my_note` errors, and discovery that finds no tests exits 5). That is intended: Python is pinned to 3.12 or later so "no tests" fails, and no step masks a failure (T10) |
+| `secret scan` | gitleaks 8.30.1 over the whole history, downloaded from its GitHub release and checked against the release's SHA-256. Inline `gitleaks:allow` comments are ignored (`--ignore-gitleaks-allow`), and the job fails if the checkout holds a `.gitleaksignore` or `.gitleaks.toml`, so a change cannot quiet the scan. It reads every ref, merge commits against their first parent (so a key added while resolving a merge is seen) and files Git attributes mark as binary (`--log-opts="--full-history --all --diff-filter=tuxdb --text --diff-merges=first-parent"`). Its rules come from `.github/gitleaks.toml`: gitleaks' own default config, copied unchanged except that the global allowlist no longer skips text files (SVG, lockfiles, glTF and the like); the header of that file says how to refresh it. The same job then fails if any tracked file holds an email address outside the noreply and example domains, printing only the paths. **Needs PR #4 on `main` first:** until then it names `data/brands.yaml` and `tools/migrate/migrate.py`, whose brand addresses PR #4 removes. The binary is used rather than `gitleaks/gitleaks-action`: the action's README (github.com/gitleaks/gitleaks-action) has it read the repository token on pull requests and asks organisation accounts for a licence key, and since v2 the action is not under an open-source licence. The binary needs no token and no key |
 
 Node comes from `.node-version`; Bun is pinned to 1.4.2.
 
@@ -57,10 +57,24 @@ keeps the repository token in the working copy. To update an action, change the 
 
 About 20 minutes, once, before the first deploy.
 
-1. **Create the Cloudflare API token.** Cloudflare dashboard → My Profile → API Tokens → Create Token → Custom
-   token. Permission: Account → **Workers Scripts → Edit**, on this account only. Nothing else (no zone, DNS, D1,
-   KV or R2 permissions). This account-wide token is the Release 1 token; Release 1.1 replaces it with one scoped
-   to the public Workers (design section 7).
+1. **Create the Cloudflare API token, scoped to the one Worker.** Since 15 Sep 2026 an account-owned API token
+   can be limited to individual Workers ([changelog](https://developers.cloudflare.com/changelog/post/2026-09-15-granular-worker-permissions/),
+   [roles and permissions](https://developers.cloudflare.com/workers/authorization/)). "Editor" on one Worker
+   can update and deploy it, but cannot create or delete Workers or touch any other Worker. It also cannot
+   create the Worker, so do this in two steps:
+   1. **Make `carry-journal` exist once.** The simplest way: dashboard → Workers & Pages → Create → start from
+      the Hello World template, name it `carry-journal`, deploy. Its placeholder has no bindings, and the first
+      gate deploy replaces it. (Alternatively, make the first deploy with a short-lived token that has Workers
+      Admin on the account, then delete that token at once.)
+   2. **Create the CI token:** dashboard → Manage Account → Account API Tokens → Create. Permission: Workers,
+      role **Editor**, scope **Specified Workers** → `carry-journal`. Nothing else (no zone, DNS, D1, KV or R2
+      permissions, and no route permissions: routes are attached by hand in step 4).
+
+   The gate itself calls only that Worker's `settings` and `deployments` endpoints. Whether Wrangler 4.168
+   needs anything more for an assets-only deploy is proven only by the first deploy. **Fallback, only if that
+   deploy fails with an authorisation error:** a user token with Account → **Workers Scripts → Edit** on this
+   account only (design section 7, the Release 1 token). It can change any Worker in the account, Kit Watch
+   included, so replace it with the scoped token as soon as the cause is fixed, and record the error.
 2. **Create the environment `public-production`.** GitHub → the repository → Settings → Environments → New
    environment → `public-production`.
    - **Deployment branches and tags:** Selected branches and tags → add the branch rule `main`.

@@ -12,6 +12,9 @@ import { describe, expect, test } from "vitest";
 import { parse } from "yaml";
 import { REPO_ROOT, tempDir } from "./helpers.ts";
 
+/** The trusted gitleaks policy, relative to the checkout (security review, Sol round 1). */
+const POLICY = ".github/gitleaks.toml";
+
 const WORKFLOWS = join(REPO_ROOT, ".github", "workflows");
 
 /** Written here, not read from the workflows: the approved actions (director, user-delegated 2026-11-26). */
@@ -395,8 +398,11 @@ describe("T10 the secret scan cannot be silenced from inside a change (security 
   });
 
   test("no workflow points gitleaks at another config", () => {
-    for (const f of FILES)
-      expect(f.text, f.name).not.toMatch(/GITLEAKS_CONFIG|--config\b|\s-c\s|--gitleaks-ignore-path|\s-i\s/);
+    for (const f of FILES) {
+      expect(f.text, f.name).not.toMatch(/GITLEAKS_CONFIG|\s-c\s|--gitleaks-ignore-path|\s-i\s/);
+      // The one config allowed is the trusted policy under .github/ (security review, Sol round 1).
+      for (const m of f.text.matchAll(/--config[=\s]+(\S+)/g)) expect(m[1], f.name).toBe(POLICY);
+    }
   });
 });
 
@@ -407,5 +413,136 @@ describe("T10 the validator's PyPI packages are pinned (security review r1)", ()
     );
     expect(withs.length).toBeGreaterThan(0);
     for (const { where, spec } of withs) expect(spec, where).toMatch(/^[A-Za-z0-9_.-]+==\d+(?:\.\d+)*$/);
+  });
+});
+
+describe("T10 a failing check fails its job (security review, Sol round 1, P0)", () => {
+  test("no job or step continues on error", () => {
+    for (const f of FILES) {
+      for (const [name, body] of Object.entries(f.workflow.jobs)) {
+        expect(Object.keys(body), `${f.name} ${name}`).not.toContain("continue-on-error");
+        for (const step of body.steps ?? []) {
+          expect(Object.keys(step), `${f.name} ${name}`).not.toContain("continue-on-error");
+        }
+      }
+    }
+  });
+
+  test("no run step masks a failure", () => {
+    for (const { file: name, job: jobName, step } of allSteps()) {
+      expect(step.run ?? "", `${name} ${jobName}`).not.toMatch(/\|\|\s*(?:true\b|:|exit 0\b)|\bset \+e\b|\bset \+o\b/);
+    }
+  });
+
+  test("the validator tests run unittest discovery as is, on a Python where finding no tests fails (3.12+)", () => {
+    const steps = job("ci.yml", "data").steps ?? [];
+    const discover = steps.filter((step) => /\bunittest discover\b/.test(step.run ?? ""));
+    expect(discover).toHaveLength(1);
+    expect(discover[0]?.run?.trim()).toMatch(/python -m unittest discover -s tools -p "test_validate_\*\.py"$/);
+    const uv = steps.find((step) => step.uses?.startsWith("astral-sh/setup-uv@"));
+    const [major, minor] = String(uv?.with?.["python-version"]).split(".").map(Number);
+    expect((major ?? 0) * 100 + (minor ?? 0)).toBeGreaterThanOrEqual(312);
+  });
+});
+
+describe("T10 the secret scan reads every change, with a trusted policy (security review, Sol round 1, P1)", () => {
+  const scanStep = (): Step | undefined =>
+    (job("ci.yml", "secret-scan").steps ?? []).find((step) => /\bgitleaks"? git\b/.test(step.run ?? ""));
+
+  test("the scan uses the policy under .github/ and covers all refs, merges and binary-marked text", () => {
+    const run = scanStep()?.run ?? "";
+    expect(run).toContain(`--config ${POLICY}`);
+    expect(POLICY.startsWith(".github/")).toBe(true);
+    const logOpts = /--log-opts="([^"]*)"/.exec(run)?.[1]?.split(" ") ?? [];
+    expect(logOpts).toEqual(
+      expect.arrayContaining(["--full-history", "--all", "--text", "--diff-merges=first-parent"]),
+    );
+  });
+
+  test("the scan's checkout has the whole history", () => {
+    const checkout = (job("ci.yml", "secret-scan").steps ?? []).find((step) =>
+      step.uses?.startsWith("actions/checkout@"),
+    );
+    expect(checkout?.with?.["fetch-depth"]).toBe(0);
+  });
+
+  /** The policy's global allowlist `paths`, as JavaScript regular expressions (Go's leading `(?i)` becomes a flag). */
+  function policyPaths(): RegExp[] {
+    const text = readFileSync(join(REPO_ROOT, POLICY), "utf8");
+    expect(text).not.toMatch(/^\[extend\]/m);
+    const block = /^\[allowlist\][\s\S]*?^paths = \[([\s\S]*?)^\]/m.exec(text)?.[1] ?? "";
+    const patterns = [...block.matchAll(/'''(.*?)'''/g)].map((m) => m[1] ?? "");
+    expect(patterns.length).toBeGreaterThan(0);
+    return patterns.map((p) => (p.startsWith("(?i)") ? new RegExp(p.slice(4), "i") : new RegExp(p)));
+  }
+
+  test.each([
+    "drawings/bag/sketch/front.svg",
+    "bun.lock",
+    "package-lock.json",
+    "yarn.lock",
+    "pnpm-lock.yaml",
+    "go.sum",
+    "scene.gltf",
+    "javascript.json",
+    ".github/gitleaks.toml",
+    "vendor/modules.txt",
+    "assets/jquery-3.7.1.min.js",
+  ])("the policy scans the text file %s", (path) => {
+    expect(policyPaths().filter((re) => re.test(path))).toEqual([]);
+  });
+
+  test.each(["og/page.png", "fonts/a.woff2", "node_modules/x/index.js"])("the policy still skips %s", (path) => {
+    expect(policyPaths().some((re) => re.test(path))).toBe(true);
+  });
+});
+
+describe("T10 no email address in a tracked file (security review, Sol round 1, P2)", () => {
+  const emailStep = (): string => {
+    const run = (job("ci.yml", "secret-scan").steps ?? [])
+      .map((step) => step.run ?? "")
+      .find((r) => r.includes("git grep"));
+    expect(run).toBeDefined();
+    return run ?? "exit 1";
+  };
+
+  /** Runs the step in a fresh repository holding `files`, with the shell GitHub uses for `run:` on Linux. */
+  function runIn(files: Readonly<Record<string, string>>): { status: number; output: string } {
+    const dir = tempDir("cj-t10-email-");
+    try {
+      const git = (...args: string[]) => spawnSync("git", args, { cwd: dir.root, encoding: "utf8" });
+      git("init", "-q");
+      for (const [name, content] of Object.entries(files)) writeFileSync(join(dir.root, name), content);
+      git("add", "-A");
+      const result = spawnSync("bash", ["--noprofile", "--norc", "-eo", "pipefail", "-c", emailStep()], {
+        cwd: dir.root,
+        encoding: "utf8",
+      });
+      return { status: result.status ?? -1, output: `${result.stdout}${result.stderr}` };
+    } finally {
+      dir.cleanup();
+    }
+  }
+
+  // Built at run time, so no address literal sits in this file. Synthetic: the .test domain is reserved.
+  const at = (local: string, domain: string): string => [local, domain].join("@");
+
+  test("passes when the only addresses are noreply or example ones", () => {
+    const text = `${at("someone", "users.noreply.github.com")}\n${at("someone", "example.com")}\nlogo@2x.png\n`;
+    expect(runIn({ "readme.txt": text }).status).toBe(0);
+  });
+
+  test("passes on a repository with no address at all", () => {
+    expect(runIn({ "readme.txt": "nothing here\n" }).status).toBe(0);
+  });
+
+  test("fails on an address in a tracked file, naming the path but never the address", () => {
+    const address = at("synthetic.person", "mail-provider.test");
+    const { status, output } = runIn({ "readme.txt": "clean\n", "notes.txt": `write to ${address}\n` });
+    expect(status).not.toBe(0);
+    expect(output).toContain("notes.txt");
+    expect(output).not.toContain("readme.txt");
+    expect(output).not.toContain(address);
+    expect(output).not.toContain("synthetic.person");
   });
 });
