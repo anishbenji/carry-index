@@ -38,7 +38,8 @@ Runs on every push to `main`, once a day at 04:17 UTC (so `/performance` stays c
 
    with `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in that step's `env:` only. The gate seals and scans
    the folder again, runs check 3 (`wrangler deploy --dry-run` must print exactly "No bindings found."), deploys,
-   then reads the live Worker's settings and rolls back if they are not what the definition says.
+   then reads the live Worker's settings. If they are not what the definition says and this deploy created a
+   version, it rolls back to the previous version and reads the settings again.
 
 One deploy runs at a time and a running deploy is never cancelled. If more runs arrive while one is deploying,
 GitHub keeps only the newest waiting run, which is the newest `main`.
@@ -85,10 +86,13 @@ summary line. GitHub emails you when the job fails.
 |---|---|---|
 | `check 1 failed`, `seal failed` or `bundle scan failed` | The build broke a wall rule. Nothing was uploaded | Fix the cause the problem lines name, in a pull request |
 | `check 3 failed before upload; nothing was uploaded` | The dry run printed something other than "No bindings found." (a binding appeared, or Wrangler's output changed) | Nothing is live from this run. Find what changed; a Wrangler upgrade needs T6 and the recorded dry-run fixture re-checked |
-| `check 3 failed on the live Worker; rolled back` | The upload happened, but the live Worker's bindings or tail consumers differ from the definition (for example a binding added in the dashboard) | The gate has already run `wrangler rollback`; check the `wrangler rollback exited with` line. If it is not 0, roll back by hand: dashboard → Workers & Pages → `carry-journal` → Deployments → roll back to the last good version. Then remove the extra binding in the dashboard and re-run the workflow |
+| `check 3 failed on the live Worker; rolled back`, then `rollback confirmed` | The upload created a version whose live bindings or tail consumers differ from the definition (for example a binding added in the dashboard). The gate rolled back to the previous version and the re-check passed | Nothing is wrong live. Remove the extra binding in the dashboard, then re-run the workflow |
+| `live-after-rollback`, then `the live Worker still does not match after the rollback; it needs attention now` | The rollback ran (see the `wrangler rollback to … exited with` line), but the live Worker still differs, or the re-check could not read it | Act now: dashboard → Workers & Pages → `carry-journal` → Deployments → roll back to the last good version by hand, remove the extra binding, then re-run the workflow |
+| `not rolling back: the upload created no new version`, then `check 3 failed on the live Worker` | The upload created nothing, and the Worker that was already live does not match (a dashboard change, or drift) | The gate leaves it alone, since rolling back would undo the version that was live. Remove the extra binding in the dashboard, then re-run the workflow |
 | `wrangler deploy exited with` a non-zero code, then `the live Worker shows the expected bindings` | The upload failed part way, but what is live is still correct | Re-run the workflow once the cause (often a Cloudflare outage or an expired token) is fixed |
 
-A failed or missing API reply in the live check counts as a failure, so it also rolls back.
+A failed or malformed API reply in the live check counts as a mismatch. The gate rolls back only a version this
+deploy created.
 
 ## Not yet covered
 
