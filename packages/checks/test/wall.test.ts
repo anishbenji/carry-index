@@ -513,3 +513,26 @@ describe("evaluateWall: generated configs are validated the way wrangler deploy 
     expect(evaluateWall(root).ok).toBe(false);
   });
 });
+
+describe("evaluateWall: the Cloudflare plugin call stays in vite.config.*", () => {
+  it("fails when a Vite config imports a local or workspace module that could build the plugin", () => {
+    for (const line of [
+      'import { workerPlugin } from "./cf-plugin.ts";',
+      'import { workerPlugin } from "../shared/vite.ts";',
+      'import { workerPlugin } from "@cj/vite-helpers";',
+      'export { default } from "./base.config.ts";',
+      'const helper = await import("./cf-plugin.ts");',
+    ]) {
+      const source = `${line}\nexport default { plugins: [] };\n`;
+      const result = evaluateWall(tree({ "apps/web/vite.config.ts": source }));
+      expect(result.ok, line).toBe(false);
+      expect(result.lines.join("\n"), line).toMatch(/apps\/web\/vite\.config\.ts/);
+    }
+  });
+
+  it("accepts imports of installed packages and Node built-ins", () => {
+    const source =
+      'import { fileURLToPath } from "node:url";\nimport solid from "@solidjs/vite-plugin";\nimport { defineConfig } from "vite";\nexport default defineConfig({ plugins: [solid()] });\n';
+    expect(evaluateWall(tree({ "apps/web/vite.config.ts": source })).ok).toBe(true);
+  });
+});

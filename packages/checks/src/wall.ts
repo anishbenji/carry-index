@@ -5,6 +5,7 @@ import type { Node, SourceFile } from "typescript/unstable/ast";
 import { SyntaxKind } from "typescript/unstable/ast";
 import {
   isCallExpression,
+  isExportDeclaration,
   isIdentifier,
   isImportDeclaration,
   isNamedImports,
@@ -442,6 +443,9 @@ const SAFE_PLUGIN_OPTIONS: ReadonlySet<string> = new Set([
   "assetsOnly",
 ]);
 
+/** Module specifiers that point at code in this checkout: relative or absolute paths, file URLs, workspaces. */
+const LOCAL_MODULE = /^(\.|\/|file:|@cj\/)/;
+
 /**
  * Finds every use of the Cloudflare Vite plugin in a Vite config and fails on `config` or `configPath`, and on
  * any use whose options it cannot read: a non-literal argument, a spread, a computed key, or the plugin
@@ -449,6 +453,22 @@ const SAFE_PLUGIN_OPTIONS: ReadonlySet<string> = new Set([
  */
 function checkViteConfig(file: string, source: SourceFile): string[] {
   const problems: string[] = [];
+  walk(source, (node) => {
+    let specifier: string | undefined;
+    if ((isImportDeclaration(node) || isExportDeclaration(node)) && node.moduleSpecifier) {
+      specifier = isStringLiteral(node.moduleSpecifier) ? node.moduleSpecifier.text : undefined;
+    } else if (isCallExpression(node)) {
+      const callee = node.expression;
+      const isLoader = callee.kind === SyntaxKind.ImportKeyword || (isIdentifier(callee) && callee.text === "require");
+      const arg = node.arguments[0];
+      if (isLoader && arg && (isStringLiteral(arg) || isNoSubstitutionTemplateLiteral(arg))) specifier = arg.text;
+    }
+    if (specifier !== undefined && LOCAL_MODULE.test(specifier)) {
+      problems.push(
+        `${file}:${lineOf(source, node)} imports ${specifier}; a Vite config may import only installed packages, so the Cloudflare plugin call stays here where the wall can read it`,
+      );
+    }
+  });
   const callables = new Set<string>();
   const namespaces = new Set<string>();
   const bindings = new Set<Node>();
