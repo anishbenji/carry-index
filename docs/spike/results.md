@@ -15,7 +15,7 @@ deployed, so there are no edge numbers yet.
 | PR 4, toolchain (Q7) | `spike/04-scaffold` (still moving) | `docs/spike/toolchain.md` | `12e775a` (first draft read `463dbf8`) |
 | PR 7, hydrated build (Q1, Q4, Q6, N1 baseline) | `spike/07-deploy-hydrated` | `docs/spike/deploy-hydrated.md` | `4c2c820` (numbers measured at `b5d4fd5`) |
 | PR 8, static first and CSP (N1, N3, Q5) | `spike/08-static-csp` | `docs/spike/static-csp.md` | `b0f40c4` |
-| PR 9, Kit Watch: Access, D1, MCP | `spike/09-kit-access-d1-mcp` | `docs/spike/kit-access-d1-mcp.md` | `0c7e568` (review round 2; unchanged at head `39e903c`) |
+| PR 9, Kit Watch: Access, D1, MCP | `spike/09-kit-access-d1-mcp` | `docs/spike/kit-access-d1-mcp.md` | `65c11a6` (decision #16 and review round 3; first read `0c7e568`) |
 
 Review findings for PR 7 and PR 9 are in the director's review folders (`reviews/07-hydrated/`,
 `reviews/09-kit/`, outside this repo). The R2 card finding comes from the director's scout
@@ -332,20 +332,22 @@ user's own look at the dashboard settles it (user step U3). Nothing was enabled.
 ## Kit Watch: Access and D1
 
 **Answer: locally, yes. The edge is not proven.** (PR 9, local, workerd through Wrangler 4.168.0; doc at
-`0c7e568`.)
+`65c11a6`.)
 
 - One private Worker, `kit-watch`, serves two hostnames and routes by hostname. `kit.carryjournal.com` serves the
-  Solid 2 SPA and its API. Any other hostname, and any plain-http request, gets 404.
+  Solid 2 SPA and its API, behind its own Access application. `mcp.kit.carryjournal.com` is outside that
+  application; a second, path-scoped one covers only its `/authorize` and `/callback` (decision #16). Any other
+  hostname, and any plain-http request, gets 404.
 - On the app host the Worker verifies the Access JWT on every request: RS256 only, against the team JWKS, with
   `iss`, `aud`, `exp` and `nbf` (60 s leeway). Web Crypto, no JWT library.
 - D1 holds one synthetic table. `GET /api/items` reads; `POST /api/items` writes JSON only, exact fields, body at
   most 4 KB, `Origin` must be `https://kit.carryjournal.com`.
 
-**Key numbers (local, PR 9, doc at `0c7e568`).**
+**Key numbers (local, PR 9, doc at `65c11a6`).**
 
 | Command | Result |
 |---|---|
-| `bun run test` in `workers/kit` (`/usr/bin/time -p`) | 2 files, 32 tests pass; real 1.23 s (round 1: 4 files, 51 tests; round 2: 8 files, 71 tests, real 7.83 s, mostly the one-second callback hold) |
+| `bun run test` in `workers/kit` (`/usr/bin/time -p`) | 2 files, 32 tests pass; real 1.23 s (round 1: 4 files, 51 tests; round 2: 8 files, 71 tests, real 7.83 s; round 3: 14 files, 86 tests, real 6.77 s) |
 | `heavy-run.sh … bun run build` | `apps/kit` `index-*.js` 43.29 kB (17.74 kB gzip), CSS 0.86 kB, `index.html` 0.50 kB, no inline script |
 | `Bun.build` of `workers/kit/src/index.ts`, minified | before the Ajv alias 425.8 kB (121.0 kB gzip); after 291.3 kB (79.7 kB gzip), no Ajv |
 | `wrangler dev --local --local-upstream kit.carryjournal.com` | `/api/items` 401 without a JWT, 200 with three synthetic rows; `/` 200 with the CSP |
@@ -360,36 +362,42 @@ startup time.
 
 ## Kit Watch: can Claude connect to an MCP server on that Worker?
 
-**Answer: locally, yes, with a real OAuth flow. No real MCP client has connected.** (PR 9, local.)
+**Answer: locally, yes, with a real OAuth flow. No real MCP client has connected.** (PR 9, local; doc at
+`65c11a6`, the newest commit on `spike/09-kit-access-d1-mcp` when read.)
 
-The MCP endpoint is on its own hostname, `mcp.kit.carryjournal.com`, which the user chose (USER #5). That host is
-outside the Access self-hosted application. It is guarded by OAuth tokens from
-`@cloudflare/workers-oauth-provider` 1.3.0, with an Access for SaaS (OIDC) application as the sign-in step. Grants
-store only the Access `sub`. One read-only tool, `list_items`, needs scope `mcp:read`. The Access JWT is not
-accepted as an MCP token (tested).
+The MCP endpoint is on its own hostname, `mcp.kit.carryjournal.com`, which the user chose (USER #5). It is guarded
+by OAuth tokens from `@cloudflare/workers-oauth-provider` 1.3.0, with an Access for SaaS (OIDC) application as the
+sign-in step. Grants store only the Access `sub`. One read-only tool, `list_items`, needs scope `mcp:read`. The
+Access JWT is not accepted as an MCP token (tested).
 
-**Risk: the open routes.** `/register` and `/authorize` must be open, and each call writes to KV. The free plan
-allows about 1,000 KV writes a day. The Worker rate-limits both routes to 10 calls per 60 s per IP, and review
-round 2 added a daily budget: 300 requests per UTC day from everyone, counted in D1, which leaves about 400 KV
-writes for the owner. Registration now accepts only Claude's connector callback.
+**How the shape was reached.** In PR 9's first tested shape (at `0c7e568`), `/register` and `/authorize` were open,
+with a shared daily budget of 300 requests in D1. PR 9's second security review round found three P1s in it: the
+shared Worker request quota, an owner sign-in lockout until midnight UTC, and a revoked token readable at another
+location for 60 s or more.
 
-PR 9's second security review round still found three P1s:
+**Decided (#16, director under the user's overnight instruction, 26 Nov; the user may reverse it).** Built locally
+in PR 9 at `65c11a6`:
 
-1. Anonymous traffic to discovery and `/mcp` can spend the Worker's 100,000 daily requests, which the private
-   app shares.
-2. Invalid requests can spend the daily budget, so the owner cannot start a new sign-in until midnight UTC.
-3. A revoked MCP token can still read at another Cloudflare location until its cached KV record expires (60 s
-   or more).
+- `/authorize` and `/callback` sit behind a second, path-scoped, owner-only Access application, and the Worker
+  checks that application's JWT (`ACCESS_MCP_AUD`) itself before any state or KV write.
+- `/register` stays open, because Claude registers server-to-server with no browser. It accepts only Claude's
+  callback, replays an identical registration from D1 with no KV write, and has its own cap of 50 new
+  registrations a UTC day.
+- `/mcp` checks a D1 table of revoked grants before serving.
+- Review round 3 also fixed reconnects (old grants are kept), logs (query strings redacted), MCP batches (at most
+  10) and Access answers (capped at 64 KB). `bun run test` in `workers/kit`: 14 files, 86 tests pass, real 6.77 s.
 
-**Decided (#16, director under the user's overnight instruction, 26 Nov; the user may reverse it).** Access with
-the owner-only policy on `/authorize` and `/callback` only. `/register` stays open, because Claude registers
-server-to-server with no browser, but with the callback allow-list, deduplication (an identical registration
-returns the existing client, no new KV write) and its own daily cap. Revocation is checked in D1 before an MCP
-request is served. `/register` moves behind Access only if the edge test shows Claude's registration carries a
-browser session. Risk 1 (the shared Worker quota) is reduced, not closed.
+Risks now: the sign-in lockout and the cached revoked token are closed locally. The shared Worker quota is reduced,
+not closed: strangers can still reach `/register`, `/token`, `/mcp` and discovery, and a flood on `/mcp` or
+discovery spends the 100,000 daily requests the app shares.
 
-**Not verified.** Access for SaaS at the edge (its real endpoints, claims and PKCE). A real MCP client (Claude)
-connecting. The Rate Limiting binding and the WAF rule at the edge.
+**The one free WAF rule.** The free plan allows one rate-limiting rule for the zone, path only. Recommended: it
+covers `/register` and `/token` on the MCP host. The architecture doc also plans it for the beacon's `/api/*`, so
+which routes it covers is open for the user (ADR-0048 lists the options).
+
+**Not verified.** Anything at the edge: the path-scoped Access application, Access for SaaS endpoints, claims and
+PKCE, Claude's connector flow through an Access sign-in, and that Claude's registration carries no browser session.
+The Rate Limiting binding and the WAF rule.
 
 **ADR change.** New [ADR-0048](../adr/0048-mcp-authorization.md), "MCP authorization for Kit Watch": Accepted by
 the director under the user's overnight instruction; the user may reverse it.
@@ -425,7 +433,7 @@ list, outside this repo.
 9. Accept that Q2's edge numbers and Q3 (navigation) move into the build.
 10. Accept the ADR-0036 and ADR-0037 amendments.
 11. Do the Access and D1 steps for PR 9's edge test (U4/U5, pending #11): step 4 in the dashboard, step 5 through `deploy-kit.yml`.
-12. Add the free WAF rate-limiting rule for `/register` and `/authorize` (pending #11).
+12. The one free WAF rule: MCP `/register` and `/token` (recommended), combined with the beacon's `/api/*`, or the beacon only (ADR-0048); then add it (pending #11).
 13. R2: look at the dashboard and report whether it asks for a card (U3, pending #4); until then CI artifacts.
 14. Give the Cloudflare API token so the spike can measure at the edge (U1, pending #2).
 
