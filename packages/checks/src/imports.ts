@@ -1,3 +1,5 @@
+import { dirname, relative, resolve, sep } from "node:path";
+import { fileURLToPath } from "node:url";
 import type { Node, SourceFile } from "typescript/unstable/ast";
 import { SyntaxKind } from "typescript/unstable/ast";
 import {
@@ -29,9 +31,13 @@ export const NON_LITERAL = "(non-literal dynamic import)";
  * literal is reported too, because it could load anything. A specifier is banned when it equals a banned name or
  * is a subpath of it (`zod/v4`).
  */
-export function findValueImportsIn(source: SourceFile, banned: readonly string[]): ValueImport[] {
+export function findValueImportsIn(
+  source: SourceFile,
+  banned: readonly string[],
+  isBannedPath: (specifier: string) => boolean = () => false,
+): ValueImport[] {
   const isBanned = (specifier: string): boolean =>
-    banned.some((name) => specifier === name || specifier.startsWith(`${name}/`));
+    banned.some((name) => specifier === name || specifier.startsWith(`${name}/`)) || isBannedPath(specifier);
   const found: ValueImport[] = [];
   walk(source, (node) => {
     let specifier: string | undefined;
@@ -74,6 +80,7 @@ export function scanImports(
   root: string,
   dir: string,
   banned: readonly string[],
+  bannedPaths: readonly string[] = [],
 ): Array<ValueImport & { file: string }> {
   const files = listFiles(
     root,
@@ -82,8 +89,36 @@ export function scanImports(
     new Set(["dist", ".tsbuild", ".wrangler"]),
   );
   return withParsedFiles(root, files, (file, source) =>
-    findValueImportsIn(source, banned).map((f) => ({ file, ...f })),
+    findValueImportsIn(source, banned, (specifier) => reachesBanned(root, file, specifier, banned, bannedPaths)).map(
+      (f) => ({ file, ...f }),
+    ),
   ).flat();
+}
+
+/**
+ * Whether a relative or absolute specifier, resolved from the importing file, lands in a banned workspace folder
+ * (`packages/schema`) or in a banned package's folder under any node_modules (Bun's `.bun/<pkg>@<v>` store too).
+ */
+function reachesBanned(
+  root: string,
+  file: string,
+  specifier: string,
+  banned: readonly string[],
+  bannedPaths: readonly string[],
+): boolean {
+  if (!/^(\.|\/|file:)/.test(specifier)) return false;
+  const path = specifier.startsWith("file:") ? fileURLToPath(specifier) : specifier;
+  const rel = relative(root, resolve(root, dirname(file), path))
+    .split(sep)
+    .join("/");
+  if (bannedPaths.some((p) => rel === p || rel.startsWith(`${p}/`))) return true;
+  return banned.some((name) =>
+    new RegExp(`(^|/)node_modules/(\\.bun/[^/]+/node_modules/)?${escapeRegExp(name)}(/|$)`).test(rel),
+  );
+}
+
+function escapeRegExp(text: string): string {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function literalText(node: Node): string | undefined {

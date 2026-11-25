@@ -80,3 +80,27 @@ describe("scanImports", () => {
     ]);
   });
 });
+
+describe("scanImports: resolved paths", () => {
+  let cleanups: Array<() => void> = [];
+  afterEach(() => {
+    for (const c of cleanups) c();
+    cleanups = [];
+  });
+
+  it("bans value imports that reach a banned package by a relative path, not only by its name", () => {
+    const t = makeTree({
+      "apps/web/src/a.ts": 'import { bagSchema } from "../../../packages/schema/src/index.ts";\n',
+      "apps/web/src/b.ts": 'import type { Bag } from "../../../packages/schema/src/bag.ts";\n',
+      "apps/web/src/c.ts": 'import { formatWeight } from "./format.ts";\n',
+      "apps/web/src/d.ts": 'import { z } from "../../../node_modules/zod/index.js";\n',
+      "apps/web/src/e.ts": 'export * from "../../../node_modules/.bun/zod@4.6.7/node_modules/zod/v4/index.js";\n',
+    });
+    cleanups.push(t.cleanup);
+    expect(scanImports(t.root, "apps/web", BANNED, ["packages/schema"]).map((f) => f.file)).toEqual([
+      "apps/web/src/a.ts",
+      "apps/web/src/d.ts",
+      "apps/web/src/e.ts",
+    ]);
+  });
+});

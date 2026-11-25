@@ -4,14 +4,14 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { listFiles } from "../src/files.ts";
 import { scanImports } from "../src/imports.ts";
-import { TYPE_ONLY_DIRS, TYPE_ONLY_MODULES } from "../src/policy.ts";
+import { TYPE_ONLY_DIRS, TYPE_ONLY_MODULES, TYPE_ONLY_PATHS } from "../src/policy.ts";
 import { evaluateWall } from "../src/wall.ts";
 
 const ROOT = fileURLToPath(new URL("../../../", import.meta.url).href);
 
 describe("this repository", () => {
   it("apps/web imports Zod and @cj/schema by `import type` only", () => {
-    for (const dir of TYPE_ONLY_DIRS) expect(scanImports(ROOT, dir, TYPE_ONLY_MODULES)).toEqual([]);
+    for (const dir of TYPE_ONLY_DIRS) expect(scanImports(ROOT, dir, TYPE_ONLY_MODULES, TYPE_ONLY_PATHS)).toEqual([]);
   });
 
   it("apps/web uses at least one schema type, so the check above guards a real import", () => {

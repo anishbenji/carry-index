@@ -1,10 +1,10 @@
 import { scanImports } from "../imports.ts";
-import { TYPE_ONLY_DIRS, TYPE_ONLY_MODULES } from "../policy.ts";
+import { TYPE_ONLY_DIRS, TYPE_ONLY_MODULES, TYPE_ONLY_PATHS } from "../policy.ts";
 import { REPO_ROOT } from "./root.ts";
 
 let failures = 0;
 for (const dir of TYPE_ONLY_DIRS) {
-  for (const f of scanImports(REPO_ROOT, dir, TYPE_ONLY_MODULES)) {
+  for (const f of scanImports(REPO_ROOT, dir, TYPE_ONLY_MODULES, TYPE_ONLY_PATHS)) {
     console.log(`${f.file}:${f.line} imports a value from ${f.specifier}; use \`import type\``);
     failures++;
   }
