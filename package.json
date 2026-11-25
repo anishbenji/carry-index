@@ -28,5 +28,13 @@
     "typescript": "7.0.2",
     "vitest": "5.1.1",
     "wrangler": "4.168.0"
-  }
+  },
+  "size-limit": [
+    {
+      "name": "apps/web client JavaScript (N2 listing limit, ADR-0017)",
+      "path": "apps/web/dist/client/assets/*.js",
+      "brotli": true,
+      "limit": "15 kB"
+    }
+  ]
 }

@@ -33,10 +33,24 @@ describe("findBuiltPages", () => {
 });
 
 describe("evaluateSizeGate", () => {
-  it("passes with a 'no pages yet' line while apps/web emits no HTML", () => {
-    const result = evaluateSizeGate(tree({ "package.json": ROOT_PKG, "apps/web/dist/server/entry.js": "" }));
+  it("passes with a 'no pages yet' line while apps/web has no build output and no targets", () => {
+    const result = evaluateSizeGate(tree({ "package.json": ROOT_PKG }));
     expect(result.kind).toBe("pass");
     expect(result.lines.join("\n")).toMatch(/no pages yet/);
+  });
+
+  it("fails once apps/web emits JavaScript, even without HTML, and no size-limit targets are configured", () => {
+    const result = evaluateSizeGate(tree({ "package.json": ROOT_PKG, "apps/web/dist/client/assets/main.js": "x" }));
+    expect(result.kind).toBe("fail");
+    expect(result.lines.join("\n")).toMatch(/size-limit/);
+  });
+
+  it("runs size-limit whenever targets exist, even before a build", () => {
+    const pkg = JSON.stringify({
+      name: "carry-index",
+      "size-limit": [{ path: "apps/web/dist/client/assets/*.js", limit: "15 kB" }],
+    });
+    expect(evaluateSizeGate(tree({ "package.json": pkg }))).toMatchObject({ kind: "run", command: ["size-limit"] });
   });
 
   it("fails once apps/web emits a page and no size-limit targets are configured", () => {

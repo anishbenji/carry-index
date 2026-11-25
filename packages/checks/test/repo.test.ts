@@ -37,3 +37,12 @@ describe("Vite dev servers", () => {
     }
   });
 });
+
+describe("size budgets", () => {
+  it("hold apps/web client JavaScript to the N2 listing limit, measured in Brotli as Cloudflare serves it", () => {
+    const pkg = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8")) as { "size-limit"?: unknown };
+    expect(pkg["size-limit"]).toContainEqual(
+      expect.objectContaining({ path: "apps/web/dist/client/assets/*.js", brotli: true, limit: "15 kB" }),
+    );
+  });
+});
