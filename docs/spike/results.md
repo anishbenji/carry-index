@@ -1,7 +1,9 @@
 # Spike results, for the Thursday gate
 
-Draft for the gate on Thursday 26 Nov 2026, 20:00 IST. This draft freezes at 18:00 IST. Nothing here is
-accepted. Every ADR change below is **Proposed — for the user at the gate**.
+Draft for the gate on Thursday 26 Nov 2026, 20:00 IST. This draft freezes at 18:00 IST. Every ADR change below
+is **Proposed — for the user at the gate** unless it is marked Accepted: the privacy-wall and deploy decisions the
+user accepted on 26 Nov, and the decisions the director took overnight under the user's instruction (the user may
+reverse those).
 
 Every number is copied from a spike doc, with its label and source. **All numbers are local.** Nothing was
 deployed, so there are no edge numbers yet.
@@ -10,10 +12,10 @@ deployed, so there are no edge numbers yet.
 
 | Spike PR | Branch | Doc | Commit read |
 |---|---|---|---|
-| PR 4, toolchain (Q7) | `spike/04-scaffold` | `docs/spike/toolchain.md` | `463dbf8` |
+| PR 4, toolchain (Q7) | `spike/04-scaffold` (still moving) | `docs/spike/toolchain.md` | `12e775a` (first draft read `463dbf8`) |
 | PR 7, hydrated build (Q1, Q4, Q6, N1 baseline) | `spike/07-deploy-hydrated` | `docs/spike/deploy-hydrated.md` | `4c2c820` (numbers measured at `b5d4fd5`) |
 | PR 8, static first and CSP (N1, N3, Q5) | `spike/08-static-csp` | `docs/spike/static-csp.md` | `b0f40c4` |
-| PR 9, Kit Watch: Access, D1, MCP | `spike/09-kit-access-d1-mcp` | `docs/spike/kit-access-d1-mcp.md` | `0c7e568` (review round 2) |
+| PR 9, Kit Watch: Access, D1, MCP | `spike/09-kit-access-d1-mcp` | `docs/spike/kit-access-d1-mcp.md` | `0c7e568` (review round 2; unchanged at head `39e903c`) |
 
 Review findings for PR 7 and PR 9 are in the director's review folders (`reviews/07-hydrated/`,
 `reviews/09-kit/`, outside this repo). The R2 card finding comes from the director's scout
@@ -158,24 +160,27 @@ Two things differ from the architecture doc:
    `node` (26.13.0); nothing else needs Node. The API is unstable, so `typescript` is pinned exactly. The wall
    (ADR-0049) uses neither TypeScript's nor Wrangler's unstable APIs.
 
-**Key numbers (local, PR 4, doc at `463dbf8`).**
+**Key numbers (local, PR 4, doc at `12e775a`).**
 
 | Command | Result |
 |---|---|
 | `/usr/bin/time -p tsc --build --force` | real 0.27 s (all seven projects, cold) |
 | `/usr/bin/time -p tsc --build` | real 0.09 s (nothing changed) |
-| `/usr/bin/time -p biome ci .` | real 0.50 s, 50 files |
-| `bun run test` | checks 56, schema 6, pipeline 3, web 2: all pass |
+| `/usr/bin/time -p biome ci --error-on-warnings .` | real 0.23 s, 50 files |
+| `bun run test` | checks 40, schema 6, pipeline 3, web 2: all pass |
 | `heavy-run.sh … bun run build` | apps/web `main-*.js` 25.06 kB (10.54 kB gzip), apps/kit 24.58 kB (10.32 kB gzip) |
 | `heavy-run.sh … bun run size` | "Size limit: 15 kB / Size: 9.54 kB brotlied" |
 | `brotli -c -q 11 … \| wc -c` on each bundle | apps/web 9,540 B Brotli; apps/kit 9,353 B Brotli |
+| `brotli -c -q N` and `gzip -N -c` on the apps/web bundle | gzip level 8 or 9 10,439 B; Brotli quality 11 9,540 B; Brotli level 4 10,804 B |
 
-Solid 2's runtime plus one `render` of one component is already 9,540 bytes Brotli. That is over the 8 KB
-content-page budget before any hydration, router, island or beacon. Content pages can meet 8 KB only by shipping
+Cloudflare says it recompresses at Brotli level 4 or gzip level 8 (not verified here), so the gate may be slightly
+optimistic: level 4 is 365 B (3.5%) above what it measures. Solid 2's runtime plus one `render` of one component is
+already 10.4 to 10.8 kB compressed. That is over the 8 KB content-page budget before any hydration, router, island
+or beacon. Content pages can meet 8 KB only by shipping
 no Solid runtime, which is what N1 plans.
 
 **Not verified.** Watch mode and editor behaviour with TypeScript 7. Vitest and Vite under Bun's runtime (both
-ran on Node 26.13.0). Component tests: no DOM environment is approved.
+ran on Node 26.13.0). Component tests: none yet; `happy-dom` was approved overnight (#13).
 
 **ADR change.** Proposed — for the user at the gate: new [ADR-0047](../adr/0047-toolchain.md), "Toolchain:
 TypeScript 7, Biome, Vitest, Bun workspaces".

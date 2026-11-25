@@ -2,7 +2,8 @@
 
 - **Status:** Proposed (spike results, 2026-11-26)
 - **Amends:** [ADR-0037](../0037-sign-in.md). ADR-0037 itself is unchanged until the user decides.
-- **Source:** spike PR 9, `docs/spike/kit-access-d1-mcp.md` on `spike/09-kit-access-d1-mcp` at `2f052c4`
+- **Source:** spike PR 9, `docs/spike/kit-access-d1-mcp.md` on `spike/09-kit-access-d1-mcp` at `0c7e568`
+  (review round 2)
 
 ## Result (local only)
 
@@ -25,7 +26,8 @@ that the Access self-hosted application and the Access for SaaS application used
 ([ADR-0048](../0048-mcp-authorization.md)) share one owner-only policy: Access is the only gate, and neither the
 app nor MCP keeps its own allow-list. The allowed address stays in the Cloudflare dashboard only.
 
-Two configuration values beyond the brief's six secrets, `ACCESS_TEAM_DOMAIN` and `ACCESS_AUD`, are set with
-`wrangler secret put` by the user.
+Two configuration values beyond the brief's six secrets, `ACCESS_TEAM_DOMAIN` and `ACCESS_AUD`. All eight are
+entered by the user as Worker secrets in the Cloudflare dashboard, and the deploy goes through `deploy-kit.yml`
+(ADR-0049, #17), so no Cloudflare credential sits on the Mac.
 
 Not verified at the edge: that Access injects the header, the real team JWKS and AUD, and key rotation.
