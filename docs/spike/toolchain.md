@@ -68,7 +68,7 @@ composite project that emits declarations only, into its own ignored `.tsbuild/`
 |---|---|---|
 | `typecheck` | `tsc --build` | passes |
 | `lint` | `biome ci .`, then the import ban (`node`, TypeScript 7 parser) | passes |
-| `test` | `vitest run` in every workspace that has tests | 60 tests pass |
+| `test` | `vitest run` in every workspace that has tests | 67 tests pass |
 | `build` | `vite build` in apps/web and apps/kit | passes, no HTML emitted |
 | `wall` | lists the three privacy-wall checks as `pending: <milestone>`; fails if any Wrangler config declares a binding while one is pending (see below) | passes, 0 Wrangler configs, 2 Vite configs |
 | `size` | runs size-limit whenever the root `size-limit` list has targets; without targets, "no pages yet" until `apps/web/dist` holds HTML or JavaScript, then fails | passes: 9.54 kB Brotli of 15 kB |
@@ -76,15 +76,31 @@ composite project that emits declarations only, into its own ignored `.tsbuild/`
 
 ## Privacy wall: what it reads, and what the deploy must do
 
-`bun run wall` reads every Wrangler config it can find outside node_modules: any `wrangler*.json`,
-`wrangler*.jsonc` or `wrangler*.toml`, any other `.jsonc` (except `biome.jsonc` and `tsconfig*.jsonc`), any
-`.toml` except `bunfig.toml` (TOML fails closed), the configs `@cloudflare/vite-plugin` generates under
-`dist/**/wrangler.json`, and its `.wrangler/deploy/config.json` redirect, which must point only at configs the
-wall read. A key counts as a binding unless it is on an allow-list of non-binding keys built from wrangler
-4.168's config schema; empty values (recursively, so the plugin's `durable_objects: { bindings: [] }` default)
-are not bindings. The top level, `previews`, every `env.<name>` and each environment's `previews` are checked.
-It also fails if any `vite.config.*` passes `config` or `configPath` to the Cloudflare plugin, or passes options
-it cannot read.
+`bun run wall` judges what Wrangler itself would load, using Wrangler 4.168's own exported readers rather than
+a parser of ours:
+
+- **Fixed locations.** A Worker config may exist only as `wrangler.jsonc` in `apps/web`, `apps/kit`,
+  `workers/web` or `workers/kit`. The only other config files allowed are what `@cloudflare/vite-plugin` writes
+  in those folders: `dist/<worker>/wrangler.json` and the `.wrangler/deploy/config.json` redirect. Any other file
+  Wrangler could pick up fails, wherever it is outside node_modules: any name starting `wrangler`, any
+  `cloudflare.config.*`, any other `.wrangler/deploy/config.json`, and (to be safe) any other `.jsonc` except
+  `biome.jsonc`/`tsconfig*.jsonc` and any `.toml` except `bunfig.toml`. A symlink at a config path, or on the
+  way to one, fails too, because Wrangler would follow it.
+- **Read by Wrangler.** Each allowed config is read with `experimental_readRawConfig` (Wrangler's own JSONC/TOML
+  reader, so a `//` comment ended by a bare carriage return means what it means to Wrangler) and with
+  `unstable_readConfig` for the top level and for each `env.<name>`, as Wrangler normalises and validates them.
+  A config Wrangler rejects fails closed. Both are exports of the `wrangler` package (`wrangler-dist/cli.js`).
+- **Bindings.** A key counts as a binding unless it is on an allow-list of non-binding keys built from wrangler
+  4.168's config schema; empty values (recursively, so the plugin's `durable_objects: { bindings: [] }` default)
+  are not bindings. The top level, `previews`, every `env.<name>` and each environment's `previews` are checked.
+- **Discovery and redirects.** For each of the four Worker folders the wall asks Wrangler which config it would
+  load when run there (`experimental_readRawConfig({ script }, { useRedirectIfAvailable: true })`: Wrangler's own
+  find-up and redirect rules, `path.resolve` included), takes the real path, and requires it to be inside the
+  checkout and one of the configs it checked. The redirect's `auxiliaryWorkers` must meet the same rule.
+- **Vite.** Any `vite.config.*` that passes the Cloudflare plugin anything beyond `viteEnvironment`,
+  `persistState`, `inspectorPort`, `remoteBindings` and `assetsOnly` fails: `config`, `configPath`,
+  `auxiliaryWorkers`, `experimental` (its prerender Worker carries a config), `tunnel` and any option added
+  later, as do options it cannot read.
 
 The wall cannot prove that a deploy uses the config it checked. **Requirement for the CI deploy workflow
 (PR 10):** build, then run `bun run wall` on the generated config in the same job, immediately before
@@ -96,7 +112,12 @@ The wall and import checks parse source with TypeScript 7's own parser. TypeScri
 `createSourceFile`; its JavaScript API (`typescript/unstable/sync`) drives the native compiler over a pipe and
 reads Node's stream internals, so it fails under Bun (`TypeError: undefined is not an object (evaluating
 'stdout._handle.fd')`). Those two CLIs therefore run with `node` (26.13.0 strips the TypeScript types). The API
-is marked unstable: pin `typescript` exactly and expect changes on upgrade.
+is marked unstable: pin `typescript` exactly and expect changes on upgrade. Wrangler's readers are `unstable_`
+and `experimental_` exports too, so the same applies to `wrangler`.
+
+Importing `wrangler` brings its type declarations, which load `@types/node` 22.15.17 (a dependency of wrangler,
+not of ours) into the checks project. The hand-written `runtime.d.ts` still covers what the checks call, minus
+its `URL` class, which clashed with Node's.
 
 ## Development servers stay on loopback
 
@@ -105,8 +126,17 @@ out of memory), and Miniflare pins an affected `ws` for wrangler's inspector. No
 versions are unchanged. Both Vite configs set `server.host: "localhost"` (a test in `packages/checks` holds it), so
 the dev server and its WebSocket are reachable only from this machine; do not run `vite --host`. Wrangler 4.168
 binds the dev inspector to `127.0.0.1` unless told otherwise (`config.dev.inspector_ip ?? "127.0.0.1"` in
-`wrangler-dist/cli.js`); do not set `dev.inspector_ip` or pass `--inspector-ip`. Upgrade once Vite and wrangler
-ship `ws` 8.23.0 or later.
+`wrangler-dist/cli.js`); do not set `dev.inspector_ip` or pass `--inspector-ip`.
+
+The WebSocket stays on, still reachable from other processes on this machine. The director accepted the
+loopback mitigation on 25 Nov 2026: a local process can already stop a dev server, so turning off `server.ws` (and
+hot reload with it) buys nothing that matters. Upgrade once Vite and wrangler ship `ws` 8.23.0 or later.
+
+Both Vite configs also add `.dev.vars` and `.dev.vars.*` (Wrangler's local secrets) to `server.fs.deny`, so a page
+on another local port cannot read them through the dev server. A configured list replaces Vite's own, so each
+config repeats Vite 8.3.8's defaults (`.env`, `.env.*`, `*.{crt,pem,key,p12,pfx,cer,der}`, `.npmrc`,
+`.yarnrc.yml`, `**/.git/**`) first; a test in `packages/checks` holds the exact list. Re-check that list when
+Vite is upgraded.
 
 ## Commands and results
 
@@ -123,7 +153,7 @@ All run in the branch checkout. Build and end-to-end runs went through `heavy-ru
 | `/usr/bin/time -p biome ci .` | real 0.50 s, 50 files |
 | `biome lint` on a scratch file with an unawaited promise, an async `forEach` callback and a promise in an `if` | `noFloatingPromises` (1), `noMisusedPromises` (2) and `noUnnecessaryConditions` (1) reported (file removed afterwards) |
 | `biome ci` with `noRestrictedImports` on `zod` and `@cj/schema` under `apps/web` | errors on `import type { Bag } from "@cj/schema"` in both files that use it; override removed |
-| `bun run test` | checks 49, schema 6, pipeline 3, web 2: all pass |
+| `bun run test` | checks 56, schema 6, pipeline 3, web 2: all pass |
 | `heavy-run.sh … bun run build` | exit 0; Vite reports apps/web `main-*.js` 25.06 kB (10.54 kB gzip), apps/kit 24.58 kB (10.32 kB gzip) |
 | `heavy-run.sh … bun run size` (after the build) | exit 0; "Size limit: 15 kB / Size: 9.54 kB brotlied" |
 | `wc -c`, `brotli -c -q 11 … \| wc -c`, `gzip -9 -c … \| wc -c` on each bundle | apps/web: 25,069 B raw, 9,540 B Brotli, 10,439 B gzip; apps/kit: 24,586 B raw, 9,353 B Brotli, 10,220 B gzip |
