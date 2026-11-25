@@ -33,9 +33,11 @@ account's 100,000 daily Worker requests.
 - No code runs for public page requests, so crawlers and scanners cost nothing against the daily request limit.
 - Any server behaviour on the public host needs its own route and Worker, as the beacon does.
 - The 404 page must render correctly for any path, including a well-formed but unknown bag slug. PR 7's review
-  found it did not (P1: hydration rendered the address bar's route, not the 404 route). PR 8 fixes this, and an
-  end-to-end test must open `/bags/no-such-bag` in a browser and see the "Page not found" heading.
-- The widget's loading and error text needs a live region, and a retry must clear the error (PR 7 review, P3).
+  found the hydrated build did not (P1). PR 8 fixed it (commit `0370d31`), and a browser test opens
+  `/bags/no-such-bag` on both builds and sees the "Page not found" heading. The static-first build
+  (ADR-0015 amendment) renders no client route, so it never had the problem.
+- The widget's loading and error text sit in a `role="status"` live region, and a retry clears the error
+  (PR 7 review P3, fixed in PR 8, commit `8d6e2b4`).
 - Proven only locally. The first deploy confirms `not_found_handling` at the edge.
 
 ## Why

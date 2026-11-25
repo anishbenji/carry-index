@@ -3,7 +3,7 @@
 - **Status:** Proposed (spike results, 2026-11-26)
 - **Amends:** [ADR-0015](../0015-static-first.md) (N1). ADR-0015 itself is unchanged until the user decides.
 - **Source:** spike PR 7, `docs/spike/deploy-hydrated.md` on `spike/07-deploy-hydrated` at `4c2c820`; spike
-  PR 8 (pending)
+  PR 8, `docs/spike/static-csp.md` on `spike/08-static-csp` at `b0f40c4`
 
 ## What the spike asked
 
@@ -44,15 +44,49 @@ not comparable with the field target.
 Also relevant (PR 4, local): Solid 2's runtime plus one `render` of one component is 9,540 bytes Brotli, already
 over the 8 KB content-page budget.
 
-## N1 numbers: from PR 8 (pending)
+## N1 numbers: PR 8 (local)
 
-The static-first build's numbers, the same table for the same two pages, and whether start mode can leave the
-client entry off a page. The director fills this in from PR 8.
+All local: `wrangler dev` on the same Mac, never Cloudflare. Measured at `b0f40c4` in one heavy-lock session,
+interleaved, median of 5. "Hydrated" is PR 7's build plus the review fixes; "static" is the inline-CSS site.
+
+| Measure | Hydrated, listing | Static, listing | Hydrated, bag | Static, bag | N2 budget (ADR-0017) |
+|---|---|---|---|---|---|
+| Page JS, brotli (files + inline) | 37,327 B: fail | 739 B: pass | 36,346 B: fail | 398 B: pass | listing < 15 KB; content < 8 KB |
+| Page JS after the airline widget opens | n/a | n/a | 36,346 B | 915 B (+517 B island) | content < 8 KB |
+| HTML, brotli | 3,348 B | 2,951 B (CSS inlined) | 1,788 B | 1,980 B (CSS inlined) | listing < 40 KB; content < 14 KB with CSS |
+| Lighthouse mobile LCP (simulated) | 795 ms (776–830) | 634 ms (625–670) | 1,734 ms (1,549–1,783) | 1,233 ms (1,217–1,251) | field < 1.0 s (not comparable) |
+| Lighthouse TBT | 5 ms (0–24) | 0 ms (0–37) | 0 ms (0–30) | 0 ms (0–13) | listing < 50 ms; content 0 ms |
+| Lighthouse CLS | 0 | 0 | 0 | 0 | 0 in the lab |
+| INP, sort control, 4x CPU | 32 ms (16–40) | 24 ms (8–48) | n/a | n/a | < 50 ms |
+
+Command: `heavy-run.sh "ci-spike-static measure A/B" bash -c 'RUNS=1 bash scripts/measure-ab.sh smoke.json && RUNS=5
+bash scripts/measure-ab.sh measure-ab.json'`; per-page budgets by `bun scripts/page-budget.ts`. The full table is
+in [`docs/spike/results.md`](../../spike/results.md) (N1).
+
+How it was built:
+
+- **Start mode cannot leave the client entry off a page.** In `@solidjs/vite-plugin` 3.0.1 the generated server
+  entry always injects the client entry script, and its URL cannot be blanked. An authored entry pair was not
+  tried.
+- **So the fallback was built.** `apps/web/build-static.ts`: a plain Vite build (the plugin's non-hydratable mode)
+  and a short prerender script with `renderToString(..., { noScripts: true })`. No hydration keys, no Solid script.
+  It renders a known route list from the pipeline, so `prerender-crawler`, `prerendered()` and `@solidjs/meta` are
+  not used; the route-coverage gate checks the list.
+- **Islands are plain TypeScript.** A Solid version of the airline island (a size probe, never shipped) costs
+  12,928 B brotli on its own, because Solid 2's client runtime comes with it: over the 8 KB content budget alone.
 
 ## Proposed change
 
-Proposed — for the user at the gate: confirm or reverse ADR-0015 once PR 8's numbers are here. PR 7's baseline
-supports static first: full hydration cannot meet the N2 JavaScript budgets.
+Proposed — for the user at the gate: **confirm ADR-0015, with the fallback as the build.**
 
-Known gaps to close either way: the size gate must count the inline scripts as well as the client entry (PR 7
-review, P2), and nothing here is measured at the edge.
+- The public site is rendered by `apps/web/build-static.ts` (plain Vite build plus prerender script), not start
+  mode and not `prerender-crawler`.
+- Islands are plain TypeScript modules that attach to prerendered markup. A Solid island is allowed only where its
+  runtime cost fits the page's budget; today it does not on content pages.
+- **Page data never goes into an inline script.** Content pages carry only the shared inline snippet and the
+  shared inline stylesheet. This keeps one CSP hash set for the whole site (see the
+  [ADR-0018 amendment](0018-spike-results.md)).
+- The private app is unaffected and can stay on start mode.
+
+Not verified: anything at the edge, Firefox and WebKit, back/forward cache restore, and the metrics beacon (not
+built; on the static build it has 7.6 KB of the bag page's 8 KB left).

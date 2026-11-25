@@ -65,9 +65,10 @@ in [`docs/spike/results.md`](../spike/results.md). An amendment leaves its ADR u
 | [0047](0047-toolchain.md) | Toolchain: TypeScript 7, Biome, Vitest, Bun workspaces | Proposed (spike results, 2026-11-26) |
 | [0048](0048-mcp-authorization.md) | MCP authorization for Kit Watch | Proposed (spike results, 2026-11-26) |
 | [Amends 0014](amendments/0014-spike-results.md) | R2 card question: not confirmed; the dashboard look settles it | Proposed (spike results, 2026-11-26) |
-| [Amends 0015](amendments/0015-spike-results.md) | Static first: PR 7's full-hydration numbers; PR 8's pending | Proposed (spike results, 2026-11-26) |
-| [Amends 0018](amendments/0018-spike-results.md) | Inlined CSS and the hash-based CSP: from PR 8 (pending) | Proposed (spike results, 2026-11-26) |
-| [Amends 0020](amendments/0020-spike-results.md) | JPEG XL test deferred to after the gate | Proposed (spike results, 2026-11-26) |
+| [Amends 0015](amendments/0015-spike-results.md) | Confirm static first, built with the fallback; page data never in an inline script | Proposed (spike results, 2026-11-26) |
+| [Amends 0017](amendments/0017-spike-results.md) | The size gate counts inline scripts per page; budgets unchanged | Proposed (spike results, 2026-11-26) |
+| [Amends 0018](amendments/0018-spike-results.md) | Confirm inlined CSS; one build-time CSP hash set for the whole site | Proposed (spike results, 2026-11-26) |
+| [Amends 0020](amendments/0020-spike-results.md) | No JPEG XL numbers from the spike; nothing to decide at the gate | Proposed (spike results, 2026-11-26) |
 | [Amends 0029](amendments/0029-spike-results.md) | Source maps: CI artifacts stay the fallback | Proposed (spike results, 2026-11-26) |
 | [Amends 0036](amendments/0036-spike-results.md) | One Kit Watch Worker for the app host and the MCP host | Proposed (spike results, 2026-11-26) |
 | [Amends 0037](amendments/0037-spike-results.md) | How the Worker verifies the Access token; one owner-only policy | Proposed (spike results, 2026-11-26) |
