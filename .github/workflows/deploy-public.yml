@@ -60,7 +60,8 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    # Three Wrangler runs (dry run, upload, rollback) at the gate's 10-minute limit each, plus the live checks.
+    timeout-minutes: 45
     environment: public-production
     permissions:
       contents: read
