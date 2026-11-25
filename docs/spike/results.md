@@ -275,7 +275,10 @@ Lighthouse's LCP is a simulated slow-4G figure, not comparable with the field ta
 
 **Size gate.** `size-limit` measures files only, so it missed the inline scripts that N2 counts (PR 7 review, P2).
 PR 8 added `scripts/page-budget.ts` (commit `436ec67`): per page, loaded script files plus all inline scripts,
-brotli, against N2, exiting 1 on a miss. Budgets unchanged.
+brotli, against N2, exiting 1 on a miss. Budgets unchanged. It is a spike probe, not the release gate: it checks only the
+listing and one bag page, and counts script tags and module preloads, not the widget's dynamic import. The release
+gate must cover every generated content page and the scripts loaded after a widget opens, which the 8 KB content
+budget includes (ADR-0015).
 
 **Not verified.** Anything at the edge, including real TTFB and field LCP and INP. Firefox and WebKit. Back/forward
 cache restore (not re-tested in PR 8). The metrics beacon (not built, so in neither build's figures). Start mode
@@ -431,7 +434,7 @@ list, outside this repo.
 5. Accept ADR-0046: the public Worker is assets-only, and the beacon is its own Worker on `carryjournal.com/api/*` (changes the unified brief's "Two Workers" line).
 6. Accept ADR-0045's spike amendment: host-scoped `noindex` on workers.dev, confirmed at the edge after merge.
 7. Accept ADR-0047, the toolchain.
-8. Size gate (ADR-0017): count inline scripts per page, as `scripts/page-budget.ts` does; budgets unchanged.
+8. Size gate (ADR-0017): count inline scripts per page, on every content page and after a widget opens (PR 8's `scripts/page-budget.ts` is only a two-page probe); budgets unchanged.
 9. Accept that Q2's edge numbers and Q3 (navigation) move into the build.
 10. Accept the ADR-0036 and ADR-0037 amendments.
 11. Kit edge test (U4/U5, pending #11): it waits for the Kit minimum, with checks 1 and 2 in place, and `deploy-kit.yml` (ADR-0049, your decision #17 5A). PR 9's step 5, which deploys while checks 1 and 2 are pending, does not run. Then: the Access apps and secrets in the dashboard, the gated deploy, and the edge checks.
