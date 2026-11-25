@@ -56,14 +56,15 @@ the build's JPEG XL measurement.
 
 ## Proposed at the Thursday gate (spike results)
 
-None of these is accepted. Each is for the user to accept or reverse at the gate on 26 Nov 2026; the evidence is
+Each is for the user to accept or reverse at the gate on 26 Nov 2026, except ADR-0048, which the director accepted
+overnight under the user's instruction (the user may reverse it); the evidence is
 in [`docs/spike/results.md`](../spike/results.md). An amendment leaves its ADR unchanged until the user decides.
 
 | Record | Proposal | Status |
 |---|---|---|
 | [0046](0046-public-site-delivery.md) | The public Worker is assets-only; the beacon is its own Worker | Proposed (spike results, 2026-11-26) |
 | [0047](0047-toolchain.md) | Toolchain: TypeScript 7, Biome, Vitest, Bun workspaces | Proposed (spike results, 2026-11-26) |
-| [0048](0048-mcp-authorization.md) | MCP authorization for Kit Watch | Proposed (spike results, 2026-11-26) |
+| [0048](0048-mcp-authorization.md) | MCP authorization for Kit Watch | Accepted (director under the user's overnight instruction, 2026-11-26; user may reverse) |
 | [Amends 0014](amendments/0014-spike-results.md) | R2 card question: not confirmed; the dashboard look settles it | Proposed (spike results, 2026-11-26) |
 | [Amends 0015](amendments/0015-spike-results.md) | Confirm static first, built with the fallback; page data never in an inline script | Proposed (spike results, 2026-11-26) |
 | [Amends 0017](amendments/0017-spike-results.md) | The size gate counts inline scripts per page; budgets unchanged | Proposed (spike results, 2026-11-26) |
