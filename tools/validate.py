@@ -268,6 +268,8 @@ def main():
     L.append(f'Run for {args.today}. {len(bags)} models, {len(variant_ids)} builds (comparison builds included), {n_claims} pros and cons, '
              f'{len(materials)} materials, {len(sources)} sources, {len(brands)} brands.\n')
     L.append(f'**{len(errors)} errors, {len(warnings)} warnings.** Errors block publishing.\n')
+    if not notes_present:
+        L.append('Skipped: my_note links not checked (data/my-notes.yaml is private and not present here).\n')
     if errors:
         L.append('## Errors\n')
         L += [f'- {e}' for e in errors]
