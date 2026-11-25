@@ -23,8 +23,9 @@ back to the owner; the Playwright header test then follows whatever the owner ch
 Checks run against a deployed site all week. Lighthouse's crawlability audit cannot pass on a host that sends
 `noindex`, and the merge gates run on workers.dev preview hosts, so **the merge gate never runs that one audit,
 before or after go-live** (the owner chose this on 25 Nov: noindex on workers.dev only). To keep what the audit
-protects, the merge gate also fails if a page carries a robots `noindex`/`nofollow` meta tag or `robots.txt`
-disallows a public path, ignoring only the workers.dev `X-Robots-Tag` header; every other SEO audit must score
+protects, the merge gate keeps Lighthouse's own blocking-directive checks (any robots meta or header value that blocks
+indexing, `none` included) and a `robots.txt` that disallows a public path, exempting only the intentional
+workers.dev `X-Robots-Tag: noindex` header value; every other SEO audit must score
 100; and a Playwright test asserts that workers.dev sends `noindex` and the carryjournal.com build does not. From
 go-live a post-deploy check also runs the full SEO audit, crawlability included, on carryjournal.com. Any `_headers` change waits for the owner's
 review. The private Worker is not deployed until Cloudflare Access protects its hostname, and it disables

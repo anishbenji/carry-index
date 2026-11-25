@@ -17,7 +17,8 @@ Adopt the brief's proposed budget table as failing CI checks: field LCP under 1.
 The budget table in `docs/brief/unified-brief.md` ("Performance plan", "Budgets", proposed column) is the
 authoritative checklist, and each row is a failing check (rows in `docs/brief/architecture.md` that this table
 does not cover, such as time to first byte and the airline data loading only when the widget opens, stay as
-failing checks too): field LCP (p75) under 1.0 s; LCP minus TTFB under
+failing checks too; Lighthouse is enforced by the architecture doc's quality-gate table, a median Performance
+score of 95 or more with the metric budgets passing, while 100 stays the target): field LCP (p75) under 1.0 s; LCP minus TTFB under
 100 ms on text-led and 300 ms on image-led pages; LCP when moving between pages in Chromium under 200 ms; INP
 (p75) under 50 ms; CLS 0 in the lab on every template and under 0.01 in the field; total blocking time at 4x CPU
 0 ms on content pages and under 50 ms on the listing; JavaScript under 8 KB compressed on content pages

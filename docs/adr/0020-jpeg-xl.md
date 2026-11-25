@@ -10,7 +10,8 @@ Chrome and Firefox announced JPEG XL decoding in 2026; Safari support is partial
 
 ## Decision
 
-Test JPEG XL against AVIF on three sample photos in the spike. Offer it for large review photos only if it is smaller at matched quality; AVIF and WebP remain the automatic fallbacks.
+Test JPEG XL against AVIF on three sample photos in the build, after the Thursday gate (the owner moved it out of
+the spike on 25 Nov; this supersedes the timing in N5). Offer it for large review photos only if it is smaller at matched quality; AVIF and WebP remain the automatic fallbacks.
 
 ## Consequences
 
