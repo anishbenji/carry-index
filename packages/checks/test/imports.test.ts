@@ -40,6 +40,21 @@ describe("findValueImports", () => {
     expect(findValueImports(src, BANNED)).toHaveLength(1);
   });
 
+  it("is not fooled by a backtick inside a regular expression literal", () => {
+    const src = 'const t = /`/;\nimport { bagSchema } from "@cj/schema";\nconst u = /"/;\n';
+    expect(findValueImports(src, BANNED)).toEqual([{ line: 2, specifier: "@cj/schema" }]);
+  });
+
+  it("flags require calls, import-equals and dynamic imports it cannot resolve to a literal", () => {
+    const src = [
+      'const a = require("zod");',
+      'import b = require("@cj/schema");',
+      "const c = await import(name);",
+      'import type T = require("zod");',
+    ].join("\n");
+    expect(findValueImports(src, BANNED).map((f) => f.line)).toEqual([1, 2, 3]);
+  });
+
   it("ignores packages whose names only start with a banned name", () => {
     expect(findValueImports('import { x } from "zodiac";\nimport { y } from "@cj/schemata";', BANNED)).toEqual([]);
   });

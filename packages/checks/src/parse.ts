@@ -11,11 +11,13 @@ import { API } from "typescript/unstable/sync";
  *
  * @param root absolute directory the relative `files` are under
  * @param files repo-relative paths with forward slashes
+ * @param contents optional in-memory text for some of `files`, served instead of the disk
  */
 export function withParsedFiles<T>(
   root: string,
   files: readonly string[],
   visit: (file: string, source: SourceFile) => T,
+  contents: Readonly<Record<string, string>> = {},
 ): T[] {
   if (files.length === 0) return [];
   const absolute = files.map((f) => `${root.replace(/\/$/, "")}/${f}`);
@@ -33,11 +35,16 @@ export function withParsedFiles<T>(
       target: "esnext",
     },
   });
+  const virtual = new Map<string, string>([[configPath, config]]);
+  files.forEach((file, i) => {
+    const text = contents[file];
+    if (text !== undefined) virtual.set(absolute[i] ?? "", text);
+  });
   const api = new API({
     cwd: root,
     fs: {
-      readFile: (name: string) => (name === configPath ? config : undefined),
-      fileExists: (name: string) => (name === configPath ? true : undefined),
+      readFile: (name: string) => virtual.get(name),
+      fileExists: (name: string) => (virtual.has(name) ? true : undefined),
     },
   });
   try {

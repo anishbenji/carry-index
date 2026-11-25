@@ -18,7 +18,8 @@ Two things do not work as the architecture doc assumed:
 
 1. **Biome cannot enforce "types only" imports.** `noRestrictedImports` flags `import type` as well as value
    imports, so configuring it for `zod` and `@cj/schema` under `apps/web` rejects the very imports we want.
-   The ban is enforced instead by a small checker in `packages/checks` (run by `bun run lint` and by a test).
+   The ban is enforced instead by a checker in `packages/checks` that reads each file with TypeScript 7's own
+   parser (run by `bun run lint` and by a test).
 2. **No Node or Bun type package is approved.** The checks package uses `node:fs` and `Bun.spawnSync`, so it
    carries a hand-written declaration file (`packages/checks/src/runtime.d.ts`) for the dozen APIs it calls.
    That file goes away once `@types/bun` (or `@types/node`) is approved; see "For the user" below.
@@ -66,7 +67,7 @@ composite project that emits declarations only, into its own ignored `.tsbuild/`
 | Script | What it runs | Today |
 |---|---|---|
 | `typecheck` | `tsc --build` | passes |
-| `lint` | `biome ci .`, then the import ban | passes |
+| `lint` | `biome ci .`, then the import ban (`node`, TypeScript 7 parser) | passes |
 | `test` | `vitest run` in every workspace that has tests | 42 tests pass |
 | `build` | `vite build` in apps/web and apps/kit | passes, no HTML emitted |
 | `wall` | lists the three privacy-wall checks as `pending: <milestone>`; fails if any Wrangler config declares a binding while one is pending (see below) | passes, 0 Wrangler configs, 2 Vite configs |
