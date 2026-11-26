@@ -17,7 +17,10 @@ import {
   isMetaProperty,
   isNewExpression,
   isNoSubstitutionTemplateLiteral,
+  isObjectLiteralExpression,
   isPropertyAccessExpression,
+  isPropertyAssignment,
+  isShorthandPropertyAssignment,
   isStringLiteral,
 } from "typescript/unstable/ast/is";
 import { API } from "typescript/unstable/sync";
@@ -122,6 +125,10 @@ function importsIn(source: SourceFile): Array<{ line: number; specifier: string;
         const patterns = arg && isArrayLiteralExpression(arg) ? [...arg.elements] : arg ? [arg] : [];
         if (patterns.length === 0) add(node, NON_LITERAL);
         for (const pattern of patterns) add(node, literalText(pattern) ?? NON_LITERAL, true);
+        // Vite resolves every pattern against `options.base` (Neon N2): an options argument must be a literal object
+        // of named properties, none of them `base`; anything else could point the glob anywhere.
+        const options = node.arguments[1];
+        if (options !== undefined && !globOptionsSafe(options)) add(node, NON_LITERAL);
         return;
       }
       const isDynamicImport = callee.kind === SyntaxKind.ImportKeyword;
@@ -133,6 +140,18 @@ function importsIn(source: SourceFile): Array<{ line: number; specifier: string;
     }
   });
   return found;
+}
+
+/** A literal object of plain or shorthand properties with literal names, none named `base`. */
+function globOptionsSafe(options: Node): boolean {
+  if (!isObjectLiteralExpression(options)) return false;
+  return options.properties.every((property) => {
+    if (!isPropertyAssignment(property) && !isShorthandPropertyAssignment(property)) return false;
+    const name = property.name;
+    const text =
+      isIdentifier(name) || isStringLiteral(name) || isNoSubstitutionTemplateLiteral(name) ? name.text : undefined;
+    return text !== undefined && text !== "base";
+  });
 }
 
 function isPrivate(root: string, file: string, specifier: string): boolean {
@@ -287,6 +306,8 @@ function configAliases(root: string, dir: string): PrivateImport[] {
 function globIsPrivate(root: string, file: string, pattern: string): boolean {
   if (pattern === NON_LITERAL) return true;
   const positive = pattern.startsWith("!") ? pattern.slice(1) : pattern;
+  // Vite leaves `**` unanchored and resolves bare specifiers as packages (Neon N2): only anchored patterns are read.
+  if (!/^(?:\.\.?\/|\/)/.test(positive)) return true;
   const fixed = positive.split(/[*?{[]/)[0] ?? "";
   const directory = fixed.slice(0, fixed.lastIndexOf("/") + 1);
   if (/(^|\/)node_modules(\/|$)/.test(directory)) return true;
