@@ -47,6 +47,27 @@ describe("import.meta.glob options and pattern anchors (N2)", () => {
       'export const a = import.meta.glob(["./pages/*.ts", "!**/x.ts"]);',
       ["!**/x.ts"],
     ],
+    // Follow-up to the automated review: only eager, import and query, each with a literal value.
+    [
+      "exhaustive: true, which walks node_modules and dot folders",
+      'export const a = import.meta.glob("./**/*.ts", { exhaustive: true });',
+      [NON_LITERAL],
+    ],
+    [
+      "an option name outside the allow-list",
+      'export const a = import.meta.glob("./*.ts", { as: "raw" });',
+      [NON_LITERAL],
+    ],
+    [
+      "an allowed option with a non-literal value",
+      'const e = true;\nexport const a = import.meta.glob("./*.ts", { eager: e });',
+      [NON_LITERAL],
+    ],
+    [
+      "an allowed option given by shorthand",
+      'const eager = true;\nexport const a = import.meta.glob("./*.ts", { eager });',
+      [NON_LITERAL],
+    ],
   ])("%s is refused", (_name, line, expected) => {
     expect(found(line)).toEqual(expected);
   });
@@ -55,6 +76,10 @@ describe("import.meta.glob options and pattern anchors (N2)", () => {
     [
       "a literal options object without base",
       'export const a = import.meta.glob("./pages/*.ts", { eager: true, import: "default" });',
+    ],
+    [
+      "a literal query option",
+      'export const a = import.meta.glob("./pages/*.svg", { query: "?url", import: "default", eager: false });',
     ],
     ["anchored patterns", 'export const a = import.meta.glob(["./pages/*.ts", "/src/*.ts", "!./pages/x.ts"]);'],
   ])("%s passes (positive control)", (_name, line) => {

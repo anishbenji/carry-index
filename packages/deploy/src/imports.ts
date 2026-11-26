@@ -20,7 +20,6 @@ import {
   isObjectLiteralExpression,
   isPropertyAccessExpression,
   isPropertyAssignment,
-  isShorthandPropertyAssignment,
   isStringLiteral,
 } from "typescript/unstable/ast/is";
 import { API } from "typescript/unstable/sync";
@@ -142,15 +141,28 @@ function importsIn(source: SourceFile): Array<{ line: number; specifier: string;
   return found;
 }
 
-/** A literal object of plain or shorthand properties with literal names, none named `base`. */
+/**
+ * The glob options the import ban accepts (Neon N2, tightened after the automated review): `eager`, `import` and
+ * `query`, each a plain property with a literal string or boolean value. `base` moves where patterns resolve,
+ * `exhaustive` walks into `node_modules` and dot folders, and any other name or a computed, shorthand or spread
+ * property could do either, so all are refused.
+ */
+const SAFE_GLOB_OPTIONS: ReadonlySet<string> = new Set(["eager", "import", "query"]);
+
 function globOptionsSafe(options: Node): boolean {
   if (!isObjectLiteralExpression(options)) return false;
   return options.properties.every((property) => {
-    if (!isPropertyAssignment(property) && !isShorthandPropertyAssignment(property)) return false;
+    if (!isPropertyAssignment(property)) return false;
     const name = property.name;
     const text =
       isIdentifier(name) || isStringLiteral(name) || isNoSubstitutionTemplateLiteral(name) ? name.text : undefined;
-    return text !== undefined && text !== "base";
+    const value = property.initializer;
+    const literal =
+      isStringLiteral(value) ||
+      isNoSubstitutionTemplateLiteral(value) ||
+      value.kind === SyntaxKind.TrueKeyword ||
+      value.kind === SyntaxKind.FalseKeyword;
+    return text !== undefined && SAFE_GLOB_OPTIONS.has(text) && literal;
   });
 }
 
