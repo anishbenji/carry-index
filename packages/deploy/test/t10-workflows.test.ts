@@ -1616,7 +1616,9 @@ describe("T10 the deploy job outlasts the gate's own worst case (after Neon N5)"
     const confirmedVersion = 3 * (2 * read) + 2 + 4; // versions/<id> and settings, three tries: 366 s
     const confirmedSubdomain = 3 * read + 2 + 4; // 186 s
     // After a write: two API-error tries (deployments and settings), two not-yet-converged tries (deployments
-    // only), then a last full try, with every wait: 500 s.
+    // only), then a last full try, with every wait: 500 s. N5a stops without a rollback only when the reads run out
+    // still pending; a last try that finds a definite check-3 problem still leads to the rollback path, so the
+    // post-promote term stays 500 s.
     const converged = 2 * (2 * read) + 2 * read + 2 * read + 2 + 4 + 6 + 8;
     const wrangler = 600;
     const worstSeconds =
