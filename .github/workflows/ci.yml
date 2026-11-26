@@ -198,14 +198,20 @@ jobs:
             exit 1
           fi
       # Allowed: noreply and example.com/org/net domains, package versions (name@1.2.3) and image density suffixes
-      # (logo@2x.png). Case-insensitive; every tracked blob is read as text, whatever .gitattributes says; the
-      # content of images, fonts and bun.lock (package integrity hashes) is skipped, but every file's name is
-      # checked. Prints only counts and blob ids, never a path or an address (Sol security, C3-4): a file's name can
-      # hold the address itself. Find a file by its blob id with `git ls-files -s | grep <id>`.
+      # (logo@2x.png). Case-insensitive; every blob is read as text, whatever .gitattributes says; the content of
+      # images, fonts and bun.lock (package integrity hashes) is skipped, but every file's name is checked. Prints
+      # only counts and blob ids, never a path or an address (Sol security, C3-4): a file's name can hold the address
+      # itself. Find a tracked file with `git ls-files -s | grep <id>`, any blob with `git log --all --find-object=<id>`.
+      # On a pull request it also reads every blob the pull request's own commits add (BASE_SHA..HEAD, merges
+      # included), so an address committed and then removed still fails (Sol security, C3-3). History before the
+      # base is not read: the known items there are the owner's to rewrite or accept.
       # shell: bash runs it with pipefail (Sol security, C3-2): GitHub's default `bash -e` has none, so a git read
       # error would end in an empty, passing pipeline.
       - name: No email addresses in tracked files
         shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           set -euo pipefail
           pattern='[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z0-9.-]*[a-z]{2,}'
@@ -215,35 +221,88 @@ jobs:
           addresses() {
             { grep -aoiE -e "$pattern" || test $? = 1; } | sed 's/^/:/' | { grep -viE -e "$allowed" || test $? = 1; }
           }
-          list=$(mktemp)
-          trap 'rm -f "$list"' EXIT
-          git ls-files -s -z > "$list"
+          # Sets name_hit and content_hit (0 or 1) for one blob ($1), its path ($2) and its mode ($3). With $4 = 1 (a
+          # blob from a pull request's commits), a media-named blob's content is skipped only when the blob really is
+          # binary (a NUL byte): a later commit may have removed a text file with such a name, which the tree's own
+          # binary check then never sees.
+          check() {
+            local hits lower status
+            name_hit=0
+            content_hit=0
+            hits=$(printf '%s\n' "$2" | addresses)
+            if [ -n "$hits" ]; then name_hit=1; fi
+            if [ "$3" = 160000 ] || [ "$2" = bun.lock ]; then return 0; fi
+            git cat-file blob "$1" > "$work/blob"
+            lower=$(printf '%s' "$2" | tr 'A-Z' 'a-z')
+            if [[ "$lower" =~ $media ]]; then
+              if [ "$4" != 1 ]; then return 0; fi
+              status=0
+              LC_ALL=C grep -qI -e '' "$work/blob" || status=$?
+              if [ "$status" = 1 ]; then return 0; fi
+              if [ "$status" != 0 ]; then
+                echo "secret scan: cannot read blob $1" >&2
+                exit 2
+              fi
+            fi
+            hits=$(addresses < "$work/blob")
+            if [ -n "$hits" ]; then content_hit=1; fi
+          }
+          work=$(mktemp -d)
+          trap 'rm -rf "$work"' EXIT
+          fail=0
+
+          git ls-files -s -z > "$work/tracked"
           content_n=0 content_ids='' names_n=0 names_ids=''
           while IFS= read -r -d '' record; do
-            path=${record#*$'\t'}
             read -r mode blob _ <<< "${record%%$'\t'*}"
-            hits=$(printf '%s\n' "$path" | addresses)
-            if [ -n "$hits" ]; then
-              names_n=$((names_n + 1))
-              names_ids="$names_ids $blob"
-            fi
-            lower=$(printf '%s' "$path" | tr 'A-Z' 'a-z')
-            if [ "$mode" = 160000 ] || [ "$path" = bun.lock ] || [[ "$lower" =~ $media ]]; then
-              continue
-            fi
-            hits=$(git cat-file blob "$blob" | addresses)
-            if [ -n "$hits" ]; then
-              content_n=$((content_n + 1))
-              content_ids="$content_ids $blob"
-            fi
-          done < "$list"
-          fail=0
+            check "$blob" "${record#*$'\t'}" "$mode" 0
+            if [ "$name_hit" = 1 ]; then names_n=$((names_n + 1)); names_ids="$names_ids $blob"; fi
+            if [ "$content_hit" = 1 ]; then content_n=$((content_n + 1)); content_ids="$content_ids $blob"; fi
+          done < "$work/tracked"
           if [ "$content_n" -gt 0 ]; then
             echo "secret scan: email address in the content of $content_n tracked file(s); blob ids:$content_ids" >&2
             fail=1
           fi
           if [ "$names_n" -gt 0 ]; then
             echo "secret scan: email address in $names_n tracked file name(s); blob ids:$names_ids" >&2
+            fail=1
+          fi
+
+          if [ "$EVENT_NAME" != pull_request ]; then
+            echo "secret scan: $EVENT_NAME: tracked files only"
+            exit "$fail"
+          fi
+          if ! [[ "$BASE_SHA" =~ ^[0-9a-f]{40}$ ]] || ! git cat-file -e "$BASE_SHA^{commit}"; then
+            echo "secret scan: the pull request's base commit is missing from the checkout" >&2
+            exit 1
+          fi
+          # Every commit, merges included: for a merge, the combined diff lists only the files that differ from every
+          # parent, so a blob only a merge (or its conflict resolution) adds is read too, and nothing it takes from
+          # the base is.
+          git rev-list "$BASE_SHA..HEAD" > "$work/commits"
+          : > "$work/added"
+          while IFS= read -r commit; do
+            git diff-tree --diff-merges=combined -r -z --no-renames --no-commit-id --root "$commit" >> "$work/added"
+          done < "$work/commits"
+          content_n=0 content_ids='' names_n=0 names_ids=''
+          while IFS= read -r -d '' meta && IFS= read -r -d '' path; do
+            # ":<modes> <shas> <status>", one mode and one sha per parent and one for the result, which come last.
+            read -r -a fields <<< "${meta#"${meta%%[!:]*}"}"
+            k=$(( (${#fields[@]} - 1) / 2 ))
+            mode=${fields[$((k - 1))]}
+            blob=${fields[$((2 * k - 1))]}
+            if [[ "$blob" =~ ^0+$ ]]; then continue; fi
+            check "$blob" "$path" "$mode" 1
+            if [ "$name_hit" = 1 ]; then names_n=$((names_n + 1)); names_ids="$names_ids $blob"; fi
+            if [ "$content_hit" = 1 ]; then content_n=$((content_n + 1)); content_ids="$content_ids $blob"; fi
+          done < "$work/added"
+          echo "secret scan: pull request: tracked files and the blobs of $(wc -l < "$work/commits" | tr -d ' ') commit(s)"
+          if [ "$content_n" -gt 0 ]; then
+            echo "secret scan: email address in the content of $content_n blob(s) added by this pull request's commits; blob ids:$content_ids" >&2
+            fail=1
+          fi
+          if [ "$names_n" -gt 0 ]; then
+            echo "secret scan: email address in $names_n file name(s) added by this pull request's commits; blob ids:$names_ids" >&2
             fail=1
           fi
           exit "$fail"

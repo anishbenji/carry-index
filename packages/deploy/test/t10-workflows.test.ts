@@ -659,7 +659,8 @@ describe("T10 no email address in a tracked file (security review, Sol round 1, 
         );
         path = `${bin}:${path}`;
       }
-      return runStep(emailStepObject(), dir.root, {}, path);
+      // A push: the tracked files only. Pull request runs are covered with real commits below (C3-3).
+      return runStep(emailStepObject(), dir.root, { EVENT_NAME: "push", BASE_SHA: "" }, path);
     } finally {
       dir.cleanup();
     }
@@ -678,7 +679,8 @@ describe("T10 no email address in a tracked file (security review, Sol round 1, 
   test("the step reads blobs only through the git commands those cases break", () => {
     const run = emailStepObject().run ?? "";
     const used = new Set([...run.matchAll(/\bgit ([a-z-]+)/g)].map((m) => m[1] ?? ""));
-    expect([...used].sort(byName)).toEqual(["cat-file", "ls-files"]);
+    // diff-tree and rev-list read a pull request's commits (C3-3); their read errors are tested with that check.
+    expect([...used].sort(byName)).toEqual(["cat-file", "diff-tree", "ls-files", "rev-list"]);
   });
 
   test("passes when the only addresses are noreply or example ones", () => {
@@ -1266,6 +1268,175 @@ describe("T10 every step that pipes runs with pipefail (Sol security, C3-2)", ()
       const where = `${name} ${jobName} ${step.name ?? ""}`;
       const setsPipefail = /^\s*set -[a-z]*o pipefail\b|^\s*set -euo pipefail\b/m.test(run);
       expect(step.shell === "bash" || setsPipefail, where).toBe(true);
+    }
+  });
+});
+
+describe("T10 the email check reads every blob a pull request's commits add (Sol security, C3-3)", () => {
+  const emailStep = (): Step => {
+    const found = (job("ci.yml", "secret-scan").steps ?? []).filter(
+      (step) => step.name === "No email addresses in tracked files",
+    );
+    expect(found).toHaveLength(1);
+    return found[0] ?? { run: "exit 1" };
+  };
+  const address = at("synthetic.person", "mail-provider.test");
+
+  /** A clean base commit, then the pull request's commits; returns the repository and the base SHA. */
+  function pullRequest(
+    commits: ReadonlyArray<Readonly<Record<string, string | null>>>,
+    base?: (r: ReturnType<typeof scratchRepo>) => void,
+  ) {
+    const repo = scratchRepo("cj-t10-range-");
+    base?.(repo);
+    const baseSha = repo.commit({ "readme.txt": "base\n" }, "base");
+    for (const [i, files] of commits.entries()) repo.commit(files, `pull request ${i}`);
+    return { repo, baseSha };
+  }
+
+  /** A PATH whose git fails `failing` with exit 2 and runs every other subcommand. */
+  function failingGitPath(root: string, failing: string): string {
+    const realGit = spawnSync("sh", ["-c", "command -v git"], { encoding: "utf8" }).stdout.trim();
+    const bin = join(root, ".stub-bin");
+    mkdirSync(bin);
+    writeFileSync(
+      join(bin, "git"),
+      `#!/bin/sh\nif [ "$1" = ${failing} ]; then echo "fatal: synthetic read error" >&2; exit 2; fi\nexec "${realGit}" "$@"\n`,
+      { mode: 0o755 },
+    );
+    return `${bin}:${process.env.PATH ?? ""}`;
+  }
+
+  test("the step takes the event and the base commit from env, and the checkout has the whole history", () => {
+    const step = emailStep();
+    expect(step.env).toStrictEqual({
+      EVENT_NAME: expr("github.event_name"),
+      BASE_SHA: expr("github.event.pull_request.base.sha"),
+    });
+    expect(step.run).not.toContain("${{");
+    const checkout = (job("ci.yml", "secret-scan").steps ?? []).find((s) => s.uses?.startsWith("actions/checkout@"));
+    expect(checkout?.with?.["fetch-depth"]).toBe(0);
+  });
+
+  test("an address added by one commit and removed by the next fails, by blob id only", () => {
+    const added = `write to ${address}\n`;
+    const { repo, baseSha } = pullRequest([{ "notes.txt": added }, { "notes.txt": "clean\n" }]);
+    try {
+      const { status, output } = runStep(emailStep(), repo.root, { EVENT_NAME: "pull_request", BASE_SHA: baseSha });
+      expect(status, output).not.toBe(0);
+      expect(output).toContain("the content of 1 blob(s) added by this pull request's commits");
+      expect(output).toContain(blobId(added));
+      expect(output).not.toContain(address);
+      expect(output).not.toContain("notes.txt");
+    } finally {
+      repo.cleanup();
+    }
+  });
+
+  test("an address in a file name added by one commit and renamed by the next fails", () => {
+    const { repo, baseSha } = pullRequest([
+      { [`to-${address}.txt`]: "clean\n" },
+      { [`to-${address}.txt`]: null, "to.txt": "clean\n" },
+    ]);
+    try {
+      const { status, output } = runStep(emailStep(), repo.root, { EVENT_NAME: "pull_request", BASE_SHA: baseSha });
+      expect(status, output).not.toBe(0);
+      expect(output).toContain("1 file name(s) added by this pull request's commits");
+      expect(output).not.toContain(address);
+    } finally {
+      repo.cleanup();
+    }
+  });
+
+  test("an address that only a merge commit inside the pull request adds fails", () => {
+    const evil = `${address}\n`;
+    const { repo, baseSha } = pullRequest([{ "notes.txt": "one\n" }]);
+    try {
+      // A side branch from the base, merged into the pull request with an extra file only the merge commit adds.
+      repo.git("checkout", "-q", "-b", "side", baseSha);
+      repo.commit({ "side.txt": "side\n" }, "side");
+      repo.git("checkout", "-q", "main");
+      repo.git("merge", "-q", "--no-ff", "--no-commit", "side");
+      writeFileSync(join(repo.root, "merged.txt"), evil);
+      repo.git("add", "merged.txt");
+      repo.git("commit", "-q", "-m", "merge side");
+      // Removed again, so the address is in no tree but the merge commit's.
+      repo.commit({ "merged.txt": null }, "remove it");
+      const { status, output } = runStep(emailStep(), repo.root, { EVENT_NAME: "pull_request", BASE_SHA: baseSha });
+      expect(status, output).not.toBe(0);
+      expect(output).toContain(blobId(evil));
+    } finally {
+      repo.cleanup();
+    }
+  });
+
+  test("a text file named as an image, added and then removed, is read, not skipped", () => {
+    const text = `${address}\n`;
+    const { repo, baseSha } = pullRequest([{ "logo.png": text }, { "logo.png": null }]);
+    try {
+      const { status, output } = runStep(emailStep(), repo.root, { EVENT_NAME: "pull_request", BASE_SHA: baseSha });
+      expect(status, output).not.toBe(0);
+      expect(output).toContain(blobId(text));
+    } finally {
+      repo.cleanup();
+    }
+  });
+
+  test("a clean pull request passes", () => {
+    const { repo, baseSha } = pullRequest([{ "notes.txt": "one\n" }, { "notes.txt": "two\n" }]);
+    try {
+      const { status, output } = runStep(emailStep(), repo.root, { EVENT_NAME: "pull_request", BASE_SHA: baseSha });
+      expect(status, output).toBe(0);
+    } finally {
+      repo.cleanup();
+    }
+  });
+
+  test("history before the base is not scanned: a known item, not a pull request's", () => {
+    const { repo, baseSha } = pullRequest([{ "notes.txt": "clean\n" }], (r) => {
+      r.commit({ "old.txt": `${address}\n` }, "old");
+      r.commit({ "old.txt": null }, "old removed");
+    });
+    try {
+      const { status, output } = runStep(emailStep(), repo.root, { EVENT_NAME: "pull_request", BASE_SHA: baseSha });
+      expect(status, output).toBe(0);
+    } finally {
+      repo.cleanup();
+    }
+  });
+
+  test("a push checks the tracked files only, and says so", () => {
+    const { repo } = pullRequest([{ "notes.txt": `${address}\n` }, { "notes.txt": "clean\n" }]);
+    try {
+      const { status, output } = runStep(emailStep(), repo.root, { EVENT_NAME: "push", BASE_SHA: "" });
+      expect(status, output).toBe(0);
+      expect(output).toContain("push: tracked files only");
+    } finally {
+      repo.cleanup();
+    }
+  });
+
+  test.each([
+    ["empty", ""],
+    ["not a commit id", "main"],
+    ["a commit the clone does not have", "c".repeat(40)],
+  ])("a pull request whose base is %s fails", (_what, base) => {
+    const { repo } = pullRequest([{ "notes.txt": "clean\n" }]);
+    try {
+      expect(runStep(emailStep(), repo.root, { EVENT_NAME: "pull_request", BASE_SHA: base }).status).not.toBe(0);
+    } finally {
+      repo.cleanup();
+    }
+  });
+
+  test.each(["rev-list", "diff-tree"])("fails when git %s exits 2 on a pull request", (subcommand) => {
+    const { repo, baseSha } = pullRequest([{ "notes.txt": "clean\n" }]);
+    try {
+      const path = failingGitPath(repo.root, subcommand);
+      const { status } = runStep(emailStep(), repo.root, { EVENT_NAME: "pull_request", BASE_SHA: baseSha }, path);
+      expect(status).not.toBe(0);
+    } finally {
+      repo.cleanup();
     }
   });
 });
