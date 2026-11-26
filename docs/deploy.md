@@ -29,44 +29,63 @@ heavy-job lock (`bin/heavy-run.sh` in the director's reports folder), like any o
 Runs on every push to `main`, once a day at 04:17 UTC (so `/performance` stays current, decision #17), and by hand
 (**Actions → deploy-public → Run workflow**, on `main`). Three jobs:
 
-1. **`build`** has no environment and no credentials. It installs with `--ignore-scripts`, runs `bun run build`,
-   runs the gate's `check` on `apps/web/dist/client` (check 1 on the schemas, then seal and scan; it spawns
-   nothing), and uploads that folder as the artifact `public-site`.
+1. **`build`** has no environment and no credentials. It installs with `--ignore-scripts` and runs
+   `bun run build`. The build's Vite config writes a build-graph report beside the output folder
+   (`apps/web/dist/client.module-graph.json`: every module the build resolved, and every output file's SHA-256;
+   the build itself fails on a private module). The job renames the folder and its report together to
+   `apps/web/dist/public-site` and `apps/web/dist/public-site.module-graph.json`, runs the gate's `check` on the
+   folder (check 1 on the schemas, then seal and scan; it spawns nothing), and uploads exactly those two paths as
+   the artifact `public-site`. It never uploads the run temp folder, where a failing gate writes its private
+   diagnostics (T10 checks this).
 2. **`deploy`** needs `build` and runs only when the ref is `main`, in the environment `public-production`. It
-   checks out the same commit, installs with `--ignore-scripts`, downloads `public-site` (the download fails if
-   the artifact's digest does not match what was uploaded), then runs one step:
+   checks out the same commit, installs with `--ignore-scripts`, downloads `public-site` into the run temp folder
+   (the folder and its report side by side; the download fails if the artifact's digest does not match what was
+   uploaded), then runs one step. It never builds: no build tool runs in a job that holds the token.
 
    ```sh
    node packages/deploy/src/bin.ts deploy "$RUNNER_TEMP/public-site"
    ```
 
    with `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in that step's `env:` only. The gate seals and scans
-   the folder again, runs the dry run (`wrangler deploy --dry-run` must print exactly "No bindings found."), then
+   the folder again, then checks the build-graph report beside it (`public-site.module-graph.json`): it must be
+   there, list every bundled `assets/` file with the same SHA-256 as the sealed copy, and name no private module.
+   It then runs the dry run (`wrangler deploy --dry-run` must print exactly "No bindings found."), then
    **uploads, verifies, then promotes**, so an unchecked version never serves traffic:
    1. reads the active deployment (the version to return to);
    2. `wrangler versions upload`: a new version with no traffic;
    3. checks that exact version's bindings, and the script's tail consumers, through the API;
-   4. reads the active deployment again, and stops if anything else deployed in the meantime;
+   4. reads the active deployment again, immediately before the write, and stops with `deployment-changed` if
+      anything else deployed in the meantime (compare and swap on the deployment id);
    5. `wrangler versions deploy <id>@100%`;
    6. confirms the new version is the active one and the live settings match.
 
    If step 6 finds a definite mismatch, the gate rolls back by id to the previous version, only if that version
-   itself checks clean and the new version is still the active one, then checks again. An API error is retried
-   (three tries, a few seconds apart) and never triggers a change.
+   itself checks clean and the new version's deployment is still the active one, re-read immediately before the
+   rollback; otherwise it stops with `deployment-changed` and never rolls back over someone else's deployment. It
+   then checks again. An API error is retried (three tries, a few seconds apart) and never triggers a change.
 3. **`triggers`** runs only on a manual run on `main` with **apply_triggers** ticked, in `public-production`, and
    on that run it replaces `deploy` (which is skipped). `wrangler versions deploy` applies none of the config's
    triggers, and the gate refuses an upload while workers.dev or preview URLs differ from the definition (rule
    `live-subdomain`; preview URLs would serve even a version the gate then refuses). So this job runs
-   `node packages/deploy/src/bin.ts triggers "$RUNNER_TEMP/public-site"`: the same check 1, seal, scan and dry
-   run, then `wrangler triggers deploy --config <sealed>/wrangler.json`, which sets them as the definition says:
+   `node packages/deploy/src/bin.ts triggers "$RUNNER_TEMP/public-site"`: the same check 1, seal, scan,
+   build-graph check and dry run. Turning workers.dev on serves whatever the Worker already runs, so the gate then
+   checks the live Worker first: the active deployment must be readable, and the script settings and every
+   version that deployment serves must show exactly the expected bindings and no tail consumer. If any of that
+   fails, workers.dev is left as it is. Only then does it run
+   `wrangler triggers deploy --config <sealed>/wrangler.json`, which sets them as the definition says:
    **workers.dev on** and **preview URLs off** (`workers.ts`). It uploads and promotes nothing, then checks the live Worker's bindings and its
    workers.dev and preview-URL settings. The config has
    no routes, so routes and custom domains attached in the dashboard are left as they are (Wrangler 4.168 publishes
    routes and domains only when the config lists some).
 
-One deploy runs at a time and a running deploy is never cancelled. If more runs arrive while one is deploying,
-GitHub keeps only the newest waiting run for that ref, which is the newest `main`. Runs on other branches have
-their own group, so a manual run there cannot displace a waiting `main` deploy.
+One deploy runs at a time and a running deploy is never cancelled (`concurrency: deploy-public-<ref>`,
+`cancel-in-progress: false`). Both jobs that write to the Worker, `deploy` and `triggers`, run only on `main`, so
+every gate run against `carry-journal` shares the one group `deploy-public-refs/heads/main`. If more runs arrive
+while one is deploying, GitHub keeps only the newest waiting run for that ref, which is the newest `main`. Runs on
+other branches have their own group, so a manual run there cannot displace a waiting `main` deploy. The group
+serialises the gate's own runs only: a promotion from the dashboard while a run is checking makes that run stop
+with `deployment-changed` (see `packages/deploy/README.md`, "Concurrent deployments"). Do not promote by hand
+while `deploy-public` runs.
 
 Every action in both files is pinned by its full commit SHA with the version in a comment, and only the approved
 actions are used (`actions/checkout`, `actions/setup-node`, `oven-sh/setup-bun`, `astral-sh/setup-uv`,
@@ -131,13 +150,26 @@ days with no activity; re-enable it on the Actions tab if that happens.
 
 ## When a deploy fails
 
-The gate prints one line per problem, naming a path and a rule (never a file's contents or a secret), then a
-summary line. Every `live-api-error` line carries the reply's HTTP status when there was one
+The gate prints one line per problem, naming a rule and where it applies (never a file's contents or a
+secret), then a summary line. Every `live-api-error` line carries the reply's HTTP status when there was one
 (`live-api-error: 403 "carry-journal"`): 401 or 403 means the token, whichever row it appears in. GitHub emails you when the job fails.
+
+A problem with a file in the site (from the seal, the bundle scan or the build-graph check) is printed without its
+name, as `<rule>: #<n> <ref8>` (for example `no-matching-row: #1 3f9a02c1`): a file's name can itself be private,
+and Actions logs of a public repository are public. `<ref8>` is a keyed hash under a key made fresh for each run,
+so it cannot be matched by hashing guessed names. The next line says where the full paths are: `diagnostics.txt`
+in a new `cj-gate-diagnostics-*` folder inside the runner's temp folder. That folder stays on the runner and is
+deleted with it at the end of the job: no workflow uploads, caches or prints it (T10 checks this). To see the
+paths, build and run the same `check` on your own machine (`bun run build`, then
+`node packages/deploy/src/bin.ts check apps/web/dist/client`); there the file is in the system temp folder.
+Only `_headers`, `_redirects` and the site folder itself (`.`) are printed by name.
 
 | Summary line | What happened | What to do |
 |---|---|---|
 | `check 1 failed`, `seal failed` or `bundle scan failed` | The build broke a wall rule. Nothing was uploaded | Fix the cause the problem lines name, in a pull request |
+| `schema-rewrite` lines, with `check 1 failed` | A public catalogue schema can change a value after parsing (`.overwrite()`, `.transform()`, a pipe into a transform, or a check kind that is not validation only), so the published JSON Schema would not describe the output. Nothing was uploaded | Remove the rewrite from the schema in `packages/schema`, in a pull request |
+| `hard-link`, `file-changed`, `fit-data-invalid` or `redirects-invalid` lines (as `#<n> <ref8>`, or `"_redirects"` by name), with `seal failed` | `hard-link`: a file in the build has more than one link, so it may be a private file under another name. `file-changed`: a file's size changed between the seal's walk and its read. `fit-data-invalid`: a `data/fit/*.json` file does not match the closed `fitSchema` in `@cj/schema`. `redirects-invalid`: a `_redirects` rule leaves the site or breaks the rule limits. Nothing was uploaded | Reproduce locally with `check` to see the paths (above), then fix the build or the data in a pull request. `file-changed` alone on CI with no change: re-run |
+| `module-graph-missing: "."`, `module-graph-mismatch` or `private-module` lines, then `the build-graph check failed` | `deploy` or `triggers` found no valid build-graph report beside the site (`missing`), a bundled file the report does not vouch for with the same SHA-256 (`mismatch`), or a private module in the report (`private-module`). Nothing was uploaded | `missing` or `mismatch` on CI means the artifact no longer carries `public-site.module-graph.json` from the same build: check the build job's rename and upload steps. `private-module`: the public build reached Kit Watch, the private Worker or private data; remove the import, in a pull request |
 | `headers-missing: "_headers"` or `headers-weak: "_headers"` (with `bundle scan failed`) | The build has no `_headers` file or lacks a required security header (`headers-missing`), or a block weakens one: `'unsafe-inline'` in the CSP, COOP or CORP looser than same-origin, or a `! Name` line removing a required header (`headers-weak`). Nothing was uploaded | Fix `_headers` in `apps/web`, in a pull request. The required list is `REQUIRED_HEADERS` in `packages/deploy/src/headers.ts` |
 | `check 3 failed before upload; nothing was uploaded` | The dry run printed something other than "No bindings found." (a binding appeared, or Wrangler's output changed) | Nothing is live from this run. Find what changed; a Wrangler upgrade needs T6 and the recorded dry-run fixture re-checked |
 | `worker-missing: "carry-journal"`, then `the carry-journal Worker does not exist yet …` | The Worker has not been created; `wrangler versions upload` cannot create one. Nothing was uploaded | Do setup step 1.1 (create it in the dashboard), then step 4: a run with **apply_triggers**, then a normal run |
@@ -148,12 +180,17 @@ summary line. Every `live-api-error` line carries the reply's HTTP status when t
 | `wrangler versions upload exited with …`, then `no uploaded version to check; nothing was promoted` | The upload failed, or printed no version id (exit 124 means it timed out after 10 minutes) | Nothing changed live. A version may exist with no traffic; it is harmless. Re-run |
 | `could not confirm version … ; it was not promoted` | The uploaded version could not be read through the API, three times | Nothing changed live; the version has no traffic. Re-run |
 | `version … failed check 3; it was not promoted` | The uploaded version has a binding, or the script has a tail consumer, that the definition does not allow | Nothing changed live. Find the cause (a tail consumer added in the dashboard, or a changed definition or Wrangler) and fix it before re-running |
-| `the active deployment changed while version … was checked; it was not promoted` | Something else deployed `carry-journal` between the gate's two reads (the dashboard, or another tool) | Nothing was promoted. Find out what deployed, then re-run |
+| `deployment-changed: "carry-journal"`, then `the active deployment changed while version … was checked; it was not promoted` | Something else deployed `carry-journal` between the gate's first read and its write (the dashboard, or another tool; never another `deploy-public` run, which waits for this one) | Nothing was promoted. Find out what deployed and check which version is live, then re-run |
+| `could not re-read the active deployment; version … was not promoted` | The last read before the promotion failed three times | Nothing was promoted; the new version has no traffic. Re-run once Cloudflare answers again |
 | `version … is live and shows the expected bindings` but the job failed | `wrangler versions deploy` exited non-zero, yet the new version is live and correct | Nothing to undo. Read the Wrangler exit line; re-run if needed |
 | `could not confirm the live Worker after promotion; not rolling back. Check it by hand now` | After promotion the API failed three times; the gate cannot tell whether the live Worker is right | Check now: dashboard → Workers & Pages → `carry-journal` → Settings → Bindings must be empty, and the active version must be the one in the log. If not, roll back by hand (Deployments → the last good version) |
-| `version … is not the active one; not rolling back. Check the live Worker now` | After promotion, another version is active (the promotion did not take, or something else deployed) | Check what is active in the dashboard and whether it is clean, then re-run |
+| `deployment-changed: "carry-journal"`, then `version … is not the active one; not rolling back. Check the live Worker now` | After promotion, another version is active (the promotion did not take, or something else deployed) | Check what is active in the dashboard and whether it is clean, then re-run |
+| `deployment-changed: "carry-journal"`, then `another deployment was made while the rollback target was checked; not rolling back over it` | The gate was about to roll back, but someone deployed in the meantime; their deployment wins | Check what is active in the dashboard and whether it is clean, then re-run |
+| `could not read the active deployment; not rolling back` or `could not re-read the active deployment; not rolling back` | The reads before a rollback failed three times; nothing was rolled back | Check the live Worker in the dashboard now, as in the row above |
 | `wrangler rollback to … exited with 0`, then `rollback confirmed: version … is live and shows the expected bindings` | The promoted version showed a binding or tail consumer that its checked version did not (a change after promotion). The gate went back to the verified previous version | Nothing is wrong live. Remove the extra binding or tail consumer in the dashboard, then re-run |
 | `live-after-rollback`, with `no verified previous version to return to` or `the live Worker still does not match after the rollback` | The live Worker is wrong and the gate could not fix it: there was no previous version (the first deploy), the previous one is not clean itself, or the rollback did not take | Act now: roll back by hand to the last good version in the dashboard, or remove the extra binding; then re-run |
+| `could not read the active deployment; workers.dev was not changed` (triggers job) | The deployments API failed before the triggers deploy (`live-api-error`, with its status) | As `live-api-error` above. Nothing changed |
+| `could not confirm the live Worker; workers.dev was not changed` or `the live Worker does not match its definition; workers.dev was not changed` (triggers job) | Before turning workers.dev on, the gate could not read the live Worker, or it found a binding or tail consumer the definition does not allow, in the script settings or in a version the active deployment serves | Nothing changed. Re-run once Cloudflare answers, or remove the binding or tail consumer in the dashboard first |
 | `wrangler triggers deploy exited with …` non-zero (triggers job) | Wrangler could not apply the workers.dev or preview-URL settings. With `wrangler-auth-error` beside it, the token's scope is the cause | Nothing else changed. Fix the token (or set workers.dev **on** and Preview URLs **off** in the dashboard by hand), then re-run with **apply_triggers** |
 | `the live Worker does not match its definition; nothing was rolled back. Check it by hand now` (triggers job) | After `triggers deploy`, the live Worker shows a binding (`live-bindings`, which triggers cannot change, so it was already wrong), or workers.dev or preview URLs differ from the definition (`live-subdomain`) | Fix what the rule names in the dashboard (remove the binding, or set workers.dev **on** and Preview URLs **off**), then run with **apply_triggers** again |
 | `the carry-journal Worker does not exist yet …` (triggers job) | As `worker-missing` above | Create the Worker in the dashboard, then re-run with **apply_triggers** |
