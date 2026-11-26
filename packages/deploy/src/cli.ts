@@ -18,7 +18,7 @@ import {
 } from "./check3.ts";
 import { checkModuleGraph } from "./graph-check.ts";
 import { checkHeaders } from "./headers.ts";
-import type { CheckResult, Problem } from "./problems.ts";
+import type { CheckResult, Problem, Rule } from "./problems.ts";
 import type { RunOptions, Spawn, SpawnResult } from "./runner.ts";
 import { runWrangler } from "./runner.ts";
 import type { SealedBundle } from "./seal.ts";
@@ -371,15 +371,43 @@ const SCRIPT_SETTING_RULES: ReadonlySet<string> = new Set([
 
 const onlyApiErrors = (result: CheckResult): boolean => result.problems.every((p) => p.rule === "live-api-error");
 
-/** Runs `check` until it passes or finds a definite problem; an API error alone is retried, LIVE_TRIES in all. */
-async function confirmed(io: CliIo, check: () => Promise<CheckResult>): Promise<CheckResult> {
+/** A check result that may only be waiting for Cloudflare to show a write that was just made. */
+type PendingResult = CheckResult & { pending?: true };
+
+/** Reads, in all, while the active deployment has not yet converged to the version just written (Neon N5). */
+const CONVERGE_TRIES = 5;
+
+/**
+ * Runs `check` until it passes or finds a definite problem. An API error alone is retried, LIVE_TRIES reads in all;
+ * a `pending` result (the deployments endpoint still shows the earlier deployment just after a write) is retried
+ * too, CONVERGE_TRIES reads in all. Waits grow by RETRY_WAIT_MS a try: at most 2 + 4 + 6 + 8 = 20 s.
+ */
+async function confirmed(io: CliIo, check: () => Promise<PendingResult>): Promise<PendingResult> {
   const sleep = io.sleep ?? ((ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms)));
   let result = await check();
-  for (let tries = 1; tries < LIVE_TRIES && !result.ok && onlyApiErrors(result); tries++) {
+  for (let tries = 1; !result.ok; tries++) {
+    const retry = result.pending ? tries < CONVERGE_TRIES : onlyApiErrors(result) && tries < LIVE_TRIES;
+    if (!retry) break;
     await sleep(RETRY_WAIT_MS * tries);
     result = await check();
   }
   return result;
+}
+
+/**
+ * The active deployment must be `expected` alone at 100%, then the live settings must match. A deployment still
+ * showing something else is pending (retried) and, when the retries run out, `unconverged`; an unreadable reply
+ * keeps its HTTP status.
+ */
+function convergedLive(api: ApiOptions, expected: string, unconverged: Rule): () => Promise<PendingResult> {
+  return async () => {
+    const active = await activeDeployment(PUBLIC_SITE, api);
+    if (!active.ok) return { ok: false, problems: [deploymentReadProblem(active.status)] };
+    if (soleVersion(active) !== expected) {
+      return { ok: false, pending: true, problems: [{ path: PUBLIC_SITE.name, rule: unconverged }] };
+    }
+    return checkLive(PUBLIC_SITE, api);
+  };
 }
 
 /**
@@ -466,12 +494,7 @@ async function uploadVerifyPromote(
   logWranglerCodes(io, promote);
   io.log(`gate: wrangler versions deploy ${version}@100% exited with ${promote.exitCode}`);
 
-  const live = await confirmed(io, async () => {
-    const active = await activeDeployment(PUBLIC_SITE, api);
-    if (!active.ok) return { ok: false, problems: [{ path: name, rule: "live-api-error" }] };
-    if (soleVersion(active) !== version) return { ok: false, problems: [{ path: name, rule: "live-bindings" }] };
-    return checkLive(PUBLIC_SITE, api);
-  });
+  const live = await confirmed(io, convergedLive(api, version, "deployment-changed"));
   if (live.ok) {
     io.log(`gate: version ${version} is live and shows the expected bindings`);
     return promote.exitCode === 0 ? 0 : 1;
@@ -524,12 +547,7 @@ async function uploadVerifyPromote(
   const rollback = await runWrangler(bundle, "rollback", options, target);
   logWranglerCodes(io, rollback);
   io.log(`gate: wrangler rollback to ${target} exited with ${rollback.exitCode}`);
-  const after = await confirmed(io, async () => {
-    const now = await activeDeployment(PUBLIC_SITE, api);
-    if (!now.ok) return { ok: false, problems: [{ path: name, rule: "live-api-error" }] };
-    if (soleVersion(now) !== target) return { ok: false, problems: [{ path: name, rule: "live-bindings" }] };
-    return checkLive(PUBLIC_SITE, api);
-  });
+  const after = await confirmed(io, convergedLive(api, target, "live-after-rollback"));
   if (after.ok) io.log(`gate: rollback confirmed: version ${target} is live and shows the expected bindings`);
   else {
     // Only the rule: the reply's problems and body are not printed.
