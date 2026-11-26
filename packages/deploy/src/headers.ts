@@ -159,6 +159,15 @@ function isPrintableAscii(value: string): boolean {
   return true;
 }
 
+/** Whether one policy names a directive twice: browsers keep the first, so the policy says two things (Neon N14). */
+function cspRepeatsDirective(value: string): boolean {
+  const names = value
+    .split(";")
+    .map((d) => (d.split(ASCII_WHITESPACE).find(Boolean) ?? "").toLowerCase())
+    .filter((name) => name !== "");
+  return new Set(names).size !== names.length;
+}
+
 /** A script source the site may use: itself, nothing, or the hash of an inline script. */
 const SCRIPT_SOURCE = /^(?:'self'|'none'|'sha(?:256|384|512)-[A-Za-z0-9+/_-]+={0,2}')$/i;
 
@@ -179,7 +188,12 @@ function cspWeak(value: string, isRoot: boolean): boolean {
   // The directives that govern scripts (script-src, or default-src when there is none; script-src-elem and
   // script-src-attr) may hold only 'self', 'none' and hashes: an explicit origin could serve the site any script, and
   // the brief allows no third-party script (sol security r4, S6-5).
-  const byName = new Map(directives.map((d) => [(d[0] ?? "").toLowerCase(), d.slice(1)]));
+  // The first occurrence of a name, as browsers keep it (a repeat is refused as headers-invalid, Neon N14).
+  const byName = new Map<string, string[]>();
+  for (const d of directives) {
+    const name = (d[0] ?? "").toLowerCase();
+    if (!byName.has(name)) byName.set(name, d.slice(1));
+  }
   const governing = [
     byName.get("script-src") ?? byName.get("default-src") ?? [],
     byName.get("script-src-elem") ?? [],
@@ -296,7 +310,7 @@ export function checkHeaders(siteDir: string, options: HeaderCheckOptions = {}):
   // rule with a comma (security-sol r2, S2-6).
   const cspList = blocks.some((b) => {
     const csp = b.headers.filter((h) => h.name === "content-security-policy");
-    return csp.length > 1 || csp.some((h) => h.value.includes(","));
+    return csp.length > 1 || csp.some((h) => h.value.includes(",") || cspRepeatsDirective(h.value));
   });
   // A browser splits directives on ASCII whitespace only, so a Unicode space hides a directive name the checks above
   // read (security r3, S3-4); no required header may hold anything outside printable ASCII.
