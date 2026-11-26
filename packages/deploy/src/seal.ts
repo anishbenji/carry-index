@@ -90,6 +90,11 @@ export async function seal(siteDir: string, worker: AssetsOnlyWorker, options: S
     if (error instanceof WalkLimitExceeded) return { ok: false, problems: [{ path: ".", rule: "too-many-files" }] };
     throw error;
   }
+  // A linked site folder is reported, never followed; a dangling one must not reach realpathSync below (Neon N8).
+  const [root] = entries;
+  if (entries.length === 1 && root?.path === "." && root.kind !== "file") {
+    return { ok: false, problems: [{ path: ".", rule: root.kind === "symlink" ? "symlink" : "special-file" }] };
+  }
   options.afterWalk?.();
   const files = entries.filter((e) => e.kind === "file");
   const problems: Problem[] = [];
