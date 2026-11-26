@@ -119,14 +119,18 @@ function parse(text: string): Parsed {
     }
     if (skipUntilNextPath) continue;
     if (!line.includes(":")) {
-      if (current && line.startsWith("! ")) current.removed.push(line.slice(2).trim().toLowerCase());
+      const removed = line.slice(2).trim();
+      // A removed header's name must be a token too (sol security r4, S6-2).
+      if (current && line.startsWith("! ") && TOKEN.test(removed)) current.removed.push(removed.toLowerCase());
       else invalid = true;
       continue;
     }
     const colon = line.indexOf(":");
     const name = line.slice(0, colon).trim().toLowerCase();
     const value = line.slice(colon + 1).trim();
-    if (name.includes(" ") || name === "" || value === "" || !current) {
+    // Every name an RFC 9110 token and every value plain text (sol security r4, S6-2): Cloudflare's Headers.set
+    // throws on anything else, on every asset the rule matches.
+    if (!TOKEN.test(name) || value === "" || !isPrintableAscii(value) || !current) {
       invalid = true;
       continue;
     }
