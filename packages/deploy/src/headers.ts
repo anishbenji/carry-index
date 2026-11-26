@@ -119,7 +119,9 @@ function parse(text: string): Parsed {
     }
     if (skipUntilNextPath) continue;
     if (!line.includes(":")) {
-      const removed = line.slice(2).trim();
+      // Not trimmed: Wrangler keeps whatever follows "! " as the name (cli.js:68833), so extra whitespace must fail
+      // the token test here (Neon N17).
+      const removed = line.slice(2);
       // A removed header's name must be a token too (sol security r4, S6-2).
       if (current && line.startsWith("! ") && TOKEN.test(removed)) current.removed.push(removed.toLowerCase());
       else invalid = true;

@@ -48,3 +48,23 @@ describe("a CSP directive named twice (N14)", () => {
     expect(headersIn(withCsp(csp))).toContainEqual({ path: "_headers", rule: "headers-weak" });
   });
 });
+
+/**
+ * N17: the check trimmed whatever followed `! ` before testing the name, but Wrangler keeps it as written
+ * (`line.trim().replace("! ", "")`, cli.js:68833), so `!  X-Powered-By` reached `Headers.delete` as " X-Powered-By"
+ * and threw on every matching asset. Anything but a token after `! ` is now `headers-invalid`.
+ */
+describe("removed header names exactly as Wrangler keeps them (N17)", () => {
+  const withExtra = (line: string): string => MINIMAL_HEADERS.replace("/assets/*\n", `/assets/*\n${line}\n`);
+
+  test.each([
+    ["two spaces", "  !  X-Powered-By"],
+    ["a space and a tab", "  ! \tX-Powered-By"],
+  ])("%s after the ! is headers-invalid", (_name, line) => {
+    expect(headersIn(withExtra(line))).toContainEqual({ path: "_headers", rule: "headers-invalid" });
+  });
+
+  test("one space then a token passes (positive control)", () => {
+    expect(headersIn(withExtra("  ! X-Powered-By"))).toEqual([]);
+  });
+});
