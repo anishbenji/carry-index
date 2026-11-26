@@ -770,6 +770,9 @@ describe("T10 the gate's private diagnostics never leave the runner (security-so
       const where = `${name} ${jobName} ${step.uses ?? step.name ?? ""}`;
       if (step.uses?.startsWith("actions/setup-node@")) expect(step.with?.["package-manager-cache"], where).toBe(false);
       if (step.uses?.startsWith("astral-sh/setup-uv@")) expect(step.with?.["enable-cache"], where).toBe(false);
+      // setup-bun's post step saves the Bun binary to the Actions cache unless no-cache is set (independent review
+      // r2, C2-4): a later job, the deploy job included, could restore a binary saved after a build had run.
+      if (step.uses?.startsWith("oven-sh/setup-bun@")) expect(step.with?.["no-cache"], where).toBe(true);
     }
   });
 
