@@ -61,6 +61,14 @@
       "name": "@cj/checks",
       "version": "0.0.0",
     },
+    "packages/deploy": {
+      "name": "@cj/deploy",
+      "version": "0.0.0",
+      "dependencies": {
+        "@cj/schema": "workspace:*",
+        "zod": "4.6.7",
+      },
+    },
     "packages/pipeline": {
       "name": "@cj/pipeline",
       "version": "0.0.0",
@@ -120,6 +128,8 @@
     "@biomejs/cli-win32-x64": ["@biomejs/cli-win32-x64@2.6.9", "", { "os": "win32", "cpu": "x64" }, "sha512-mwarNc4GEg5JknsRaJDyJDFr4kICD7snsGM8yYFOoIHimSU1ekWNbcZ44QDa6/30fUZC9077wbBpXE8fp03aug=="],
 
     "@cj/checks": ["@cj/checks@workspace:packages/checks"],
+
+    "@cj/deploy": ["@cj/deploy@workspace:packages/deploy"],
 
     "@cj/kit": ["@cj/kit@workspace:apps/kit"],
 

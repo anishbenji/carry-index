@@ -1,0 +1,9 @@
+
+ ⛅️ wrangler 4.168.0
+────────────────────
+Total Upload: 0.07 KiB / gzip: 0.09 KiB
+Your Worker has access to the following bindings:
+Binding                                Resource                      
+env.BEACON (carry_journal_beacon)      Analytics Engine Dataset      
+
+--dry-run: exiting now.

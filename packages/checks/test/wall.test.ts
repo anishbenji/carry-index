@@ -4,21 +4,29 @@ import type { WallCheck } from "../src/wall.ts";
 import { evaluateWall, repoFiles, WALL_CHECKS } from "../src/wall.ts";
 import { makeTree } from "./helpers.ts";
 
-const PENDING = "packages/deploy (privacy-wall design v2)";
+/** The gate command that runs each check: `check` runs checks 1 and 2; the bindings check (3) runs in `deploy`. */
+const COMMANDS: Record<string, string> = {
+  "schema-never-public": "node packages/deploy/src/bin.ts check <siteDir>",
+  "canary-export": "node packages/deploy/src/bin.ts check <siteDir>",
+  "public-worker-bindings": "node packages/deploy/src/bin.ts deploy <siteDir>",
+};
 
 describe("WALL_CHECKS", () => {
-  it("lists the three privacy-wall checks, each pending on packages/deploy", () => {
+  it("lists the three privacy-wall checks, each implemented by the deploy gate's command", () => {
     expect(WALL_CHECKS.map((c) => c.id)).toEqual(["schema-never-public", "canary-export", "public-worker-bindings"]);
-    for (const check of WALL_CHECKS) expect(check.status).toBe("pending");
-    for (const check of WALL_CHECKS) expect(check.milestone).toBe(PENDING);
+    for (const check of WALL_CHECKS) expect(check.status).toBe("implemented");
+    for (const check of WALL_CHECKS) expect(check.command).toBe(COMMANDS[check.id]);
+    for (const check of WALL_CHECKS)
+      expect(check.command).toMatch(/^node packages\/deploy\/src\/bin\.ts (check|deploy) <siteDir>$/);
   });
 });
 
 describe("evaluateWall", () => {
-  it("passes the clean scaffold and prints each check as pending", () => {
+  it("passes the clean scaffold and prints each check as implemented, with its gate command", () => {
     const result = evaluateWall(["package.json", "apps/web/vite.config.ts", "docs/wrangler-notes.md"]);
     expect(result.ok).toBe(true);
-    for (const check of WALL_CHECKS) expect(result.lines).toContain(`${check.id}: pending: ${PENDING}`);
+    for (const check of WALL_CHECKS) expect(result.lines).toContain(`${check.id}: implemented: ${COMMANDS[check.id]}`);
+    expect(result.lines.some((l) => l.includes("pending"))).toBe(false);
   });
 
   it("fails when a wrangler.jsonc is tracked, because Worker configs are generated from code", () => {

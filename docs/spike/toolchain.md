@@ -39,7 +39,7 @@ Two things do not work as the architecture doc assumed:
 | vite | 8.3.8 | apps/web, apps/kit |
 | @solidjs/vite-plugin | 3.0.1 | apps/web, apps/kit |
 | solid-js, @solidjs/web | 2.0.4 | apps/web, apps/kit |
-| zod | 4.6.7 | packages/schema, packages/pipeline |
+| zod | 4.6.7 | packages/schema, packages/pipeline, packages/deploy (director decision: a CI tool, never bundled) |
 | @types/bun | 1.4.2 | root (decision #13) |
 | happy-dom | 21.0.4 | apps/web, Vitest environment (decision #13) |
 
@@ -51,6 +51,17 @@ Every other approved package PRs 7 and 8 need is installed at its approved pin (
 - `packages/schema`: a strict Zod 4 bag schema and its inferred `Bag` type.
 - `packages/pipeline`: `readBags`, which parses YAML (`yaml` 2.9.1) and validates each entry.
 - `packages/checks`: the interim wall guard, the size and end-to-end gates and the import ban, all test-first.
+- `packages/deploy`: the privacy-wall deploy gate (design v2): Worker definitions and the config emitter, `seal`
+  (its own walker, the allow-list in `allow-list.ts`, the SHA-256 manifest), the Wrangler runner, check 3 (dry run,
+  upload, version check, promotion and live check), check 1 (`public-surface.json`, `never-public.ts`, open
+  shapes, the private import ban) and check 2 (canary, bundle scan, `_headers`). `node packages/deploy/src/bin.ts
+  check <siteDir>` runs check 1's schema half, the seal and check 2, and spawns nothing; `deploy <siteDir>` adds
+  the build-graph check (the `moduleGraph` Vite plugin's report for the same build) and check 3: it uploads a version
+  with no traffic, checks that version, promotes it and confirms it live; `triggers <siteDir>` runs the same checks
+  and dry run, checks the live Worker and every version it serves, then runs `wrangler triggers deploy` once before
+  the first deploy (workers.dev on, preview URLs off, as the definition says) and confirms those settings. Both are for the
+  deploy workflow only; the first-deploy steps are in `packages/deploy/README.md`. Its contract tests T1 to T9 are
+  described in `packages/deploy/test/README.md`.
 - `apps/web`: a Solid 2 component that takes a `Bag` by `import type`; the Vite build emits a client bundle and
   no HTML, so the size and end-to-end gates stay in their "no pages yet" state until PR 7 emits pages.
 - `apps/kit`: a placeholder Solid 2 entry for the private app.
@@ -97,7 +108,8 @@ On 2026-11-26 the user chose privacy-wall design v2 (ADR-0049, question 6): the 
 artifact and generates every Worker config from code. This spike's static config scan, which tried to predict
 what Wrangler would load, was removed from this PR before merge, with its tests.
 
-Until `packages/deploy` lands, `bun run wall` is a small guard: it lists the three checks as
+`packages/deploy` now implements the checks, but nothing runs its gate yet: the workflows that call it are a
+separate task. Until they land, `bun run wall` is still a small guard: it lists the three checks as
 `pending: packages/deploy (privacy-wall design v2)` and fails if any file git does not ignore (tracked, or untracked
 and not covered by a .gitignore) is a Wrangler-style config: a JSON, JSONC or TOML file whose name starts
 `wrangler`, any `cloudflare.config.*`, or a `.wrangler/deploy/config.json`. The new design keeps none in the repo.

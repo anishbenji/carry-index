@@ -16,6 +16,7 @@
       "!**/dist",
       "!**/.tsbuild",
       "!**/.wrangler",
+      "!packages/deploy/test/fixtures",
       "!bun.lock"
     ]
   },

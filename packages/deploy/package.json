@@ -1,0 +1,14 @@
+{
+  "name": "@cj/deploy",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "gate": "node src/bin.ts"
+  },
+  "dependencies": {
+    "@cj/schema": "workspace:*",
+    "zod": "4.6.7"
+  }
+}

@@ -4,32 +4,36 @@ export interface WallCheck {
   id: string;
   description: string;
   status: "pending" | "implemented";
-  /** Where the check will be implemented. */
-  milestone: string;
+  /** A pending check: where it will be implemented. */
+  milestone?: string;
+  /** An implemented check: the deploy-gate command that runs it. */
+  command?: string;
 }
 
 /**
- * The three privacy-wall checks. They are built in packages/deploy (privacy-wall design v2), which seals the
- * deploy artifact and generates every Worker config from code. Until then this guard only lists them.
+ * The three privacy-wall checks, built in packages/deploy (privacy-wall design v2, ADR-0049). The gate's `check`
+ * runs the schema walk, the seal and the bundle scans (canary, email and local-path heuristics, `_headers`). The
+ * import ban runs with the tests, and the build-graph check runs in `deploy` and `triggers`, as does the bindings
+ * check, after everything `check` runs. This guard lists them and fails on a tracked Wrangler config.
  */
 export const WALL_CHECKS: readonly WallCheck[] = [
   {
     id: "schema-never-public",
     description: "no never-public schema field reaches the public build",
-    status: "pending",
-    milestone: "packages/deploy (privacy-wall design v2)",
+    status: "implemented",
+    command: "node packages/deploy/src/bin.ts check <siteDir>",
   },
   {
     id: "canary-export",
     description: "a canary record in the private store never appears in what is deployed",
-    status: "pending",
-    milestone: "packages/deploy (privacy-wall design v2)",
+    status: "implemented",
+    command: "node packages/deploy/src/bin.ts check <siteDir>",
   },
   {
     id: "public-worker-bindings",
     description: "the public Worker is deployed with no D1 or R2 binding",
-    status: "pending",
-    milestone: "packages/deploy (privacy-wall design v2)",
+    status: "implemented",
+    command: "node packages/deploy/src/bin.ts deploy <siteDir>",
   },
 ];
 
@@ -51,7 +55,9 @@ export interface WallResult {
  * is generated from code at deploy time, so the repo tracks none.
  */
 export function evaluateWall(tracked: readonly string[], checks: readonly WallCheck[] = WALL_CHECKS): WallResult {
-  const lines = checks.map((c) => `${c.id}: ${c.status === "pending" ? `pending: ${c.milestone}` : "implemented"}`);
+  const lines = checks.map((c) =>
+    c.status === "pending" ? `${c.id}: pending: ${c.milestone ?? ""}` : `${c.id}: implemented: ${c.command ?? ""}`,
+  );
   const configs = tracked.filter((file) => WRANGLER_CONFIG.test(file));
   lines.push(`files checked (tracked or untracked, not ignored): ${tracked.length}`);
   for (const file of configs) {

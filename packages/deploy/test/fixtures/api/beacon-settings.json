@@ -1,0 +1,15 @@
+{
+  "success": true,
+  "errors": [],
+  "messages": [],
+  "result": {
+    "bindings": [{ "type": "analytics_engine", "name": "BEACON", "dataset": "carry_journal_beacon" }],
+    "compatibility_date": "2026-11-01",
+    "compatibility_flags": [],
+    "logpush": false,
+    "placement": {},
+    "tags": [],
+    "tail_consumers": [],
+    "usage_model": "standard"
+  }
+}
