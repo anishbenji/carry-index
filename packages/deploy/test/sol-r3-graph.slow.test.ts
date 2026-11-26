@@ -35,7 +35,9 @@ function build(files: Record<string, string>, entry: string) {
     ].join("\n"),
   });
   // The gap: the source scan reads apps/web and sees only a public relative import.
-  expect(findPrivateImports(repo.root)).toEqual([]);
+  // The only finding is the fixture config's import of the plugin from outside the temp repository (N16); the
+  // shared-helper route itself is not seen by the source scan.
+  expect(findPrivateImports(repo.root)).toEqual([{ file: "apps/web/vite.config.mjs", line: 1, specifier: PLUGIN }]);
   const result = spawnSync(VITE, ["build", "--config", join(repo.root, "apps/web/vite.config.mjs")], {
     cwd: join(repo.root, "apps/web"),
     encoding: "utf8",
