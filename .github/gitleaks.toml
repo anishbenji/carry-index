@@ -6,7 +6,8 @@
 # Security review r2 (C2-1) also removed the entries that skip files by a document or binary extension (docx, pdf,
 # bin, exe, gem and the like) and the vendor/ and bower_components/ folders: a name says nothing about the
 # contents. Images and fonts stay skipped, and ci.yml's secret-scan job fails if a tracked file with one of those
-# extensions is text. node_modules (never tracked) and Python library folders stay skipped. It is a full copy rather
+# extensions is text. The independent r2 re-run removed node_modules and the Python library folders too: the scan
+# reads Git history, where installed packages never appear, so those skips only hid tracked files. It is a full copy rather
 # than `[extend] useDefault`, because an extending config keeps the default's global allowlist (config.go).
 # To upgrade gitleaks, copy the new default and remove the same entries again. Under .github/, so it is never
 # auto-merged; the scan refuses a root .gitleaks.toml or .gitleaksignore.
@@ -37,10 +38,6 @@ description = "global allow lists"
 paths = [
     '''(?i)\.(?:bmp|gif|jpe?g|png|tiff?)$''',
     '''(?i)\.(?:eot|[ot]tf|woff2?)$''',
-    '''(?:^|/)node_modules(?:/.*)?$''',
-    '''(?i)(?:^|/)(?:v?env|virtualenv)/lib(?:64)?(?:/.*)?$''',
-    '''(?i)(?:^|/)(?:lib(?:64)?/python[23](?:\.\d{1,2})+|python/[23](?:\.\d{1,2})+/lib(?:64)?)(?:/.*)?$''',
-    '''(?i)(?:^|/)[a-z0-9_.]+-[0-9.]+\.dist-info(?:/.+)?$''',
     '''(?:^|/)\.git$''',
 ]
 regexes = [

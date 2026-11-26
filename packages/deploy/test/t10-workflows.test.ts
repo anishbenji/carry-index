@@ -522,23 +522,25 @@ describe("T10 the secret scan reads every change, with a trusted policy (securit
     "vendor/golang.org/x/a.go",
     "vendor/bundle/ruby/a.rb",
     "bower_components/x/a.js",
+    "node_modules/x/index.js",
+    "apps/web/src/env/lib/conf.ts",
+    "packages/pipeline/src/env/lib/keys.ts",
+    "tools/venv/lib/conf.py",
+    "packages/x/lib/python3.12/conf.py",
+    "docs/notes-1.0.dist-info/x.md",
   ])("the policy scans the text file %s", (path) => {
     expect(policyPaths().filter((re) => re.test(path))).toEqual([]);
   });
 
-  test("the global allowlist skips only images, fonts and installed-package folders (security review r2, C2-1)", () => {
+  test("the global allowlist skips only images and fonts (security review r2, C2-1; independent r2 re-run)", () => {
     expect(policyPaths().map((re) => (re.flags.includes("i") ? `(?i)${re.source}` : re.source))).toStrictEqual([
       String.raw`(?i)\.(?:bmp|gif|jpe?g|png|tiff?)$`,
       String.raw`(?i)\.(?:eot|[ot]tf|woff2?)$`,
-      String.raw`(?:^|\/)node_modules(?:\/.*)?$`,
-      String.raw`(?i)(?:^|\/)(?:v?env|virtualenv)\/lib(?:64)?(?:\/.*)?$`,
-      String.raw`(?i)(?:^|\/)(?:lib(?:64)?\/python[23](?:\.\d{1,2})+|python\/[23](?:\.\d{1,2})+\/lib(?:64)?)(?:\/.*)?$`,
-      String.raw`(?i)(?:^|\/)[a-z0-9_.]+-[0-9.]+\.dist-info(?:\/.+)?$`,
       String.raw`(?:^|\/)\.git$`,
     ]);
   });
 
-  test.each(["og/page.png", "fonts/a.woff2", "node_modules/x/index.js"])("the policy still skips %s", (path) => {
+  test.each(["og/page.png", "fonts/a.woff2"])("the policy still skips %s", (path) => {
     expect(policyPaths().some((re) => re.test(path))).toBe(true);
   });
 });
