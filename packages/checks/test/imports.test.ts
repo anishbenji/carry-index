@@ -1,3 +1,5 @@
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { afterEach, describe, expect, it } from "vitest";
 import { findValueImports, scanImports } from "../src/imports.ts";
 import { makeTree } from "./helpers.ts";
@@ -155,6 +157,35 @@ describe("zodInBuild", () => {
     });
     try {
       expect(zodInBuild(t.root)).toEqual(["apps/web/dist/client/assets/chunk.js"]);
+    } finally {
+      t.cleanup();
+    }
+  });
+});
+
+describe("zodInBuild: markers, not mentions", () => {
+  it("passes ordinary page text and code that only mention Zod", async () => {
+    const { zodInBuild } = await import("../src/bundle.ts");
+    const t = makeTree({
+      "apps/web/dist/client/index.html": "<!doctype html><p>Zodiac 30 pack. Our data is checked with Zod.</p>",
+      "apps/web/dist/client/assets/main.js": 'const note="Zod and zodiac are words";export{note};',
+    });
+    try {
+      expect(zodInBuild(t.root)).toEqual([]);
+    } finally {
+      t.cleanup();
+    }
+  });
+
+  it("fails on a real minified Zod bundle (bun build of packages/schema)", async () => {
+    const { zodInBuild } = await import("../src/bundle.ts");
+    const { execFileSync } = await import("node:child_process");
+    const t = makeTree({ "apps/web/dist/client/index.html": "<!doctype html>" });
+    try {
+      const entry = fileURLToPath(new URL("../../schema/src/index.ts", import.meta.url).href);
+      const out = join(t.root, "apps/web/dist/client/assets/schema.js");
+      execFileSync("bun", ["build", entry, "--minify", "--outfile", out], { stdio: "ignore" });
+      expect(zodInBuild(t.root)).toEqual(["apps/web/dist/client/assets/schema.js"]);
     } finally {
       t.cleanup();
     }

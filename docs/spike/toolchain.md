@@ -98,10 +98,10 @@ and `e2e/`.
 |---|---|---|
 | `typecheck` | `tsc --build` | passes |
 | `lint` | `biome ci --error-on-warnings .` (any warning fails, so the whole types domain gates, not only the two promise rules), then the import ban (`node`, TypeScript 7 parser) | passes |
-| `test` | `vitest run` in every workspace that has tests | 59 tests pass |
+| `test` | `vitest run` in every workspace that has tests | 824 tests pass (8 todo) |
 | `build` | `vite build` in apps/web and apps/kit | passes, no HTML emitted |
 | `wall` | lists the three privacy-wall checks as implemented, each with the gate command that runs it (`check` for the schema and canary checks, `deploy` for the bindings check); fails if any file git does not ignore is a Wrangler-style config, or if the built apps/web contains Zod | passes, 272 files, none a Wrangler config; no Zod in the build |
-| `size` | runs size-limit whenever the root `size-limit` list has targets; without targets, "no pages yet" until `apps/web/dist` holds HTML or JavaScript, then fails; once pages exist, a target must measure HTML | passes: 10.45 kB gzip and 9.54 kB Brotli, each of 15 kB |
+| `size` | runs size-limit whenever the root `size-limit` list has targets; without targets, "no pages yet" until `apps/web/dist` holds HTML or JavaScript, then fails; once pages exist, every built page must match a target's glob | passes: largest is Brotli 4 at 10,814 B of 15,000 B |
 | `test:e2e` | "no pages yet" while there is neither a page nor `playwright.config.ts`; fails if one exists without the other (a config with no built pages means the build was skipped); else runs Playwright | passes, no pages and no config |
 
 ## Privacy wall: replaced by design v2
@@ -114,11 +114,13 @@ what Wrangler would load, was removed from this PR before merge, with its tests.
 the three checks as implemented, each with the gate command that runs it (`<id>: implemented: <command>`), and
 fails if any file git does not ignore (tracked, or untracked
 and not covered by a .gitignore) is a Wrangler-style config: a JSON, JSONC or TOML file whose name starts
-`wrangler`, any `cloudflare.config.*`, or a `.wrangler/deploy/config.json`. The new design keeps none in the repo.
+`wrangler`, any `cloudflare.config.*`, or a `.wrangler/deploy/config.json`. The new design keeps none in the repo. It also
+checks, by existence only, Wrangler's default names (`wrangler.json`, `wrangler.jsonc`, `wrangler.toml`) at the repo
+root and at every workspace root even when git ignores them, because Wrangler reads them regardless.
 
 **What the guard cannot see**, so PR 7 and PR 9 must be checked by hand until `packages/deploy` replaces it:
 
-- Ignored files: the Cloudflare plugin's generated `dist/<worker>/wrangler.json` and `.wrangler/deploy/config.json`
+- Other ignored files: the Cloudflare plugin's generated `dist/<worker>/wrangler.json` and `.wrangler/deploy/config.json`
   are ignored, so a binding that reaches them through a build is invisible.
 - A config under any other name: `cloudflare({ configPath: "cf/public.json" })`, an inline `cloudflare({ config })`
   in a Vite config, or `wrangler --config <file>` on the command line.
@@ -174,7 +176,7 @@ All run in the branch checkout. Build and end-to-end runs went through `heavy-ru
 | `/usr/bin/time -p biome ci --error-on-warnings .` | real 0.23 s, 50 files |
 | `biome lint` on a scratch file with an unawaited promise, an async `forEach` callback and a promise in an `if` | `noFloatingPromises` (1), `noMisusedPromises` (2) and `noUnnecessaryConditions` (1) reported (file removed afterwards) |
 | `biome ci` with `noRestrictedImports` on `zod` and `@cj/schema` under `apps/web` | errors on `import type { Bag } from "@cj/schema"` in both files that use it; override removed |
-| `bun run test` | checks 46, schema 6, pipeline 3, web 4: all pass |
+| `bun run test` | checks 55, schema 19, pipeline 3, web 4, deploy 743 (8 todo): all pass |
 | `heavy-run.sh … bun run build` | exit 0; Vite reports apps/web `main-*.js` 25.06 kB (10.54 kB gzip), apps/kit 24.58 kB (10.32 kB gzip) |
 | `heavy-run.sh … bun run size` (after the build) | exit 0; "Size limit: 15 kB / Size: 9.54 kB brotlied" |
 | `wc -c`, `brotli -c -q 11 … \| wc -c`, `gzip -9 -c … \| wc -c` on each bundle | apps/web: 25,069 B raw, 9,540 B Brotli, 10,439 B gzip; apps/kit: 24,586 B raw, 9,353 B Brotli, 10,220 B gzip |
@@ -192,14 +194,15 @@ with "expected 0 to be greater than 0" before `apps/web/src` existed.
 What Cloudflare actually serves for a static asset is **not verified** here. Cloudflare's own account is that it
 recompresses at **Brotli level 4 or gzip level 8**, depending on the visitor's `Accept-Encoding`
 ([blog.cloudflare.com/this-is-brotli-from-origin](https://blog.cloudflare.com/this-is-brotli-from-origin/)).
-size-limit can measure gzip (level 9) and Brotli (quality 11), not Brotli level 4, so the root `size-limit` list
-measures `apps/web/dist/client/assets/*.js` both ways, each against 15 kB (the N2 listing limit, ADR-0017;
-15,000 bytes, since size-limit reads kB as 1,000 bytes), and the larger one gates. That limit is never raised.
+size-limit can measure gzip (level 9) and Brotli (quality 11) but not the edge levels, so `bun run size` measures
+every root `size-limit` target four ways: size-limit's gzip 9 and Brotli 11, then `packages/checks/src/edge.ts`
+at gzip level 8 and Brotli quality 4 (Node's zlib). Each target must stay within its limit at all four, so the
+largest gates. The JavaScript target is `apps/web/dist/client/assets/*.js` against 15 kB (the N2 listing limit,
+ADR-0017; 15,000 bytes, since size-limit reads kB as 1,000 bytes). That limit is never raised.
 
-Measured on the current bundle (`gzip -N -c … | wc -c`, `brotli -c -q N … | wc -c`): 25,069 B raw, gzip level
-8 or 9 10,439 B, Brotli quality 11 9,540 B, **Brotli level 4 10,804 B**. Level 4 is the largest plausible
-served size and is 365 B (3.5%) above what the gate measures, so treat the gate as slightly optimistic until
-PR 7 records the encoding and transfer size the preview URL actually serves.
+Measured on the current bundle by `bun run size`: gzip 9 10.46 kB, Brotli 11 9.59 kB, gzip 8 10,461 B,
+**Brotli 4 10,814 B** (the largest, so it gates). PR 7 should still record the encoding and transfer size the
+preview URL actually serves.
 
 **Solid 2's runtime plus one `render` of one component is already 10.4 to 10.8 kB compressed, over the 8 KB
 content-page budget**, before hydration, a router, any island or the metrics beacon (which N2 counts). It also

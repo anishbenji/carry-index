@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, matchesGlob } from "node:path";
 import { listFiles } from "./files.ts";
 
 /** Where `apps/web` writes its build. Pages are the HTML files under it. */
@@ -18,7 +18,8 @@ export function findBuiltPages(root: string): string[] {
 /**
  * `bun run size`: runs size-limit whenever the root package.json has `size-limit` targets. Without targets it
  * passes with a "no pages yet" line only while apps/web/dist holds neither HTML nor JavaScript, and fails once
- * it holds either, so built code is never left unmeasured. Once pages exist, some target must measure HTML.
+ * it holds either, so built code is never left unmeasured. Once pages exist, every
+ * built page must match the glob of some target.
  */
 export function evaluateSizeGate(root: string): GateResult {
   const targets = readRootPackage(root)["size-limit"];
@@ -40,17 +41,18 @@ export function evaluateSizeGate(root: string): GateResult {
     };
   }
   const pages = output.filter((file) => file.endsWith(".html"));
-  const measuresHtml = targets.some((target: unknown) => {
+  const globs = targets.flatMap((target: unknown) => {
     const path = typeof target === "object" && target !== null ? (target as { path?: unknown }).path : undefined;
-    const paths = Array.isArray(path) ? path : [path];
-    return paths.some((p) => typeof p === "string" && p.includes(".html"));
+    return (Array.isArray(path) ? path : [path]).filter((p): p is string => typeof p === "string");
   });
-  if (pages.length > 0 && !measuresHtml) {
+  const unmeasured = pages.filter((page) => !globs.some((glob) => matchesGlob(page, glob)));
+  if (unmeasured.length > 0) {
     return {
       kind: "fail",
       lines: [
-        `size: apps/web emits ${pages.length} HTML page(s) but no "size-limit" target measures HTML.`,
-        "Add the N2 HTML budgets as size-limit entries before building pages.",
+        `size: ${unmeasured.length} of ${pages.length} built HTML page(s) fall outside every "size-limit" target:`,
+        ...unmeasured.map((page) => `  ${page}`),
+        "Every page needs an N2 HTML budget; add or widen a size-limit target.",
       ],
     };
   }

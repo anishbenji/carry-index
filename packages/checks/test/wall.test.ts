@@ -1,7 +1,7 @@
 import { execFileSync } from "node:child_process";
 import { describe, expect, it } from "vitest";
 import type { WallCheck } from "../src/wall.ts";
-import { evaluateWall, repoFiles, WALL_CHECKS } from "../src/wall.ts";
+import { defaultConfigsOnDisk, evaluateWall, repoFiles, WALL_CHECKS } from "../src/wall.ts";
 import { makeTree } from "./helpers.ts";
 
 /** The gate command that runs each check: `check` runs checks 1 and 2; the bindings check (3) runs in `deploy`. */
@@ -80,6 +80,39 @@ describe("repoFiles", () => {
       expect(files).toContain("workers/web/wrangler.jsonc");
       expect(files).not.toContain("apps/web/dist/web/wrangler.json");
       expect(evaluateWall(files).ok).toBe(false);
+    } finally {
+      t.cleanup();
+    }
+  });
+});
+
+describe("defaultConfigsOnDisk", () => {
+  it("finds Wrangler's default config names at the repo root and each workspace root, ignored or not", () => {
+    const t = makeTree({
+      "package.json": JSON.stringify({ workspaces: ["packages/*", "apps/*", "workers/*"] }),
+      ".gitignore": "/*\n!/package.json\n",
+      "wrangler.jsonc": "{}",
+      "apps/web/wrangler.toml": "",
+      "workers/kit/wrangler.json": "{}",
+      "apps/web/src/wrangler.json": "{}",
+      "packages/schema/package.json": "{}",
+    });
+    try {
+      expect(defaultConfigsOnDisk(t.root)).toEqual([
+        "apps/web/wrangler.toml",
+        "workers/kit/wrangler.json",
+        "wrangler.jsonc",
+      ]);
+      expect(evaluateWall(defaultConfigsOnDisk(t.root)).ok).toBe(false);
+    } finally {
+      t.cleanup();
+    }
+  });
+
+  it("finds nothing in a clean tree", () => {
+    const t = makeTree({ "package.json": JSON.stringify({ workspaces: ["apps/*"] }), "apps/web/package.json": "{}" });
+    try {
+      expect(defaultConfigsOnDisk(t.root)).toEqual([]);
     } finally {
       t.cleanup();
     }
