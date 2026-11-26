@@ -24,7 +24,11 @@ Node comes from `.node-version`; Bun is pinned to 1.4.2.
 `bun run test` includes the privacy wall's import ban (T8, `packages/deploy/src/imports.ts`): no public source may
 import a private module. For Vite's glob imports (`import.meta.glob`), every pattern, negated ones included, must
 start with `./`, `../` or `/` (an unanchored `**` or a bare package name could match anywhere, Neon N2), and must
-be a literal string; a pattern whose fixed folder is under `node_modules` or a private folder fails. Its options
+be a literal string. A pattern fails if its fixed folder (the path before the first wildcard) is a private folder
+or resolves to the repository root or above it, if it has a `..` segment anywhere after the first wildcard (Vite
+collapses `*/..`, so the fixed folder would not say where it lands), or if it has a `node_modules` segment
+anywhere (Neon N10). An import's `?raw`, `?url` or `#…` suffix is stripped before these checks, so it names the
+same file (N11). Its options
 may only be `eager`, `import` and `query`, each a plain property with a literal string or boolean value: `base`
 would move where patterns resolve, `exhaustive` would walk into `node_modules` and dot folders, and any other,
 computed, shorthand or spread property is refused.
@@ -76,22 +80,24 @@ Runs on every push to `main`, once a day at 04:17 UTC (so `/performance` stays c
    5. `wrangler versions deploy <id>@100%`;
    6. confirms the new version is the active one, alone at 100%, and the live settings match. Cloudflare can take
       a moment to show a write, so while the deployments endpoint still shows the earlier deployment the gate reads
-      again, up to 5 reads in all, waiting 2, 4, 6 and 8 seconds between them (Neon N5). If the new version is still
-      not the active one after that, the run fails with `deployment-changed` and **never rolls back** (N5a): a slow
+      again: up to 4 more reads while it has not converged, waiting 2, 4, 6 and 8 seconds, and, on a separate
+      count, up to 2 more on an API error, waiting 2 and 4 seconds (Neon N5, N12). One confirmation is therefore at
+      most 7 reads and 26 seconds of waits. If the new version is still not the active one after the 5th
+      convergence read, the run fails with `deployment-changed` and **never rolls back** (N5a): a slow
       endpoint is not a check-3 failure, and the version may be live a moment later.
 
    Only if step 6 finds a definite mismatch (a check-3 failure of the promoted version) does the gate roll back by id to the previous version, only if that version
    itself checks clean and the new version is still the active one (one read), and only if the active deployment,
    read once more immediately before the rollback, has not changed; otherwise it stops with `deployment-changed`
    and never rolls back over someone else's deployment. After the rollback it confirms the previous version the
-   same way, up to 5 reads, and fails with `live-after-rollback` if it is not the active one by then, after
+   same way (at most 7 reads), and fails with `live-after-rollback` if it is not the active one by then, after
    printing each problem it found with the reply's HTTP status where there was one.
 
    The reads that guard a write (step 1, step 4, and the two reads before a rollback) are single reads: if one
    fails, the gate changes nothing and stops, printing `live-api-error` with the reply's HTTP status when there
    was one. The confirmations (the preview-URL check, step 3, step 6, the rollback target and the check after a
-   rollback) retry an API error up to 3 reads in all, waiting 2 and 4 seconds, and an API error never triggers a
-   change.
+   rollback) retry an API error up to 3 reads in all, waiting 2 and 4 seconds (step 6 and the check after a
+   rollback also wait for convergence, as above), and an API error never triggers a change.
 3. **`triggers`** runs only on a manual run on `main` with **apply_triggers** ticked, in `public-production`, and
    on that run it replaces `deploy` (which is skipped). It is needed once, **after** the first deploy, on the same
    commit: `wrangler versions deploy` applies none of the config's triggers, so the first deploy leaves workers.dev
@@ -197,8 +203,10 @@ days with no activity; re-enable it on the Actions tab if that happens.
 ## When a deploy fails
 
 The gate prints one line per problem, naming a rule and where it applies (never a file's contents or a
-secret), then a summary line. Every `live-api-error` line carries the reply's HTTP status when there was one
-(`live-api-error: 403 "carry-journal"`): 401 or 403 means the token, whichever row it appears in. GitHub emails you when the job fails.
+secret), then a summary line. A `live-api-error` line carries the reply's HTTP status when the reply had one other
+than 200 (`live-api-error: 403 "carry-journal"`): 401 or 403 means the token, whichever row it appears in. A line
+with no status means there was no usable reply: a timeout, a network error, or a 200 reply whose body was
+malformed or said `success: false` (Neon N13). GitHub emails you when the job fails.
 
 A problem with a file in the site (from the seal, the bundle scan or the build-graph check) is printed without its
 name, as `<rule>: #<n> <ref8>` (for example `no-matching-row: #1 3f9a02c1`): a file's name can itself be private,
@@ -243,12 +251,12 @@ therefore stop before the gate unless the run's commit is still the tip of `main
 | `could not re-read the active deployment; version … was not promoted` | The single compare-and-swap read just before the promotion failed (`live-api-error`, with the reply's HTTP status when there was one) | Nothing was promoted; the new version has no traffic. Re-run once Cloudflare answers again |
 | `version … is live and shows the expected bindings` but the job failed | `wrangler versions deploy` exited non-zero, yet the new version is live and correct | Nothing to undo. Read the Wrangler exit line; re-run if needed |
 | `could not confirm the live Worker after promotion; not rolling back. Check it by hand now` | After promotion the API failed on every confirmation read (up to 3 reads on errors); the `live-api-error` line before it carries the last reply's HTTP status. The gate cannot tell whether the live Worker is right | Check now: dashboard → Workers & Pages → `carry-journal` → Settings → Bindings must be empty, and the active version must be the one in the log. If not, roll back by hand (Deployments → the last good version) |
-| `deployment-changed: "carry-journal"`, then `the active deployment did not show version … within 5 reads; not rolling back. Check the live Worker now` | After promotion, the deployments endpoint still did not show the new version alone at 100% after 5 reads (about 20 seconds of waits): Cloudflare was slow to show the write, the promotion did not take, or something else deployed. The gate does not roll back (N5a) | Check in the dashboard (Workers & Pages → `carry-journal` → Deployments) which version is active and whether its bindings are empty. If it is the version in the log, nothing is wrong; otherwise find out what deployed, then re-run |
+| `deployment-changed: "carry-journal"`, then `the active deployment did not show version … within 5 reads; not rolling back. Check the live Worker now` | After promotion, the deployments endpoint still did not show the new version alone at 100% after 5 convergence reads (20 seconds of waits, plus up to two retries of API errors): Cloudflare was slow to show the write, the promotion did not take, or something else deployed. The gate does not roll back (N5a) | Check in the dashboard (Workers & Pages → `carry-journal` → Deployments) which version is active and whether its bindings are empty. If it is the version in the log, nothing is wrong; otherwise find out what deployed, then re-run |
 | `deployment-changed: "carry-journal"`, then `version … is not the active one; not rolling back. Check the live Worker now` | After promotion, check 3 found a definite problem on the live Worker, and the single read before rolling back showed another version active: something else deployed in the meantime. Nothing was rolled back | Check what is active in the dashboard and whether it is clean, then re-run |
 | `deployment-changed: "carry-journal"`, then `another deployment was made while the rollback target was checked; not rolling back over it` | The gate was about to roll back, but someone deployed in the meantime; their deployment wins | Check what is active in the dashboard and whether it is clean, then re-run |
 | `could not read the active deployment; not rolling back` or `could not re-read the active deployment; not rolling back` | One of the two single reads before a rollback failed (`live-api-error`, with the reply's HTTP status when there was one); nothing was rolled back | Check the live Worker in the dashboard now, as in the row above |
 | `wrangler rollback to … exited with 0`, then `rollback confirmed: version … is live and shows the expected bindings` | The promoted version showed a binding that its checked version did not (a change after promotion). The gate went back to the verified previous version | Nothing is wrong live. Remove the extra binding in the dashboard, then re-run |
-| `live-after-rollback`, with `no verified previous version to return to` or `the live Worker still does not match after the rollback` | The live Worker is wrong and the gate could not fix it: there was no previous version (the first deploy), the previous one is not clean itself, or the rollback did not take: after the rollback, the previous version was not the active one alone at 100% with clean settings within 5 reads. The lines before `live-after-rollback` give each problem found, `live-api-error` ones with the reply's HTTP status (N5b) | Act now: roll back by hand to the last good version in the dashboard, or remove the extra binding; then re-run |
+| `live-after-rollback`, with `no verified previous version to return to` or `the live Worker still does not match after the rollback` | The live Worker is wrong and the gate could not fix it: there was no previous version (the first deploy), the previous one is not clean itself, or the rollback did not take: after the rollback, the previous version was not the active one alone at 100% with clean settings within the confirmation's reads (5 while converging, at most 7 in all). The lines before `live-after-rollback` give each problem found, `live-api-error` ones with the reply's HTTP status (N5b) | Act now: roll back by hand to the last good version in the dashboard, or remove the extra binding; then re-run |
 | `could not read the active deployment; workers.dev was not changed` (triggers job) | The deployments API failed before the triggers deploy (`live-api-error`, with its status) | As `live-api-error` above. Nothing changed |
 | `live-version-not-sole: "carry-journal"`, then `the active deployment is not one version at 100%; workers.dev was not changed. Run deploy-public first, then apply_triggers` (triggers job) | The active deployment splits traffic between versions (a gradual deployment made in the dashboard), so there is no single sealed build to turn workers.dev on for. Nothing changed | Run `deploy-public` (it promotes this build to 100%), then **apply_triggers** on the same commit |
 | `live-version-untagged: "carry-journal"`, then `version … has no workers/tag, so it was not uploaded by deploy-public (a dashboard placeholder?); workers.dev was not changed` (triggers job) | The live version carries no tag, so the gate did not upload it: usually the dashboard placeholder, because **apply_triggers** ran before the first deploy, or a version uploaded by hand. Nothing changed | Run `deploy-public` first, then **apply_triggers** on the same commit (setup step 4) |
@@ -263,10 +271,10 @@ therefore stop before the gate unless the run's commit is still the tip of `main
 
 The gate changes the live Worker only by promoting a version it has just checked, or by rolling back to a
 previous version it has checked; an API error never leads to a change. Every API read stops after 60 seconds
-(30 for the reply, 30 for its body) and every Wrangler run after 10 minutes. The deploy job's 85-minute limit
+(30 for the reply, 30 for its body) and every Wrangler run after 10 minutes. The deploy job's 90-minute limit
 covers its worst case, the rollback path: four Wrangler runs (dry run, upload, promote, rollback), the single
-reads, the confirmations with their retries, and up to 5 reads after each of the two writes, about 4,558 seconds
-(76 minutes), plus five minutes for setup. The triggers job's 45-minute limit covers its worst case with one active
+reads, the confirmations with their retries, and up to 7 reads after each of the two writes (626 seconds each at
+worst), about 4,810 seconds (80 minutes), plus five minutes for setup. The triggers job's 45-minute limit covers its worst case with one active
 version: about 1,584 seconds of reads and `wrangler triggers deploy`, two more single reads for S5-5 (the live
 version's tag and the compare-and-swap read, 120 seconds) and the 10-minute dry run, about 2,304 seconds
 (38 minutes), plus five minutes for setup. T10 computes both sums from the gate's limits and fails if a job's
