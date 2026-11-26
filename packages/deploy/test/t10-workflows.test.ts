@@ -33,6 +33,7 @@ const GATE_DEPLOY = /^node packages\/deploy\/src\/bin\.ts deploy "?\$\{\{ runner
 
 interface Step {
   name?: string;
+  if?: string;
   uses?: string;
   run?: string;
   with?: Record<string, unknown>;
