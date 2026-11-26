@@ -1469,3 +1469,139 @@ describe("T10 the email check reads every blob a pull request's commits add (Sol
     }
   });
 });
+
+describe("T10 a text file named as an image or font in a pull request's commits fails (independent-neon r1, C4-1)", () => {
+  const mediaStep = (): Step => {
+    const found = (job("ci.yml", "secret-scan").steps ?? []).filter((step) =>
+      (step.run ?? "").includes("image or font"),
+    );
+    expect(found).toHaveLength(1);
+    return found[0] ?? { run: "exit 1" };
+  };
+  /** A made-up token, built at run time so no token-shaped literal is tracked. */
+  const TOKEN = `${["ghp", "SYNTHETICsyntheticSYNTHETICsynthetic00"].join("_")}\n`;
+  const BINARY = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d, 0x49, 0x48]);
+
+  /** A clean base commit, then the pull request's commits; returns the repository and the base SHA. */
+  function pullRequest(commits: ReadonlyArray<Readonly<Record<string, string | Buffer | null>>>) {
+    const repo = scratchRepo("cj-t10-media-range-");
+    const baseSha = repo.commit({ "readme.txt": "base\n" }, "base");
+    for (const [i, files] of commits.entries()) {
+      for (const [name, content] of Object.entries(files)) {
+        if (Buffer.isBuffer(content)) {
+          writeFileSync(join(repo.root, name), content);
+          repo.git("add", "--", name);
+        }
+      }
+      const rest = Object.fromEntries(Object.entries(files).filter(([, c]) => !Buffer.isBuffer(c))) as Record<
+        string,
+        string | null
+      >;
+      repo.commit(rest, `pull request ${i}`);
+    }
+    return { repo, baseSha };
+  }
+  const asPullRequest = (baseSha: string) => ({ EVENT_NAME: "pull_request", BASE_SHA: baseSha });
+
+  test("the step takes the event and the base commit from env, never from an expression in its script", () => {
+    expect(mediaStep().env).toStrictEqual({
+      EVENT_NAME: expr("github.event_name"),
+      BASE_SHA: expr("github.event.pull_request.base.sha"),
+    });
+    expect(mediaStep().run).not.toContain("${{");
+  });
+
+  test("a token-only .png added in one commit and removed in the next fails, by count and blob id only", () => {
+    const { repo, baseSha } = pullRequest([{ "token.png": TOKEN }, { "token.png": null }]);
+    try {
+      const { status, output } = runStep(mediaStep(), repo.root, asPullRequest(baseSha));
+      expect(status, output).not.toBe(0);
+      expect(output).toContain("1 blob(s) named as an image or font added by this pull request's commits are text");
+      expect(output).toContain(blobId(TOKEN));
+      expect(output).not.toContain("token.png");
+      expect(output).not.toContain("SYNTHETIC");
+    } finally {
+      repo.cleanup();
+    }
+  });
+
+  test("an upper-case name is read too", () => {
+    const { repo, baseSha } = pullRequest([{ "TOKEN.WOFF2": TOKEN }, { "TOKEN.WOFF2": null }]);
+    try {
+      expect(runStep(mediaStep(), repo.root, asPullRequest(baseSha)).status).not.toBe(0);
+    } finally {
+      repo.cleanup();
+    }
+  });
+
+  test("a text file named as an image that only a merge commit adds fails", () => {
+    const { repo, baseSha } = pullRequest([{ "notes.txt": "one\n" }]);
+    try {
+      repo.git("checkout", "-q", "-b", "side", baseSha);
+      repo.commit({ "side.txt": "side\n" }, "side");
+      repo.git("checkout", "-q", "main");
+      repo.git("merge", "-q", "--no-ff", "--no-commit", "side");
+      writeFileSync(join(repo.root, "merged.png"), TOKEN);
+      repo.git("add", "merged.png");
+      repo.git("commit", "-q", "-m", "merge side");
+      repo.commit({ "merged.png": null }, "remove it");
+      const { status, output } = runStep(mediaStep(), repo.root, asPullRequest(baseSha));
+      expect(status, output).not.toBe(0);
+      expect(output).toContain(blobId(TOKEN));
+    } finally {
+      repo.cleanup();
+    }
+  });
+
+  test("a binary image added and removed, and a text file with another name, pass", () => {
+    const { repo, baseSha } = pullRequest([{ "logo.png": BINARY, "notes.txt": "text\n" }, { "logo.png": null }]);
+    try {
+      const { status, output } = runStep(mediaStep(), repo.root, asPullRequest(baseSha));
+      expect(status, output).toBe(0);
+    } finally {
+      repo.cleanup();
+    }
+  });
+
+  test("a push checks the tracked files only, and says so", () => {
+    const { repo } = pullRequest([{ "token.png": TOKEN }, { "token.png": null }]);
+    try {
+      const { status, output } = runStep(mediaStep(), repo.root, { EVENT_NAME: "push", BASE_SHA: "" });
+      expect(status, output).toBe(0);
+      expect(output).toContain("push: tracked files only");
+    } finally {
+      repo.cleanup();
+    }
+  });
+
+  test.each([
+    ["empty", ""],
+    ["not a commit id", "main"],
+    ["a commit the clone does not have", "c".repeat(40)],
+  ])("a pull request whose base is %s fails", (_what, base) => {
+    const { repo } = pullRequest([{ "notes.txt": "clean\n" }]);
+    try {
+      expect(runStep(mediaStep(), repo.root, asPullRequest(base)).status).not.toBe(0);
+    } finally {
+      repo.cleanup();
+    }
+  });
+
+  test.each(["rev-list", "diff-tree"])("fails when git %s exits 2 on a pull request", (subcommand) => {
+    const { repo, baseSha } = pullRequest([{ "notes.txt": "clean\n" }]);
+    try {
+      const realGit = spawnSync("sh", ["-c", "command -v git"], { encoding: "utf8" }).stdout.trim();
+      const bin = join(repo.root, ".stub-bin");
+      mkdirSync(bin);
+      writeFileSync(
+        join(bin, "git"),
+        `#!/bin/sh\nif [ "$1" = ${subcommand} ]; then echo "fatal: synthetic read error" >&2; exit 2; fi\nexec "${realGit}" "$@"\n`,
+        { mode: 0o755 },
+      );
+      const path = `${bin}:${process.env.PATH ?? ""}`;
+      expect(runStep(mediaStep(), repo.root, asPullRequest(baseSha), path).status).not.toBe(0);
+    } finally {
+      repo.cleanup();
+    }
+  });
+});

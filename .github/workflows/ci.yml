@@ -176,9 +176,16 @@ jobs:
       # binary (security review r2, C2-1): a tracked file with one of these extensions and no NUL byte is text, and
       # is refused. Each blob is read as the index records it (git cat-file), so a .gitattributes entry cannot mark
       # a text file binary. Prints only a count and blob ids, never a name (independent-neon r1, C4-2): a name can
-      # itself be private. Find a file by its blob id with `git ls-files -s | grep <id>`.
+      # itself be private. Find a file by its blob id with `git ls-files -s | grep <id>`, any blob with
+      # `git log --all --find-object=<id>`. On a pull request it also reads every media-named blob the pull request's
+      # own commits add (BASE_SHA..HEAD; for a merge, the files that differ from every parent), so a text file under
+      # such a name that a later commit removed still fails (independent-neon r1, C4-1): gitleaks skips these names,
+      # and the email check looks only for addresses.
       - name: No text files named as images or fonts
         shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           set -euo pipefail
           work=$(mktemp -d)
@@ -209,10 +216,44 @@ jobs:
             text_blob "$blob"
             if [ "$is_text" = 1 ]; then text_n=$((text_n + 1)); text_ids="$text_ids $blob"; fi
           done < "$work/tracked"
+          fail=0
           if [ "$text_n" -gt 0 ]; then
             echo "secret scan: $text_n tracked file(s) named as an image or font are text; blob ids:$text_ids" >&2
+            fail=1
+          fi
+
+          if [ "$EVENT_NAME" != pull_request ]; then
+            echo "secret scan: $EVENT_NAME: tracked files only"
+            exit "$fail"
+          fi
+          if ! [[ "$BASE_SHA" =~ ^[0-9a-f]{40}$ ]] || ! git cat-file -e "$BASE_SHA^{commit}"; then
+            echo "secret scan: the pull request's base commit is missing from the checkout" >&2
             exit 1
           fi
+          media='\.(png|jpe?g|gif|webp|avif|ico|bmp|tiff?|woff2?|ttf|otf|eot)$'
+          git rev-list "$BASE_SHA..HEAD" > "$work/commits"
+          : > "$work/added"
+          while IFS= read -r commit; do
+            git diff-tree --diff-merges=combined -r -z --no-renames --no-commit-id --root "$commit" >> "$work/added"
+          done < "$work/commits"
+          text_n=0 text_ids=''
+          while IFS= read -r -d '' meta && IFS= read -r -d '' path; do
+            # ":<modes> <shas> <status>", one mode and one sha per parent and one for the result, which come last.
+            read -r -a fields <<< "${meta#"${meta%%[!:]*}"}"
+            k=$(( (${#fields[@]} - 1) / 2 ))
+            mode=${fields[$((k - 1))]}
+            blob=${fields[$((2 * k - 1))]}
+            if [[ "$blob" =~ ^0+$ ]] || [ "$mode" = 160000 ]; then continue; fi
+            lower=$(printf '%s' "$path" | tr 'A-Z' 'a-z')
+            if ! [[ "$lower" =~ $media ]]; then continue; fi
+            text_blob "$blob"
+            if [ "$is_text" = 1 ]; then text_n=$((text_n + 1)); text_ids="$text_ids $blob"; fi
+          done < "$work/added"
+          if [ "$text_n" -gt 0 ]; then
+            echo "secret scan: $text_n blob(s) named as an image or font added by this pull request's commits are text; blob ids:$text_ids" >&2
+            fail=1
+          fi
+          exit "$fail"
       # Allowed: noreply and example.com/org/net domains, package versions (name@1.2.3) and image density suffixes
       # (logo@2x.png). Case-insensitive; every blob is read as text, whatever .gitattributes says; the content of
       # images, fonts and bun.lock (package integrity hashes) is skipped, but every file's name is checked. Prints
