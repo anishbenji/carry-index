@@ -174,27 +174,43 @@ jobs:
           --exit-code 1 .
       # The scan's policy and the email check below skip images and fonts by extension, so each must really be
       # binary (security review r2, C2-1): a tracked file with one of these extensions and no NUL byte is text, and
-      # is refused. Read from the checkout with grep rather than git grep -I, so a .gitattributes entry cannot mark a
-      # text file binary. Prints only the paths.
+      # is refused. Each blob is read as the index records it (git cat-file), so a .gitattributes entry cannot mark
+      # a text file binary. Prints only a count and blob ids, never a name (independent-neon r1, C4-2): a name can
+      # itself be private. Find a file by its blob id with `git ls-files -s | grep <id>`.
       - name: No text files named as images or fonts
+        shell: bash
         run: |
           set -euo pipefail
+          work=$(mktemp -d)
+          trap 'rm -rf "$work"' EXIT
+          # Sets is_text to 1 when blob $1 has no NUL byte, else 0; a read error stops the step.
+          text_blob() {
+            local status=0
+            git cat-file blob "$1" > "$work/blob"
+            LC_ALL=C grep -qI -e '' "$work/blob" || status=$?
+            if [ "$status" = 0 ]; then
+              is_text=1
+            elif [ "$status" = 1 ]; then
+              is_text=0
+            else
+              echo "secret scan: cannot read blob $1" >&2
+              exit 2
+            fi
+          }
           specs=()
           for ext in png jpg jpeg gif webp avif ico bmp tif tiff woff woff2 ttf otf eot; do
             specs+=(":(icase)*.$ext")
           done
-          text=$(git ls-files -z -- "${specs[@]}" | while IFS= read -r -d '' path; do
-            status=0
-            LC_ALL=C grep -I -q -e '' -- "$path" || status=$?
-            if [ "$status" -eq 0 ]; then
-              printf '%s\n' "$path"
-            elif [ "$status" -ne 1 ]; then
-              echo "secret scan: cannot read $path" >&2
-              exit 2
-            fi
-          done)
-          if [ -n "$text" ]; then
-            printf '%s\n' "$text" | sed 's/^/text file named as an image or font: /' >&2
+          git ls-files -s -z -- "${specs[@]}" > "$work/tracked"
+          text_n=0 text_ids=''
+          while IFS= read -r -d '' record; do
+            read -r mode blob _ <<< "${record%%$'\t'*}"
+            if [ "$mode" = 160000 ]; then continue; fi
+            text_blob "$blob"
+            if [ "$is_text" = 1 ]; then text_n=$((text_n + 1)); text_ids="$text_ids $blob"; fi
+          done < "$work/tracked"
+          if [ "$text_n" -gt 0 ]; then
+            echo "secret scan: $text_n tracked file(s) named as an image or font are text; blob ids:$text_ids" >&2
             exit 1
           fi
       # Allowed: noreply and example.com/org/net domains, package versions (name@1.2.3) and image density suffixes

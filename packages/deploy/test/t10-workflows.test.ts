@@ -138,8 +138,8 @@ function githubBash(step: Step): string[] {
 }
 
 /** The Git blob id of `content`, as `git hash-object` gives it. */
-function blobId(content: string): string {
-  const bytes = Buffer.from(content, "utf8");
+function blobId(content: string | Buffer): string {
+  const bytes = typeof content === "string" ? Buffer.from(content, "utf8") : content;
   return createHash("sha1")
     .update(Buffer.concat([Buffer.from(`blob ${bytes.length}\0`), bytes]))
     .digest("hex");
@@ -977,34 +977,54 @@ describe("T10 a file named as an image or font must be binary (security review r
   /** A made-up token, built at run time so no token-shaped literal is tracked. */
   const TOKEN = `token = ${["ghp", "SYNTHETICsyntheticSYNTHETICsynthetic00"].join("_")}\n`;
 
-  const mediaStep = (): string => {
+  const mediaStepObject = (): Step => {
     const steps = job("ci.yml", "secret-scan").steps ?? [];
     const found = steps.filter((step) => (step.run ?? "").includes("image or font"));
     expect(found).toHaveLength(1);
-    return found[0]?.run ?? "exit 1";
+    return found[0] ?? { run: "exit 1" };
   };
+  const mediaStep = (): string => mediaStepObject().run ?? "exit 1";
 
-  /** Runs the step in a fresh repository holding `files`, with the shell GitHub uses for `run:` on Linux. */
-  function runIn(files: Readonly<Record<string, string | Buffer>>): { status: number; output: string } {
+  /**
+   * Runs the step in a fresh repository holding `files`, with the shell GitHub uses for it, as a push. With
+   * `failing`, a stub `git` makes that subcommand fail with exit 2, as a read error would.
+   */
+  function runIn(
+    files: Readonly<Record<string, string | Buffer>>,
+    failing?: string,
+  ): { status: number; output: string } {
     const dir = tempDir("cj-t10-media-");
     try {
       const git = (...args: string[]) => spawnSync("git", args, { cwd: dir.root, encoding: "utf8" });
       git("init", "-q");
       for (const [name, content] of Object.entries(files)) writeFileSync(join(dir.root, name), content);
       git("add", "-A");
-      const step = (job("ci.yml", "secret-scan").steps ?? []).find((s) => s.run === mediaStep());
-      const result = spawnSync("bash", githubBash(step ?? { run: "exit 1" }), {
-        cwd: dir.root,
-        encoding: "utf8",
-      });
-      return { status: result.status ?? -1, output: `${result.stdout}${result.stderr}` };
+      let path = process.env.PATH ?? "";
+      if (failing !== undefined) {
+        const realGit = spawnSync("sh", ["-c", "command -v git"], { encoding: "utf8" }).stdout.trim();
+        const bin = join(dir.root, ".stub-bin");
+        mkdirSync(bin);
+        writeFileSync(
+          join(bin, "git"),
+          `#!/bin/sh\nif [ "$1" = ${failing} ]; then echo "fatal: synthetic read error" >&2; exit 2; fi\nexec "${realGit}" "$@"\n`,
+          { mode: 0o755 },
+        );
+        path = `${bin}:${path}`;
+      }
+      return runStep(mediaStepObject(), dir.root, { EVENT_NAME: "push", BASE_SHA: "" }, path);
     } finally {
       dir.cleanup();
     }
   }
 
-  test("the step runs in the secret-scan job, which reads the whole checkout", () => {
-    expect(mediaStep()).toContain("git ls-files -z");
+  test("the step reads every tracked blob, as the index records it, with pipefail", () => {
+    expect(mediaStep()).toContain("git ls-files -s -z");
+    expect(mediaStepObject().shell).toBe("bash");
+  });
+
+  test.each(["ls-files", "cat-file"])("fails when git %s exits 2, as on a read error", (subcommand) => {
+    const { status, output } = runIn({ "page.png": BINARY }, subcommand);
+    expect(status, output).not.toBe(0);
   });
 
   test("passes when every image and font is binary", () => {
@@ -1015,10 +1035,14 @@ describe("T10 a file named as an image or font must be binary (security review r
     expect(runIn({ "readme.txt": "text\n" }).status).toBe(0);
   });
 
-  test.each(MEDIA)("fails on a text file named *.%s, naming its path", (ext) => {
+  test.each(MEDIA)("fails on a text file named *.%s, giving a count and its blob id but never its name", (ext) => {
     const { status, output } = runIn({ [`token.${ext}`]: TOKEN, "page.png": BINARY });
     expect(status).not.toBe(0);
-    expect(output).toContain(`token.${ext}`);
+    // Named by blob id, never by path: a path can itself be private (independent-neon r1, C4-2).
+    expect(output).toContain("1 tracked file(s)");
+    expect(output).toContain(blobId(TOKEN));
+    expect(output).not.toContain(`token.${ext}`);
+    expect(output).not.toContain(blobId(BINARY));
     expect(output).not.toContain("page.png");
     expect(output).not.toContain("SYNTHETIC");
   });
@@ -1030,7 +1054,8 @@ describe("T10 a file named as an image or font must be binary (security review r
   test("fails when .gitattributes marks the text file binary", () => {
     const { status, output } = runIn({ ".gitattributes": "*.png binary\n", "token.png": TOKEN });
     expect(status).not.toBe(0);
-    expect(output).toContain("token.png");
+    expect(output).toContain(blobId(TOKEN));
+    expect(output).not.toContain("token.png");
   });
 });
 
