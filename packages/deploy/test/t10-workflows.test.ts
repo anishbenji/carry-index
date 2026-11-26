@@ -958,3 +958,34 @@ describe("T10 a re-run of an older run never deploys an older commit (security r
     expect(runGuard(guard(jobName).run, "\trefs/heads/main\n", "")).not.toBe(0);
   });
 });
+
+describe("T10 the dependency audit runs on its own (independent review r2, C2-3)", () => {
+  /** The one Bun version every workflow pins. */
+  const BUN = "1.4.2";
+
+  test("ci.yml has a dependency-audit job, named for branch protection, that runs bun audit with the pinned Bun", () => {
+    const audit = job("ci.yml", "dependency-audit") as Job & { name?: string };
+    expect(audit.name).toBe("dependency audit");
+    const steps = audit.steps ?? [];
+    const setup = steps.filter((step) => step.uses?.startsWith("oven-sh/setup-bun@"));
+    expect(setup).toHaveLength(1);
+    expect(setup[0]?.with?.["bun-version"]).toBe(BUN);
+    const audits = steps.filter((step) => /\bbun audit\b/.test(step.run ?? ""));
+    expect(audits).toHaveLength(1);
+    expect(audits[0]?.run?.trim()).toBe("bun audit");
+    expect(audit.needs).toBeUndefined();
+    expect(audit.if).toBeUndefined();
+  });
+
+  test("the audit is not part of the script contract job", () => {
+    for (const step of job("ci.yml", "checks").steps ?? []) expect(step.run ?? "").not.toMatch(/\bbun audit\b/);
+  });
+
+  test("every setup-bun step pins the same Bun", () => {
+    const setups = allSteps().filter((s) => s.step.uses?.startsWith("oven-sh/setup-bun@"));
+    expect(setups.length).toBeGreaterThan(0);
+    for (const { file: name, job: jobName, step } of setups) {
+      expect(step.with?.["bun-version"], `${name} ${jobName}`).toBe(BUN);
+    }
+  });
+});
