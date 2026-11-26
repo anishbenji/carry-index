@@ -1816,6 +1816,21 @@ describe("T10 the secret scan refuses an incomplete history read (Sol security r
     expect(output).toContain("secret scan: gitleaks found 0 finding(s), exit status 0");
     expect(output).not.toContain("no leaks found");
   });
+
+  // G2 (final gate): matching commit counts do not prove every patch was read, so git log with the scan's patch
+  // options must read the whole history first.
+  test("the step reads every patch with the scan's own options before gitleaks", () => {
+    expect(scanStep().run).toContain(
+      "git log --full-history --all --diff-filter=uxdb --text --diff-merges=first-parent -p > /dev/null",
+    );
+  });
+
+  test("fails when git log cannot read every patch, before gitleaks runs", () => {
+    const { status, output } = runScan("1:00AM INF 3 commits scanned.", 0, "log");
+    expect(status).not.toBe(0);
+    expect(output).toContain("the history's patches cannot be read in full");
+    expect(output).not.toContain("gitleaks found");
+  });
 });
 
 describe("T10 the data validator's messages stay on the runner (Sol security re-run, C5-4)", () => {
