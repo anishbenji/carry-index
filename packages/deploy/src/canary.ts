@@ -31,7 +31,12 @@ export async function scanBundle(dir: string, options: ScanOptions = {}): Promis
         problems.push({ path: entry.path, rule: "special-file" });
         continue;
       }
-      const forms = decodedForms(new TextDecoder().decode(bytes));
+      const text = new TextDecoder().decode(bytes);
+      // A page is also read as a browser shows it: tags removed and the text around them joined, so markup inside an
+      // address or a marker (`<wbr>`, `<span>`) cannot hide it (sol security r4, S6-6). The raw scan stays.
+      const forms = /\.html$/.test(entry.path)
+        ? [...decodedForms(text), ...decodedForms(text.replace(/<[^>]*>/g, ""))]
+        : decodedForms(text);
       for (const rule of hits(forms)) problems.push({ path: entry.path, rule });
       sawPublicMarker ||= forms.some((form) => form.includes(PUBLIC_MARKER));
     }
