@@ -637,3 +637,134 @@ describe("T10 the one-time triggers job (after 92e548c: versions deploy applies 
     expect(steps[download]?.with?.["digest-mismatch"]).toBe("error");
   });
 });
+
+/** The `with.path` of a step, one entry per non-empty line. */
+function withPaths(step: Step | undefined): string[] {
+  return String(step?.with?.path ?? "")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line !== "");
+}
+
+describe("T10 the gate jobs get the build's module-graph report with the site (security-sol r2, S2-4)", () => {
+  const buildSteps = (): Step[] => job("deploy-public.yml", "build").steps ?? [];
+  /** The folder the build job's `check` step checks. */
+  const checkedSite = (): string => {
+    const dirs = buildSteps().flatMap(
+      (step) => /^node packages\/deploy\/src\/bin\.ts check (\S+)$/m.exec(step.run ?? "")?.[1] ?? [],
+    );
+    expect(dirs).toHaveLength(1);
+    return dirs[0] ?? "";
+  };
+  const siteName = (): string => checkedSite().split("/").at(-1) ?? "";
+
+  test("the build job checks the site after the build and uploads it with the report beside it, in one artifact", () => {
+    const steps = buildSteps();
+    const build = steps.findIndex((step) => (step.run ?? "").trim() === "bun run build");
+    const check = steps.findIndex((step) => /\bbin\.ts check\b/.test(step.run ?? ""));
+    const uploads = steps.flatMap((step, i) => (step.uses?.startsWith("actions/upload-artifact@") ? [i] : []));
+    expect(build).toBeGreaterThanOrEqual(0);
+    expect(check).toBeGreaterThan(build);
+    expect(uploads).toHaveLength(1);
+    expect(uploads[0]).toBeGreaterThan(check);
+    const upload = steps[uploads[0] ?? -1];
+    expect(upload?.with?.name).toBe("public-site");
+    // The gate reads `<siteDir>.module-graph.json` (graph-plugin.ts), so the report must sit beside the folder.
+    expect(withPaths(upload)).toStrictEqual([checkedSite(), `${checkedSite()}.module-graph.json`]);
+  });
+
+  test.each([
+    ["deploy", "deploy"],
+    ["triggers", "triggers"],
+  ])("the %s job downloads that artifact to the folder above the site its gate step reads", (jobName, command) => {
+    const steps = job("deploy-public.yml", jobName).steps ?? [];
+    const download = steps.find((step) => step.uses?.startsWith("actions/download-artifact@"));
+    expect(download?.with?.name).toBe("public-site");
+    expect(withPaths(download)).toStrictEqual([expr("runner.temp")]);
+    const gate = steps.find((step) => new RegExp(`\\bbin\\.ts ${command}\\b`).test(step.run ?? ""));
+    expect(gate?.run?.trim()).toBe(`node packages/deploy/src/bin.ts ${command} "${expr("runner.temp")}/${siteName()}"`);
+  });
+
+  test.each(["deploy", "triggers"])(
+    "the %s job never builds: build code does not run where the token is",
+    (jobName) => {
+      for (const step of job("deploy-public.yml", jobName).steps ?? []) {
+        expect(step.run ?? "", jobName).not.toMatch(/\bbun run build\b|\bvite\b|\bbun x\b|\bbunx\b|\bnpx\b/);
+      }
+    },
+  );
+});
+
+describe("T10 the gate's private diagnostics never leave the runner (security-sol r2, S2-10)", () => {
+  /** Jobs that run the gate, which writes full paths to `cj-gate-diagnostics-*` in RUNNER_TEMP on a failure. */
+  const gateJobs = (): { file: string; job: string; body: Job }[] =>
+    FILES.flatMap((f) =>
+      Object.entries(f.workflow.jobs)
+        .filter(([, body]) =>
+          (body.steps ?? []).some((step) => /\bpackages\/deploy\/src\/bin\.ts\b/.test(step.run ?? "")),
+        )
+        .map(([name, body]) => ({ file: f.name, job: name, body })),
+    );
+  const TEMP = /runner\.temp|RUNNER_TEMP|\bTMPDIR\b|\/tmp\b|cj-gate-diagnostics|diagnostics\.txt/;
+
+  test("the gate runs in ci.yml's checks and in every deploy-public job", () => {
+    expect(gateJobs().map((g) => `${g.file} ${g.job}`)).toEqual(
+      expect.arrayContaining([
+        "ci.yml checks",
+        "deploy-public.yml build",
+        "deploy-public.yml deploy",
+        "deploy-public.yml triggers",
+      ]),
+    );
+  });
+
+  test("the one artifact upload in any workflow names only repository-relative build paths", () => {
+    const uploads = allSteps().filter((s) => s.step.uses?.startsWith("actions/upload-artifact@"));
+    expect(uploads.map((s) => `${s.file} ${s.job}`)).toEqual(["deploy-public.yml build"]);
+    for (const { step } of uploads) {
+      // An upload on failure is how a diagnostics file would leave the runner.
+      expect(step.if).toBeUndefined();
+      for (const path of withPaths(step)) {
+        expect(path).not.toMatch(TEMP);
+        expect(path).toMatch(/^apps\/web\/dist\/[\w.-]+$/);
+      }
+    }
+  });
+
+  test("no workflow caches anything or sets the temp folder", () => {
+    for (const f of FILES) {
+      expect(f.text, f.name).not.toMatch(/actions\/cache\b/);
+      for (const env of [
+        f.workflow.env,
+        ...Object.values(f.workflow.jobs).flatMap((b) => [b.env, ...(b.steps ?? []).map((s) => s.env)]),
+      ]) {
+        expect(Object.keys(env ?? {}), f.name).not.toEqual(expect.arrayContaining(["RUNNER_TEMP"]));
+        expect(Object.keys(env ?? {}), f.name).not.toEqual(expect.arrayContaining(["TMPDIR"]));
+      }
+    }
+    for (const { file: name, job: jobName, step } of allSteps()) {
+      const where = `${name} ${jobName} ${step.uses ?? step.name ?? ""}`;
+      if (step.uses?.startsWith("actions/setup-node@")) expect(step.with?.["package-manager-cache"], where).toBe(false);
+      if (step.uses?.startsWith("astral-sh/setup-uv@")) expect(step.with?.["enable-cache"], where).toBe(false);
+    }
+  });
+
+  test("in a job that runs the gate, only the download and the gate step name the temp folder", () => {
+    for (const { file: name, job: jobName, body } of gateJobs()) {
+      for (const step of body.steps ?? []) {
+        const where = `${name} ${jobName} ${step.uses ?? step.name ?? ""}`;
+        const isGate =
+          /^node packages\/deploy\/src\/bin\.ts (?:check [\w./-]+|(?:deploy|triggers) "\$\{\{ runner\.temp \}\}\/[\w.-]+")$/.test(
+            step.run?.trim() ?? "",
+          );
+        const isDownload = step.uses?.startsWith("actions/download-artifact@") === true;
+        if (isGate || isDownload) continue;
+        expect(paths(step, TEMP), where).toEqual([]);
+      }
+    }
+  });
+
+  test("no workflow names the diagnostics folder or file at all", () => {
+    for (const f of FILES) expect(f.text, f.name).not.toMatch(/cj-gate-diagnostics|diagnostics\.txt/);
+  });
+});
