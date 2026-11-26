@@ -240,12 +240,13 @@ async function run(argv: readonly string[], io: CliIo): Promise<number> {
 type ApiOptions = { accountId: string; apiToken: string; fetch: Fetch };
 
 /**
- * The one-time `wrangler triggers deploy` before the first deploy (`versions deploy` applies no triggers): it sets
- * workers.dev on and preview URLs off, as the definition says, and uploads no code. Turning workers.dev on serves
- * whatever the Worker already runs, so the live Worker is checked first (security-sol r2, S2-1): the active deployment
- * must be readable (any lookup error but "Worker missing" stops the gate), and the script settings and every version
- * that deployment serves must show exactly the expected bindings and no tail consumer. A failing check leaves
- * workers.dev untouched. Afterwards the bindings and the subdomain settings are confirmed again; triggers cannot
+ * The one-time `wrangler triggers deploy` after the first deploy, on the same commit (`versions deploy` applies no
+ * triggers): it sets workers.dev on and preview URLs off, as the definition says, and uploads no code. Turning
+ * workers.dev on serves whatever the Worker already runs, so the live Worker is checked first (security-sol r2, S2-1):
+ * the active deployment must be readable (any lookup error but "Worker missing" stops the gate), and the script
+ * settings and every version that deployment serves must show exactly the expected bindings and no tail consumer.
+ * Then (S5-5) that deployment must be one version at 100% whose `workers/tag` is this build's manifest tag, and it is
+ * re-read just before the write. A failing check leaves workers.dev untouched. Afterwards the bindings and the subdomain settings are confirmed again; triggers cannot
  * change bindings, so a mismatch then is reported, not rolled back.
  */
 async function applyTriggers(io: CliIo, bundle: SealedBundle, options: RunOptions, api: ApiOptions): Promise<number> {

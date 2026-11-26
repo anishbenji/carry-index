@@ -57,10 +57,12 @@ Every other approved package PRs 7 and 8 need is installed at its approved pin (
   shapes, the private import ban) and check 2 (canary, bundle scan, `_headers`). `node packages/deploy/src/bin.ts
   check <siteDir>` runs check 1's schema half, the seal and check 2, and spawns nothing; `deploy <siteDir>` adds
   the build-graph check (the `moduleGraph` Vite plugin's report for the same build) and check 3: it uploads a version
-  with no traffic, checks that version, promotes it and confirms it live; `triggers <siteDir>` runs the same checks
-  and dry run, checks the live Worker and every version it serves, then runs `wrangler triggers deploy` once before
-  the first deploy (workers.dev on, preview URLs off, as the definition says) and confirms those settings. Both are for the
-  deploy workflow only; the first-deploy steps are in `packages/deploy/README.md`. Its contract tests T1 to T9 are
+  with no traffic, tagged with the sealed manifest's tag, checks that version, promotes it and confirms it live (the
+  first deploy runs with workers.dev and preview URLs off); `triggers <siteDir>` runs once after the first deploy, on
+  the same commit: the same checks and dry run, then, only if the active deployment is that build's tagged version
+  alone at 100% and clean, `wrangler triggers deploy` (workers.dev on, preview URLs off, as the definition says),
+  and it confirms those settings. Both are for the deploy workflow only; the first-deploy steps are in
+  `packages/deploy/README.md`. Its contract tests T1 to T9 are
   described in `packages/deploy/test/README.md`.
 - `apps/web`: a Solid 2 component that takes a `Bag` by `import type`; the Vite build emits a client bundle and
   no HTML, so the size and end-to-end gates stay in their "no pages yet" state until PR 7 emits pages.
