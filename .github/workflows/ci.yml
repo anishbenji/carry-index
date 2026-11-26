@@ -197,23 +197,53 @@ jobs:
             printf '%s\n' "$text" | sed 's/^/text file named as an image or font: /' >&2
             exit 1
           fi
-      # Prints only the paths, never the addresses. Allowed: noreply and example.com/org/net domains, package
-      # versions (name@1.2.3) and image density suffixes (logo@2x.png). Case-insensitive; binary-marked files are
-      # read as text; images, fonts and bun.lock (package integrity hashes) are skipped.
-      # shell: bash runs it with pipefail (Sol security, C3-2): GitHub's default `bash -e` has none, so a git grep
-      # read error (exit 2) would end in an empty, passing pipeline.
+      # Allowed: noreply and example.com/org/net domains, package versions (name@1.2.3) and image density suffixes
+      # (logo@2x.png). Case-insensitive; every tracked blob is read as text, whatever .gitattributes says; the
+      # content of images, fonts and bun.lock (package integrity hashes) is skipped, but every file's name is
+      # checked. Prints only counts and blob ids, never a path or an address (Sol security, C3-4): a file's name can
+      # hold the address itself. Find a file by its blob id with `git ls-files -s | grep <id>`.
+      # shell: bash runs it with pipefail (Sol security, C3-2): GitHub's default `bash -e` has none, so a git read
+      # error would end in an empty, passing pipeline.
       - name: No email addresses in tracked files
         shell: bash
         run: |
           set -euo pipefail
           pattern='[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z0-9.-]*[a-z]{2,}'
-          allowed=':[^:@]*@([^:@]*\.)?(noreply\.[^:@]*|example\.(com|org|net))$|:[^:@]*@[0-9]+(\.[0-9]+)+(-[a-z0-9.]+)?$|:[^:@]*@[23]x\.(png|jpe?g|gif|webp|avif|svg)$'
-          skip=(':!bun.lock')
-          for ext in png jpg jpeg gif webp avif ico bmp tif tiff woff woff2 ttf otf eot; do
-            skip+=(":(exclude,icase)*.$ext")
-          done
-          paths=$({ git grep --text --ignore-case --only-matching --extended-regexp "$pattern" -- . "${skip[@]}" || test $? = 1; } | { grep -viE "$allowed" || test $? = 1; } | sed 's/:[^:]*$//' | sort -u)
-          if [ -n "$paths" ]; then
-            printf '%s\n' "$paths" | sed 's/^/email address in tracked file: /' >&2
-            exit 1
+          allowed='^:[^:@]*@([^:@]*\.)?(noreply\.[^:@]*|example\.(com|org|net))$|^:[^:@]*@[0-9]+(\.[0-9]+)+(-[a-z0-9.]+)?$|^:[^:@]*@[23]x\.(png|jpe?g|gif|webp|avif|svg)$'
+          media='\.(png|jpe?g|gif|webp|avif|ico|bmp|tiff?|woff2?|ttf|otf|eot)$'
+          # The addresses in standard input that are not allowed, one per line, each after a colon.
+          addresses() {
+            { grep -aoiE -e "$pattern" || test $? = 1; } | sed 's/^/:/' | { grep -viE -e "$allowed" || test $? = 1; }
+          }
+          list=$(mktemp)
+          trap 'rm -f "$list"' EXIT
+          git ls-files -s -z > "$list"
+          content_n=0 content_ids='' names_n=0 names_ids=''
+          while IFS= read -r -d '' record; do
+            path=${record#*$'\t'}
+            read -r mode blob _ <<< "${record%%$'\t'*}"
+            hits=$(printf '%s\n' "$path" | addresses)
+            if [ -n "$hits" ]; then
+              names_n=$((names_n + 1))
+              names_ids="$names_ids $blob"
+            fi
+            lower=$(printf '%s' "$path" | tr 'A-Z' 'a-z')
+            if [ "$mode" = 160000 ] || [ "$path" = bun.lock ] || [[ "$lower" =~ $media ]]; then
+              continue
+            fi
+            hits=$(git cat-file blob "$blob" | addresses)
+            if [ -n "$hits" ]; then
+              content_n=$((content_n + 1))
+              content_ids="$content_ids $blob"
+            fi
+          done < "$list"
+          fail=0
+          if [ "$content_n" -gt 0 ]; then
+            echo "secret scan: email address in the content of $content_n tracked file(s); blob ids:$content_ids" >&2
+            fail=1
           fi
+          if [ "$names_n" -gt 0 ]; then
+            echo "secret scan: email address in $names_n tracked file name(s); blob ids:$names_ids" >&2
+            fail=1
+          fi
+          exit "$fail"

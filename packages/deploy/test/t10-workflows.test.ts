@@ -6,6 +6,7 @@
  * install runs with `--ignore-scripts`.
  */
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { describe, expect, test } from "vitest";
@@ -134,6 +135,14 @@ function githubBash(step: Step): string[] {
   if (step.shell === undefined) return ["-e", "-c", step.run ?? "exit 1"];
   if (step.shell === "bash") return ["--noprofile", "--norc", "-eo", "pipefail", "-c", step.run ?? "exit 1"];
   throw new Error(`unexpected shell ${step.shell}`);
+}
+
+/** The Git blob id of `content`, as `git hash-object` gives it. */
+function blobId(content: string): string {
+  const bytes = Buffer.from(content, "utf8");
+  return createHash("sha1")
+    .update(Buffer.concat([Buffer.from(`blob ${bytes.length}\0`), bytes]))
+    .digest("hex");
 }
 
 /** Built at run time, so no address literal sits in this file. Synthetic: .test and example.com are reserved. */
@@ -633,7 +642,10 @@ describe("T10 no email address in a tracked file (security review, Sol round 1, 
     try {
       const git = (...args: string[]) => spawnSync("git", args, { cwd: dir.root, encoding: "utf8" });
       git("init", "-q");
-      for (const [name, content] of Object.entries(files)) writeFileSync(join(dir.root, name), content);
+      for (const [name, content] of Object.entries(files)) {
+        mkdirSync(dirname(join(dir.root, name)), { recursive: true });
+        writeFileSync(join(dir.root, name), content);
+      }
       git("add", "-A");
       let path = process.env.PATH ?? "";
       if (failing !== undefined) {
@@ -657,9 +669,16 @@ describe("T10 no email address in a tracked file (security review, Sol round 1, 
     expect(emailStepObject().shell).toBe("bash");
   });
 
-  test("fails when git grep exits 2, as on a read error", () => {
-    const { status, output } = runIn({ "readme.txt": "clean\n" }, "grep");
+  // The step reads every blob with git ls-files and git cat-file (C3-4), so a read error is injected into each.
+  test.each(["ls-files", "cat-file"])("fails when git %s exits 2, as on a read error", (subcommand) => {
+    const { status, output } = runIn({ "readme.txt": "clean\n" }, subcommand);
     expect(status, output).not.toBe(0);
+  });
+
+  test("the step reads blobs only through the git commands those cases break", () => {
+    const run = emailStepObject().run ?? "";
+    const used = new Set([...run.matchAll(/\bgit ([a-z-]+)/g)].map((m) => m[1] ?? ""));
+    expect([...used].sort(byName)).toEqual(["cat-file", "ls-files"]);
   });
 
   test("passes when the only addresses are noreply or example ones", () => {
@@ -684,7 +703,9 @@ describe("T10 no email address in a tracked file (security review, Sol round 1, 
   ])("fails on %s (independent Fable review, P3)", (_shape, name, text) => {
     const { status, output } = runIn({ ".gitattributes": "*.bin binary\n", [name]: text });
     expect(status).not.toBe(0);
-    expect(output).toContain(name);
+    // Named by blob id, never by path: a path can itself hold an address (Sol security, C3-4).
+    expect(output).toContain(blobId(text));
+    expect(output).not.toContain(name);
   });
 
   test.each([
@@ -699,14 +720,47 @@ describe("T10 no email address in a tracked file (security review, Sol round 1, 
     expect(runIn({ "readme.txt": "nothing here\n" }).status).toBe(0);
   });
 
-  test("fails on an address in a tracked file, naming the path but never the address", () => {
+  test("fails on an address in a tracked file, giving a count and the blob id but never the path or address", () => {
     const address = at("synthetic.person", "mail-provider.test");
-    const { status, output } = runIn({ "readme.txt": "clean\n", "notes.txt": `write to ${address}\n` });
+    const notes = `write to ${address}\n`;
+    const { status, output } = runIn({ "readme.txt": "clean\n", "notes.txt": notes });
     expect(status).not.toBe(0);
-    expect(output).toContain("notes.txt");
+    expect(output).toContain("the content of 1 tracked file(s)");
+    expect(output).toContain(blobId(notes));
+    expect(output).not.toContain(blobId("clean\n"));
+    expect(output).not.toContain("notes.txt");
     expect(output).not.toContain("readme.txt");
     expect(output).not.toContain(address);
     expect(output).not.toContain("synthetic.person");
+  });
+
+  test("an address in a file's name and content never reaches the log (Sol security, C3-4)", () => {
+    const address = at("synthetic.person", "mail-provider.test");
+    const { status, output } = runIn({ [`order-${address}.json`]: `{"to": "${address}"}\n` });
+    expect(status).not.toBe(0);
+    expect(output).not.toContain(address);
+    expect(output).not.toContain("synthetic.person");
+    expect(output).not.toContain("order-");
+  });
+
+  test.each([
+    ["a text file", "txt"],
+    ["a skipped image", "png"],
+  ])("fails on an address only in the name of %s, giving a count and the blob id", (_what, ext) => {
+    const address = at("synthetic.person", "mail-provider.test");
+    const { status, output } = runIn({ [`to-${address}.${ext}`]: "clean\n" });
+    expect(status).not.toBe(0);
+    expect(output).toContain("1 tracked file name(s)");
+    expect(output).toContain(blobId("clean\n"));
+    expect(output).not.toContain(address);
+  });
+
+  test.each([
+    ["an image density suffix", "logo@2x.png"],
+    ["a package version folder", "patches/pkg@1.2.3/notes.txt"],
+    ["a noreply address", `${at("someone", "users.noreply.github.com")}.txt`],
+  ])("passes on %s in a file name", (_what, name) => {
+    expect(runIn({ [name]: "clean\n" }).status).toBe(0);
   });
 });
 
