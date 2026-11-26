@@ -83,9 +83,10 @@ jobs:
     if: github.ref == 'refs/heads/main' && !inputs.apply_triggers
     runs-on: ubuntu-24.04
     # The rollback path at worst: four Wrangler runs (dry run, upload, promote, rollback) at the gate's 10-minute
-    # limit each, API reads of up to 60 s with three tries on an error, and after each write up to five reads while
-    # the deployment converges (Neon N5): about 4,558 s, or 76 minutes, plus up to five minutes of setup.
-    timeout-minutes: 85
+    # limit each, API reads of up to 60 s with three tries on an error, and after each write up to seven reads (five
+    # while the deployment converges, two more on API errors, Neon N5 and N12): about 4,810 s, or 80 minutes, plus
+    # up to five minutes of setup.
+    timeout-minutes: 90
     environment: public-production
     permissions:
       contents: read

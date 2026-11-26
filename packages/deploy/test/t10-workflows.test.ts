@@ -1606,20 +1606,20 @@ describe("T10 a text file named as an image or font in a pull request's commits 
   });
 });
 
-describe("T10 the deploy job outlasts the gate's own worst case (after Neon N5)", () => {
-  test("timeout-minutes is 85, above the gate's worst case on the rollback path plus the job's setup", () => {
+describe("T10 the deploy job outlasts the gate's own worst case (after Neon N5 and N12)", () => {
+  test("timeout-minutes is 90, above the gate's worst case on the rollback path plus the job's setup", () => {
     const deploy = job("deploy-public.yml", "deploy") as Job & { "timeout-minutes"?: number };
-    // API reads of up to 60 s each (bin.ts: 30 s for the reply, 30 s for the body); a confirmed read retries an API
-    // error to LIVE_TRIES (3) reads and a not-yet-converged deployment to CONVERGE_TRIES (5) reads, waiting
-    // 2, 4, 6, 8 s (cli.ts). Wrangler runs stop at 600 s (runner.ts). The rollback path, in order:
+    // API reads of up to 60 s each (bin.ts: 30 s for the reply, 30 s for the body). A confirmed read retries an API
+    // error to LIVE_TRIES (3) reads, waiting 2 and 4 s; after a write it also retries a not-yet-converged deployment
+    // to CONVERGE_TRIES (5) reads, waiting 2, 4, 6 and 8 s, on its own counter (cli.ts, Neon N12). Wrangler runs
+    // stop at 600 s (runner.ts). The rollback path, in order:
     const read = 60;
     const confirmedVersion = 3 * (2 * read) + 2 + 4; // versions/<id> and settings, three tries: 366 s
     const confirmedSubdomain = 3 * read + 2 + 4; // 186 s
-    // After a write: two API-error tries (deployments and settings), two not-yet-converged tries (deployments
-    // only), then a last full try, with every wait: 500 s. N5a stops without a rollback only when the reads run out
-    // still pending; a last try that finds a definite check-3 problem still leads to the rollback path, so the
-    // post-promote term stays 500 s.
-    const converged = 2 * (2 * read) + 2 * read + 2 * read + 2 + 4 + 6 + 8;
+    // After a write, at most 7 reads: four not-yet-converged tries (the deployments read only), two API-error
+    // tries (deployments and settings), and a last full try that finds a definite check-3 problem, so the rollback
+    // path follows (N5a stops without a rollback only when the reads run out still pending); waits 20 + 6 s: 626 s.
+    const converged = 4 * read + 2 * (2 * read) + 2 * read + (2 + 4 + 6 + 8) + (2 + 4);
     const wrangler = 600;
     const worstSeconds =
       wrangler + // dry run
@@ -1636,8 +1636,9 @@ describe("T10 the deploy job outlasts the gate's own worst case (after Neon N5)"
       wrangler + // rollback
       converged;
     const setupSeconds = 300;
-    expect(worstSeconds).toBe(4558);
-    expect(deploy["timeout-minutes"]).toBe(85);
+    expect(converged).toBe(626);
+    expect(worstSeconds).toBe(4810);
+    expect(deploy["timeout-minutes"]).toBe(90);
     expect((deploy["timeout-minutes"] ?? 0) * 60).toBeGreaterThanOrEqual(worstSeconds + setupSeconds);
   });
 });
