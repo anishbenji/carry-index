@@ -6,8 +6,8 @@
  * install runs with `--ignore-scripts`.
  */
 import { spawnSync } from "node:child_process";
-import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { describe, expect, test } from "vitest";
 import { parse } from "yaml";
 import { REPO_ROOT, tempDir } from "./helpers.ts";
@@ -34,6 +34,7 @@ const GATE_DEPLOY = /^node packages\/deploy\/src\/bin\.ts deploy "?\$\{\{ runner
 interface Step {
   name?: string;
   if?: string;
+  shell?: string;
   uses?: string;
   run?: string;
   with?: Record<string, unknown>;
@@ -123,6 +124,76 @@ function allSteps(): { file: string; job: string; index: number; step: Step }[] 
       (body.steps ?? []).map((step, index) => ({ file: f.name, job: name, index, step })),
     ),
   );
+}
+
+/**
+ * The arguments GitHub runs a Linux `run:` step with: `bash -e {0}` when the step names no shell, and
+ * `bash --noprofile --norc -eo pipefail {0}` for `shell: bash` (workflow syntax, jobs.<job_id>.steps[*].shell).
+ */
+function githubBash(step: Step): string[] {
+  if (step.shell === undefined) return ["-e", "-c", step.run ?? "exit 1"];
+  if (step.shell === "bash") return ["--noprofile", "--norc", "-eo", "pipefail", "-c", step.run ?? "exit 1"];
+  throw new Error(`unexpected shell ${step.shell}`);
+}
+
+/** Built at run time, so no address literal sits in this file. Synthetic: .test and example.com are reserved. */
+const at = (local: string, domain: string): string => [local, domain].join("@");
+
+/** A scratch Git repository with a synthetic identity, for running workflow steps against real history. */
+function scratchRepo(prefix: string): {
+  root: string;
+  git: (...args: string[]) => string;
+  commit: (files: Readonly<Record<string, string | null>>, message: string) => string;
+  cleanup: () => void;
+} {
+  const dir = tempDir(prefix);
+  const git = (...args: string[]): string => {
+    const result = spawnSync("git", args, {
+      cwd: dir.root,
+      encoding: "utf8",
+      env: {
+        PATH: process.env.PATH ?? "",
+        HOME: dir.root,
+        GIT_CONFIG_NOSYSTEM: "1",
+        GIT_AUTHOR_NAME: "synthetic",
+        GIT_AUTHOR_EMAIL: at("synthetic", "example.com"),
+        GIT_COMMITTER_NAME: "synthetic",
+        GIT_COMMITTER_EMAIL: at("synthetic", "example.com"),
+      },
+    });
+    if (result.status !== 0) throw new Error(`git ${args.join(" ")} failed: ${result.stderr}`);
+    return result.stdout.trim();
+  };
+  git("init", "-q", "-b", "main");
+  const commit = (files: Readonly<Record<string, string | null>>, message: string): string => {
+    for (const [name, content] of Object.entries(files)) {
+      const path = join(dir.root, name);
+      if (content === null) git("rm", "-q", "--", name);
+      else {
+        mkdirSync(dirname(path), { recursive: true });
+        writeFileSync(path, content);
+        git("add", "--", name);
+      }
+    }
+    git("commit", "-q", "--allow-empty", "-m", message);
+    return git("rev-parse", "HEAD");
+  };
+  return { root: dir.root, git, commit, cleanup: dir.cleanup };
+}
+
+/** Runs `step` in `cwd` as GitHub would on Linux, with only `env` (plus PATH and HOME) set. */
+function runStep(
+  step: Step,
+  cwd: string,
+  env: Readonly<Record<string, string>> = {},
+  path = process.env.PATH ?? "",
+): { status: number; output: string } {
+  const result = spawnSync("bash", githubBash(step), {
+    cwd,
+    encoding: "utf8",
+    env: { PATH: path, HOME: cwd, GIT_CONFIG_NOSYSTEM: "1", ...env },
+  });
+  return { status: result.status ?? -1, output: `${result.stdout}${result.stderr}` };
 }
 
 /** The index of the deploy job's single gate step, the step that runs `bin.ts deploy`. */
@@ -572,9 +643,6 @@ describe("T10 no email address in a tracked file (security review, Sol round 1, 
     }
   }
 
-  // Built at run time, so no address literal sits in this file. Synthetic: the .test domain is reserved.
-  const at = (local: string, domain: string): string => [local, domain].join("@");
-
   test("passes when the only addresses are noreply or example ones", () => {
     const text = `${at("someone", "users.noreply.github.com")}\n${at("someone", "example.com")}\nlogo@2x.png\n`;
     expect(runIn({ "readme.txt": text }).status).toBe(0);
@@ -1003,5 +1071,111 @@ describe("T10 the triggers job outlasts the gate's own worst case (independent r
     const worstSeconds = 60 + 186 + 366 + 600 + 186 + 186 + 600;
     expect(triggers["timeout-minutes"]).toBe(40);
     expect((triggers["timeout-minutes"] ?? 0) * 60).toBeGreaterThan(worstSeconds);
+  });
+});
+
+describe("T10 a pull request is scanned with its base's gitleaks policy (Sol security, C3-1)", () => {
+  const POLICY_BASE = "# synthetic base policy\n";
+  const POLICY_PR = "# synthetic policy with a rule removed\n";
+  const steps = (): Step[] => job("ci.yml", "secret-scan").steps ?? [];
+  const policyIndex = (): number => {
+    const found = steps().flatMap((step, i) => ((step.run ?? "").includes("policy changed: owner review") ? [i] : []));
+    expect(found).toHaveLength(1);
+    return found[0] ?? -1;
+  };
+  const policyStep = (): Step => steps()[policyIndex()] ?? {};
+  const scanIndex = (): number => steps().findIndex((step) => /\bgitleaks"? git\b/.test(step.run ?? ""));
+
+  test("the step takes the event and the base commit from env, runs with pipefail, and comes before the scan", () => {
+    const step = policyStep();
+    expect(step.env).toStrictEqual({
+      EVENT_NAME: expr("github.event_name"),
+      BASE_SHA: expr("github.event.pull_request.base.sha"),
+    });
+    expect(step.shell).toBe("bash");
+    expect(step.run).not.toContain("${{");
+    expect(step.if).toBeUndefined();
+    const checkout = steps().findIndex((s) => s.uses?.startsWith("actions/checkout@"));
+    expect(checkout).toBeGreaterThanOrEqual(0);
+    expect(steps()[checkout]?.with?.["fetch-depth"]).toBe(0);
+    expect(policyIndex()).toBeGreaterThan(checkout);
+    expect(policyIndex()).toBeLessThan(scanIndex());
+  });
+
+  /** A base commit with `base` as its policy (or none), then a pull request commit with `pr` applied. */
+  function pullRequest(base: string | null, pr: Readonly<Record<string, string | null>>) {
+    const repo = scratchRepo("cj-t10-policy-");
+    const baseSha = repo.commit(
+      base === null ? { "readme.txt": "base\n" } : { "readme.txt": "base\n", ".github/gitleaks.toml": base },
+      "base",
+    );
+    repo.commit(pr, "pull request");
+    return { repo, baseSha };
+  }
+  const policyOnDisk = (root: string): string => readFileSync(join(root, ".github/gitleaks.toml"), "utf8");
+
+  test("a pull request that leaves the policy alone is scanned with the base commit's copy, and says so", () => {
+    const { repo, baseSha } = pullRequest(POLICY_BASE, { "readme.txt": "changed\n" });
+    try {
+      // Even a working-tree edit the commits do not show is replaced by the base's copy.
+      writeFileSync(join(repo.root, ".github/gitleaks.toml"), POLICY_PR);
+      const { status, output } = runStep(policyStep(), repo.root, { EVENT_NAME: "pull_request", BASE_SHA: baseSha });
+      expect(status, output).toBe(0);
+      expect(output).toContain(`policy from the base commit ${baseSha}`);
+      expect(policyOnDisk(repo.root)).toBe(POLICY_BASE);
+    } finally {
+      repo.cleanup();
+    }
+  });
+
+  test.each([
+    ["changes", POLICY_PR],
+    ["deletes", null],
+  ])("a pull request that %s the policy fails for owner review", (_what, content) => {
+    const { repo, baseSha } = pullRequest(POLICY_BASE, { ".github/gitleaks.toml": content });
+    try {
+      const { status, output } = runStep(policyStep(), repo.root, { EVENT_NAME: "pull_request", BASE_SHA: baseSha });
+      expect(status).not.toBe(0);
+      expect(output).toContain("policy changed: owner review");
+    } finally {
+      repo.cleanup();
+    }
+  });
+
+  test("the bootstrap pull request, whose base has no policy, uses its own and says so", () => {
+    const { repo, baseSha } = pullRequest(null, { ".github/gitleaks.toml": POLICY_PR });
+    try {
+      const { status, output } = runStep(policyStep(), repo.root, { EVENT_NAME: "pull_request", BASE_SHA: baseSha });
+      expect(status, output).toBe(0);
+      expect(output).toContain("the base commit has no policy");
+      expect(policyOnDisk(repo.root)).toBe(POLICY_PR);
+    } finally {
+      repo.cleanup();
+    }
+  });
+
+  test("a push uses its own commit's policy and needs no base", () => {
+    const { repo } = pullRequest(POLICY_BASE, { ".github/gitleaks.toml": POLICY_PR });
+    try {
+      const { status, output } = runStep(policyStep(), repo.root, { EVENT_NAME: "push", BASE_SHA: "" });
+      expect(status, output).toBe(0);
+      expect(output).toContain("policy from this commit (push)");
+      expect(policyOnDisk(repo.root)).toBe(POLICY_PR);
+    } finally {
+      repo.cleanup();
+    }
+  });
+
+  test.each([
+    ["empty", ""],
+    ["not a commit id", "main"],
+    ["a commit the clone does not have", "c".repeat(40)],
+  ])("a pull request whose base is %s fails", (_what, base) => {
+    const { repo } = pullRequest(POLICY_BASE, { "readme.txt": "changed\n" });
+    try {
+      expect(runStep(policyStep(), repo.root, { EVENT_NAME: "pull_request", BASE_SHA: base }).status).not.toBe(0);
+    } finally {
+      repo.cleanup();
+    }
   });
 });

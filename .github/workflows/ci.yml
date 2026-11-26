@@ -132,6 +132,38 @@ jobs:
               exit 1
             fi
           done
+      # A pull request must not choose the policy that scans it (Sol security, C3-1): on pull_request the policy is
+      # the base commit's copy, written over the checkout's, and a pull request that changes or deletes it fails
+      # for owner review. Only the bootstrap pull request, whose base has no policy yet, uses its own. A push uses
+      # its own commit's. Residual, accepted: a pull_request run uses the pull request's own ci.yml, so a pull
+      # request can still edit this step; every .github/** change is owner-reviewed and never auto-merged. The
+      # trigger that runs the base's workflow is not used: it runs with the base's credentials beside untrusted input.
+      - name: Choose the scan policy (the base commit's, on a pull request)
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          policy=.github/gitleaks.toml
+          if [ "$EVENT_NAME" != pull_request ]; then
+            echo "secret scan: policy from this commit ($EVENT_NAME)"
+            exit 0
+          fi
+          if ! [[ "$BASE_SHA" =~ ^[0-9a-f]{40}$ ]] || ! git cat-file -e "$BASE_SHA^{commit}"; then
+            echo "secret scan: the pull request's base commit is missing from the checkout" >&2
+            exit 1
+          fi
+          if ! git cat-file -e "$BASE_SHA:$policy" 2>/dev/null; then
+            echo "secret scan: the base commit has no policy; using this pull request's (bootstrap)"
+            exit 0
+          fi
+          if ! git diff --quiet "$BASE_SHA" HEAD -- "$policy"; then
+            echo "secret scan: policy changed: owner review ($policy differs from the base commit)" >&2
+            exit 1
+          fi
+          git show "$BASE_SHA:$policy" > "$policy"
+          echo "secret scan: policy from the base commit $BASE_SHA"
       # Every ref, merge commits against their first parent, and files Git attributes mark as binary, with the
       # trusted policy under .github/ (gitleaks' default rules without its skips for text files).
       - name: Scan the whole history
