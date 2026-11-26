@@ -42,6 +42,16 @@ describe("the public folder is copied only as plain, public files (S4-2)", () =>
     expect(resolveWith(root, join(root, "apps/web/public"))).toThrow(/symlink.*apps\/web\/public\/notes/);
   });
 
+  // Final gate, G4: the walk began from the folder's real path, so a public folder that is itself a link was
+  // followed before anything was checked. The original root is lstat-ed first.
+  test("a public folder that is itself a symlink, even to a permitted folder, fails the build", () => {
+    const dir = tempDir("cj-public-dir-repo-");
+    temps.push(dir);
+    writeTree(dir.root, { "apps/web/static/_headers": "/*\n  X-Content-Type-Options: nosniff\n" });
+    symlinkSync(join(dir.root, "apps/web/static"), join(dir.root, "apps/web/public"));
+    expect(resolveWith(dir.root, join(dir.root, "apps/web/public"))).toThrow(/symlink apps\/web\/public(?:;|$)/);
+  });
+
   test("a hard-linked file in public/ fails the build", () => {
     const root = repo({ "data/my-notes.yaml": "synthetic: true\n" });
     linkSync(join(root, "data/my-notes.yaml"), join(root, "apps/web/public/notes.yaml"));

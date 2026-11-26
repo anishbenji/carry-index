@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { existsSync, realpathSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, lstatSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { isAbsolute, relative, resolve, sep } from "node:path";
 import { isPrivatePath } from "./private-roots.ts";
 import { WalkLimitExceeded, walkTree } from "./walk.ts";
@@ -139,6 +139,9 @@ export function publicDirProblems(publicDir: string, repoRoot: string): string[]
     if (!isOutside(rel)) return rel;
     return isOutside(fallback) ? OUTSIDE_REPOSITORY : fallback;
   };
+  // The root itself first, by lstat: a public folder that is a link is followed by Vite's copy, so it is refused
+  // like any link the walk finds, before realpathSync resolves it (final gate, G4).
+  if (lstatSync(publicDir).isSymbolicLink()) return [`symlink ${shown(publicDir)}`];
   let entries: ReturnType<typeof walkTree>;
   try {
     entries = walkTree(realpathSync(publicDir), {}, { maxEntries: MAX_PUBLIC_ENTRIES });
