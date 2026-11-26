@@ -82,9 +82,10 @@ jobs:
     # An apply_triggers run only applies triggers, to the build an earlier deploy-public run promoted (S5-5).
     if: github.ref == 'refs/heads/main' && !inputs.apply_triggers
     runs-on: ubuntu-24.04
-    # Four Wrangler runs (dry run, upload, promote, rollback) at the gate's 10-minute limit each, plus API reads of
-    # up to 60 s with three tries each on the rollback path: about 70 minutes at worst.
-    timeout-minutes: 75
+    # The rollback path at worst: four Wrangler runs (dry run, upload, promote, rollback) at the gate's 10-minute
+    # limit each, API reads of up to 60 s with three tries on an error, and after each write up to five reads while
+    # the deployment converges (Neon N5): about 4,558 s, or 76 minutes, plus up to five minutes of setup.
+    timeout-minutes: 85
     environment: public-production
     permissions:
       contents: read

@@ -1605,3 +1605,37 @@ describe("T10 a text file named as an image or font in a pull request's commits 
     }
   });
 });
+
+describe("T10 the deploy job outlasts the gate's own worst case (after Neon N5)", () => {
+  test("timeout-minutes is 85, above the gate's worst case on the rollback path plus the job's setup", () => {
+    const deploy = job("deploy-public.yml", "deploy") as Job & { "timeout-minutes"?: number };
+    // API reads of up to 60 s each (bin.ts: 30 s for the reply, 30 s for the body); a confirmed read retries an API
+    // error to LIVE_TRIES (3) reads and a not-yet-converged deployment to CONVERGE_TRIES (5) reads, waiting
+    // 2, 4, 6, 8 s (cli.ts). Wrangler runs stop at 600 s (runner.ts). The rollback path, in order:
+    const read = 60;
+    const confirmedVersion = 3 * (2 * read) + 2 + 4; // versions/<id> and settings, three tries: 366 s
+    const confirmedSubdomain = 3 * read + 2 + 4; // 186 s
+    // After a write: two API-error tries (deployments and settings), two not-yet-converged tries (deployments
+    // only), then a last full try, with every wait: 500 s.
+    const converged = 2 * (2 * read) + 2 * read + 2 * read + 2 + 4 + 6 + 8;
+    const wrangler = 600;
+    const worstSeconds =
+      wrangler + // dry run
+      read + // active deployment
+      confirmedSubdomain +
+      wrangler + // versions upload
+      confirmedVersion +
+      read + // compare and swap before the promote
+      wrangler + // versions deploy
+      converged +
+      read + // active deployment before the rollback
+      confirmedVersion + // the rollback target
+      read + // compare and swap before the rollback
+      wrangler + // rollback
+      converged;
+    const setupSeconds = 300;
+    expect(worstSeconds).toBe(4558);
+    expect(deploy["timeout-minutes"]).toBe(85);
+    expect((deploy["timeout-minutes"] ?? 0) * 60).toBeGreaterThanOrEqual(worstSeconds + setupSeconds);
+  });
+});
