@@ -166,8 +166,11 @@ function globOptionsSafe(options: Node): boolean {
   });
 }
 
-function isPrivate(root: string, file: string, specifier: string): boolean {
-  if (specifier === NON_LITERAL) return true;
+function isPrivate(root: string, file: string, written: string): boolean {
+  if (written === NON_LITERAL) return true;
+  // Vite's `?raw`, `?url` and `#...` suffixes name the same file: strip them before every check, as the
+  // build-graph check does (Neon N11).
+  const specifier = written.replace(/[?#].*$/s, "");
   if (PRIVATE_PACKAGES.some((name) => specifier === name || specifier.startsWith(`${name}/`))) return true;
   if (!/^(?:\.|\/|file:)/.test(specifier)) return false;
   const path = specifier.startsWith("file:") ? fileURLToPath(specifier) : specifier;
