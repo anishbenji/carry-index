@@ -35,6 +35,10 @@ S5-5). In this order:
    workers.dev on, preview URLs off and the expected bindings.
 4. Later deploys need only `deploy-public`.
 
+Never upload a version by hand (`wrangler versions upload`, `wrangler deploy` or the dashboard): only the gate
+uploads. `triggers` trusts a version's `workers/tag` only because the gate's own uploads are the only ones that carry
+it; a hand upload could reuse a tag and be made public without having been sealed or scanned (sol security r4, S6-1).
+
 ## The build-graph report
 
 The public build's Vite config runs `moduleGraph` (`src/graph-plugin.ts`): the build fails on any module it
