@@ -40,7 +40,9 @@ Runs on every push to `main`, once a day at 04:17 UTC (so `/performance` stays c
 2. **`deploy`** needs `build` and runs only when the ref is `main`, in the environment `public-production`. It
    checks out the same commit, installs with `--ignore-scripts`, downloads `public-site` into the run temp folder
    (the folder and its report side by side; the download fails if the artifact's digest does not match what was
-   uploaded), then runs one step. It never builds: no build tool runs in a job that holds the token.
+   uploaded), stops unless the run's commit is still the tip of `main` (`git ls-remote`, so a re-run of an older
+   run cannot deploy an older commit), then runs one step. It never builds: no build tool runs in a job that holds
+   the token.
 
    ```sh
    node packages/deploy/src/bin.ts deploy "$RUNNER_TEMP/public-site"
@@ -67,7 +69,8 @@ Runs on every push to `main`, once a day at 04:17 UTC (so `/performance` stays c
 3. **`triggers`** runs only on a manual run on `main` with **apply_triggers** ticked, in `public-production`, and
    on that run it replaces `deploy` (which is skipped). `wrangler versions deploy` applies none of the config's
    triggers, and the gate refuses an upload while workers.dev or preview URLs differ from the definition (rule
-   `live-subdomain`; preview URLs would serve even a version the gate then refuses). So this job runs
+   `live-subdomain`; preview URLs would serve even a version the gate then refuses). So this job, after the same
+   tip-of-`main` check as `deploy`, runs
    `node packages/deploy/src/bin.ts triggers "$RUNNER_TEMP/public-site"`: the same check 1, seal, scan,
    build-graph check and dry run. Turning workers.dev on serves whatever the Worker already runs, so the gate then
    checks the live Worker first: the active deployment must be readable, and the script settings and every
@@ -165,8 +168,14 @@ paths, build and run the same `check` on your own machine (`bun run build`, then
 `node packages/deploy/src/bin.ts check apps/web/dist/client`); there the file is in the system temp folder.
 Only `_headers`, `_redirects` and the site folder itself (`.`) are printed by name.
 
+**Re-running.** Where a row below says re-run: re-run only the newest `deploy-public` run; otherwise run the
+workflow again from `main` (**Actions → deploy-public → Run workflow**, on `main`). A re-run keeps its run's
+commit, so re-running an older run would put an older commit back live. The `deploy` and `triggers` jobs
+therefore stop before the gate unless the run's commit is still the tip of `main` (the row just below).
+
 | Summary line | What happened | What to do |
 |---|---|---|
+| `deploy-public: this run is for …, but main is now at …; run the workflow again from main` (the step before the gate) | This run, or a re-run of it, is for a commit that is no longer the tip of `main`. `main is now at nothing` means the repository showed no `main`; if `git ls-remote` itself failed, its own error line shows instead. Nothing ran through the gate and nothing changed | Nothing to undo. If a newer run exists, it deploys `main`; otherwise run the workflow again from `main` |
 | `check 1 failed`, `seal failed` or `bundle scan failed` | The build broke a wall rule. Nothing was uploaded | Fix the cause the problem lines name, in a pull request |
 | `schema-rewrite` lines, with `check 1 failed` | A public catalogue schema can change a value after parsing (`.overwrite()`, `.transform()`, a pipe into a transform, or a check kind that is not validation only), so the published JSON Schema would not describe the output. Nothing was uploaded | Remove the rewrite from the schema in `packages/schema`, in a pull request |
 | `hard-link`, `file-changed`, `fit-data-invalid` or `redirects-invalid` lines (as `#<n> <ref8>`, or `"_redirects"` by name), with `seal failed` | `hard-link`: a file in the build has more than one link, so it may be a private file under another name. `file-changed`: a file's size changed between the seal's walk and its read. `fit-data-invalid`: a `data/fit/*.json` file does not match the closed `fitSchema` in `@cj/schema`. `redirects-invalid`: a `_redirects` rule leaves the site or breaks the rule limits. Nothing was uploaded | Reproduce locally with `check` to see the paths (above), then fix the build or the data in a pull request. `file-changed` alone on CI with no change: re-run |

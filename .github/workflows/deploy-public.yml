@@ -109,6 +109,21 @@ jobs:
           name: public-site
           path: ${{ runner.temp }}
           digest-mismatch: error
+      # A re-run keeps its run's commit (and, for failed jobs, its artifact), so re-running an older run would put an
+      # older commit back live. Stop unless this run's commit is still the tip of main (security review r2, C2-2).
+      # Environment variables only; the public repository is read without a token.
+      - name: Stop unless this commit is still the tip of main
+        run: |
+          set -euo pipefail
+          if ! [[ "$GITHUB_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "deploy-public: GITHUB_SHA is not a commit id" >&2
+            exit 1
+          fi
+          tip=$(git ls-remote "https://github.com/$GITHUB_REPOSITORY" refs/heads/main | cut -f1)
+          if [ "$tip" != "$GITHUB_SHA" ]; then
+            echo "deploy-public: this run is for $GITHUB_SHA, but main is now at ${tip:-nothing}; run the workflow again from main" >&2
+            exit 1
+          fi
       - name: Deploy through the gate (seal, scan, dry run, upload, verify, promote, live check)
         run: node packages/deploy/src/bin.ts deploy "${{ runner.temp }}/public-site"
         env:
@@ -148,6 +163,21 @@ jobs:
           name: public-site
           path: ${{ runner.temp }}
           digest-mismatch: error
+      # A re-run keeps its run's commit (and, for failed jobs, its artifact), so re-running an older run would put an
+      # older commit back live. Stop unless this run's commit is still the tip of main (security review r2, C2-2).
+      # Environment variables only; the public repository is read without a token.
+      - name: Stop unless this commit is still the tip of main
+        run: |
+          set -euo pipefail
+          if ! [[ "$GITHUB_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "deploy-public: GITHUB_SHA is not a commit id" >&2
+            exit 1
+          fi
+          tip=$(git ls-remote "https://github.com/$GITHUB_REPOSITORY" refs/heads/main | cut -f1)
+          if [ "$tip" != "$GITHUB_SHA" ]; then
+            echo "deploy-public: this run is for $GITHUB_SHA, but main is now at ${tip:-nothing}; run the workflow again from main" >&2
+            exit 1
+          fi
       - name: Apply triggers through the gate (seal, scan, dry run, triggers deploy, live check)
         run: node packages/deploy/src/bin.ts triggers "${{ runner.temp }}/public-site"
         env:

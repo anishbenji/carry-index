@@ -883,3 +883,78 @@ describe("T10 a file named as an image or font must be binary (security review r
     expect(output).toContain("token.png");
   });
 });
+
+describe("T10 a re-run of an older run never deploys an older commit (security review r2, C2-2)", () => {
+  const LS_REMOTE = 'git ls-remote "https://github.com/$GITHUB_REPOSITORY" refs/heads/main';
+  const SHA_A = "a".repeat(40);
+  const SHA_B = "b".repeat(40);
+
+  /** The job's one tip-of-main guard, and where it sits. */
+  function guard(jobName: string): { index: number; run: string } {
+    const steps = job("deploy-public.yml", jobName).steps ?? [];
+    const found = steps.flatMap((step, i) => ((step.run ?? "").includes("git ls-remote") ? [i] : []));
+    expect(found, jobName).toHaveLength(1);
+    const index = found[0] ?? -1;
+    return { index, run: steps[index]?.run ?? "exit 1" };
+  }
+
+  /** Runs the guard with a stub `git` that prints `remote` (or fails), as GitHub's Linux shell would. */
+  function runGuard(run: string, remote: string | undefined, sha: string): number {
+    const dir = tempDir("cj-t10-tip-");
+    try {
+      const stub =
+        remote === undefined
+          ? "#!/bin/sh\necho 'fatal: unable to access' >&2\nexit 128\n"
+          : `#!/bin/sh\n[ "$1" = ls-remote ] || exit 99\n[ "$2" = "https://github.com/synthetic-owner/synthetic-repo" ] || exit 98\n[ "$3" = refs/heads/main ] || exit 97\nprintf '%s' '${remote}'\n`;
+      writeFileSync(join(dir.root, "git"), stub, { mode: 0o755 });
+      const result = spawnSync("bash", ["--noprofile", "--norc", "-eo", "pipefail", "-c", run], {
+        cwd: dir.root,
+        env: {
+          PATH: `${dir.root}:${process.env.PATH ?? ""}`,
+          GITHUB_REPOSITORY: "synthetic-owner/synthetic-repo",
+          GITHUB_SHA: sha,
+        },
+        encoding: "utf8",
+      });
+      return result.status ?? -1;
+    } finally {
+      dir.cleanup();
+    }
+  }
+
+  test.each([
+    ["deploy", "deploy"],
+    ["triggers", "triggers"],
+  ])("the %s job checks the tip of main in the step just before its gate", (jobName, command) => {
+    const steps = job("deploy-public.yml", jobName).steps ?? [];
+    const gate = steps.findIndex((step) => new RegExp(`\\bbin\\.ts ${command}\\b`).test(step.run ?? ""));
+    const { index, run } = guard(jobName);
+    expect(index).toBe(gate - 1);
+    expect(run).toContain(LS_REMOTE);
+    expect(run).toContain("$GITHUB_SHA");
+    // Environment variables only: no expression is expanded into the script.
+    expect(run).not.toContain("${{");
+    expect(steps[index]?.env).toBeUndefined();
+    expect(steps[index]?.if).toBeUndefined();
+  });
+
+  test.each(["deploy", "triggers"])("the %s guard passes when the run's commit is the tip of main", (jobName) => {
+    expect(runGuard(guard(jobName).run, `${SHA_A}\trefs/heads/main\n`, SHA_A)).toBe(0);
+  });
+
+  test.each(["deploy", "triggers"])("the %s guard stops a run whose commit is no longer the tip", (jobName) => {
+    expect(runGuard(guard(jobName).run, `${SHA_B}\trefs/heads/main\n`, SHA_A)).not.toBe(0);
+  });
+
+  test.each(["deploy", "triggers"])("the %s guard stops when main cannot be read", (jobName) => {
+    expect(runGuard(guard(jobName).run, undefined, SHA_A)).not.toBe(0);
+  });
+
+  test.each(["deploy", "triggers"])("the %s guard stops when the remote has no main", (jobName) => {
+    expect(runGuard(guard(jobName).run, "", SHA_A)).not.toBe(0);
+  });
+
+  test.each(["deploy", "triggers"])("the %s guard stops when GITHUB_SHA is empty", (jobName) => {
+    expect(runGuard(guard(jobName).run, "\trefs/heads/main\n", "")).not.toBe(0);
+  });
+});
