@@ -3,7 +3,10 @@
 # unchanged except for the global allowlist's `paths`: the entries that skip text files were removed (SVG, glTF,
 # lockfiles, go.mod and go.sum, Gradle and Maven wrappers, bundled JS libraries, javascript.json,
 # verification-metadata.xml, Database.refactorlog and gitleaks.toml itself), so a key in one of them is found.
-# Binary formats, fonts, node_modules, vendor and Python library folders stay skipped. It is a full copy rather
+# Security review r2 (C2-1) also removed the entries that skip files by a document or binary extension (docx, pdf,
+# bin, exe, gem and the like) and the vendor/ and bower_components/ folders: a name says nothing about the
+# contents. Images and fonts stay skipped, and ci.yml's secret-scan job fails if a tracked file with one of those
+# extensions is text. node_modules (never tracked) and Python library folders stay skipped. It is a full copy rather
 # than `[extend] useDefault`, because an extending config keeps the default's global allowlist (config.go).
 # To upgrade gitleaks, copy the new default and remove the same entries again. Under .github/, so it is never
 # auto-merged; the scan refuses a root .gitleaks.toml or .gitleaksignore.
@@ -34,15 +37,10 @@ description = "global allow lists"
 paths = [
     '''(?i)\.(?:bmp|gif|jpe?g|png|tiff?)$''',
     '''(?i)\.(?:eot|[ot]tf|woff2?)$''',
-    '''(?i)\.(?:docx?|xlsx?|pdf|bin|socket|vsidx|v2|suo|wsuo|.dll|pdb|exe)$''',
-    '''(?:^|/)vendor/(?:github\.com|golang\.org/x|google\.golang\.org|gopkg\.in|istio\.io|k8s\.io|sigs\.k8s\.io)(?:/.*)?$''',
     '''(?:^|/)node_modules(?:/.*)?$''',
-    '''(?:^|/)bower_components(?:/.*)?$''',
     '''(?i)(?:^|/)(?:v?env|virtualenv)/lib(?:64)?(?:/.*)?$''',
     '''(?i)(?:^|/)(?:lib(?:64)?/python[23](?:\.\d{1,2})+|python/[23](?:\.\d{1,2})+/lib(?:64)?)(?:/.*)?$''',
     '''(?i)(?:^|/)[a-z0-9_.]+-[0-9.]+\.dist-info(?:/.+)?$''',
-    '''(?:^|/)vendor/(?:bundle|ruby)(?:/.*?)?$''',
-    '''\.gem$''',
     '''(?:^|/)\.git$''',
 ]
 regexes = [

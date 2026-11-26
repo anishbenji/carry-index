@@ -118,6 +118,31 @@ jobs:
           --config .github/gitleaks.toml
           --log-opts="--full-history --all --diff-filter=uxdb --text --diff-merges=first-parent"
           --exit-code 1 .
+      # The scan's policy and the email check below skip images and fonts by extension, so each must really be
+      # binary (security review r2, C2-1): a tracked file with one of these extensions and no NUL byte is text, and
+      # is refused. Read from the checkout with grep rather than git grep -I, so a .gitattributes entry cannot mark a
+      # text file binary. Prints only the paths.
+      - name: No text files named as images or fonts
+        run: |
+          set -euo pipefail
+          specs=()
+          for ext in png jpg jpeg gif webp avif ico bmp tif tiff woff woff2 ttf otf eot; do
+            specs+=(":(icase)*.$ext")
+          done
+          text=$(git ls-files -z -- "${specs[@]}" | while IFS= read -r -d '' path; do
+            status=0
+            LC_ALL=C grep -I -q -e '' -- "$path" || status=$?
+            if [ "$status" -eq 0 ]; then
+              printf '%s\n' "$path"
+            elif [ "$status" -ne 1 ]; then
+              echo "secret scan: cannot read $path" >&2
+              exit 2
+            fi
+          done)
+          if [ -n "$text" ]; then
+            printf '%s\n' "$text" | sed 's/^/text file named as an image or font: /' >&2
+            exit 1
+          fi
       # Prints only the paths, never the addresses. Allowed: noreply and example.com/org/net domains, package
       # versions (name@1.2.3) and image density suffixes (logo@2x.png). Case-insensitive; binary-marked files are
       # read as text; images, fonts and bun.lock (package integrity hashes) are skipped.

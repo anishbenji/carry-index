@@ -511,8 +511,31 @@ describe("T10 the secret scan reads every change, with a trusted policy (securit
     ".github/gitleaks.toml",
     "vendor/modules.txt",
     "assets/jquery-3.7.1.min.js",
+    // Text files the default policy skipped by name (security review r2, C2-1).
+    "docs/notes.pdf",
+    "apps/web/notes.bin",
+    "docs/report.DOCX",
+    "docs/sheet.xlsx",
+    "apps/web/tool.exe",
+    "pkg-1.0.gem",
+    "apps/web/src/vendor/github.com/x/conf.ts",
+    "vendor/golang.org/x/a.go",
+    "vendor/bundle/ruby/a.rb",
+    "bower_components/x/a.js",
   ])("the policy scans the text file %s", (path) => {
     expect(policyPaths().filter((re) => re.test(path))).toEqual([]);
+  });
+
+  test("the global allowlist skips only images, fonts and installed-package folders (security review r2, C2-1)", () => {
+    expect(policyPaths().map((re) => (re.flags.includes("i") ? `(?i)${re.source}` : re.source))).toStrictEqual([
+      String.raw`(?i)\.(?:bmp|gif|jpe?g|png|tiff?)$`,
+      String.raw`(?i)\.(?:eot|[ot]tf|woff2?)$`,
+      String.raw`(?:^|\/)node_modules(?:\/.*)?$`,
+      String.raw`(?i)(?:^|\/)(?:v?env|virtualenv)\/lib(?:64)?(?:\/.*)?$`,
+      String.raw`(?i)(?:^|\/)(?:lib(?:64)?\/python[23](?:\.\d{1,2})+|python\/[23](?:\.\d{1,2})+\/lib(?:64)?)(?:\/.*)?$`,
+      String.raw`(?i)(?:^|\/)[a-z0-9_.]+-[0-9.]+\.dist-info(?:\/.+)?$`,
+      String.raw`(?:^|\/)\.git$`,
+    ]);
   });
 
   test.each(["og/page.png", "fonts/a.woff2", "node_modules/x/index.js"])("the policy still skips %s", (path) => {
@@ -778,5 +801,85 @@ describe("T10 no workflow step makes links or writes into the public folder (sec
       expect(run, where).not.toMatch(/(?:^|[\s;&|(])(?:ln|link)\s|\bcp\s+-\S*[lsa]|\brsync\b|\bmklink\b/m);
       expect(run, where).not.toMatch(/apps\/web\/public/);
     }
+  });
+});
+
+describe("T10 a file named as an image or font must be binary (security review r2, C2-1)", () => {
+  /** Every extension the scan's policy or the email check skips as an image or font. */
+  const MEDIA = [
+    "png",
+    "jpg",
+    "jpeg",
+    "gif",
+    "webp",
+    "avif",
+    "ico",
+    "bmp",
+    "tif",
+    "tiff",
+    "woff",
+    "woff2",
+    "ttf",
+    "otf",
+    "eot",
+  ];
+  /** Synthetic binary content: a PNG signature and a NUL-bearing chunk header, as every real image and font has. */
+  const BINARY = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d, 0x49, 0x48]);
+  /** A made-up token, built at run time so no token-shaped literal is tracked. */
+  const TOKEN = `token = ${["ghp", "SYNTHETICsyntheticSYNTHETICsynthetic00"].join("_")}\n`;
+
+  const mediaStep = (): string => {
+    const steps = job("ci.yml", "secret-scan").steps ?? [];
+    const found = steps.filter((step) => (step.run ?? "").includes("image or font"));
+    expect(found).toHaveLength(1);
+    return found[0]?.run ?? "exit 1";
+  };
+
+  /** Runs the step in a fresh repository holding `files`, with the shell GitHub uses for `run:` on Linux. */
+  function runIn(files: Readonly<Record<string, string | Buffer>>): { status: number; output: string } {
+    const dir = tempDir("cj-t10-media-");
+    try {
+      const git = (...args: string[]) => spawnSync("git", args, { cwd: dir.root, encoding: "utf8" });
+      git("init", "-q");
+      for (const [name, content] of Object.entries(files)) writeFileSync(join(dir.root, name), content);
+      git("add", "-A");
+      const result = spawnSync("bash", ["--noprofile", "--norc", "-eo", "pipefail", "-c", mediaStep()], {
+        cwd: dir.root,
+        encoding: "utf8",
+      });
+      return { status: result.status ?? -1, output: `${result.stdout}${result.stderr}` };
+    } finally {
+      dir.cleanup();
+    }
+  }
+
+  test("the step runs in the secret-scan job, which reads the whole checkout", () => {
+    expect(mediaStep()).toContain("git ls-files -z");
+  });
+
+  test("passes when every image and font is binary", () => {
+    expect(runIn({ "page.png": BINARY, "a.woff2": BINARY, "readme.txt": "text\n" }).status).toBe(0);
+  });
+
+  test("passes on a repository with no image or font", () => {
+    expect(runIn({ "readme.txt": "text\n" }).status).toBe(0);
+  });
+
+  test.each(MEDIA)("fails on a text file named *.%s, naming its path", (ext) => {
+    const { status, output } = runIn({ [`token.${ext}`]: TOKEN, "page.png": BINARY });
+    expect(status).not.toBe(0);
+    expect(output).toContain(`token.${ext}`);
+    expect(output).not.toContain("page.png");
+    expect(output).not.toContain("SYNTHETIC");
+  });
+
+  test("fails on an upper-case extension", () => {
+    expect(runIn({ "TOKEN.PNG": TOKEN }).status).not.toBe(0);
+  });
+
+  test("fails when .gitattributes marks the text file binary", () => {
+    const { status, output } = runIn({ ".gitattributes": "*.png binary\n", "token.png": TOKEN });
+    expect(status).not.toBe(0);
+    expect(output).toContain("token.png");
   });
 });
