@@ -272,7 +272,8 @@ describe("T10 the token is only in the gate step's env", () => {
     const deploy = job("deploy-public.yml", "deploy");
     const environment = typeof deploy.environment === "string" ? deploy.environment : deploy.environment?.name;
     expect(environment).toBe("public-production");
-    // After 8586e55 the gate refuses an upload while preview URLs are on, so an apply_triggers run skips deploy.
+    // An apply_triggers run turns workers.dev on for the build a previous deploy-public run promoted (S5-5), so it
+    // skips deploy.
     expect(deploy.if?.replace(/\s+/g, " ").trim()).toBe("github.ref == 'refs/heads/main' && !inputs.apply_triggers");
   });
 
@@ -771,7 +772,7 @@ describe("T10 the one-time triggers job (after 92e548c: versions deploy applies 
 
   test("runs only on a manual run from main with apply_triggers on, after build and without deploy", () => {
     const triggers = job("deploy-public.yml", "triggers");
-    // Triggers come before the first deploy (8586e55: no upload while preview URLs are on).
+    // Triggers come after the first deploy, on the same commit (S5-5: workers.dev goes on only for the sealed build).
     expect([triggers.needs].flat().map(String).sort(byName)).toEqual(["build"]);
     expect(triggers.if?.replace(/\s+/g, " ").trim()).toBe(
       "github.event_name == 'workflow_dispatch' && inputs.apply_triggers && github.ref == 'refs/heads/main'",
@@ -1144,13 +1145,16 @@ describe("T10 the dependency audit runs on its own (independent review r2, C2-3)
 });
 
 describe("T10 the triggers job outlasts the gate's own worst case (independent review r2, C2-6)", () => {
-  test("timeout-minutes is 40, above the gate's worst case with one active version", () => {
+  test("timeout-minutes is 45, above the gate's worst case with one active version plus the job's setup", () => {
     const triggers = job("deploy-public.yml", "triggers") as Job & { "timeout-minutes"?: number };
     // The independent review's sum with one active version, 1,584 s: API reads of up to 60 s each (bin.ts) with
-    // three tries (cli.ts LIVE_TRIES) and wrangler triggers deploy's 600 s limit (runner.ts). Plus the dry run's 600 s.
-    const worstSeconds = 60 + 186 + 366 + 600 + 186 + 186 + 600;
-    expect(triggers["timeout-minutes"]).toBe(40);
-    expect((triggers["timeout-minutes"] ?? 0) * 60).toBeGreaterThan(worstSeconds);
+    // three tries (cli.ts LIVE_TRIES) and wrangler triggers deploy's 600 s limit (runner.ts). S5-5 adds two single
+    // reads, the live version's tag and the re-read of the active deployment before the write (60 s each). Plus the
+    // dry run's 600 s, and five minutes for checkout, setup, install and the artifact download.
+    const worstSeconds = 60 + 186 + 366 + 600 + 186 + 186 + 60 + 60 + 600;
+    const setupSeconds = 300;
+    expect(triggers["timeout-minutes"]).toBe(45);
+    expect((triggers["timeout-minutes"] ?? 0) * 60).toBeGreaterThanOrEqual(worstSeconds + setupSeconds);
   });
 });
 

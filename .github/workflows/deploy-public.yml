@@ -2,10 +2,11 @@
 #   build     no credentials and no environment: builds the site, runs the gate's check on it, uploads it with the
 #             build's module-graph report beside it (the gate's deploy and triggers require that report).
 #   deploy    main only, in environment public-production: downloads the build; the gate seals, scans, runs the
-#             dry run, uploads a version with no traffic, checks that version, promotes it, confirms it live, and
-#             rolls back only to a verified previous version.
-#   triggers  once, on a manual run with apply_triggers, instead of deploy: the gate applies workers.dev and
-#             preview-URL settings (wrangler triggers deploy) and uploads nothing.
+#             dry run, uploads a version tagged with the sealed manifest's hash and no traffic, checks that version,
+#             promotes it, confirms it live, and rolls back only to a verified previous version.
+#   triggers  once, after the first deploy, on a manual run with apply_triggers on the same commit, instead of
+#             deploy: the gate turns workers.dev on and preview URLs off (wrangler triggers deploy) only if the live
+#             Worker is this build's version alone at 100% (S5-5), and uploads nothing.
 # The Cloudflare token reaches only the two gate steps, through each step's env. The structure is tested by
 # packages/deploy/test/t10-workflows.test.ts; docs/deploy.md is the owner's guide.
 name: deploy-public
@@ -20,7 +21,7 @@ on:
   workflow_dispatch:
     inputs:
       apply_triggers:
-        description: "Once, before the first deploy: apply workers.dev and preview-URL settings only (wrangler triggers deploy); no upload"
+        description: "Once, after the first deploy, on the same commit: turn workers.dev on for the live build (wrangler triggers deploy); no upload"
         type: boolean
         default: false
 
@@ -78,7 +79,7 @@ jobs:
 
   deploy:
     needs: build
-    # An apply_triggers run only applies triggers: the gate refuses an upload while preview URLs are on.
+    # An apply_triggers run only applies triggers, to the build an earlier deploy-public run promoted (S5-5).
     if: github.ref == 'refs/heads/main' && !inputs.apply_triggers
     runs-on: ubuntu-24.04
     # Four Wrangler runs (dry run, upload, promote, rollback) at the gate's 10-minute limit each, plus API reads of
@@ -130,17 +131,20 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
 
-  # Once, before the first deploy: `wrangler versions deploy` applies none of the config's triggers, and the gate
-  # refuses an upload while preview URLs are on, so the gate first runs `wrangler triggers deploy` on the sealed
-  # config. Runs only when a manual run on main asks for it, instead of deploy, in the same environment.
+  # Once, after the first deploy (S5-5): `wrangler versions deploy` applies none of the config's triggers, so the gate
+  # runs `wrangler triggers deploy` on the sealed config to turn workers.dev on, but only when the active deployment
+  # is one version at 100% whose workers/tag is this build's manifest tag: the build the first run promoted, so run
+  # it on the same commit. Runs only when a manual run on main asks for it, instead of deploy, in the same
+  # environment.
   triggers:
     needs: [build]
     if: github.event_name == 'workflow_dispatch' && inputs.apply_triggers && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     # The gate's worst case with one active version: API reads of up to 60 s with three tries each, and
     # wrangler triggers deploy at its 10-minute limit, sum to about 1,584 s (60 + 186 + 366 + 600 + 186 + 186);
-    # the dry run's 10-minute limit and setup come on top: about 38 minutes.
-    timeout-minutes: 40
+    # S5-5 adds two single reads (the live version's tag, then the active deployment again), 120 s; the dry run's
+    # 10-minute limit comes on top: about 2,304 s, or 38.4 minutes, plus up to five minutes of setup.
+    timeout-minutes: 45
     environment: public-production
     permissions:
       contents: read
