@@ -4,9 +4,6 @@ import { z } from "zod";
  * Public Worker definitions as code (privacy-wall design v2, section 1). No `wrangler.*` file is tracked: the gate
  * emits each config from these constants into a sealed folder. The types are closed, so a binding, `env`,
  * `previews`, `unsafe` or (for the site) `main` cannot be written without a type error.
- *
- * Contract stub for the T1 to T9 tests: the types and constants are the contract; function bodies are left for
- * the implementer.
  */
 
 /** The public site: assets only, so no code runs and a binding could not be used even if one were attached. */

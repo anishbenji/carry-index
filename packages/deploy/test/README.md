@@ -1,9 +1,9 @@
 # packages/deploy contract tests
 
 These tests encode privacy-wall design v2 (ADR-0049, accepted 2026-11-26) for the Saturday minimum, T1 to T9.
-They were written before any implementation: `src/` holds only types, the two Worker definitions and functions
-that throw `not implemented`. T10 to T13 are `test.todo` in `later.test.ts` (Release 1.1, Kit minimum or edge
-only), and so are the parts of T9 that need code that does not exist yet.
+They were written before the implementation in `src/`, which now passes them, together with the tests each review
+round added (listed below). T10 to T13 are `test.todo` in `later.test.ts` (Release 1.1, Kit minimum or edge only),
+and so are the parts of T9 that need code that does not exist yet.
 
 `packages/deploy/**`, `public-surface.json`, `never-public.ts` and these tests are never auto-merged.
 

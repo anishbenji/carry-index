@@ -100,7 +100,7 @@ and `e2e/`.
 | `lint` | `biome ci --error-on-warnings .` (any warning fails, so the whole types domain gates, not only the two promise rules), then the import ban (`node`, TypeScript 7 parser) | passes |
 | `test` | `vitest run` in every workspace that has tests | 59 tests pass |
 | `build` | `vite build` in apps/web and apps/kit | passes, no HTML emitted |
-| `wall` | lists the three privacy-wall checks as `pending: packages/deploy (privacy-wall design v2)`; fails if any file git does not ignore is a Wrangler-style config, or if the built apps/web contains Zod | passes, 272 files, none a Wrangler config; no Zod in the build |
+| `wall` | lists the three privacy-wall checks as implemented, each with the gate command that runs it (`check` for the schema and canary checks, `deploy` for the bindings check); fails if any file git does not ignore is a Wrangler-style config, or if the built apps/web contains Zod | passes, 272 files, none a Wrangler config; no Zod in the build |
 | `size` | runs size-limit whenever the root `size-limit` list has targets; without targets, "no pages yet" until `apps/web/dist` holds HTML or JavaScript, then fails; once pages exist, a target must measure HTML | passes: 10.45 kB gzip and 9.54 kB Brotli, each of 15 kB |
 | `test:e2e` | "no pages yet" while there is neither a page nor `playwright.config.ts`; fails if one exists without the other (a config with no built pages means the build was skipped); else runs Playwright | passes, no pages and no config |
 
@@ -110,9 +110,9 @@ On 2026-11-26 the user chose privacy-wall design v2 (ADR-0049, question 6): the 
 artifact and generates every Worker config from code. This spike's static config scan, which tried to predict
 what Wrangler would load, was removed from this PR before merge, with its tests.
 
-`packages/deploy` now implements the checks, but nothing runs its gate yet: the workflows that call it are a
-separate task. Until they land, `bun run wall` is still a small guard: it lists the three checks as
-`pending: packages/deploy (privacy-wall design v2)` and fails if any file git does not ignore (tracked, or untracked
+`packages/deploy` implements the checks; the workflows that run its gate are a separate task. `bun run wall` lists
+the three checks as implemented, each with the gate command that runs it (`<id>: implemented: <command>`), and
+fails if any file git does not ignore (tracked, or untracked
 and not covered by a .gitignore) is a Wrangler-style config: a JSON, JSONC or TOML file whose name starts
 `wrangler`, any `cloudflare.config.*`, or a `.wrangler/deploy/config.json`. The new design keeps none in the repo.
 
