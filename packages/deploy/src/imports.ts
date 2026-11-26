@@ -23,7 +23,7 @@ import {
   isStringLiteral,
 } from "typescript/unstable/ast/is";
 import { API } from "typescript/unstable/sync";
-import { isPrivateRepoPath, PRIVATE_FILES, PRIVATE_FOLDERS, PRIVATE_PACKAGES } from "./private-roots.ts";
+import { isPrivatePath, isPrivateRepoPath, PRIVATE_FILES, PRIVATE_FOLDERS, PRIVATE_PACKAGES } from "./private-roots.ts";
 import { byCodeUnit } from "./walk.ts";
 
 export interface PrivateImport {
@@ -322,7 +322,11 @@ function globIsPrivate(root: string, file: string, pattern: string): boolean {
   if (!/^(?:\.\.?\/|\/)/.test(positive)) return true;
   const fixed = positive.split(/[*?{[]/)[0] ?? "";
   const directory = fixed.slice(0, fixed.lastIndexOf("/") + 1);
-  if (/(^|\/)node_modules(\/|$)/.test(directory)) return true;
+  // Vite joins the pattern with posix.join, which collapses a wildcard segment followed by `..`, so the fixed folder
+  // says nothing about where such a pattern lands (Neon N10). No `..` after the first metacharacter, and no
+  // `node_modules` segment anywhere.
+  if (/(?:^|\/)\.\.(?:\/|$)/.test(positive.slice(fixed.length))) return true;
+  if (/(^|\/)node_modules(\/|$)/.test(positive)) return true;
   const workspace = PUBLIC_SIDE.find((d) => file === d || file.startsWith(`${d}/`)) ?? dirname(file);
   const from = directory.startsWith("/") ? join(root, workspace) : join(root, dirname(file));
   const target = resolve(from, `./${directory.replace(/^\/+/, "")}`);
@@ -330,8 +334,9 @@ function globIsPrivate(root: string, file: string, pattern: string): boolean {
   if (existsSync(target)) candidates.push(relative(realpathSync(root), realpathSync(target)));
   return candidates.some((candidate) => {
     const rel = candidate.split(sep).join("/");
+    // isPrivatePath also refuses a target at or outside the repository root (`..`, Neon N10).
     return (
-      isPrivateRepoPath(rel) ||
+      isPrivatePath(rel) ||
       rel === "" ||
       [...PRIVATE_FOLDERS, ...PRIVATE_FILES].some((private_) => private_.startsWith(`${rel}/`))
     );

@@ -86,3 +86,28 @@ describe("import.meta.glob options and pattern anchors (N2)", () => {
     expect(found(line)).toEqual([]);
   });
 });
+
+/**
+ * Independent review (Neon) r2, N10: Vite joins a glob onto its folder with `posix.join`, which collapses a wildcard
+ * segment followed by `..`, so the reviewer's first pattern reached Kit while the check read only `./`; and a glob
+ * rooted above the repository was not refused. A `..` segment after the first glob metacharacter, any `node_modules` segment,
+ * and any target at or outside the repository root are now refused. The reviewer's lines are the cases.
+ */
+describe("glob patterns that climb after a wildcard or above the repository (N10)", () => {
+  test.each([
+    ['export const a = import.meta.glob("./*/../../../kit/src/*.ts");', "./*/../../../kit/src/*.ts"],
+    ['export const a = import.meta.glob("./{x}/../../../kit/src/*.ts");', "./{x}/../../../kit/src/*.ts"],
+    [
+      'export const a = import.meta.glob("./a*/../../../node_modules/@cj/kit/*.js");',
+      "./a*/../../../node_modules/@cj/kit/*.js",
+    ],
+    ['export const a = import.meta.glob("../../../../**/*.ts");', "../../../../**/*.ts"],
+    ['export const a = import.meta.glob("./pages/*/node_modules/x/*.js");', "./pages/*/node_modules/x/*.js"],
+  ])("%s is refused", (line, pattern) => {
+    expect(found(line)).toEqual([pattern]);
+  });
+
+  test("a glob that climbs before its wildcard into public code passes (positive control)", () => {
+    expect(found('export const a = import.meta.glob("../../src/pages/*.ts");')).toEqual([]);
+  });
+});
