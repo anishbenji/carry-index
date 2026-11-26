@@ -379,17 +379,23 @@ type PendingResult = CheckResult & { pending?: true };
 const CONVERGE_TRIES = 5;
 
 /**
- * Runs `check` until it passes or finds a definite problem. An API error alone is retried, LIVE_TRIES reads in all;
- * a `pending` result (the deployments endpoint still shows the earlier deployment just after a write) is retried
- * too, CONVERGE_TRIES reads in all. Waits grow by RETRY_WAIT_MS a try: at most 2 + 4 + 6 + 8 = 20 s.
+ * Runs `check` until it passes or finds a definite problem. A `pending` result (the deployments endpoint still shows
+ * the earlier deployment just after a write) is retried up to CONVERGE_TRIES reads, and an API error alone up to
+ * LIVE_TRIES reads, each with its own counter (Neon N12: a transient API error after the convergence reads still gets
+ * its retries). The wait grows by RETRY_WAIT_MS with each retry of the same kind, so one confirmation waits at most
+ * 2 + 4 + 6 + 8 s for convergence and 2 + 4 s for API errors: 26 s, in at most 7 reads.
  */
 async function confirmed(io: CliIo, check: () => Promise<PendingResult>): Promise<PendingResult> {
   const sleep = io.sleep ?? ((ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms)));
+  let pendingRetries = 0;
+  let apiRetries = 0;
   let result = await check();
-  for (let tries = 1; !result.ok; tries++) {
-    const retry = result.pending ? tries < CONVERGE_TRIES : onlyApiErrors(result) && tries < LIVE_TRIES;
-    if (!retry) break;
-    await sleep(RETRY_WAIT_MS * tries);
+  while (!result.ok) {
+    let retry: number;
+    if (result.pending && pendingRetries < CONVERGE_TRIES - 1) retry = ++pendingRetries;
+    else if (!result.pending && onlyApiErrors(result) && apiRetries < LIVE_TRIES - 1) retry = ++apiRetries;
+    else break;
+    await sleep(RETRY_WAIT_MS * retry);
     result = await check();
   }
   return result;

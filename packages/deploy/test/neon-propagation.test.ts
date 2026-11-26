@@ -140,4 +140,68 @@ describe("confirmation waits for the deployment to converge (N5)", () => {
     expect(after).toContain('live-api-error: 503 "carry-journal"');
     expect(after).toContain('live-after-rollback: "carry-journal"');
   });
+
+  test("N12: a transient settings error after three convergence reads still gets its own retries", async () => {
+    let cfRef: FakeCloudflare | undefined;
+    let staleServed = 0;
+    let settingsFailed = 0;
+    const site = minimalSite();
+    temps.push(site);
+    cfRef = fakeCloudflare({
+      previous: { bindings: [] },
+      intercept: (url) => {
+        const promoted = cfRef?.commands.some((c) => c.startsWith("promote")) ?? false;
+        if (!promoted) return undefined;
+        if (url === `${SCRIPT}/deployments` && staleServed < 3) {
+          staleServed++;
+          return staleReply(PREVIOUS);
+        }
+        // Converged on read 4; its settings read fails once, transiently.
+        if (url === `${SCRIPT}/settings` && staleServed === 3 && settingsFailed < 1) {
+          settingsFailed++;
+          return { status: 503, body: "" };
+        }
+        return undefined;
+      },
+    });
+    const fake = fakeIo({ env: ENV, spawn: cfRef.spawn, fetch: cfRef.fetch });
+    const slept: number[] = [];
+    fake.io.sleep = async (ms) => {
+      slept.push(ms);
+    };
+    expect(await main(["deploy", site.root], fake.io)).toBe(0);
+    expect(cfRef.commands).toEqual(["dry-run", "upload", `promote ${UPLOADED}@100%`]);
+    expect(settingsFailed).toBe(1);
+    // Convergence waits 2, 4 and 6 s; then the API error's own first wait, 2 s.
+    expect(slept).toEqual([2000, 4000, 6000, 2000]);
+  });
+
+  test("N12: the worst case stays bounded: 4 convergence waits and 2 API-error waits, 26 s in all", async () => {
+    let cfRef: FakeCloudflare | undefined;
+    let staleServed = 0;
+    const site = minimalSite();
+    temps.push(site);
+    cfRef = fakeCloudflare({
+      previous: { bindings: [] },
+      intercept: (url) => {
+        const promoted = cfRef?.commands.some((c) => c.startsWith("promote")) ?? false;
+        if (!promoted || url !== `${SCRIPT}/deployments`) return undefined;
+        // Four stale reads, then the endpoint errors for good.
+        if (staleServed < 4) {
+          staleServed++;
+          return staleReply(PREVIOUS);
+        }
+        return { status: 503, body: "" };
+      },
+    });
+    const fake = fakeIo({ env: ENV, spawn: cfRef.spawn, fetch: cfRef.fetch });
+    const slept: number[] = [];
+    fake.io.sleep = async (ms) => {
+      slept.push(ms);
+    };
+    expect(await main(["deploy", site.root], fake.io)).toBe(1);
+    expect(slept.reduce((a, b) => a + b, 0)).toBeLessThanOrEqual(26_000);
+    expect(slept.length).toBeLessThanOrEqual(6);
+    expect(fake.lines).toContain('live-api-error: 503 "carry-journal"');
+  });
 });
