@@ -103,3 +103,29 @@ describe("external observability export (S5-8)", () => {
     expect(lines.some((l) => l.startsWith("live-observability-export:"))).toBe(true);
   });
 });
+
+/**
+ * Sol security r4, S6-4: `observability.enabled` is shorthand for logs, and traces are enabled on their own, but
+ * the check let a top-level `false` switch off an explicitly enabled section. Now a section's own `enabled` always
+ * wins; the top-level flag is used only when the section does not say.
+ */
+describe("an explicitly enabled section is never masked by the top-level flag (S6-4)", () => {
+  test.each([
+    [
+      "traces enabled under a disabled top level",
+      { observability: { enabled: false, traces: { enabled: true, destinations: ["x"] } } },
+    ],
+    [
+      "logs enabled under a disabled top level",
+      { observability: { enabled: false, logs: { enabled: true, destinations: ["x"] } } },
+    ],
+  ])("%s fails both checks", async (_name, extra) => {
+    expect(rules(await checkLive(PUBLIC_SITE, api(extra)))).toEqual(["live-observability-export"]);
+    expect(rules(await checkVersion(PUBLIC_SITE, api(extra), UPLOADED))).toEqual(["live-observability-export"]);
+  });
+
+  test("a section explicitly disabled under an enabled top level passes (positive control)", async () => {
+    const extra = { observability: { enabled: true, traces: { enabled: false, destinations: ["x"] } } };
+    expect(await checkLive(PUBLIC_SITE, api(extra))).toEqual({ ok: true, problems: [] });
+  });
+});

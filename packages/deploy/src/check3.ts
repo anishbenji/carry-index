@@ -314,7 +314,10 @@ function observabilityProblems(worker: PublicWorker, observability: unknown): Pr
     if (enabled === undefined) return unconfirmed;
     if (destinations === undefined || destinations === null) continue;
     if (!Array.isArray(destinations)) return unconfirmed;
-    if (destinations.length > 0 && on !== false && enabled !== false) exporting = true;
+    // A section's own flag always wins; the top-level flag (shorthand for logs) decides only when the section does
+    // not say, so it can never mask explicitly enabled traces (sol security r4, S6-4).
+    const effective = enabled ?? on;
+    if (destinations.length > 0 && effective !== false) exporting = true;
   }
   return exporting ? [{ path: worker.name, rule: "live-observability-export" }] : [];
 }
