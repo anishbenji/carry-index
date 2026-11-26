@@ -1792,3 +1792,70 @@ describe("T10 the secret scan refuses an incomplete history read (Sol security r
     expect(runScan("1:00AM INF 3 commits scanned.", 1).status).not.toBe(0);
   });
 });
+
+describe("T10 the data validator's messages stay on the runner (Sol security re-run, C5-4)", () => {
+  const validateStep = (): Step => {
+    const found = (job("ci.yml", "data").steps ?? []).filter((step) => /\btools\/validate\.py\b/.test(step.run ?? ""));
+    expect(found).toHaveLength(1);
+    return found[0] ?? { run: "exit 1" };
+  };
+  const address = at("synthetic.person", "mail-provider.test");
+
+  /** Runs the step with a stub `uv` that prints `stdout` and `stderr` and exits with `exit`. */
+  function runValidate(stdout: string, stderr: string, exit: number): { status: number; output: string; temp: string } {
+    const dir = tempDir("cj-t10-validate-");
+    try {
+      const bin = join(dir.root, "bin");
+      const temp = join(dir.root, "runner-temp");
+      mkdirSync(bin);
+      mkdirSync(temp);
+      writeFileSync(join(dir.root, "out.txt"), stdout);
+      writeFileSync(join(dir.root, "err.txt"), stderr);
+      writeFileSync(
+        join(bin, "uv"),
+        `#!/bin/sh\ncat "${join(dir.root, "out.txt")}"\ncat "${join(dir.root, "err.txt")}" >&2\nexit ${exit}\n`,
+        { mode: 0o755 },
+      );
+      const result = runStep(validateStep(), dir.root, { RUNNER_TEMP: temp }, `${bin}:${process.env.PATH ?? ""}`);
+      const kept = readdirSync(temp)
+        .map((name) => readFileSync(join(temp, name), "utf8"))
+        .join("\n");
+      return { ...result, temp: kept };
+    } finally {
+      dir.cleanup();
+    }
+  }
+
+  test("the step still runs the validator with its report in the run temp folder, with pipefail", () => {
+    const step = validateStep();
+    expect(step.shell).toBe("bash");
+    expect(step.run).toContain(
+      'uv run --no-project --with pyyaml==6.0.4 --with jsonschema==4.26.0 python tools/validate.py --report "$RUNNER_TEMP/validation-report.md"',
+    );
+  });
+
+  test("a failing validation prints only the error count and the exit status, never a rejected value", () => {
+    const stdout = `3 models\n2 errors, 0 warnings -> report\nERROR status: '${address}' is not one of the allowed values\nERROR notes: '${address}' is too long\n`;
+    const { status, output, temp } = runValidate(stdout, "", 1);
+    expect(status).not.toBe(0);
+    expect(output).toContain("data validator: 2 error(s), exit status 1");
+    expect(output).not.toContain(address);
+    expect(output).not.toContain("is not one of");
+    // The full output stays in the run temp folder, which nothing uploads.
+    expect(temp).toContain(address);
+  });
+
+  test("a clean validation passes and says so", () => {
+    const { status, output } = runValidate("3 models\n0 errors, 1 warnings -> report\n", "", 0);
+    expect(status, output).toBe(0);
+    expect(output).toContain("data validator: 0 error(s), exit status 0");
+  });
+
+  test("a validator that fails without ERROR lines (a crash, a failed install) still fails, printing nothing of it", () => {
+    const { status, output } = runValidate("", `Traceback: ValueError: '${address}'\n`, 2);
+    expect(status).not.toBe(0);
+    expect(output).toContain("data validator: 0 error(s), exit status 2");
+    expect(output).not.toContain(address);
+    expect(output).not.toContain("Traceback");
+  });
+});

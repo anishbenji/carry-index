@@ -93,8 +93,18 @@ jobs:
           python-version: "3.12"
           enable-cache: false
       # Exact versions, as uv resolved them on 26 Nov 2026; their own dependencies still resolve at run time.
+      # The validator's messages can quote a rejected value, which may be private, and this log is public (Sol
+      # security re-run, C5-4). Its output and report stay in the run temp folder, which nothing uploads; the log
+      # gets only the error count and the exit status. Run tools/validate.py locally to read the messages.
       - name: Validate the catalogue data
-        run: uv run --no-project --with pyyaml==6.0.4 --with jsonschema==4.26.0 python tools/validate.py --report "$RUNNER_TEMP/validation-report.md"
+        shell: bash
+        run: |
+          set -euo pipefail
+          status=0
+          uv run --no-project --with pyyaml==6.0.4 --with jsonschema==4.26.0 python tools/validate.py --report "$RUNNER_TEMP/validation-report.md" > "$RUNNER_TEMP/validation-output.txt" 2>&1 || status=$?
+          errors=$({ grep --count '^ERROR ' "$RUNNER_TEMP/validation-output.txt" || test $? = 1; })
+          echo "data validator: $errors error(s), exit status $status; the messages stay on the runner (run tools/validate.py locally to read them)"
+          exit "$status"
       - name: Validator tests
         run: uv run --no-project --with pyyaml==6.0.4 --with jsonschema==4.26.0 python -m unittest discover -s tools -p "test_validate_*.py"
 
