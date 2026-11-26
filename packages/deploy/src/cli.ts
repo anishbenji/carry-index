@@ -330,7 +330,10 @@ async function applyTriggers(io: CliIo, bundle: SealedBundle, options: RunOption
 /** The problem for an unreadable active deployment, with the HTTP status when the reply had one. */
 function deploymentReadProblem(status: number | undefined): Problem {
   const name = PUBLIC_SITE.name;
-  return status === undefined ? { path: name, rule: "live-api-error" } : { path: name, rule: "live-api-error", status };
+  // A malformed 200 has no status worth printing (Problem.status: "not 200"), as apiError in check3.ts (Neon N13).
+  return status === undefined || status === 200
+    ? { path: name, rule: "live-api-error" }
+    : { path: name, rule: "live-api-error", status };
 }
 
 /**
