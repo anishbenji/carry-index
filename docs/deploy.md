@@ -124,7 +124,10 @@ Runs on every push to `main`, once a day at 04:17 UTC (so `/performance` stays c
 One deploy runs at a time and a running deploy is never cancelled (`concurrency: deploy-public-<ref>`,
 `cancel-in-progress: false`). Both jobs that write to the Worker, `deploy` and `triggers`, run only on `main`, so
 every gate run against `carry-journal` shares the one group `deploy-public-refs/heads/main`. If more runs arrive
-while one is deploying, GitHub keeps only the newest waiting run for that ref, which is the newest `main`. Runs on
+while one is deploying, they wait in the order they arrived (`queue: max`, up to 100 waiting runs; GitHub's default
+would keep only the newest waiting run, so a re-run of an old run could evict a newer one). Each runs in turn, and
+the tip-of-`main` check stops every one whose commit is no longer `main`'s tip before the gate, so only the newest
+`main` deploys. Runs on
 other branches have their own group, so a manual run there cannot displace a waiting `main` deploy. The group
 serialises the gate's own runs only: a promotion from the dashboard while a run is checking makes that run stop
 with `deployment-changed` (see `packages/deploy/README.md`, "Concurrent deployments"). Do not promote by hand

@@ -29,10 +29,13 @@ permissions:
   contents: read
 
 # One deploy at a time per ref; a running deploy is never cancelled (a newer run waits). Per ref, so a manual run on
-# another branch cannot displace a main deploy that is waiting.
+# another branch cannot displace a main deploy that is waiting. queue: max keeps every waiting run, up to 100, in the
+# order they started waiting, instead of replacing the one waiting run, so a re-run of an old run cannot evict a
+# newer one (Sol security re-run, C5-5); the tip-of-main guard then stops each stale run before the gate.
 concurrency:
   group: deploy-public-${{ github.ref }}
   cancel-in-progress: false
+  queue: max
 
 jobs:
   build:

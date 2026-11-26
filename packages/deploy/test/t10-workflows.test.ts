@@ -56,7 +56,7 @@ interface Workflow {
   on?: Record<string, unknown>;
   permissions?: Record<string, string> | string;
   env?: Record<string, unknown>;
-  concurrency?: { group?: string; "cancel-in-progress"?: boolean } | string;
+  concurrency?: { group?: string; "cancel-in-progress"?: boolean; queue?: string } | string;
   jobs: Record<string, Job>;
 }
 
@@ -1857,5 +1857,17 @@ describe("T10 the data validator's messages stay on the runner (Sol security re-
     expect(output).toContain("data validator: 0 error(s), exit status 2");
     expect(output).not.toContain(address);
     expect(output).not.toContain("Traceback");
+  });
+});
+
+describe("T10 every waiting deploy keeps its place in the queue (Sol security re-run, C5-5)", () => {
+  test("deploy-public queues every pending run (queue: max), and never cancels a running one", () => {
+    const { concurrency } = file("deploy-public.yml").workflow;
+    expect(typeof concurrency).toBe("object");
+    if (typeof concurrency !== "object") return;
+    // GitHub's workflow syntax: queue max keeps up to 100 pending runs in order instead of replacing the one pending
+    // run; it may not be combined with cancel-in-progress: true. The tip-of-main guard stops the stale ones.
+    expect(concurrency.queue).toBe("max");
+    expect(concurrency["cancel-in-progress"]).toBe(false);
   });
 });
