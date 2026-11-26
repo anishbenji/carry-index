@@ -306,7 +306,10 @@ function observabilityProblems(worker: PublicWorker, observability: unknown): Pr
   const on = flag(observability.enabled);
   if (on === undefined) return unconfirmed;
   let exporting = false;
-  for (const section of [observability.logs, observability.traces]) {
+  for (const [kind, section] of [
+    ["logs", observability.logs],
+    ["traces", observability.traces],
+  ] as const) {
     if (section === undefined || section === null) continue;
     if (!isRecord(section)) return unconfirmed;
     const enabled = flag(section.enabled);
@@ -314,9 +317,9 @@ function observabilityProblems(worker: PublicWorker, observability: unknown): Pr
     if (enabled === undefined) return unconfirmed;
     if (destinations === undefined || destinations === null) continue;
     if (!Array.isArray(destinations)) return unconfirmed;
-    // A section's own flag always wins; the top-level flag (shorthand for logs) decides only when the section does
-    // not say, so it can never mask explicitly enabled traces (sol security r4, S6-4).
-    const effective = enabled ?? on;
+    // A section's own flag always wins (sol security r4, S6-4). The top-level flag is shorthand for logs, so it is
+    // the fallback for logs only; traces are on unless traces.enabled is false (Neon N15).
+    const effective = kind === "logs" ? (enabled ?? on) : enabled;
     if (destinations.length > 0 && effective !== false) exporting = true;
   }
   return exporting ? [{ path: worker.name, rule: "live-observability-export" }] : [];

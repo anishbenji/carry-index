@@ -48,9 +48,10 @@ describe("external observability export (S5-8)", () => {
     ["on with no destinations", { observability: { enabled: true, logs: { enabled: true, invocation_logs: true } } }],
     ["empty destination lists", { observability: { logs: { destinations: [] }, traces: { destinations: [] } } }],
     ["destinations with logs disabled", exportTo("logs", { enabled: false })],
+    // N15 (sanctioned): the top-level flag is shorthand for logs only, so this control now uses logs.
     [
-      "destinations with observability disabled",
-      { observability: { enabled: false, traces: { destinations: ["x"] } } },
+      "log destinations with observability disabled",
+      { observability: { enabled: false, logs: { destinations: ["x"] } } },
     ],
   ])("observability %s passes both checks (positive control)", async (_name, extra) => {
     expect(await checkLive(PUBLIC_SITE, api(extra))).toEqual({ ok: true, problems: [] });
@@ -63,6 +64,17 @@ describe("external observability export (S5-8)", () => {
     [
       "trace export with enabled left out",
       { observability: { traces: { destinations: ["x"] } } },
+      ["live-observability-export"],
+    ],
+    // N15: the top-level flag does not reach traces; only traces.enabled: false turns trace export off.
+    [
+      "trace export with enabled left out under a disabled top level",
+      { observability: { enabled: false, traces: { destinations: ["x"] } } },
+      ["live-observability-export"],
+    ],
+    [
+      "trace export with a null enabled under a disabled top level",
+      { observability: { enabled: false, traces: { enabled: null, destinations: ["x"] } } },
       ["live-observability-export"],
     ],
     ["a malformed observability", { observability: "on" }, ["live-api-error"]],
