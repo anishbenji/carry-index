@@ -61,9 +61,10 @@ function decodedForms(text: string): string[] {
 
 const fromCode = (code: number): string => (code <= 0x10ffff ? String.fromCodePoint(code) : "");
 
+// Leading zeros are allowed in every numeric form, as HTML and JavaScript allow them (Neon N3).
 function decodeEscapes(text: string): string {
   return text
-    .replace(/\\u\{([0-9a-fA-F]{1,6})\}/g, (_m, hex: string) => fromCode(Number.parseInt(hex, 16)))
+    .replace(/\\u\{0*([0-9a-fA-F]{1,6})\}/g, (_m, hex: string) => fromCode(Number.parseInt(hex, 16)))
     .replace(/\\u([0-9a-fA-F]{4})/g, (_m, hex: string) => fromCode(Number.parseInt(hex, 16)))
     .replace(/\\x([0-9a-fA-F]{2})/g, (_m, hex: string) => fromCode(Number.parseInt(hex, 16)))
     .replace(/\\\//g, "/");
@@ -75,8 +76,8 @@ function decodePercent(text: string): string {
 
 function decodeEntities(text: string): string {
   return decodeNamedReferences(text)
-    .replace(/&#[xX]([0-9a-fA-F]{1,6});?/g, (_m, hex: string) => fromCode(Number.parseInt(hex, 16)))
-    .replace(/&#([0-9]{1,7});?/g, (_m, dec: string) => fromCode(Number.parseInt(dec, 10)));
+    .replace(/&#[xX]0*([0-9a-fA-F]{1,6});?/g, (_m, hex: string) => fromCode(Number.parseInt(hex, 16)))
+    .replace(/&#0*([0-9]{1,7});?/g, (_m, dec: string) => fromCode(Number.parseInt(dec, 10)));
 }
 
 /**
