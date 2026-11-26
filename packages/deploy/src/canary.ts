@@ -37,7 +37,9 @@ export async function scanBundle(dir: string, options: ScanOptions = {}): Promis
       const forms = /\.html$/.test(entry.path)
         ? [...decodedForms(text), ...decodedForms(text.replace(/<[^>]*>/g, ""))]
         : decodedForms(text);
-      for (const rule of hits(forms)) problems.push({ path: entry.path, rule });
+      // The path is the public URL: it gets the canary and email scans too (sol security r4, S6-7).
+      const pathRules = hits(decodedForms(entry.path)).filter((rule) => rule === "canary" || rule === "email");
+      for (const rule of new Set([...hits(forms), ...pathRules])) problems.push({ path: entry.path, rule });
       sawPublicMarker ||= forms.some((form) => form.includes(PUBLIC_MARKER));
     }
   }
