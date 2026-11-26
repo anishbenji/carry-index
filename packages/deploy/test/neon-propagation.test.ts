@@ -118,4 +118,26 @@ describe("confirmation waits for the deployment to converge (N5)", () => {
     expect(await main(["deploy", site.root], fake.io)).toBe(1);
     expect(fake.lines).toContain('live-api-error: 503 "carry-journal"');
   });
+
+  test("N5b: an unreadable deployments reply after a rollback is printed with its HTTP status", async () => {
+    let rolledBack = false;
+    let cfRef: FakeCloudflare | undefined;
+    const site = minimalSite();
+    temps.push(site);
+    cfRef = fakeCloudflare({
+      previous: { bindings: [] },
+      bindingsAfterPromotion: [D1],
+      intercept: (url) => {
+        rolledBack ||= cfRef?.commands.some((c) => c.startsWith("rollback")) ?? false;
+        return rolledBack && url === `${SCRIPT}/deployments` ? { status: 503, body: "" } : undefined;
+      },
+    });
+    const fake = fakeIo({ env: ENV, spawn: cfRef.spawn, fetch: cfRef.fetch });
+    fake.io.sleep = async () => {};
+    expect(await main(["deploy", site.root], fake.io)).toBe(1);
+    expect(cfRef.commands.at(-1)).toBe(`rollback ${PREVIOUS}`);
+    const after = fake.lines.slice(fake.lines.findIndex((l) => l.includes("wrangler rollback")));
+    expect(after).toContain('live-api-error: 503 "carry-journal"');
+    expect(after).toContain('live-after-rollback: "carry-journal"');
+  });
 });

@@ -560,7 +560,11 @@ async function uploadVerifyPromote(
   const after = await confirmed(io, convergedLive(api, target, "live-after-rollback"));
   if (after.ok) io.log(`gate: rollback confirmed: version ${target} is live and shows the expected bindings`);
   else {
-    // Only the rule: the reply's problems and body are not printed.
+    // Each problem with its HTTP status, as after a promotion (N5b); never a reply's body.
+    logProblems(
+      io,
+      after.problems.filter((p) => p.rule !== "live-after-rollback"),
+    );
     logProblems(io, [{ path: name, rule: "live-after-rollback" }]);
     io.log("gate: the live Worker still does not match after the rollback; it needs attention now");
   }
