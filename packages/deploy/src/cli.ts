@@ -501,6 +501,15 @@ async function uploadVerifyPromote(
     return promote.exitCode === 0 ? 0 : 1;
   }
   logProblems(io, live.problems);
+  if (live.pending) {
+    // The wait ran out before the deployments endpoint showed the version (N5a): that is not a check-3 failure of the
+    // promoted version, and it may be live a moment later, so it is never rolled back.
+    io.log(
+      `gate: the active deployment did not show version ${version} within ${CONVERGE_TRIES} reads; not rolling ` +
+        "back. Check the live Worker now",
+    );
+    return 1;
+  }
   if (onlyApiErrors(live)) {
     io.log("gate: could not confirm the live Worker after promotion; not rolling back. Check it by hand now");
     return 1;

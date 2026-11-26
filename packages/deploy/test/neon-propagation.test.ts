@@ -78,6 +78,15 @@ describe("confirmation waits for the deployment to converge (N5)", () => {
     expect(has("live-bindings")).toBe(false);
   });
 
+  test("N5a: converging on read 6, just after the 5-read wait ran out, never rolls back a good promotion", async () => {
+    const { code, commands, slept, has, lines } = await deploy({}, "promote", 5);
+    expect(slept).toEqual([2000, 4000, 6000, 8000]);
+    expect(code).toBe(1);
+    expect(commands).toEqual(["dry-run", "upload", `promote ${UPLOADED}@100%`]);
+    expect(has("deployment-changed")).toBe(true);
+    expect(lines.some((l) => l.includes("wrangler rollback"))).toBe(false);
+  });
+
   test("two stale reads after a rollback: retried, then the rollback is confirmed", async () => {
     const { code, commands, has } = await deploy({ bindingsAfterPromotion: [D1] }, "rollback", 2, UPLOADED);
     expect(code).toBe(1);
