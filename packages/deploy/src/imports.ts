@@ -23,7 +23,7 @@ import {
   isStringLiteral,
 } from "typescript/unstable/ast/is";
 import { API } from "typescript/unstable/sync";
-import { isPrivatePath, PRIVATE_FILES, PRIVATE_FOLDERS, PRIVATE_PACKAGES } from "./private-roots.ts";
+import { isPrivatePath, isPrivateRepoPath, PRIVATE_FILES, PRIVATE_FOLDERS, PRIVATE_PACKAGES } from "./private-roots.ts";
 import { byCodeUnit } from "./walk.ts";
 
 export interface PrivateImport {
@@ -174,25 +174,24 @@ function isPrivate(root: string, file: string, written: string): boolean {
   if (PRIVATE_PACKAGES.some((name) => specifier === name || specifier.startsWith(`${name}/`))) return true;
   if (!/^(?:\.|\/|file:)/.test(specifier)) return false;
   const path = specifier.startsWith("file:") ? fileURLToPath(specifier) : specifier;
-  // Where the import lands, as Vite resolves it: a `/` path against the public workspace, or as a file-system path
-  // when no such file exists there (Neon N16); anything else from the importing file.
-  const targets: string[] = [];
-  if (path.startsWith("/") && !specifier.startsWith("file:")) {
-    const workspace = PUBLIC_SIDE.find((d) => file === d || file.startsWith(`${d}/`)) ?? dirname(file);
-    const fromWorkspace = join(root, workspace, path);
-    targets.push(fromWorkspace);
-    if (!existsSync(fromWorkspace)) targets.push(path);
-  } else targets.push(resolve(root, dirname(file), path));
-  // Both each path as written and, when it exists, where it really lands (a linked folder could hide the target).
-  const candidates = targets.flatMap((target) => (existsSync(target) ? [target, realpathSync(target)] : [target]));
+  const target = resolve(root, dirname(file), path);
+  // Both the path as written and, when it exists, where it really lands (a linked folder could hide the target).
+  const candidates = [target];
+  if (existsSync(target)) candidates.push(realpathSync(target));
   const realRoot = realpathSync(root);
-  const inRepo = (candidate: string): string => {
-    const fromReal = relative(realRoot, candidate).split(sep).join("/");
-    const outside = fromReal === ".." || fromReal.startsWith("../") || fromReal.startsWith("/");
-    return outside ? relative(root, candidate).split(sep).join("/") : fromReal;
-  };
-  // isPrivatePath: private folders and files, installed private packages, and anything outside the repository.
-  return candidates.some((candidate) => isPrivatePath(inRepo(candidate)));
+  return candidates.some((candidate) => {
+    const rel = relative(candidate === target ? root : realRoot, candidate)
+      .split(sep)
+      .join("/");
+    if (isPrivateRepoPath(rel)) return true;
+    return PRIVATE_PACKAGES.some((name) =>
+      new RegExp(`(^|/)node_modules/(\\.bun/[^/]+/node_modules/)?${escapeRegExp(name)}(/|$)`).test(rel),
+    );
+  });
+}
+
+function escapeRegExp(text: string): string {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function literalText(node: Node): string | undefined {
