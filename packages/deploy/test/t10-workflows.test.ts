@@ -1791,6 +1791,31 @@ describe("T10 the secret scan refuses an incomplete history read (Sol security r
   test("fails when gitleaks itself fails, whatever it reports", () => {
     expect(runScan("1:00AM INF 3 commits scanned.", 1).status).not.toBe(0);
   });
+
+  // G1 (final gate): gitleaks prints each finding's file, commit, author and email; none of it may reach the log.
+  test("a finding fails the step with only the count and exit status, never gitleaks' own output", () => {
+    const address = at("synthetic.person", "mail-provider.test");
+    const report = [
+      "Finding:     token = REDACTED",
+      "File:        private/synthetic-notes.txt",
+      `Email:       ${address}`,
+      "1:00AM INF 3 commits scanned.",
+      "1:00AM WRN leaks found: 1",
+    ].join("\n");
+    const { status, output } = runScan(report, 1);
+    expect(status).not.toBe(0);
+    expect(output).toContain("secret scan: gitleaks found 1 finding(s), exit status 1");
+    expect(output).not.toContain("synthetic-notes.txt");
+    expect(output).not.toContain(address);
+    expect(output).not.toContain("Finding:");
+  });
+
+  test("a clean scan prints only the count and exit status too", () => {
+    const { status, output } = runScan("1:00AM INF 3 commits scanned.\n1:00AM INF no leaks found", 0);
+    expect(status, output).toBe(0);
+    expect(output).toContain("secret scan: gitleaks found 0 finding(s), exit status 0");
+    expect(output).not.toContain("no leaks found");
+  });
 });
 
 describe("T10 the data validator's messages stay on the runner (Sol security re-run, C5-4)", () => {

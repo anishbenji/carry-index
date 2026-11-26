@@ -189,10 +189,19 @@ jobs:
             exit 1
           fi
           expected=$(git log --full-history --all --diff-filter=uxdb --diff-merges=first-parent --no-patch --format=%H | wc -l | tr -d ' ')
+          # gitleaks prints each finding's file, commit, author and email, and this log is public (final gate, G1): its
+          # output and report stay in the run temp folder, which nothing uploads; the log gets only the count and the
+          # exit status. Run the same command locally to read the findings.
+          status=0
           "$RUNNER_TEMP/gitleaks/gitleaks" git --redact --no-banner --ignore-gitleaks-allow \
             --config .github/gitleaks.toml \
             --log-opts="--full-history --all --diff-filter=uxdb --text --diff-merges=first-parent" \
-            --exit-code 1 . 2>&1 | tee "$RUNNER_TEMP/gitleaks.log"
+            --report-path "$RUNNER_TEMP/gitleaks-report.json" \
+            --exit-code 1 . > "$RUNNER_TEMP/gitleaks.log" 2>&1 || status=$?
+          findings=$(sed -n 's/.*leaks found: \([0-9][0-9]*\).*/\1/p' "$RUNNER_TEMP/gitleaks.log" | tail -n 1)
+          if [ -z "$findings" ] && grep -q 'no leaks found' "$RUNNER_TEMP/gitleaks.log"; then findings=0; fi
+          echo "secret scan: gitleaks found ${findings:-an unknown number of} finding(s), exit status $status"
+          if [ "$status" != 0 ]; then exit "$status"; fi
           scanned=$(sed -n 's/.*[^0-9]\([0-9][0-9]*\) commits scanned.*/\1/p' "$RUNNER_TEMP/gitleaks.log" | tail -n 1)
           if [ "$scanned" != "$expected" ]; then
             echo "secret scan: gitleaks scanned ${scanned:-no} commits, but the history has $expected; refusing an incomplete scan" >&2
