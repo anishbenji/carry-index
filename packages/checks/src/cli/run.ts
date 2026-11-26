@@ -5,8 +5,11 @@ import { REPO_ROOT } from "./root.ts";
 
 export { REPO_ROOT };
 
-/** Prints a gate's lines, runs its command from the repo's node_modules/.bin if it has one, and exits. */
-export function finishGate(result: GateResult): never {
+/**
+ * Prints a gate's lines, runs its command from the repo's node_modules/.bin if it has one, then any extra check
+ * (`after`, which prints its own lines and returns whether it passed), and exits non-zero if either failed.
+ */
+export function finishGate(result: GateResult, after?: () => boolean): never {
   for (const line of result.lines) console.log(line);
   if (result.kind === "pass") process.exit(0);
   if (result.kind === "fail") process.exit(1);
@@ -15,5 +18,6 @@ export function finishGate(result: GateResult): never {
     cwd: REPO_ROOT,
     stdio: ["inherit", "inherit", "inherit"],
   });
-  process.exit(child.exitCode ?? 1);
+  const extraOk = after ? after() : true;
+  process.exit(child.exitCode === 0 && extraOk ? 0 : (child.exitCode ?? 1) || 1);
 }

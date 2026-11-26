@@ -1,4 +1,7 @@
 import { execFileSync } from "node:child_process";
+import type { Dirent } from "node:fs";
+import { lstatSync, readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 
 export interface WallCheck {
   id: string;
@@ -77,4 +80,50 @@ export function repoFiles(root: string): string[] {
   })
     .split("\0")
     .filter((file) => file.length > 0);
+}
+
+/** The names Wrangler looks for when no --config is given. */
+const DEFAULT_CONFIG_NAMES = ["wrangler.json", "wrangler.jsonc", "wrangler.toml"] as const;
+
+/**
+ * Wrangler's default config names that exist at the repo root or at a workspace root (each folder matched by a
+ * `<dir>/*` entry in the root package.json's `workspaces`), whether git ignores them or not: Wrangler reads them
+ * regardless. Existence only; no file is read.
+ */
+export function defaultConfigsOnDisk(root: string): string[] {
+  const found: string[] = [];
+  for (const dir of ["", ...workspaceDirs(root)]) {
+    for (const name of DEFAULT_CONFIG_NAMES) {
+      const rel = dir === "" ? name : `${dir}/${name}`;
+      try {
+        lstatSync(join(root, rel));
+        found.push(rel);
+      } catch {
+        // absent
+      }
+    }
+  }
+  return found.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+}
+
+function workspaceDirs(root: string): string[] {
+  const pkg: unknown = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
+  const raw = typeof pkg === "object" && pkg !== null ? (pkg as { workspaces?: unknown }).workspaces : undefined;
+  const patterns = Array.isArray(raw) ? raw.filter((p): p is string => typeof p === "string") : [];
+  const dirs: string[] = [];
+  for (const pattern of patterns) {
+    if (!pattern.endsWith("/*")) {
+      dirs.push(pattern);
+      continue;
+    }
+    const parent = pattern.slice(0, -2);
+    let entries: Dirent[];
+    try {
+      entries = readdirSync(join(root, parent), { withFileTypes: true });
+    } catch {
+      continue;
+    }
+    for (const entry of entries) if (entry.isDirectory()) dirs.push(`${parent}/${entry.name}`);
+  }
+  return dirs;
 }

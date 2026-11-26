@@ -93,6 +93,31 @@ describe("evaluateSizeGate: HTML coverage", () => {
     expect(result).toMatchObject({ kind: "run", command: ["size-limit"] });
   });
 
+  it("fails when some built page is outside every size-limit glob, naming the page", () => {
+    const onlyIndex = { path: "apps/web/dist/client/index.html", limit: "14 kB" };
+    const result = evaluateSizeGate(
+      tree({
+        "package.json": pkg([js, onlyIndex]),
+        "apps/web/dist/client/index.html": "x",
+        "apps/web/dist/client/bags/a/index.html": "x",
+      }),
+    );
+    expect(result.kind).toBe("fail");
+    expect(result.lines.join("\n")).toMatch(/apps\/web\/dist\/client\/bags\/a\/index\.html/);
+  });
+
+  it("runs when the globs together cover every built page, a path list included", () => {
+    const listed = { path: ["apps/web/dist/client/index.html", "apps/web/dist/client/bags/**/*.html"], limit: "14 kB" };
+    const result = evaluateSizeGate(
+      tree({
+        "package.json": pkg([js, listed]),
+        "apps/web/dist/client/index.html": "x",
+        "apps/web/dist/client/bags/a/index.html": "x",
+      }),
+    );
+    expect(result).toMatchObject({ kind: "run", command: ["size-limit"] });
+  });
+
   it("keeps the JavaScript-only scaffold green while there are no pages", () => {
     const result = evaluateSizeGate(tree({ "package.json": pkg([js]), "apps/web/dist/client/assets/main.js": "x" }));
     expect(result).toMatchObject({ kind: "run", command: ["size-limit"] });
