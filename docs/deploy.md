@@ -179,6 +179,14 @@ first use with no branch rule.
 3. **Protect `main`** (U6): require pull requests and the three `ci` checks (`script contract`, `data validator`,
    `secret scan`). They appear in the list once `ci.yml` has run once. Do not require `dependency audit`: it is
    meant to show a new advisory, not to block merges (see the table above).
+
+   In the same place, **require approval before any fork's workflow runs:** GitHub → the repository → Settings →
+   Actions → General → "Approval for running fork pull request workflows from contributors" → **Require approval
+   for all external contributors**, then Save. A pull request from a fork runs its own copy of the workflow files,
+   and concurrency groups are shared across workflows, so a changed `ci.yml` could join `deploy-public`'s group
+   and cancel a running deploy; after the promotion that would leave a version live without the gate's final
+   check (Sol security re-run, C5-1). With the setting on, nothing from a fork runs until you approve it: read the
+   pull request's `.github/` changes before you click **Approve and run**.
 4. **First deploy, from GitHub, in two runs on the same commit** (sol security r3, S5-5). The token stays in the
    environment; nothing runs from the Mac. With step 1.1 done, nothing is public until the second run.
    1. **Deploy first:** merge to `main` (which starts `deploy-public`), or Actions → deploy-public → Run workflow
