@@ -204,4 +204,37 @@ describe("confirmation waits for the deployment to converge (N5)", () => {
     expect(slept.length).toBeLessThanOrEqual(6);
     expect(fake.lines).toContain('live-api-error: 503 "carry-journal"');
   });
+
+  test("N12 (feat/17 review repro): two stale reads, a 503 on /settings, then a clean reply promotes", async () => {
+    let cfRef: FakeCloudflare | undefined;
+    let staleServed = 0;
+    let settingsFailed = 0;
+    const site = minimalSite();
+    temps.push(site);
+    cfRef = fakeCloudflare({
+      previous: { bindings: [] },
+      intercept: (url) => {
+        const promoted = cfRef?.commands.some((c) => c.startsWith("promote")) ?? false;
+        if (!promoted) return undefined;
+        if (url === `${SCRIPT}/deployments` && staleServed < 2) {
+          staleServed++;
+          return staleReply(PREVIOUS);
+        }
+        if (url === `${SCRIPT}/settings` && staleServed === 2 && settingsFailed < 1) {
+          settingsFailed++;
+          return { status: 503, body: "" };
+        }
+        return undefined;
+      },
+    });
+    const fake = fakeIo({ env: ENV, spawn: cfRef.spawn, fetch: cfRef.fetch });
+    const slept: number[] = [];
+    fake.io.sleep = async (ms) => {
+      slept.push(ms);
+    };
+    expect(await main(["deploy", site.root], fake.io)).toBe(0);
+    expect(cfRef.commands).toEqual(["dry-run", "upload", `promote ${UPLOADED}@100%`]);
+    expect(settingsFailed).toBe(1);
+    expect(slept).toEqual([2000, 4000, 2000]);
+  });
 });
