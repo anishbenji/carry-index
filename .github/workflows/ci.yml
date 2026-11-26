@@ -166,12 +166,28 @@ jobs:
           echo "secret scan: policy from the base commit $BASE_SHA"
       # Every ref, merge commits against their first parent, and files Git attributes mark as binary, with the
       # trusted policy under .github/ (gitleaks' default rules without its skips for text files).
+      # gitleaks 8.30.1 logs a git read error and carries on, so an unreadable object could end in a clean result
+      # over part of the history (Sol security re-run, C5-2). Before the scan every reachable object must be listed
+      # without error; after it, the commits gitleaks reports scanned must equal the commits git log lists for the
+      # same log options (it counts each commit with a change those options keep).
       - name: Scan the whole history
-        run: >-
-          "$RUNNER_TEMP/gitleaks/gitleaks" git --redact --no-banner --ignore-gitleaks-allow
-          --config .github/gitleaks.toml
-          --log-opts="--full-history --all --diff-filter=uxdb --text --diff-merges=first-parent"
-          --exit-code 1 .
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! git rev-list --all --objects > /dev/null; then
+            echo "secret scan: the history cannot be read in full (git rev-list --all --objects failed); refusing an incomplete scan" >&2
+            exit 1
+          fi
+          expected=$(git log --full-history --all --diff-filter=uxdb --diff-merges=first-parent --no-patch --format=%H | wc -l | tr -d ' ')
+          "$RUNNER_TEMP/gitleaks/gitleaks" git --redact --no-banner --ignore-gitleaks-allow \
+            --config .github/gitleaks.toml \
+            --log-opts="--full-history --all --diff-filter=uxdb --text --diff-merges=first-parent" \
+            --exit-code 1 . 2>&1 | tee "$RUNNER_TEMP/gitleaks.log"
+          scanned=$(sed -n 's/.*[^0-9]\([0-9][0-9]*\) commits scanned.*/\1/p' "$RUNNER_TEMP/gitleaks.log" | tail -n 1)
+          if [ "$scanned" != "$expected" ]; then
+            echo "secret scan: gitleaks scanned ${scanned:-no} commits, but the history has $expected; refusing an incomplete scan" >&2
+            exit 1
+          fi
       # The scan's policy and the email check below skip images and fonts by extension, so each must really be
       # binary (security review r2, C2-1): a tracked file with one of these extensions and no NUL byte is text, and
       # is refused. Each blob is read as the index records it (git cat-file), so a .gitattributes entry cannot mark

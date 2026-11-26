@@ -1642,3 +1642,78 @@ describe("T10 the deploy job outlasts the gate's own worst case (after Neon N5 a
     expect((deploy["timeout-minutes"] ?? 0) * 60).toBeGreaterThanOrEqual(worstSeconds + setupSeconds);
   });
 });
+
+describe("T10 the secret scan refuses an incomplete history read (Sol security re-run, C5-2)", () => {
+  const scanStep = (): Step => {
+    const found = (job("ci.yml", "secret-scan").steps ?? []).filter((step) =>
+      /\bgitleaks"? git\b/.test(step.run ?? ""),
+    );
+    expect(found).toHaveLength(1);
+    return found[0] ?? { run: "exit 1" };
+  };
+
+  /**
+   * Runs the scan step on a scratch repository of three commits, with a stub gitleaks in RUNNER_TEMP that prints
+   * `report` and exits with `exit`, and optionally a stub git that fails `failing`.
+   */
+  function runScan(report: string, exit = 0, failing?: string): { status: number; output: string } {
+    const repo = scratchRepo("cj-t10-gitleaks-");
+    try {
+      repo.commit({ "a.txt": "a\n" }, "one");
+      repo.commit({ "b.txt": "b\n" }, "two");
+      repo.commit({ "c.txt": "c\n" }, "three");
+      const temp = join(repo.root, ".runner-temp");
+      mkdirSync(join(temp, "gitleaks"), { recursive: true });
+      writeFileSync(join(temp, "gitleaks", "gitleaks"), `#!/bin/sh\nprintf '%s\\n' '${report}' >&2\nexit ${exit}\n`, {
+        mode: 0o755,
+      });
+      let path = process.env.PATH ?? "";
+      if (failing !== undefined) {
+        const realGit = spawnSync("sh", ["-c", "command -v git"], { encoding: "utf8" }).stdout.trim();
+        const bin = join(repo.root, ".stub-bin");
+        mkdirSync(bin);
+        writeFileSync(
+          join(bin, "git"),
+          `#!/bin/sh\nif [ "$1" = ${failing} ]; then echo "fatal: synthetic read error" >&2; exit 128; fi\nexec "${realGit}" "$@"\n`,
+          { mode: 0o755 },
+        );
+        path = `${bin}:${path}`;
+      }
+      return runStep(scanStep(), repo.root, { RUNNER_TEMP: temp }, path);
+    } finally {
+      repo.cleanup();
+    }
+  }
+
+  test("the step runs with pipefail, so a failing gitleaks or git fails it", () => {
+    expect(scanStep().shell).toBe("bash");
+  });
+
+  test("passes when gitleaks reports every commit the history has", () => {
+    const { status, output } = runScan("1:00AM INF 3 commits scanned.");
+    expect(status, output).toBe(0);
+  });
+
+  test("fails when gitleaks reports fewer commits than the history has", () => {
+    const { status, output } = runScan("1:00AM INF 2 commits scanned.");
+    expect(status).not.toBe(0);
+    expect(output).toContain("gitleaks scanned 2 commits, but the history has 3");
+  });
+
+  test("fails when gitleaks reports no commit count at all", () => {
+    const { status, output } = runScan("1:00AM INF no leaks found");
+    expect(status).not.toBe(0);
+    expect(output).toContain("gitleaks scanned no commits, but the history has 3");
+  });
+
+  test("fails when the history cannot be read in full (git rev-list fails), before gitleaks runs", () => {
+    const { status, output } = runScan("1:00AM INF 3 commits scanned.", 0, "rev-list");
+    expect(status).not.toBe(0);
+    expect(output).toContain("the history cannot be read in full");
+    expect(output).not.toContain("commits scanned");
+  });
+
+  test("fails when gitleaks itself fails, whatever it reports", () => {
+    expect(runScan("1:00AM INF 3 commits scanned.", 1).status).not.toBe(0);
+  });
+});
