@@ -279,7 +279,18 @@ async function applyTriggers(io: CliIo, bundle: SealedBundle, options: RunOption
     return 1;
   }
   const tagged = await versionTag(PUBLIC_SITE, api, live);
+  const expected = manifestTag(bundle.manifest);
+  // The remote tag is never printed (sol security r4, S6-3): an operator may have set it to anything.
+  const notSealed = (): number => {
+    logProblems(io, [{ path: name, rule: "live-version-not-sealed" }]);
+    io.log(
+      `gate: version ${live} is not the site this build sealed (its tag is not ${expected}); workers.dev was not ` +
+        "changed. Run deploy-public for this build first, then apply_triggers",
+    );
+    return 1;
+  };
   if (!tagged.ok) {
+    if ("foreign" in tagged) return notSealed();
     if ("untagged" in tagged) {
       logProblems(io, [{ path: name, rule: "live-version-untagged" }]);
       io.log(
@@ -292,15 +303,7 @@ async function applyTriggers(io: CliIo, bundle: SealedBundle, options: RunOption
     }
     return 1;
   }
-  const expected = manifestTag(bundle.manifest);
-  if (tagged.tag !== expected) {
-    logProblems(io, [{ path: name, rule: "live-version-not-sealed" }]);
-    io.log(
-      `gate: version ${live} is not the site this build sealed (tag ${JSON.stringify(tagged.tag)}, expected ` +
-        `${expected}); workers.dev was not changed. Run deploy-public for this build first, then apply_triggers`,
-    );
-    return 1;
-  }
+  if (tagged.tag !== expected) return notSealed();
   // Compare and swap: the deployment checked above must still be the active one immediately before the write.
   const still = await activeDeployment(PUBLIC_SITE, api);
   if (!still.ok) {

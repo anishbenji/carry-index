@@ -154,3 +154,34 @@ describe("triggers turns workers.dev on only for this build's sealed version (S5
     expect(has("deployment-changed")).toBe(true);
   });
 });
+
+/**
+ * Sol security r4, S6-3: on a tag mismatch triggers printed the remote tag, which an operator may have set to anything
+ * (a contact address, an order reference), into a public CI log. The remote tag is never printed, and at the API
+ * boundary it must be 12 lower-case hex characters, the shape the gate writes; any other string is not this build's
+ * (`live-version-not-sealed`).
+ */
+describe("triggers never prints a version's tag (S6-3)", () => {
+  // Built at run time, so no address literal sits in this file (the CI email scan reads every tracked line).
+  const at = (local: string, domain: string): string => [local, domain].join("@");
+
+  test.each([
+    ["an address-shaped tag", () => at("someone", "example.com")],
+    ["an order-reference tag", () => "SYN-ORDER-0001"],
+    ["upper-case hex of the right length", () => "0123456789AB"],
+    ["another build's well-formed tag", () => "0123456789ab"],
+  ])("%s: live-version-not-sealed, and the tag appears nowhere in the output", async (_name, makeTag) => {
+    const remote = makeTag();
+    const { code, cf, has, fake } = await run("triggers", () => ({ previous: { bindings: [], tag: remote } }));
+    expect(code).toBe(1);
+    expect(cf.commands).toEqual(["dry-run"]);
+    expect(has("live-version-not-sealed")).toBe(true);
+    expect(fake.lines.join("\n")).not.toContain(remote);
+  });
+
+  test("this build's own tag still passes (positive control)", async () => {
+    const { code, cf } = await run("triggers", (tag) => ({ previous: { bindings: [], tag } }));
+    expect(code).toBe(0);
+    expect(cf.commands).toEqual(["dry-run", "triggers"]);
+  });
+});

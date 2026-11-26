@@ -408,6 +408,9 @@ export function soleVersion(deployment: ActiveDeployment): string | undefined {
   return only && only.percentage === 100 && VERSION_ID.test(only.id) ? only.id : undefined;
 }
 
+/** The shape of a tag the gate writes: `manifestTag`'s 12 lower-case hex characters. */
+const MANIFEST_TAG = /^[0-9a-f]{12}$/;
+
 /**
  * A version's `workers/tag` annotation (`GET .../versions/{id}`, `annotations["workers/tag"]`, as Wrangler reads it,
  * cli.js:62173). `untagged` when the reply has no such annotation, or one that is not a non-empty string; an
@@ -417,7 +420,12 @@ export async function versionTag(
   worker: PublicWorker,
   options: Omit<LiveCheckOptions, "rollback">,
   versionId: string,
-): Promise<{ ok: true; tag: string } | { ok: false; untagged: true } | { ok: false; status: number | undefined }> {
+): Promise<
+  | { ok: true; tag: string }
+  | { ok: false; untagged: true }
+  | { ok: false; foreign: true }
+  | { ok: false; status: number | undefined }
+> {
   const { result, status } = await apiResult(
     options,
     `${scriptPath(worker)}/versions/${encodeURIComponent(versionId)}`,
@@ -425,7 +433,10 @@ export async function versionTag(
   if (!result || result.id !== versionId) return { ok: false, status };
   const annotations = result.annotations;
   const tag = isRecord(annotations) ? annotations["workers/tag"] : undefined;
-  return typeof tag === "string" && tag !== "" ? { ok: true, tag } : { ok: false, untagged: true };
+  if (typeof tag !== "string" || tag === "") return { ok: false, untagged: true };
+  // Validated at the boundary (sol security r4, S6-3): only the gate's own shape, 12 lower-case hex characters, is
+  // passed on; any other tag is foreign and its value is dropped, so it can never reach a log.
+  return MANIFEST_TAG.test(tag) ? { ok: true, tag } : { ok: false, foreign: true };
 }
 
 /** The id `wrangler versions upload` prints (`Worker Version ID: <id>`, cli.js:70849), if any. */
