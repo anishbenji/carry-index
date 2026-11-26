@@ -100,6 +100,29 @@ export function schemaConversionProblems(module: Readonly<Record<string, unknown
     .map((path) => ({ path, rule: "schema-unrepresentable" }));
 }
 
+const PRIMITIVE_TYPES: ReadonlySet<string> = new Set(["string", "number", "integer", "boolean", "null"]);
+/** Keywords that only narrow a primitive value: no type, no structure, no reference. */
+const REFINEMENT_KEYWORDS: ReadonlySet<string> = new Set([
+  "pattern",
+  "minLength",
+  "maxLength",
+  "format",
+  "multipleOf",
+  "minimum",
+  "maximum",
+  "exclusiveMinimum",
+  "exclusiveMaximum",
+  "contentMediaType",
+  "contentEncoding",
+]);
+
+/** A schema object with at least one keyword, every one of them a refinement keyword. */
+function isRefinementOnly(node: unknown): boolean {
+  if (!isObject(node)) return false;
+  const keys = Object.keys(node);
+  return keys.length > 0 && keys.every((key) => REFINEMENT_KEYWORDS.has(key));
+}
+
 function walkSchema(name: string, root: JsonSchema): Walked {
   const found: Walked = {
     leaves: new Map(),
@@ -143,9 +166,15 @@ function walkSchema(name: string, root: JsonSchema): Walked {
       visit(target, path, new Set([...refs, ref]));
       return;
     }
-    const alternatives = [node.anyOf, node.oneOf, node.allOf].filter(Array.isArray).flat();
-    for (const alternative of alternatives) visit(alternative, path, refs);
     const types = typeof node.type === "string" ? [node.type] : Array.isArray(node.type) ? node.type.map(String) : [];
+    // Under a primitive type, a member of refinement keywords only (a second pattern or multipleOf, which Zod writes
+    // as `allOf: [{ pattern }]`) narrows that type; it is not an untyped open shape (Neon N4).
+    const primitive = types.length > 0 && types.every((t) => PRIMITIVE_TYPES.has(t));
+    const alternatives = [node.anyOf, node.oneOf, node.allOf]
+      .filter(Array.isArray)
+      .flat()
+      .filter((alternative) => !(primitive && isRefinementOnly(alternative)));
+    for (const alternative of alternatives) visit(alternative, path, refs);
     if (types.length === 0) {
       if (alternatives.length > 0) return;
       if ("const" in node) {
