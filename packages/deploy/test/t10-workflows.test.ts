@@ -34,7 +34,7 @@ const GATE_DEPLOY = /^node packages\/deploy\/src\/bin\.ts deploy "?\$\{\{ runner
 interface Step {
   name?: string;
   if?: string;
-  shell?: string;
+  shell?: string | undefined;
   uses?: string;
   run?: string;
   with?: Record<string, unknown>;
@@ -455,11 +455,9 @@ describe("T10 the secret scan cannot be silenced from inside a change (security 
   const scanIndex = (): number => runs().findIndex((run) => /\bgitleaks"? git\b/.test(run));
   /** The step that refuses gitleaks config files, run with the shell GitHub uses for `run:` on Linux. */
   const runGuard = (cwd: string): number => {
-    const guard = runs().find((run) => run.includes(".gitleaksignore"));
+    const guard = (scanJob().steps ?? []).find((step) => (step.run ?? "").includes(".gitleaksignore"));
     expect(guard).toBeDefined();
-    return (
-      spawnSync("bash", ["--noprofile", "--norc", "-eo", "pipefail", "-c", guard ?? "exit 0"], { cwd }).status ?? -1
-    );
+    return spawnSync("bash", githubBash(guard ?? { run: "exit 0" }), { cwd }).status ?? -1;
   };
 
   test("the scan ignores gitleaks:allow comments", () => {
@@ -617,31 +615,52 @@ describe("T10 the secret scan reads every change, with a trusted policy (securit
 });
 
 describe("T10 no email address in a tracked file (security review, Sol round 1, P2)", () => {
-  const emailStep = (): string => {
-    const run = (job("ci.yml", "secret-scan").steps ?? [])
-      .map((step) => step.run ?? "")
-      .find((r) => r.includes("git grep"));
-    expect(run).toBeDefined();
-    return run ?? "exit 1";
+  const emailStepObject = (): Step => {
+    const found = (job("ci.yml", "secret-scan").steps ?? []).filter(
+      (step) => step.name === "No email addresses in tracked files",
+    );
+    expect(found).toHaveLength(1);
+    return found[0] ?? { run: "exit 1" };
   };
 
-  /** Runs the step in a fresh repository holding `files`, with the shell GitHub uses for `run:` on Linux. */
-  function runIn(files: Readonly<Record<string, string>>): { status: number; output: string } {
+  /**
+   * Runs the step in a fresh repository holding `files`, with the shell GitHub itself uses for this step (Sol
+   * security, C3-2: `bash -e` when the step names no shell, which has no pipefail). With `failing`, a stub `git` on
+   * the PATH makes that git subcommand fail with exit 2, as a read error would.
+   */
+  function runIn(files: Readonly<Record<string, string>>, failing?: string): { status: number; output: string } {
     const dir = tempDir("cj-t10-email-");
     try {
       const git = (...args: string[]) => spawnSync("git", args, { cwd: dir.root, encoding: "utf8" });
       git("init", "-q");
       for (const [name, content] of Object.entries(files)) writeFileSync(join(dir.root, name), content);
       git("add", "-A");
-      const result = spawnSync("bash", ["--noprofile", "--norc", "-eo", "pipefail", "-c", emailStep()], {
-        cwd: dir.root,
-        encoding: "utf8",
-      });
-      return { status: result.status ?? -1, output: `${result.stdout}${result.stderr}` };
+      let path = process.env.PATH ?? "";
+      if (failing !== undefined) {
+        const realGit = spawnSync("sh", ["-c", "command -v git"], { encoding: "utf8" }).stdout.trim();
+        const bin = join(dir.root, ".stub-bin");
+        mkdirSync(bin);
+        writeFileSync(
+          join(bin, "git"),
+          `#!/bin/sh\nif [ "$1" = ${failing} ]; then echo "fatal: synthetic read error" >&2; exit 2; fi\nexec "${realGit}" "$@"\n`,
+          { mode: 0o755 },
+        );
+        path = `${bin}:${path}`;
+      }
+      return runStep(emailStepObject(), dir.root, {}, path);
     } finally {
       dir.cleanup();
     }
   }
+
+  test("the step runs with pipefail (shell: bash), so a failing git command fails it", () => {
+    expect(emailStepObject().shell).toBe("bash");
+  });
+
+  test("fails when git grep exits 2, as on a read error", () => {
+    const { status, output } = runIn({ "readme.txt": "clean\n" }, "grep");
+    expect(status, output).not.toBe(0);
+  });
 
   test("passes when the only addresses are noreply or example ones", () => {
     const text = `${at("someone", "users.noreply.github.com")}\n${at("someone", "example.com")}\nlogo@2x.png\n`;
@@ -916,7 +935,8 @@ describe("T10 a file named as an image or font must be binary (security review r
       git("init", "-q");
       for (const [name, content] of Object.entries(files)) writeFileSync(join(dir.root, name), content);
       git("add", "-A");
-      const result = spawnSync("bash", ["--noprofile", "--norc", "-eo", "pipefail", "-c", mediaStep()], {
+      const step = (job("ci.yml", "secret-scan").steps ?? []).find((s) => s.run === mediaStep());
+      const result = spawnSync("bash", githubBash(step ?? { run: "exit 1" }), {
         cwd: dir.root,
         encoding: "utf8",
       });
@@ -963,16 +983,20 @@ describe("T10 a re-run of an older run never deploys an older commit (security r
   const SHA_B = "b".repeat(40);
 
   /** The job's one tip-of-main guard, and where it sits. */
-  function guard(jobName: string): { index: number; run: string } {
+  function guard(jobName: string): { index: number; run: string; shell?: string | undefined } {
     const steps = job("deploy-public.yml", jobName).steps ?? [];
     const found = steps.flatMap((step, i) => ((step.run ?? "").includes("git ls-remote") ? [i] : []));
     expect(found, jobName).toHaveLength(1);
     const index = found[0] ?? -1;
-    return { index, run: steps[index]?.run ?? "exit 1" };
+    return { index, run: steps[index]?.run ?? "exit 1", shell: steps[index]?.shell };
   }
 
   /** Runs the guard with a stub `git` that prints `remote` (or fails), as GitHub's Linux shell would. */
-  function runGuard(run: string, remote: string | undefined, sha: string): number {
+  function runGuard(
+    { run, shell }: { run: string; shell?: string | undefined },
+    remote: string | undefined,
+    sha: string,
+  ): number {
     const dir = tempDir("cj-t10-tip-");
     try {
       const stub =
@@ -980,7 +1004,7 @@ describe("T10 a re-run of an older run never deploys an older commit (security r
           ? "#!/bin/sh\necho 'fatal: unable to access' >&2\nexit 128\n"
           : `#!/bin/sh\n[ "$1" = ls-remote ] || exit 99\n[ "$2" = "https://github.com/synthetic-owner/synthetic-repo" ] || exit 98\n[ "$3" = refs/heads/main ] || exit 97\nprintf '%s' '${remote}'\n`;
       writeFileSync(join(dir.root, "git"), stub, { mode: 0o755 });
-      const result = spawnSync("bash", ["--noprofile", "--norc", "-eo", "pipefail", "-c", run], {
+      const result = spawnSync("bash", githubBash({ run, shell }), {
         cwd: dir.root,
         env: {
           PATH: `${dir.root}:${process.env.PATH ?? ""}`,
@@ -1012,23 +1036,23 @@ describe("T10 a re-run of an older run never deploys an older commit (security r
   });
 
   test.each(["deploy", "triggers"])("the %s guard passes when the run's commit is the tip of main", (jobName) => {
-    expect(runGuard(guard(jobName).run, `${SHA_A}\trefs/heads/main\n`, SHA_A)).toBe(0);
+    expect(runGuard(guard(jobName), `${SHA_A}\trefs/heads/main\n`, SHA_A)).toBe(0);
   });
 
   test.each(["deploy", "triggers"])("the %s guard stops a run whose commit is no longer the tip", (jobName) => {
-    expect(runGuard(guard(jobName).run, `${SHA_B}\trefs/heads/main\n`, SHA_A)).not.toBe(0);
+    expect(runGuard(guard(jobName), `${SHA_B}\trefs/heads/main\n`, SHA_A)).not.toBe(0);
   });
 
   test.each(["deploy", "triggers"])("the %s guard stops when main cannot be read", (jobName) => {
-    expect(runGuard(guard(jobName).run, undefined, SHA_A)).not.toBe(0);
+    expect(runGuard(guard(jobName), undefined, SHA_A)).not.toBe(0);
   });
 
   test.each(["deploy", "triggers"])("the %s guard stops when the remote has no main", (jobName) => {
-    expect(runGuard(guard(jobName).run, "", SHA_A)).not.toBe(0);
+    expect(runGuard(guard(jobName), "", SHA_A)).not.toBe(0);
   });
 
   test.each(["deploy", "triggers"])("the %s guard stops when GITHUB_SHA is empty", (jobName) => {
-    expect(runGuard(guard(jobName).run, "\trefs/heads/main\n", "")).not.toBe(0);
+    expect(runGuard(guard(jobName), "\trefs/heads/main\n", "")).not.toBe(0);
   });
 });
 
@@ -1176,6 +1200,18 @@ describe("T10 a pull request is scanned with its base's gitleaks policy (Sol sec
       expect(runStep(policyStep(), repo.root, { EVENT_NAME: "pull_request", BASE_SHA: base }).status).not.toBe(0);
     } finally {
       repo.cleanup();
+    }
+  });
+});
+
+describe("T10 every step that pipes runs with pipefail (Sol security, C3-2)", () => {
+  test("a run step with a pipeline names shell: bash or sets pipefail itself", () => {
+    for (const { file: name, job: jobName, step } of allSteps()) {
+      const run = step.run ?? "";
+      if (!/(?<!\|)\|(?!\|)/.test(run)) continue;
+      const where = `${name} ${jobName} ${step.name ?? ""}`;
+      const setsPipefail = /^\s*set -[a-z]*o pipefail\b|^\s*set -euo pipefail\b/m.test(run);
+      expect(step.shell === "bash" || setsPipefail, where).toBe(true);
     }
   });
 });

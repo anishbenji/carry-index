@@ -200,8 +200,12 @@ jobs:
       # Prints only the paths, never the addresses. Allowed: noreply and example.com/org/net domains, package
       # versions (name@1.2.3) and image density suffixes (logo@2x.png). Case-insensitive; binary-marked files are
       # read as text; images, fonts and bun.lock (package integrity hashes) are skipped.
+      # shell: bash runs it with pipefail (Sol security, C3-2): GitHub's default `bash -e` has none, so a git grep
+      # read error (exit 2) would end in an empty, passing pipeline.
       - name: No email addresses in tracked files
+        shell: bash
         run: |
+          set -euo pipefail
           pattern='[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z0-9.-]*[a-z]{2,}'
           allowed=':[^:@]*@([^:@]*\.)?(noreply\.[^:@]*|example\.(com|org|net))$|:[^:@]*@[0-9]+(\.[0-9]+)+(-[a-z0-9.]+)?$|:[^:@]*@[23]x\.(png|jpe?g|gif|webp|avif|svg)$'
           skip=(':!bun.lock')
