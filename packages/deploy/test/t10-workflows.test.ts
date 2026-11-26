@@ -769,3 +769,14 @@ describe("T10 the gate's private diagnostics never leave the runner (security-so
     for (const f of FILES) expect(f.text, f.name).not.toMatch(/cj-gate-diagnostics|diagnostics\.txt/);
   });
 });
+
+describe("T10 no workflow step makes links or writes into the public folder (security r4, S4-2)", () => {
+  test("no run step creates a symbolic or hard link, or names apps/web/public", () => {
+    for (const { file: name, job: jobName, step } of allSteps()) {
+      const run = step.run ?? "";
+      const where = `${name} ${jobName} ${step.name ?? ""}`;
+      expect(run, where).not.toMatch(/(?:^|[\s;&|(])(?:ln|link)\s|\bcp\s+-\S*[lsa]|\brsync\b|\bmklink\b/m);
+      expect(run, where).not.toMatch(/apps\/web\/public/);
+    }
+  });
+});
