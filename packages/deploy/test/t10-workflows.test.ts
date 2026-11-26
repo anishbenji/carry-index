@@ -992,3 +992,14 @@ describe("T10 the dependency audit runs on its own (independent review r2, C2-3)
     }
   });
 });
+
+describe("T10 the triggers job outlasts the gate's own worst case (independent review r2, C2-6)", () => {
+  test("timeout-minutes is 40, above the gate's worst case with one active version", () => {
+    const triggers = job("deploy-public.yml", "triggers") as Job & { "timeout-minutes"?: number };
+    // The independent review's sum with one active version, 1,584 s: API reads of up to 60 s each (bin.ts) with
+    // three tries (cli.ts LIVE_TRIES) and wrangler triggers deploy's 600 s limit (runner.ts). Plus the dry run's 600 s.
+    const worstSeconds = 60 + 186 + 366 + 600 + 186 + 186 + 600;
+    expect(triggers["timeout-minutes"]).toBe(40);
+    expect((triggers["timeout-minutes"] ?? 0) * 60).toBeGreaterThan(worstSeconds);
+  });
+});

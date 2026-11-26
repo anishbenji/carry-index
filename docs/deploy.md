@@ -217,7 +217,8 @@ therefore stop before the gate unless the run's commit is still the tip of `main
 The gate changes the live Worker only by promoting a version it has just checked, or by rolling back to a
 previous version it has checked; an API error never leads to a change. The deploy job's 75-minute limit leaves
 room for its four Wrangler runs (dry run, upload, promote, rollback) at their 10-minute limit each, plus API reads
-of up to 60 seconds with three tries each on the rollback path.
+of up to 60 seconds with three tries each on the rollback path. The triggers job's 40-minute limit leaves room for
+its worst case: about 1,584 seconds of API reads and `wrangler triggers deploy`, plus the 10-minute dry run.
 
 ## Not yet covered
 

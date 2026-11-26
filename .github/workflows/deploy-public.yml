@@ -137,7 +137,10 @@ jobs:
     needs: [build]
     if: github.event_name == 'workflow_dispatch' && inputs.apply_triggers && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    # The gate's worst case with one active version: API reads of up to 60 s with three tries each, and
+    # wrangler triggers deploy at its 10-minute limit, sum to about 1,584 s (60 + 186 + 366 + 600 + 186 + 186);
+    # the dry run's 10-minute limit and setup come on top: about 38 minutes.
+    timeout-minutes: 40
     environment: public-production
     permissions:
       contents: read
