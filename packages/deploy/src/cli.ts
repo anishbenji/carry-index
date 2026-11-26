@@ -130,7 +130,8 @@ function logFileProblems(io: CliIo, problems: readonly Problem[]): void {
     diagnostics.push(`#${index} ${ref} ${problem.rule} ${JSON.stringify(problem.path)}`);
   }
   if (diagnostics.length === 0) return;
-  const root = resolve(io.tempDir ?? io.env.RUNNER_TEMP ?? tmpdir());
+  // An empty or blank setting counts as unset: resolve("") is the working folder, the checkout (Neon N6).
+  const root = resolve(io.tempDir?.trim() || io.env.RUNNER_TEMP?.trim() || tmpdir());
   const dir = mkdtempSync(join(root, "cj-gate-diagnostics-"));
   const file = join(dir, "diagnostics.txt");
   writeFileSync(file, `key ${key.toString("hex")}\n${diagnostics.join("\n")}\n`, { flag: "wx", mode: 0o600 });
