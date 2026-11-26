@@ -54,10 +54,15 @@ Runs on every push to `main`, once a day at 04:17 UTC (so `/performance` stays c
    there, list every bundled `assets/` file with the same SHA-256 as the sealed copy, and name no private module.
    It then runs the dry run (`wrangler deploy --dry-run` must print exactly "No bindings found."), then
    **uploads, verifies, then promotes**, so an unchecked version never serves traffic:
-   1. reads the active deployment (the version to return to);
-   2. `wrangler versions upload`: a new version with no traffic;
+   1. reads the active deployment (the version to return to), and stops unless preview URLs are off
+      (`live-subdomain`: they would serve even a version the gate then refuses). workers.dev may be off, as on the
+      first deploy, or on;
+   2. `wrangler versions upload --tag <manifest tag>`: a new version with no traffic. The tag is the first 12
+      hexadecimal characters of the SHA-256 of the sealed manifest (every sealed file's hash, size and path), so
+      the version records exactly which sealed build it is; `triggers` relies on it;
    3. checks that exact version's bindings, and the script's settings, through the API: no tail consumers
-      (`tail_consumers` or `streaming_tail_consumers`) and logpush off;
+      (`tail_consumers` or `streaming_tail_consumers`), logpush off and no observability export (no
+      `observability.logs` or `observability.traces` destinations);
    4. reads the active deployment again, immediately before the write, and stops with `deployment-changed` if
       anything else deployed in the meantime (compare and swap on the deployment id);
    5. `wrangler versions deploy <id>@100%`;
@@ -68,16 +73,23 @@ Runs on every push to `main`, once a day at 04:17 UTC (so `/performance` stays c
    rollback; otherwise it stops with `deployment-changed` and never rolls back over someone else's deployment. It
    then checks again. An API error is retried (three tries, a few seconds apart) and never triggers a change.
 3. **`triggers`** runs only on a manual run on `main` with **apply_triggers** ticked, in `public-production`, and
-   on that run it replaces `deploy` (which is skipped). `wrangler versions deploy` applies none of the config's
-   triggers, and the gate refuses an upload while workers.dev or preview URLs differ from the definition (rule
-   `live-subdomain`; preview URLs would serve even a version the gate then refuses). So this job, after the same
-   tip-of-`main` check as `deploy`, runs
-   `node packages/deploy/src/bin.ts triggers "$RUNNER_TEMP/public-site"`: the same check 1, seal, scan,
+   on that run it replaces `deploy` (which is skipped). It is needed once, **after** the first deploy, on the same
+   commit: `wrangler versions deploy` applies none of the config's triggers, so the first deploy leaves workers.dev
+   as it was (off, per setup step 1), and this job turns it on. After the same tip-of-`main` check as `deploy`, it
+   runs `node packages/deploy/src/bin.ts triggers "$RUNNER_TEMP/public-site"`: the same check 1, seal, scan,
    build-graph check and dry run. Turning workers.dev on serves whatever the Worker already runs, so the gate then
-   checks the live Worker first: the active deployment must be readable, and the script settings and every
-   version that deployment serves must show exactly the expected bindings, no tail consumer and logpush off. If any of that
-   fails, workers.dev is left as it is. Only then does it run
-   `wrangler triggers deploy --config <sealed>/wrangler.json`, which sets them as the definition says:
+   checks the live Worker first, and changes nothing if any check fails:
+   - the active deployment must be readable, and the script settings and every version it serves must show
+     exactly the expected bindings, no tail consumer, logpush off and no observability export;
+   - it must be one version at 100% (`live-version-not-sole`);
+   - that version's `workers/tag` must equal the manifest tag of the build this run sealed: a version with no tag,
+     such as the dashboard placeholder, is `live-version-untagged`, and another build's is
+     `live-version-not-sealed`. There is no fallback, so workers.dev only ever goes on for a build the gate
+     sealed, checked and promoted;
+   - the active deployment is read again just before the write (`deployment-changed` if it moved).
+
+   Only then does it run `wrangler triggers deploy --config <sealed>/wrangler.json`, which sets them as the
+   definition says:
    **workers.dev on** and **preview URLs off** (`workers.ts`). It uploads and promotes nothing, then checks the live Worker's bindings and its
    workers.dev and preview-URL settings. The config has
    no routes, so routes and custom domains attached in the dashboard are left as they are (Wrangler 4.168 publishes
@@ -109,10 +121,12 @@ first use with no branch rule.
    [roles and permissions](https://developers.cloudflare.com/workers/authorization/)). "Editor" on one Worker
    can update and deploy it, but cannot create or delete Workers or touch any other Worker. It also cannot
    create the Worker, so do this in two steps:
-   1. **Make `carry-journal` exist once.** Dashboard → Workers & Pages → Create → start from the Hello World
-      template, name it `carry-journal`, deploy. `wrangler versions upload` cannot create a Worker, so without
-      this the gate stops with `worker-missing`. The placeholder has no bindings; the first gate deploy replaces
-      it.
+   1. **Make `carry-journal` exist once, with both public hostnames off.** Dashboard → Workers & Pages → Create →
+      start from the Hello World template, name it `carry-journal`, deploy. Then, in its Settings → Domains &
+      Routes, turn **workers.dev off** and **Preview URLs off**: a Worker created in the dashboard starts with
+      workers.dev on, which would serve the placeholder, a page the gate never sealed. `wrangler versions upload`
+      cannot create a Worker, so without this step the gate stops with `worker-missing`. The placeholder has no
+      bindings; the first gate deploy replaces it.
    2. **Create the CI token:** dashboard → Manage Account → Account API Tokens → Create. Permission: Workers,
       role **Editor**, scope **Specified Workers** → `carry-journal`. Nothing else (no zone, DNS, D1, KV or R2
       permissions, and no route permissions: routes are attached by hand in step 4).
@@ -139,17 +153,23 @@ first use with no branch rule.
 3. **Protect `main`** (U6): require pull requests and the three `ci` checks (`script contract`, `data validator`,
    `secret scan`). They appear in the list once `ci.yml` has run once. Do not require `dependency audit`: it is
    meant to show a new advisory, not to block merges (see the table above).
-4. **First deploy, from GitHub, in two runs.** The token stays in the environment; nothing runs from the Mac.
-   1. **Triggers first:** Actions → deploy-public → Run workflow → branch `main`, tick **apply_triggers**, Run.
-      This run does `build` then `triggers` and skips `deploy`: the gate applies `workers_dev: true` and
-      `preview_urls: false`. Check afterwards: dashboard → Workers & Pages → `carry-journal` → Settings → Domains
-      & Routes shows workers.dev **enabled** and Preview URLs **disabled**.
-   2. **Then deploy:** Run workflow again on `main` with **apply_triggers** left off (or merge to `main`). This
-      run does `build` then `deploy`, and replaces the placeholder with the site.
+4. **First deploy, from GitHub, in two runs on the same commit** (sol security r3, S5-5). The token stays in the
+   environment; nothing runs from the Mac. With step 1.1 done, nothing is public until the second run.
+   1. **Deploy first:** merge to `main` (which starts `deploy-public`), or Actions → deploy-public → Run workflow
+      → branch `main`, **apply_triggers** left off. This run does `build` then `deploy`: it uploads the site as a
+      version tagged with its manifest tag, checks it and promotes it to 100%, replacing the placeholder. With
+      workers.dev and Preview URLs off, the site is not reachable yet.
+   2. **Then triggers, on the same commit:** Actions → deploy-public → Run workflow → branch `main`, tick
+      **apply_triggers**, Run, before anything else is merged to `main`. This run does `build` then `triggers` and
+      skips `deploy`. It rebuilds the same commit, which must seal to the same manifest tag, and turns workers.dev
+      on (and keeps Preview URLs off) only if the live Worker is that build's version alone at 100%. Check
+      afterwards: dashboard → Workers & Pages → `carry-journal` → Settings → Domains & Routes shows workers.dev
+      **enabled** and Preview URLs **disabled**.
    3. Attach `carryjournal.com` and the `/api/*` route in the dashboard (design section 6).
 
-   Later runs leave **apply_triggers** off. Tick it again only when the definition's `workers_dev`,
-   `preview_urls` or routes change, or when a deploy stops with `live-subdomain`.
+   After that, only `deploy-public` is needed: later runs leave **apply_triggers** off. Tick it again only when the
+   definition's `workers_dev`, `preview_urls` or routes change, and then on the commit that is live, right after
+   its own deploy. If a merge lands between the two runs, run 4.1 again for the new `main`, then 4.2.
 
 Scheduled workflows run only from the default branch, and GitHub turns them off in a public repository after 60
 days with no activity; re-enable it on the Actions tab if that happens.
@@ -179,7 +199,7 @@ therefore stop before the gate unless the run's commit is still the tip of `main
 |---|---|---|
 | `deploy-public: this run is for …, but main is now at …; run the workflow again from main` (the step before the gate) | This run, or a re-run of it, is for a commit that is no longer the tip of `main`. `main is now at nothing` means the repository showed no `main`; if `git ls-remote` itself failed, its own error line shows instead. Nothing ran through the gate and nothing changed | Nothing to undo. If a newer run exists, it deploys `main`; otherwise run the workflow again from `main` |
 | `check 1 failed`, `seal failed` or `bundle scan failed` | The build broke a wall rule. Nothing was uploaded | Fix the cause the problem lines name, in a pull request |
-| `schema-rewrite` lines, with `check 1 failed` | A public catalogue schema can change a value after parsing (`.overwrite()`, `.transform()`, a pipe into a transform, or a check kind that is not validation only), so the published JSON Schema would not describe the output. Nothing was uploaded | Remove the rewrite from the schema in `packages/schema`, in a pull request |
+| `schema-rewrite` lines, with `check 1 failed` | A public catalogue schema can change a value after parsing, so the published JSON Schema would not describe the output: `.overwrite()` (such as `.trim()`), `.transform()`, `z.preprocess()`, a pipe into a transform, a codec, `z.custom()`, a `refine`, `superRefine` or `.check()` callback (any check kind that is not validation only), a function-valued `.catch()`, or **any `.default()` or `.prefault()`**, constant or function: Zod returns a default without validating it, and a function default can return one value when inspected and another later. Nothing was uploaded | Remove the rewrite, default or prefault from the schema in `packages/schema`, in a pull request; supply missing values where the data is written instead |
 | `hard-link`, `file-changed`, `fit-data-invalid` or `redirects-invalid` lines (as `#<n> <ref8>`, or `"_redirects"` by name), with `seal failed` | `hard-link`: a file in the build has more than one link, so it may be a private file under another name. `file-changed`: a file's size changed between the seal's walk and its read. `fit-data-invalid`: a `data/fit/*.json` file does not match the closed `fitSchema` in `@cj/schema`. `redirects-invalid`: a `_redirects` rule leaves the site or breaks the rule limits. Nothing was uploaded | Reproduce locally with `check` to see the paths (above), then fix the build or the data in a pull request. `file-changed` alone on CI with no change: re-run |
 | `module-graph-missing: "."`, `module-graph-mismatch` or `private-module` lines, then `the build-graph check failed` | `deploy` or `triggers` found no valid build-graph report beside the site (`missing`), a bundled file the report does not vouch for with the same SHA-256 (`mismatch`), or a private module in the report (`private-module`). Nothing was uploaded | `missing` or `mismatch` on CI means the artifact no longer carries `public-site.module-graph.json` from the same build: check the build job's rename and upload steps. `private-module`: the public build reached Kit Watch, the private Worker or private data; remove the import, in a pull request |
 | `worker-import` lines (as `#<n> <ref8>`), or `graph-checks-disabled: "."`, then `the build-graph check failed` | `worker-import`: the report lists a `?worker` or `?sharedworker` import. Vite builds a worker in a separate run the build-graph check cannot see, so the public build may not have one. `graph-checks-disabled`: the report says the build ran with one of its checks turned off (a switch that only tests use), or it does not record them. Nothing was uploaded | `worker-import`: remove the worker import from the public app, in a pull request. `graph-checks-disabled` on CI means the report did not come from the normal `bun run build`: check the build job, and never deploy a report made by a test |
@@ -187,17 +207,18 @@ therefore stop before the gate unless the run's commit is still the tip of `main
 | The **Build** step fails with `cj-module-graph: the public folder holds … problem(s): …` | `apps/web/public` (copied into the site as it is) holds a symbolic link (`symlink`), a file with more than one hard link (`hard-link`), a device, socket or pipe (`special-file`), a path under a private root (`private`), or more than 10,000 entries (`too-many-files`). Vite's copy would follow a link and deploy its target as an ordinary file. Nothing was uploaded | Replace the link with a real file, or remove the entry, in a pull request. No workflow step writes into `apps/web/public` or makes links (T10 checks this) |
 | `headers-missing: "_headers"` or `headers-weak: "_headers"` (with `bundle scan failed`) | The build has no `_headers` file or lacks a required security header (`headers-missing`), or a block weakens one: `'unsafe-inline'` in the CSP, COOP or CORP looser than same-origin, or a `! Name` line removing a required header (`headers-weak`). Nothing was uploaded | Fix `_headers` in `apps/web`, in a pull request. The required list is `REQUIRED_HEADERS` in `packages/deploy/src/headers.ts` |
 | `check 3 failed before upload; nothing was uploaded` | The dry run printed something other than "No bindings found." (a binding appeared, or Wrangler's output changed) | Nothing is live from this run. Find what changed; a Wrangler upgrade needs T6 and the recorded dry-run fixture re-checked |
-| `worker-missing: "carry-journal"`, then `the carry-journal Worker does not exist yet …` | The Worker has not been created; `wrangler versions upload` cannot create one. Nothing was uploaded | Do setup step 1.1 (create it in the dashboard), then step 4: a run with **apply_triggers**, then a normal run |
+| `worker-missing: "carry-journal"`, then `the carry-journal Worker does not exist yet …` | The Worker has not been created; `wrangler versions upload` cannot create one. Nothing was uploaded | Do setup step 1.1 (create it in the dashboard, with workers.dev and Preview URLs off), then step 4: a normal run, then a run with **apply_triggers** on the same commit |
 | `live-api-error: 403 "carry-journal"` (or 401), then `could not read the active deployment; nothing was uploaded` | The deployments API refused or failed before the upload. The number is the reply's HTTP status; with no number there was no usable reply (a timeout, a network error or a malformed body) | **401 or 403:** the token is wrong, expired or lacks access to `carry-journal`; fix it in the environment (setup step 1, then the fallback token only if the scoped one is refused). **Other statuses or none:** re-run once Cloudflare answers again |
 | `wrangler-error: code …` lines, with `wrangler-auth-error` after them | A Wrangler run failed. The codes are Cloudflare's error codes from its output (nothing else of it is printed); `wrangler-auth-error` means one of them, or Wrangler's wording, is an authentication error (codes 10000 or 9109) | As 401 or 403 above: fix the token, then re-run. Without `wrangler-auth-error`, look the code up in Cloudflare's API error list |
-| `live-subdomain: "carry-journal"`, then `the workers.dev or preview-URL setting differs from the definition; run deploy-public with apply_triggers first` | workers.dev is off or preview URLs are on (a new Worker has preview URLs on, or a setting was changed in the dashboard). Nothing was uploaded | Run deploy-public with **apply_triggers**, check the settings in the dashboard, then run a normal deploy |
+| `live-subdomain: "carry-journal"`, then `preview URLs are on (they must be off); turn them off in the dashboard, or, once this build is live, run deploy-public with apply_triggers` (deploy job) | Preview URLs are on (a new Worker has them on, or the setting was changed in the dashboard); they would serve even a version the gate then refuses. workers.dev may be on or off here. Nothing was uploaded | Turn Preview URLs off in the dashboard (Settings → Domains & Routes), then re-run. `apply_triggers` does not help here: it acts only when the live version is this build's, and this run uploaded nothing |
 | `could not read the workers.dev and preview-URL settings; nothing was uploaded` | The subdomain API failed three times before the upload | Re-run once Cloudflare answers again |
 | `wrangler versions upload exited with …`, then `no uploaded version to check; nothing was promoted` | The upload failed, or printed no version id (exit 124 means it timed out after 10 minutes) | Nothing changed live. A version may exist with no traffic; it is harmless. Re-run |
 | `could not confirm version … ; it was not promoted` | The uploaded version could not be read through the API, three times | Nothing changed live; the version has no traffic. Re-run |
-| `version … failed check 3; it was not promoted` | The uploaded version has a binding, or the script has a tail consumer or logpush, that the definition does not allow | Nothing changed live. Find the cause (a tail consumer or logpush added in the dashboard, or a changed definition or Wrangler) and fix it before re-running |
+| `version … failed check 3; it was not promoted` | The uploaded version has a binding, or the script has a tail consumer, logpush or an observability export, that the definition does not allow | Nothing changed live. Find the cause (a tail consumer, logpush or observability destination added in the dashboard, or a changed definition or Wrangler) and fix it before re-running |
 | `live-tail-consumers: "carry-journal"` | The Worker's script settings list a tail consumer, in `tail_consumers` or `streaming_tail_consumers`. Either would send every request's logs to another Worker. Seen before promotion, nothing was promoted; seen after it, see the row below | Remove the tail consumer from `carry-journal`'s settings (dashboard → Workers & Pages → `carry-journal` → Settings), then re-run |
 | `live-logpush: "carry-journal"` | Logpush is on for the Worker. No log destination is approved for Release 1, so the gate refuses it; an absent setting counts as off | Turn Logpush off in `carry-journal`'s settings (dashboard → Workers & Pages → `carry-journal` → Settings), then re-run |
-| `a tail consumer or logpush is set on the live Worker; not rolling back (it would not remove it). Remove it now` | After promotion, the only problems are script settings (`live-tail-consumers` or `live-logpush`). They belong to the script, not to a version, so a rollback would revert good content and leave them in place | The new version is live and its content is fine. Remove the tail consumer or turn Logpush off now, then re-run to confirm |
+| `live-observability-export: "carry-journal"` | The Worker's observability settings send invocation logs or traces to an outside destination (`observability.logs.destinations` or `observability.traces.destinations` not empty, and that section and observability itself not turned off). No log destination is approved for Release 1. Seen before promotion, nothing was promoted; seen after it, see the no-rollback row below | Remove the destination, or turn that export off, in `carry-journal`'s settings (dashboard → Workers & Pages → `carry-journal` → Settings), then re-run |
+| `a tail consumer, logpush or an observability export is set on the live Worker; not rolling back (it would not remove it). Remove it now` | After promotion, the only problems are script settings (`live-tail-consumers`, `live-logpush` or `live-observability-export`). They belong to the script, not to a version, so a rollback would revert good content and leave them in place | The new version is live and its content is fine. Remove the tail consumer, turn Logpush off or remove the observability destination now, then re-run to confirm |
 | `deployment-changed: "carry-journal"`, then `the active deployment changed while version … was checked; it was not promoted` | Something else deployed `carry-journal` between the gate's first read and its write (the dashboard, or another tool; never another `deploy-public` run, which waits for this one) | Nothing was promoted. Find out what deployed and check which version is live, then re-run |
 | `could not re-read the active deployment; version … was not promoted` | The last read before the promotion failed three times | Nothing was promoted; the new version has no traffic. Re-run once Cloudflare answers again |
 | `version … is live and shows the expected bindings` but the job failed | `wrangler versions deploy` exited non-zero, yet the new version is live and correct | Nothing to undo. Read the Wrangler exit line; re-run if needed |
@@ -208,10 +229,15 @@ therefore stop before the gate unless the run's commit is still the tip of `main
 | `wrangler rollback to … exited with 0`, then `rollback confirmed: version … is live and shows the expected bindings` | The promoted version showed a binding that its checked version did not (a change after promotion). The gate went back to the verified previous version | Nothing is wrong live. Remove the extra binding in the dashboard, then re-run |
 | `live-after-rollback`, with `no verified previous version to return to` or `the live Worker still does not match after the rollback` | The live Worker is wrong and the gate could not fix it: there was no previous version (the first deploy), the previous one is not clean itself, or the rollback did not take | Act now: roll back by hand to the last good version in the dashboard, or remove the extra binding; then re-run |
 | `could not read the active deployment; workers.dev was not changed` (triggers job) | The deployments API failed before the triggers deploy (`live-api-error`, with its status) | As `live-api-error` above. Nothing changed |
-| `could not confirm the live Worker; workers.dev was not changed` or `the live Worker does not match its definition; workers.dev was not changed` (triggers job) | Before turning workers.dev on, the gate could not read the live Worker, or it found a binding, tail consumer or logpush the definition does not allow, in the script settings or in a version the active deployment serves | Nothing changed. Re-run once Cloudflare answers, or remove the binding or tail consumer, or turn Logpush off, in the dashboard first |
+| `live-version-not-sole: "carry-journal"`, then `the active deployment is not one version at 100%; workers.dev was not changed. Run deploy-public first, then apply_triggers` (triggers job) | The active deployment splits traffic between versions (a gradual deployment made in the dashboard), so there is no single sealed build to turn workers.dev on for. Nothing changed | Run `deploy-public` (it promotes this build to 100%), then **apply_triggers** on the same commit |
+| `live-version-untagged: "carry-journal"`, then `version … has no workers/tag, so it was not uploaded by deploy-public (a dashboard placeholder?); workers.dev was not changed` (triggers job) | The live version carries no tag, so the gate did not upload it: usually the dashboard placeholder, because **apply_triggers** ran before the first deploy, or a version uploaded by hand. Nothing changed | Run `deploy-public` first, then **apply_triggers** on the same commit (setup step 4) |
+| `live-version-not-sealed: "carry-journal"`, then `version … is not the site this build sealed (tag …, expected …); workers.dev was not changed` (triggers job) | The live version was uploaded by the gate, but for a different build: **apply_triggers** ran on another commit than the last deploy, `main` moved in between, or the build is not reproducible (the same commit sealed to a different manifest tag). Nothing changed | Run `deploy-public` for the current `main`, then **apply_triggers** right after, before anything else merges. If it fails again on the same commit, the build is not reproducible: report it |
+| `could not read version …'s tag; workers.dev was not changed` (triggers job) | The versions API failed reading the live version's tag (`live-api-error`, with its status) | As `live-api-error` above. Nothing changed |
+| `deployment-changed: "carry-journal"`, then `the active deployment changed while it was checked; workers.dev was not changed` (triggers job) | Something deployed `carry-journal` between the gate's checks and its write | Nothing changed. Check what is live, then run `deploy-public` and **apply_triggers** again in order |
+| `could not confirm the live Worker; workers.dev was not changed` or `the live Worker does not match its definition; workers.dev was not changed` (triggers job) | Before turning workers.dev on, the gate could not read the live Worker, or it found a binding, tail consumer or logpush the definition does not allow, in the script settings or in a version the active deployment serves (also `live-observability-export`) | Nothing changed. Re-run once Cloudflare answers, or remove the binding, tail consumer or observability destination, or turn Logpush off, in the dashboard first |
 | `wrangler triggers deploy exited with …` non-zero (triggers job) | Wrangler could not apply the workers.dev or preview-URL settings. With `wrangler-auth-error` beside it, the token's scope is the cause | Nothing else changed. Fix the token (or set workers.dev **on** and Preview URLs **off** in the dashboard by hand), then re-run with **apply_triggers** |
 | `the live Worker does not match its definition; nothing was rolled back. Check it by hand now` (triggers job) | After `triggers deploy`, the live Worker shows a binding (`live-bindings`, which triggers cannot change, so it was already wrong), or workers.dev or preview URLs differ from the definition (`live-subdomain`) | Fix what the rule names in the dashboard (remove the binding, or set workers.dev **on** and Preview URLs **off**), then run with **apply_triggers** again |
-| `the carry-journal Worker does not exist yet …` (triggers job) | As `worker-missing` above | Create the Worker in the dashboard, then re-run with **apply_triggers** |
+| `the carry-journal Worker does not exist yet …` (triggers job) | As `worker-missing` above | Do setup step 1.1, then step 4 in order: a normal run first, then **apply_triggers** |
 | any `wrangler … exited with 124` | That Wrangler run was still going after 10 minutes and was killed with its process group | Read the next line as in the rows above. If it recurs, check Cloudflare's status page before re-running |
 
 The gate changes the live Worker only by promoting a version it has just checked, or by rolling back to a
