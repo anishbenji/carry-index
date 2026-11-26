@@ -271,8 +271,9 @@ jobs:
           fi
           exit "$fail"
       # Allowed: noreply and example.com/org/net domains, package versions (name@1.2.3) and image density suffixes
-      # (logo@2x.png). Case-insensitive; every blob is read as text, whatever .gitattributes says; the content of
-      # images, fonts and bun.lock (package integrity hashes) is skipped, but every file's name is checked. Prints
+      # (logo@2x.png). Case-insensitive; every blob is read as text, whatever .gitattributes says, images and fonts
+      # included, whose metadata (PNG tEXt, XMP) can hold a creator's address (Sol security re-run, C5-3); only
+      # bun.lock's content (package integrity hashes) is skipped, and every file's name is checked. Prints
       # only counts and blob ids, never a path or an address (Sol security, C3-4): a file's name can hold the address
       # itself. Find a tracked file with `git ls-files -s | grep <id>`, any blob with `git log --all --find-object=<id>`.
       # On a pull request it also reads every blob the pull request's own commits add (BASE_SHA..HEAD, merges
@@ -289,34 +290,20 @@ jobs:
           set -euo pipefail
           pattern='[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z0-9.-]*[a-z]{2,}'
           allowed='^:[^:@]*@([^:@]*\.)?(noreply\.[^:@]*|example\.(com|org|net))$|^:[^:@]*@[0-9]+(\.[0-9]+)+(-[a-z0-9.]+)?$|^:[^:@]*@[23]x\.(png|jpe?g|gif|webp|avif|svg)$'
-          media='\.(png|jpe?g|gif|webp|avif|ico|bmp|tiff?|woff2?|ttf|otf|eot)$'
           # The addresses in standard input that are not allowed, one per line, each after a colon.
           addresses() {
             { grep -aoiE -e "$pattern" || test $? = 1; } | sed 's/^/:/' | { grep -viE -e "$allowed" || test $? = 1; }
           }
-          # Sets name_hit and content_hit (0 or 1) for one blob ($1), its path ($2) and its mode ($3). With $4 = 1 (a
-          # blob from a pull request's commits), a media-named blob's content is skipped only when the blob really is
-          # binary (a NUL byte): a later commit may have removed a text file with such a name, which the tree's own
-          # binary check then never sees.
+          # Sets name_hit and content_hit (0 or 1) for one blob ($1), its path ($2) and its mode ($3). Every blob's
+          # content is read, binary or not (grep -a), except a gitlink's (a commit id) and bun.lock's.
           check() {
-            local hits lower status
+            local hits
             name_hit=0
             content_hit=0
             hits=$(printf '%s\n' "$2" | addresses)
             if [ -n "$hits" ]; then name_hit=1; fi
             if [ "$3" = 160000 ] || [ "$2" = bun.lock ]; then return 0; fi
             git cat-file blob "$1" > "$work/blob"
-            lower=$(printf '%s' "$2" | tr 'A-Z' 'a-z')
-            if [[ "$lower" =~ $media ]]; then
-              if [ "$4" != 1 ]; then return 0; fi
-              status=0
-              LC_ALL=C grep -qI -e '' "$work/blob" || status=$?
-              if [ "$status" = 1 ]; then return 0; fi
-              if [ "$status" != 0 ]; then
-                echo "secret scan: cannot read blob $1" >&2
-                exit 2
-              fi
-            fi
             hits=$(addresses < "$work/blob")
             if [ -n "$hits" ]; then content_hit=1; fi
           }
@@ -328,7 +315,7 @@ jobs:
           content_n=0 content_ids='' names_n=0 names_ids=''
           while IFS= read -r -d '' record; do
             read -r mode blob _ <<< "${record%%$'\t'*}"
-            check "$blob" "${record#*$'\t'}" "$mode" 0
+            check "$blob" "${record#*$'\t'}" "$mode"
             if [ "$name_hit" = 1 ]; then names_n=$((names_n + 1)); names_ids="$names_ids $blob"; fi
             if [ "$content_hit" = 1 ]; then content_n=$((content_n + 1)); content_ids="$content_ids $blob"; fi
           done < "$work/tracked"
@@ -365,7 +352,7 @@ jobs:
             mode=${fields[$((k - 1))]}
             blob=${fields[$((2 * k - 1))]}
             if [[ "$blob" =~ ^0+$ ]]; then continue; fi
-            check "$blob" "$path" "$mode" 1
+            check "$blob" "$path" "$mode"
             if [ "$name_hit" = 1 ]; then names_n=$((names_n + 1)); names_ids="$names_ids $blob"; fi
             if [ "$content_hit" = 1 ]; then content_n=$((content_n + 1)); content_ids="$content_ids $blob"; fi
           done < "$work/added"

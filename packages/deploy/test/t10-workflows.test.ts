@@ -9,6 +9,7 @@ import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
+import { deflateSync } from "node:zlib";
 import { describe, expect, test } from "vitest";
 import { parse } from "yaml";
 import { REPO_ROOT, tempDir } from "./helpers.ts";
@@ -143,6 +144,36 @@ function blobId(content: string | Buffer): string {
   return createHash("sha1")
     .update(Buffer.concat([Buffer.from(`blob ${bytes.length}\0`), bytes]))
     .digest("hex");
+}
+
+/** CRC-32 as PNG chunks use it (ISO 3309, the zlib polynomial). */
+function crc32(bytes: Buffer): number {
+  let crc = 0xffffffff;
+  for (const byte of bytes) {
+    crc ^= byte;
+    for (let bit = 0; bit < 8; bit++) crc = crc & 1 ? (crc >>> 1) ^ 0xedb88320 : crc >>> 1;
+  }
+  return (crc ^ 0xffffffff) >>> 0;
+}
+
+/** A valid 1x1 greyscale PNG whose tEXt chunk is `Author` = `author`: binary (it has NUL bytes) with readable text. */
+function syntheticPng(author: string): Buffer {
+  const chunk = (type: string, data: Buffer): Buffer => {
+    const length = Buffer.alloc(4);
+    length.writeUInt32BE(data.length);
+    const body = Buffer.concat([Buffer.from(type, "latin1"), data]);
+    const crc = Buffer.alloc(4);
+    crc.writeUInt32BE(crc32(body));
+    return Buffer.concat([length, body, crc]);
+  };
+  const header = Buffer.from([0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 0, 0, 0]);
+  return Buffer.concat([
+    Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+    chunk("IHDR", header),
+    chunk("tEXt", Buffer.concat([Buffer.from("Author\0", "latin1"), Buffer.from(author, "latin1")])),
+    chunk("IDAT", deflateSync(Buffer.from([0, 0]))),
+    chunk("IEND", Buffer.alloc(0)),
+  ]);
 }
 
 /** Built at run time, so no address literal sits in this file. Synthetic: .test and example.com are reserved. */
@@ -638,7 +669,10 @@ describe("T10 no email address in a tracked file (security review, Sol round 1, 
    * security, C3-2: `bash -e` when the step names no shell, which has no pipefail). With `failing`, a stub `git` on
    * the PATH makes that git subcommand fail with exit 2, as a read error would.
    */
-  function runIn(files: Readonly<Record<string, string>>, failing?: string): { status: number; output: string } {
+  function runIn(
+    files: Readonly<Record<string, string | Buffer>>,
+    failing?: string,
+  ): { status: number; output: string } {
     const dir = tempDir("cj-t10-email-");
     try {
       const git = (...args: string[]) => spawnSync("git", args, { cwd: dir.root, encoding: "utf8" });
@@ -711,12 +745,34 @@ describe("T10 no email address in a tracked file (security review, Sol round 1, 
     expect(output).not.toContain(name);
   });
 
+  test.each([["bun.lock", `${at("someone", "mail-provider.test")}\n`]])("skips %s", (name, text) => {
+    expect(runIn({ [name]: text }).status).toBe(0);
+  });
+
+  // Images and fonts are read too (Sol security re-run, C5-3): metadata can hold a creator's address.
   test.each([
-    ["bun.lock", `${at("someone", "mail-provider.test")}\n`],
     ["icon.PNG", `${at("someone", "mail-provider.test")}\n`],
     ["font.woff2", `${at("someone", "mail-provider.test")}\n`],
-  ])("skips %s", (name, text) => {
-    expect(runIn({ [name]: text }).status).toBe(0);
+  ])("reads the content of %s too", (name, text) => {
+    const { status, output } = runIn({ [name]: text });
+    expect(status).not.toBe(0);
+    expect(output).toContain(blobId(text));
+    expect(output).not.toContain(name);
+  });
+
+  test("fails on a real binary PNG whose tEXt chunk holds an address, by blob id only", () => {
+    const address = at("synthetic.person", "mail-provider.test");
+    const png = syntheticPng(address);
+    const { status, output } = runIn({ "photo.png": png });
+    expect(status).not.toBe(0);
+    expect(output).toContain("the content of 1 tracked file(s)");
+    expect(output).toContain(blobId(png));
+    expect(output).not.toContain(address);
+    expect(output).not.toContain("photo.png");
+  });
+
+  test("passes on a real binary PNG with no address", () => {
+    expect(runIn({ "photo.png": syntheticPng("synthetic creator") }).status).toBe(0);
   });
 
   test("passes on a repository with no address at all", () => {
@@ -1406,6 +1462,25 @@ describe("T10 the email check reads every blob a pull request's commits add (Sol
       const { status, output } = runStep(emailStep(), repo.root, { EVENT_NAME: "pull_request", BASE_SHA: baseSha });
       expect(status, output).not.toBe(0);
       expect(output).toContain(blobId(text));
+    } finally {
+      repo.cleanup();
+    }
+  });
+
+  test("a real binary PNG with an address in its tEXt chunk, added and then removed, fails (C5-3)", () => {
+    const png = syntheticPng(address);
+    const { repo, baseSha } = pullRequest([{ "notes.txt": "one\n" }]);
+    try {
+      writeFileSync(join(repo.root, "photo.png"), png);
+      repo.git("add", "photo.png");
+      repo.git("commit", "-q", "-m", "add a photo");
+      repo.commit({ "photo.png": null }, "remove it");
+      const { status, output } = runStep(emailStep(), repo.root, { EVENT_NAME: "pull_request", BASE_SHA: baseSha });
+      expect(status, output).not.toBe(0);
+      expect(output).toContain("the content of 1 blob(s) added by this pull request's commits");
+      expect(output).toContain(blobId(png));
+      expect(output).not.toContain(address);
+      expect(output).not.toContain("photo.png");
     } finally {
       repo.cleanup();
     }
