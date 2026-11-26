@@ -32,12 +32,18 @@ describe("P3: bare scheme sources in default-src and script-src are weak", () =>
     expect(checkHeaders(dirWith({ _headers: content }))).toEqual([{ path: "_headers", rule: "headers-weak" }]);
   });
 
-  test("data: in img-src and a host source in script-src pass (positive control)", () => {
+  test("data: in img-src passes (positive control)", () => {
+    const content = MINIMAL_HEADERS.replace("img-src 'self'", "img-src 'self' data:");
+    expect(checkHeaders(dirWith({ _headers: content }))).toEqual([]);
+  });
+
+  // Sol security r4, S6-5 (director-sanctioned): a third-party script host is refused, as the brief allows none.
+  test("a host source in script-src fails with rule headers-weak", () => {
     const content = MINIMAL_HEADERS.replace("img-src 'self'", "img-src 'self' data:").replace(
       "script-src 'self'",
       "script-src 'self' https://static.example.com",
     );
-    expect(checkHeaders(dirWith({ _headers: content }))).toEqual([]);
+    expect(checkHeaders(dirWith({ _headers: content }))).toEqual([{ path: "_headers", rule: "headers-weak" }]);
   });
 });
 

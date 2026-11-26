@@ -45,3 +45,53 @@ describe("every header name is a token and every value plain text (S6-2)", () =>
     expect(headersIn(withExtra("  X-Robots-Tag: noindex, nofollow\n  ! X-Powered-By"))).toEqual([]);
   });
 });
+
+/**
+ * S6-5: the CSP check refused wildcards and bare schemes but accepted an explicit third-party origin as a script
+ * source, so a CDN could serve the site any script. The directives that govern scripts (`script-src`, or
+ * `default-src` when there is none; `script-src-elem` and `script-src-attr` too) may hold only `'self'`, `'none'` and
+ * `'sha256-'`, `'sha384-'` or `'sha512-'` hashes.
+ */
+describe("script sources are same-origin or hashes only (S6-5)", () => {
+  const WEAK = [{ path: "_headers", rule: "headers-weak" }];
+  const CSP_LINE = MINIMAL_HEADERS.split("\n").find((l) => l.includes("Content-Security-Policy:")) ?? "";
+  const withCsp = (csp: string): string => MINIMAL_HEADERS.replace(CSP_LINE, `  Content-Security-Policy: ${csp}`);
+
+  test.each([
+    [
+      "a third-party origin in script-src",
+      "default-src 'self'; script-src 'self' https://cdn.example.com; frame-ancestors 'none'",
+    ],
+    [
+      "a third-party origin in default-src with no script-src",
+      "default-src 'self' https://cdn.example.com; frame-ancestors 'none'",
+    ],
+    [
+      "a third-party origin in script-src-elem",
+      "default-src 'self'; script-src 'self'; script-src-elem https://cdn.example.com; frame-ancestors 'none'",
+    ],
+    ["'strict-dynamic'", "default-src 'self'; script-src 'self' 'strict-dynamic'; frame-ancestors 'none'"],
+    ["'report-sample'", "default-src 'self'; script-src 'self' 'report-sample'; frame-ancestors 'none'"],
+    ["a malformed hash", "default-src 'self'; script-src 'self' 'sha1-AAAA'; frame-ancestors 'none'"],
+  ])("%s is headers-weak", (_name, csp) => {
+    expect(headersIn(withCsp(csp))).toEqual(WEAK);
+  });
+
+  test.each([
+    [
+      "'self' and a sha256 hash",
+      "default-src 'self'; script-src 'self' 'sha256-8CUbeTkNF81cttU2jYUxGhau4N96/fwsZtRPn7Bz1Nc='; frame-ancestors 'none'",
+    ],
+    [
+      "sha384 and sha512 hashes",
+      "default-src 'self'; script-src 'sha384-AbCd+/9=' 'sha512-XyZ0'; frame-ancestors 'none'",
+    ],
+    ["'none' for scripts", "default-src 'self'; script-src 'none'; frame-ancestors 'none'"],
+    [
+      "a third-party origin outside the script directives",
+      "default-src 'self'; script-src 'self'; img-src 'self' https://img.example.com; frame-ancestors 'none'",
+    ],
+  ])("%s passes (positive control)", (_name, csp) => {
+    expect(headersIn(withCsp(csp))).toEqual([]);
+  });
+});

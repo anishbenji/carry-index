@@ -159,6 +159,9 @@ function isPrintableAscii(value: string): boolean {
   return true;
 }
 
+/** A script source the site may use: itself, nothing, or the hash of an inline script. */
+const SCRIPT_SOURCE = /^(?:'self'|'none'|'sha(?:256|384|512)-[A-Za-z0-9+/_-]+={0,2}')$/i;
+
 function cspWeak(value: string, isRoot: boolean): boolean {
   const directives = value
     .split(";")
@@ -173,6 +176,16 @@ function cspWeak(value: string, isRoot: boolean): boolean {
     .filter((d) => scriptDirectives.has((d[0] ?? "").toLowerCase()))
     .flatMap((d) => d.slice(1).map((s) => s.toLowerCase()));
   if (scriptSources.some((s) => /^[a-z][a-z0-9+.-]*:$/.test(s))) return true;
+  // The directives that govern scripts (script-src, or default-src when there is none; script-src-elem and
+  // script-src-attr) may hold only 'self', 'none' and hashes: an explicit origin could serve the site any script, and
+  // the brief allows no third-party script (sol security r4, S6-5).
+  const byName = new Map(directives.map((d) => [(d[0] ?? "").toLowerCase(), d.slice(1)]));
+  const governing = [
+    byName.get("script-src") ?? byName.get("default-src") ?? [],
+    byName.get("script-src-elem") ?? [],
+    byName.get("script-src-attr") ?? [],
+  ].flat();
+  if (governing.some((source) => !SCRIPT_SOURCE.test(source))) return true;
   const names = new Set(directives.map((d) => (d[0] ?? "").toLowerCase()));
   return isRoot && !(names.has("default-src") && names.has("frame-ancestors"));
 }
