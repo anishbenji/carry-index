@@ -39,7 +39,7 @@ Two things do not work as the architecture doc assumed:
 | vite | 8.3.8 | apps/web, apps/kit |
 | @solidjs/vite-plugin | 3.0.1 | apps/web, apps/kit |
 | solid-js, @solidjs/web | 2.0.4 | apps/web, apps/kit |
-| zod | 4.6.7 | packages/schema, packages/pipeline |
+| zod | 4.6.7 | packages/schema, packages/pipeline, packages/deploy (director decision: a CI tool, never bundled) |
 | @types/bun | 1.4.2 | root (decision #13) |
 | happy-dom | 21.0.4 | apps/web, Vitest environment (decision #13) |
 
@@ -51,6 +51,19 @@ Every other approved package PRs 7 and 8 need is installed at its approved pin (
 - `packages/schema`: a strict Zod 4 bag schema and its inferred `Bag` type.
 - `packages/pipeline`: `readBags`, which parses YAML (`yaml` 2.9.1) and validates each entry.
 - `packages/checks`: the interim wall guard, the size and end-to-end gates and the import ban, all test-first.
+- `packages/deploy`: the privacy-wall deploy gate (design v2): Worker definitions and the config emitter, `seal`
+  (its own walker, the allow-list in `allow-list.ts`, the SHA-256 manifest), the Wrangler runner, check 3 (dry run,
+  upload, version check, promotion and live check), check 1 (`public-surface.json`, `never-public.ts`, open
+  shapes, the private import ban) and check 2 (canary, bundle scan, `_headers`). `node packages/deploy/src/bin.ts
+  check <siteDir>` runs check 1's schema half, the seal and check 2, and spawns nothing; `deploy <siteDir>` adds
+  the build-graph check (the `moduleGraph` Vite plugin's report for the same build) and check 3: it uploads a version
+  with no traffic, tagged with the sealed manifest's tag, checks that version, promotes it and confirms it live (the
+  first deploy runs with workers.dev and preview URLs off); `triggers <siteDir>` runs once after the first deploy, on
+  the same commit: the same checks and dry run, then, only if the active deployment is that build's tagged version
+  alone at 100% and clean, `wrangler triggers deploy` (workers.dev on, preview URLs off, as the definition says),
+  and it confirms those settings. Both are for the deploy workflow only; the first-deploy steps are in
+  `packages/deploy/README.md`. Its contract tests T1 to T9 are
+  described in `packages/deploy/test/README.md`.
 - `apps/web`: a Solid 2 component that takes a `Bag` by `import type`; the Vite build emits a client bundle and
   no HTML, so the size and end-to-end gates stay in their "no pages yet" state until PR 7 emits pages.
 - `apps/kit`: a placeholder Solid 2 entry for the private app.
@@ -85,9 +98,9 @@ and `e2e/`.
 |---|---|---|
 | `typecheck` | `tsc --build` | passes |
 | `lint` | `biome ci --error-on-warnings .` (any warning fails, so the whole types domain gates, not only the two promise rules), then the import ban (`node`, TypeScript 7 parser) | passes |
-| `test` | `vitest run` in every workspace that has tests | 68 tests pass |
+| `test` | `vitest run` in every workspace that has tests | 824 tests pass (8 todo) |
 | `build` | `vite build` in apps/web and apps/kit | passes, no HTML emitted |
-| `wall` | lists the three privacy-wall checks as `pending: packages/deploy (privacy-wall design v2)`; fails if any file git does not ignore is a Wrangler-style config, or if the built apps/web contains Zod | passes, 272 files, none a Wrangler config; no Zod in the build |
+| `wall` | lists the three privacy-wall checks as implemented, each with the gate command that runs it (`check` for the schema and canary checks, `deploy` for the bindings check); fails if any file git does not ignore is a Wrangler-style config, or if the built apps/web contains Zod | passes, 272 files, none a Wrangler config; no Zod in the build |
 | `size` | runs size-limit whenever the root `size-limit` list has targets; without targets, "no pages yet" until `apps/web/dist` holds HTML or JavaScript, then fails; once pages exist, every built page must match a target's glob | passes: largest is Brotli 4 at 10,814 B of 15,000 B |
 | `test:e2e` | "no pages yet" while there is neither a page nor `playwright.config.ts`; fails if one exists without the other (a config with no built pages means the build was skipped); else runs Playwright | passes, no pages and no config |
 
@@ -97,8 +110,9 @@ On 2026-11-26 the user chose privacy-wall design v2 (ADR-0049, question 6): the 
 artifact and generates every Worker config from code. This spike's static config scan, which tried to predict
 what Wrangler would load, was removed from this PR before merge, with its tests.
 
-Until `packages/deploy` lands, `bun run wall` is a small guard: it lists the three checks as
-`pending: packages/deploy (privacy-wall design v2)` and fails if any file git does not ignore (tracked, or untracked
+`packages/deploy` implements the checks; the workflows that run its gate are a separate task. `bun run wall` lists
+the three checks as implemented, each with the gate command that runs it (`<id>: implemented: <command>`), and
+fails if any file git does not ignore (tracked, or untracked
 and not covered by a .gitignore) is a Wrangler-style config: a JSON, JSONC or TOML file whose name starts
 `wrangler`, any `cloudflare.config.*`, or a `.wrangler/deploy/config.json`. The new design keeps none in the repo. It also
 checks, by existence only, Wrangler's default names (`wrangler.json`, `wrangler.jsonc`, `wrangler.toml`) at the repo
@@ -162,7 +176,7 @@ All run in the branch checkout. Build and end-to-end runs went through `heavy-ru
 | `/usr/bin/time -p biome ci --error-on-warnings .` | real 0.23 s, 50 files |
 | `biome lint` on a scratch file with an unawaited promise, an async `forEach` callback and a promise in an `if` | `noFloatingPromises` (1), `noMisusedPromises` (2) and `noUnnecessaryConditions` (1) reported (file removed afterwards) |
 | `biome ci` with `noRestrictedImports` on `zod` and `@cj/schema` under `apps/web` | errors on `import type { Bag } from "@cj/schema"` in both files that use it; override removed |
-| `bun run test` | checks 55, schema 6, pipeline 3, web 4: all pass |
+| `bun run test` | checks 55, schema 19, pipeline 3, web 4, deploy 743 (8 todo): all pass |
 | `heavy-run.sh … bun run build` | exit 0; Vite reports apps/web `main-*.js` 25.06 kB (10.54 kB gzip), apps/kit 24.58 kB (10.32 kB gzip) |
 | `heavy-run.sh … bun run size` (after the build) | exit 0; "Size limit: 15 kB / Size: 9.54 kB brotlied" |
 | `wc -c`, `brotli -c -q 11 … \| wc -c`, `gzip -9 -c … \| wc -c` on each bundle | apps/web: 25,069 B raw, 9,540 B Brotli, 10,439 B gzip; apps/kit: 24,586 B raw, 9,353 B Brotli, 10,220 B gzip |

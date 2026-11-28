@@ -11,6 +11,9 @@
       "path": "packages/checks"
     },
     {
+      "path": "packages/deploy"
+    },
+    {
       "path": "apps/web"
     },
     {

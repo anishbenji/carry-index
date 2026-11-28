@@ -1,0 +1,7 @@
+
+ ⛅️ wrangler 4.168.0
+────────────────────
+✨ Read 1 file from the assets directory /tmp/cj-sealed-example/site
+Total Upload: 0.46 KiB / gzip: 0.31 KiB
+No bindings found.
+--dry-run: exiting now.

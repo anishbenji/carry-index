@@ -1,0 +1,15 @@
+[
+  "bagSchema.brand: string",
+  "bagSchema.capacityLitres: number",
+  "bagSchema.fabric: string",
+  "bagSchema.name: string",
+  "bagSchema.slug: string",
+  "bagSchema.weightGrams: integer",
+  "fitSchema.airlines[].checked: null|string",
+  "fitSchema.airlines[].name: string",
+  "fitSchema.airlines[].regions[]: string",
+  "fitSchema.slug: string",
+  "fitSchema.variants[].id: string",
+  "fitSchema.variants[].marks: string",
+  "fitSchema.variants[].name: string"
+]
