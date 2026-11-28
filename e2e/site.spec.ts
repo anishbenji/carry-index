@@ -191,6 +191,47 @@ test("no page scrolls sideways at 320 px wide with the text size at 200% (N12)",
   }
 });
 
+test("both templates restore from the back/forward cache (N10)", async ({ playwright, browserName }, testInfo) => {
+  test.skip(browserName !== "chromium", "the browser is launched here with Chromium's back/forward cache enabled");
+  // Playwright starts Chromium with --disable-back-forward-cache, and its headless shell never caches, so this test
+  // launches full Chromium (new headless) without that switch. A restored page fires pageshow with persisted set and
+  // no load event, so navigation waits only for commit and then for the page's own pageshow record.
+  const browser = await playwright.chromium.launch({
+    channel: "chromium",
+    ignoreDefaultArgs: ["--disable-back-forward-cache"],
+  });
+  try {
+    const { baseURL, colorScheme } = testInfo.project.use;
+    const page = await browser.newPage({ baseURL: baseURL ?? "", colorScheme: colorScheme ?? "light" });
+    await page.addInitScript(() => {
+      addEventListener("pageshow", (event) => {
+        document.documentElement.dataset.persisted = String((event as PageTransitionEvent).persisted);
+      });
+    });
+    const [bag = ""] = await bagPaths(page);
+    const shown = async (path: string) => {
+      await page.waitForFunction(
+        (expected) => location.pathname === expected && document.documentElement.dataset.persisted !== "pending",
+        path,
+      );
+      return page.evaluate(() => document.documentElement.dataset.persisted);
+    };
+    await page.goto(bag);
+    await page.evaluate(() => {
+      document.documentElement.dataset.persisted = "pending";
+    });
+    await page.goBack({ waitUntil: "commit" });
+    expect(await shown(LISTING), "listing, back").toBe("true");
+    await page.evaluate(() => {
+      document.documentElement.dataset.persisted = "pending";
+    });
+    await page.goForward({ waitUntil: "commit" });
+    expect(await shown(bag), "bag page, forward").toBe("true");
+  } finally {
+    await browser.close();
+  }
+});
+
 test("the page follows the system colour scheme", async ({ page }, testInfo) => {
   await page.goto(LISTING);
   const dark = testInfo.project.name.endsWith("-dark");
