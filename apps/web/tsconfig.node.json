@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": ".tsbuild/node",
+    "lib": ["es2023", "dom", "dom.iterable"],
+    "types": ["bun"],
+    "jsx": "preserve",
+    "jsxImportSource": "@solidjs/web"
+  },
+  "include": ["vite.config.ts", "vitest.config.ts", "test"],
+  "references": [
+    {
+      "path": "./tsconfig.json"
+    },
+    {
+      "path": "../../packages/schema"
+    },
+    {
+      "path": "../../packages/deploy"
+    }
+  ]
+}

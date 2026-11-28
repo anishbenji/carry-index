@@ -1,0 +1,27 @@
+# Security headers for the public site (architecture doc, "Security headers"; unified brief: COOP and CORP).
+# Vite copies public/ into dist/client unchanged; packages/deploy's gate requires this file and checks every rule
+# (packages/deploy/src/headers.ts). Format and host patterns:
+# https://developers.cloudflare.com/workers/static-assets/headers/ (a host placeholder matches anything but ".").
+# The scaffold serves no HTML and no inline script or style, so the CSP allows same-origin files only. When pages
+# arrive, add the hash of each inline script or style; never 'unsafe-inline'. Never auto-merged: the owner merges.
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), autoplay=(), browsing-topics=(), camera=(), display-capture=(), encrypted-media=(), fullscreen=(), geolocation=(), gyroscope=(), hid=(), idle-detection=(), magnetometer=(), microphone=(), midi=(), payment=(), publickey-credentials-get=(), screen-wake-lock=(), serial=(), usb=(), xr-spatial-tracking=()
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+
+# ADR-0045: noindex on the workers.dev hosts only, never on carryjournal.com. The first pattern is Cloudflare's
+# documented one for "*.*.workers.dev" (<worker>.<subdomain> and version-preview hosts); the second covers a
+# single-label <subdomain>.workers.dev host.
+https://:version.:subdomain.workers.dev/*
+  X-Robots-Tag: noindex
+
+https://:subdomain.workers.dev/*
+  X-Robots-Tag: noindex
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

@@ -1,0 +1,393 @@
+# Checks for every pull request and every push to main. No credentials and no environment: nothing here can
+# deploy (ADR-0049, privacy-wall design v2 section 8). Each action is pinned by commit SHA; packages install
+# without running their scripts. The structure is tested by packages/deploy/test/t10-workflows.test.ts.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: script contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: 1.4.2
+          no-cache: true
+      - name: Install (frozen lockfile, no package scripts)
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Type check
+        run: bun run typecheck
+      - name: Lint
+        run: bun run lint
+      - name: Unit and contract tests
+        run: bun run test
+      - name: Build
+        run: bun run build
+      - name: Interim wall guard
+        run: bun run wall
+      - name: Size budgets
+        run: bun run size
+      - name: Deploy gate check on the build (checks 1 and 2, seal and scan; spawns nothing)
+        run: node packages/deploy/src/bin.ts check apps/web/dist/client
+      - name: Install Playwright Chromium
+        run: bun x playwright install --with-deps chromium
+      - name: End-to-end tests
+        run: bun run test:e2e
+
+  # Its own job and check, deliberately not one of the three required checks (independent review r2, C2-3): an advisory
+  # published today for a pinned package shows red here without blocking every merge until it is fixed.
+  dependency-audit:
+    name: dependency audit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: 1.4.2
+          no-cache: true
+      - name: Install (frozen lockfile, no package scripts)
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Audit the locked packages against published advisories
+        run: bun audit
+
+  data:
+    name: data validator
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version: 0.13.6
+          # 3.12 or later, where unittest discovery that finds no tests exits 5 and fails the step.
+          python-version: "3.12"
+          enable-cache: false
+      # Exact versions, as uv resolved them on 26 Nov 2026; their own dependencies still resolve at run time.
+      # The validator's messages can quote a rejected value, which may be private, and this log is public (Sol
+      # security re-run, C5-4). Its output and report stay in the run temp folder, which nothing uploads; the log
+      # gets only the error count and the exit status. Run tools/validate.py locally to read the messages.
+      - name: Validate the catalogue data
+        shell: bash
+        run: |
+          set -euo pipefail
+          status=0
+          uv run --no-project --with pyyaml==6.0.4 --with jsonschema==4.26.0 python tools/validate.py --report "$RUNNER_TEMP/validation-report.md" > "$RUNNER_TEMP/validation-output.txt" 2>&1 || status=$?
+          errors=$({ grep --count '^ERROR ' "$RUNNER_TEMP/validation-output.txt" || test $? = 1; })
+          echo "data validator: $errors error(s), exit status $status; the messages stay on the runner (run tools/validate.py locally to read them)"
+          exit "$status"
+      - name: Validator tests
+        run: uv run --no-project --with pyyaml==6.0.4 --with jsonschema==4.26.0 python -m unittest discover -s tools -p "test_validate_*.py"
+
+  secret-scan:
+    name: secret scan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    env:
+      GITLEAKS_VERSION: 8.30.1
+      # SHA-256 of gitleaks_8.30.1_linux_x64.tar.gz, from the release's checksums file.
+      GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Install gitleaks (pinned release, checksum verified)
+        run: |
+          set -euo pipefail
+          archive="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl -fsSL --proto '=https' -o "$RUNNER_TEMP/$archive" \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/${archive}"
+          echo "${GITLEAKS_SHA256}  $RUNNER_TEMP/$archive" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/gitleaks"
+          tar -xzf "$RUNNER_TEMP/$archive" -C "$RUNNER_TEMP/gitleaks" gitleaks
+      # A change must not be able to quiet the scan: no allow-list or config file of its own, and inline
+      # gitleaks:allow comments are ignored.
+      - name: Refuse gitleaks config files in the checkout
+        run: |
+          for name in .gitleaksignore .gitleaks.toml; do
+            if [ -e "$name" ]; then
+              echo "secret scan: $name is not allowed in this repository" >&2
+              exit 1
+            fi
+          done
+      # A pull request must not choose the policy that scans it (Sol security, C3-1): on pull_request the policy is
+      # the base commit's copy, written over the checkout's, and a pull request that changes or deletes it fails
+      # for owner review. Only the bootstrap pull request, whose base has no policy yet, uses its own. A push uses
+      # its own commit's. Residual, accepted: a pull_request run uses the pull request's own ci.yml, so a pull
+      # request can still edit this step; every .github/** change is owner-reviewed and never auto-merged. The
+      # trigger that runs the base's workflow is not used: it runs with the base's credentials beside untrusted input.
+      - name: Choose the scan policy (the base commit's, on a pull request)
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          policy=.github/gitleaks.toml
+          if [ "$EVENT_NAME" != pull_request ]; then
+            echo "secret scan: policy from this commit ($EVENT_NAME)"
+            exit 0
+          fi
+          if ! [[ "$BASE_SHA" =~ ^[0-9a-f]{40}$ ]] || ! git cat-file -e "$BASE_SHA^{commit}"; then
+            echo "secret scan: the pull request's base commit is missing from the checkout" >&2
+            exit 1
+          fi
+          if ! git cat-file -e "$BASE_SHA:$policy" 2>/dev/null; then
+            echo "secret scan: the base commit has no policy; using this pull request's (bootstrap)"
+            exit 0
+          fi
+          if ! git diff --quiet "$BASE_SHA" HEAD -- "$policy"; then
+            echo "secret scan: policy changed: owner review ($policy differs from the base commit)" >&2
+            exit 1
+          fi
+          git show "$BASE_SHA:$policy" > "$policy"
+          echo "secret scan: policy from the base commit $BASE_SHA"
+      # Every ref, merge commits against their first parent, and files Git attributes mark as binary, with the
+      # trusted policy under .github/ (gitleaks' default rules without its skips for text files).
+      # gitleaks 8.30.1 logs a git read error and carries on, so an unreadable object could end in a clean result
+      # over part of the history (Sol security re-run, C5-2). Before the scan every reachable object must be listed
+      # without error; after it, the commits gitleaks reports scanned must equal the commits git log lists for the
+      # same log options (it counts each commit with a change those options keep).
+      - name: Scan the whole history
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! git rev-list --all --objects > /dev/null; then
+            echo "secret scan: the history cannot be read in full (git rev-list --all --objects failed); refusing an incomplete scan" >&2
+            exit 1
+          fi
+          # Matching commit counts do not prove every patch was read (final gate, G2): git log must produce every patch
+          # gitleaks will read, with the scan's own history and patch options, without an error.
+          if ! git log --full-history --all --diff-filter=uxdb --text --diff-merges=first-parent -p > /dev/null; then
+            echo "secret scan: the history's patches cannot be read in full (git log -p failed); refusing an incomplete scan" >&2
+            exit 1
+          fi
+          expected=$(git log --full-history --all --diff-filter=uxdb --diff-merges=first-parent --no-patch --format=%H | wc -l | tr -d ' ')
+          # gitleaks prints each finding's file, commit, author and email, and this log is public (final gate, G1): its
+          # output and report stay in the run temp folder, which nothing uploads; the log gets only the count and the
+          # exit status. Run the same command locally to read the findings.
+          status=0
+          "$RUNNER_TEMP/gitleaks/gitleaks" git --redact --no-banner --ignore-gitleaks-allow \
+            --config .github/gitleaks.toml \
+            --log-opts="--full-history --all --diff-filter=uxdb --text --diff-merges=first-parent" \
+            --report-path "$RUNNER_TEMP/gitleaks-report.json" \
+            --exit-code 1 . > "$RUNNER_TEMP/gitleaks.log" 2>&1 || status=$?
+          findings=$(sed -n 's/.*leaks found: \([0-9][0-9]*\).*/\1/p' "$RUNNER_TEMP/gitleaks.log" | tail -n 1)
+          if [ -z "$findings" ] && grep -q 'no leaks found' "$RUNNER_TEMP/gitleaks.log"; then findings=0; fi
+          echo "secret scan: gitleaks found ${findings:-an unknown number of} finding(s), exit status $status"
+          if [ "$status" != 0 ]; then exit "$status"; fi
+          scanned=$(sed -n 's/.*[^0-9]\([0-9][0-9]*\) commits scanned.*/\1/p' "$RUNNER_TEMP/gitleaks.log" | tail -n 1)
+          if [ "$scanned" != "$expected" ]; then
+            echo "secret scan: gitleaks scanned ${scanned:-no} commits, but the history has $expected; refusing an incomplete scan" >&2
+            exit 1
+          fi
+      # The scan's policy and the email check below skip images and fonts by extension, so each must really be
+      # binary (security review r2, C2-1): a tracked file with one of these extensions and no NUL byte is text, and
+      # is refused. Each blob is read as the index records it (git cat-file), so a .gitattributes entry cannot mark
+      # a text file binary. Prints only a count and blob ids, never a name (independent-neon r1, C4-2): a name can
+      # itself be private. Find a file by its blob id with `git ls-files -s | grep <id>`, any blob with
+      # `git log --all --find-object=<id>`. On a pull request it also reads every media-named blob the pull request's
+      # own commits add (BASE_SHA..HEAD; for a merge, the files that differ from every parent), so a text file under
+      # such a name that a later commit removed still fails (independent-neon r1, C4-1): gitleaks skips these names,
+      # and the email check looks only for addresses.
+      - name: No text files named as images or fonts
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          work=$(mktemp -d)
+          trap 'rm -rf "$work"' EXIT
+          # Sets is_text to 1 when blob $1 has no NUL byte, else 0; a read error stops the step.
+          text_blob() {
+            local status=0
+            git cat-file blob "$1" > "$work/blob"
+            LC_ALL=C grep -qI -e '' "$work/blob" || status=$?
+            if [ "$status" = 0 ]; then
+              is_text=1
+            elif [ "$status" = 1 ]; then
+              is_text=0
+            else
+              echo "secret scan: cannot read blob $1" >&2
+              exit 2
+            fi
+          }
+          specs=()
+          for ext in png jpg jpeg gif webp avif ico bmp tif tiff woff woff2 ttf otf eot; do
+            specs+=(":(icase)*.$ext")
+          done
+          git ls-files -s -z -- "${specs[@]}" > "$work/tracked"
+          text_n=0 text_ids=''
+          while IFS= read -r -d '' record; do
+            read -r mode blob _ <<< "${record%%$'\t'*}"
+            if [ "$mode" = 160000 ]; then continue; fi
+            text_blob "$blob"
+            if [ "$is_text" = 1 ]; then text_n=$((text_n + 1)); text_ids="$text_ids $blob"; fi
+          done < "$work/tracked"
+          fail=0
+          if [ "$text_n" -gt 0 ]; then
+            echo "secret scan: $text_n tracked file(s) named as an image or font are text; blob ids:$text_ids" >&2
+            fail=1
+          fi
+
+          if [ "$EVENT_NAME" != pull_request ]; then
+            echo "secret scan: $EVENT_NAME: tracked files only"
+            exit "$fail"
+          fi
+          if ! [[ "$BASE_SHA" =~ ^[0-9a-f]{40}$ ]] || ! git cat-file -e "$BASE_SHA^{commit}"; then
+            echo "secret scan: the pull request's base commit is missing from the checkout" >&2
+            exit 1
+          fi
+          media='\.(png|jpe?g|gif|webp|avif|ico|bmp|tiff?|woff2?|ttf|otf|eot)$'
+          git rev-list "$BASE_SHA..HEAD" > "$work/commits"
+          : > "$work/added"
+          while IFS= read -r commit; do
+            git diff-tree --diff-merges=combined -r -z --no-renames --no-commit-id --root "$commit" >> "$work/added"
+          done < "$work/commits"
+          text_n=0 text_ids=''
+          while IFS= read -r -d '' meta && IFS= read -r -d '' path; do
+            # ":<modes> <shas> <status>", one mode and one sha per parent and one for the result, which come last.
+            read -r -a fields <<< "${meta#"${meta%%[!:]*}"}"
+            k=$(( (${#fields[@]} - 1) / 2 ))
+            mode=${fields[$((k - 1))]}
+            blob=${fields[$((2 * k - 1))]}
+            if [[ "$blob" =~ ^0+$ ]] || [ "$mode" = 160000 ]; then continue; fi
+            lower=$(printf '%s' "$path" | tr 'A-Z' 'a-z')
+            if ! [[ "$lower" =~ $media ]]; then continue; fi
+            text_blob "$blob"
+            if [ "$is_text" = 1 ]; then text_n=$((text_n + 1)); text_ids="$text_ids $blob"; fi
+          done < "$work/added"
+          if [ "$text_n" -gt 0 ]; then
+            echo "secret scan: $text_n blob(s) named as an image or font added by this pull request's commits are text; blob ids:$text_ids" >&2
+            fail=1
+          fi
+          exit "$fail"
+      # Allowed: noreply and example.com/org/net domains, package versions (name@1.2.3) and image density suffixes
+      # (logo@2x.png). Case-insensitive; every blob is read as text, whatever .gitattributes says, images and fonts
+      # included, whose metadata (PNG tEXt, XMP) can hold a creator's address (Sol security re-run, C5-3); only
+      # bun.lock's content (package integrity hashes) is skipped, and every file's name is checked. Prints
+      # only counts and blob ids, never a path or an address (Sol security, C3-4): a file's name can hold the address
+      # itself. Find a tracked file with `git ls-files -s | grep <id>`, any blob with `git log --all --find-object=<id>`.
+      # On a pull request it also reads every blob the pull request's own commits add (BASE_SHA..HEAD, merges
+      # included), so an address committed and then removed still fails (Sol security, C3-3). History before the
+      # base is not read: the known items there are the owner's to rewrite or accept.
+      # shell: bash runs it with pipefail (Sol security, C3-2): GitHub's default `bash -e` has none, so a git read
+      # error would end in an empty, passing pipeline.
+      - name: No email addresses in tracked files
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          pattern='[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z0-9.-]*[a-z]{2,}'
+          allowed='^:[^:@]*@([^:@]*\.)?(noreply\.[^:@]*|example\.(com|org|net))$|^:[^:@]*@[0-9]+(\.[0-9]+)+(-[a-z0-9.]+)?$|^:[^:@]*@[23]x\.(png|jpe?g|gif|webp|avif|svg)$'
+          # The addresses in standard input that are not allowed, one per line, each after a colon.
+          addresses() {
+            { grep -aoiE -e "$pattern" || test $? = 1; } | sed 's/^/:/' | { grep -viE -e "$allowed" || test $? = 1; }
+          }
+          # Sets name_hit and content_hit (0 or 1) for one blob ($1), its path ($2) and its mode ($3). Every blob's
+          # content is read, binary or not (grep -a), except a gitlink's (a commit id) and bun.lock's.
+          check() {
+            local hits
+            name_hit=0
+            content_hit=0
+            hits=$(printf '%s\n' "$2" | addresses)
+            if [ -n "$hits" ]; then name_hit=1; fi
+            if [ "$3" = 160000 ] || [ "$2" = bun.lock ]; then return 0; fi
+            git cat-file blob "$1" > "$work/blob"
+            hits=$(addresses < "$work/blob")
+            if [ -n "$hits" ]; then content_hit=1; fi
+          }
+          work=$(mktemp -d)
+          trap 'rm -rf "$work"' EXIT
+          fail=0
+
+          git ls-files -s -z > "$work/tracked"
+          content_n=0 content_ids='' names_n=0 names_ids=''
+          while IFS= read -r -d '' record; do
+            read -r mode blob _ <<< "${record%%$'\t'*}"
+            check "$blob" "${record#*$'\t'}" "$mode"
+            if [ "$name_hit" = 1 ]; then names_n=$((names_n + 1)); names_ids="$names_ids $blob"; fi
+            if [ "$content_hit" = 1 ]; then content_n=$((content_n + 1)); content_ids="$content_ids $blob"; fi
+          done < "$work/tracked"
+          if [ "$content_n" -gt 0 ]; then
+            echo "secret scan: email address in the content of $content_n tracked file(s); blob ids:$content_ids" >&2
+            fail=1
+          fi
+          if [ "$names_n" -gt 0 ]; then
+            echo "secret scan: email address in $names_n tracked file name(s); blob ids:$names_ids" >&2
+            fail=1
+          fi
+
+          if [ "$EVENT_NAME" != pull_request ]; then
+            echo "secret scan: $EVENT_NAME: tracked files only"
+            exit "$fail"
+          fi
+          if ! [[ "$BASE_SHA" =~ ^[0-9a-f]{40}$ ]] || ! git cat-file -e "$BASE_SHA^{commit}"; then
+            echo "secret scan: the pull request's base commit is missing from the checkout" >&2
+            exit 1
+          fi
+          # Every commit, merges included: for a merge, the combined diff lists only the files that differ from every
+          # parent, so a blob only a merge (or its conflict resolution) adds is read too, and nothing it takes from
+          # the base is.
+          git rev-list "$BASE_SHA..HEAD" > "$work/commits"
+          : > "$work/added"
+          while IFS= read -r commit; do
+            git diff-tree --diff-merges=combined -r -z --no-renames --no-commit-id --root "$commit" >> "$work/added"
+          done < "$work/commits"
+          content_n=0 content_ids='' names_n=0 names_ids=''
+          while IFS= read -r -d '' meta && IFS= read -r -d '' path; do
+            # ":<modes> <shas> <status>", one mode and one sha per parent and one for the result, which come last.
+            read -r -a fields <<< "${meta#"${meta%%[!:]*}"}"
+            k=$(( (${#fields[@]} - 1) / 2 ))
+            mode=${fields[$((k - 1))]}
+            blob=${fields[$((2 * k - 1))]}
+            if [[ "$blob" =~ ^0+$ ]]; then continue; fi
+            check "$blob" "$path" "$mode"
+            if [ "$name_hit" = 1 ]; then names_n=$((names_n + 1)); names_ids="$names_ids $blob"; fi
+            if [ "$content_hit" = 1 ]; then content_n=$((content_n + 1)); content_ids="$content_ids $blob"; fi
+          done < "$work/added"
+          echo "secret scan: pull request: tracked files and the blobs of $(wc -l < "$work/commits" | tr -d ' ') commit(s)"
+          if [ "$content_n" -gt 0 ]; then
+            echo "secret scan: email address in the content of $content_n blob(s) added by this pull request's commits; blob ids:$content_ids" >&2
+            fail=1
+          fi
+          if [ "$names_n" -gt 0 ]; then
+            echo "secret scan: email address in $names_n file name(s) added by this pull request's commits; blob ids:$names_ids" >&2
+            fail=1
+          fi
+          exit "$fail"

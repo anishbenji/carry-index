@@ -1,0 +1,50 @@
+{
+  "name": "carry-index",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=26.13.0"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "workers/*"
+  ],
+  "scripts": {
+    "typecheck": "tsc --build",
+    "lint": "biome ci --error-on-warnings . && node packages/checks/src/cli/imports.ts",
+    "test": "bun run --filter '*' test",
+    "build": "bun run --filter '*' build",
+    "test:e2e": "bun packages/checks/src/cli/e2e.ts",
+    "size": "bun packages/checks/src/cli/size.ts",
+    "wall": "node packages/checks/src/cli/wall.ts"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.1",
+    "@biomejs/biome": "2.6.9",
+    "@cloudflare/workers-types": "5.20261125.1",
+    "@lhci/cli": "0.16.1",
+    "@playwright/test": "1.65.1",
+    "@size-limit/file": "14.3.0",
+    "@types/bun": "1.4.2",
+    "browserslist": "4.29.6",
+    "size-limit": "14.3.0",
+    "typescript": "7.0.2",
+    "vitest": "5.1.1",
+    "wrangler": "4.168.0"
+  },
+  "size-limit": [
+    {
+      "name": "apps/web client JavaScript, gzip (N2 listing limit, ADR-0017)",
+      "path": "apps/web/dist/client/assets/*.js",
+      "gzip": true,
+      "limit": "15 kB"
+    },
+    {
+      "name": "apps/web client JavaScript, Brotli (N2 listing limit, ADR-0017)",
+      "path": "apps/web/dist/client/assets/*.js",
+      "brotli": true,
+      "limit": "15 kB"
+    }
+  ]
+}

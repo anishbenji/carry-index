@@ -193,7 +193,7 @@
           "exclusiveMinimum": 0
         },
         "weight_g": {
-          "type": "number",
+          "type": "integer",
           "exclusiveMinimum": 0
         },
         "dims_cm": {
@@ -405,7 +405,7 @@
                   ],
                   "properties": {
                     "g": {
-                      "type": "number"
+                      "type": "integer"
                     },
                     "from": {
                       "enum": [

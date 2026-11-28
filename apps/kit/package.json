@@ -1,0 +1,21 @@
+{
+  "name": "@cj/kit",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@solidjs/meta": "2.0.0",
+    "@solidjs/router": "2.0.1",
+    "@solidjs/web": "2.0.4",
+    "solid-js": "2.0.4"
+  },
+  "devDependencies": {
+    "@cj/schema": "workspace:*",
+    "@solidjs/testing-library": "0.8.10",
+    "@solidjs/vite-plugin": "3.0.1",
+    "vite": "8.3.8"
+  }
+}
