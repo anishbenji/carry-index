@@ -1,11 +1,20 @@
-import { brotliCompressSync, constants } from "node:zlib";
+import { brotliCompressSync, constants, gzipSync } from "node:zlib";
 import type { CatalogueExport } from "@cj/schema";
 import type { StaticPage } from "../src/render.tsx";
 import { bagFile, HOME_REDIRECT, LISTING_FILE, NOT_FOUND_FILE } from "../src/routes.ts";
 import { cspPolicy, inlineHashes, withCsp } from "./csp.ts";
 
-/** N2 (ADR-0017): the whole site's CSS under 10 KB compressed, read as 10,000 bytes of Brotli at quality 11. */
+/**
+ * N2 (ADR-0017): the whole site's CSS under 10 KB compressed, read as 10,000 bytes at the levels Cloudflare
+ * recompresses at the edge, Brotli 4 or gzip 8, whichever is larger (as `packages/checks/src/edge.ts` measures).
+ */
 export const CSS_BUDGET_BYTES = 10_000;
+
+/** The larger of a text's Brotli 4 and gzip 8 sizes: what the edge may send. */
+export function edgeBytes(text: string): number {
+  const brotli = brotliCompressSync(text, { params: { [constants.BROTLI_PARAM_QUALITY]: 4 } }).length;
+  return Math.max(brotli, gzipSync(text, { level: 8 }).length);
+}
 
 const SITE = "Carry Journal";
 
@@ -83,11 +92,9 @@ export function assembleSite(options: {
   css: string;
   headers: string;
 }): { files: Map<string, string>; policy: string } {
-  const cssBytes = brotliCompressSync(options.css, {
-    params: { [constants.BROTLI_PARAM_QUALITY]: 11 },
-  }).length;
+  const cssBytes = edgeBytes(options.css);
   if (cssBytes > CSS_BUDGET_BYTES) {
-    throw new Error(`the stylesheet is ${cssBytes} B in Brotli, over the 10 KB whole-site CSS budget (N2)`);
+    throw new Error(`the stylesheet is ${cssBytes} B at edge compression, over the 10 KB whole-site CSS budget (N2)`);
   }
   const files = new Map<string, string>();
   const sets = new Set<string>();

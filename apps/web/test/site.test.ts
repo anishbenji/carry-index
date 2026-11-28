@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { brotliCompressSync, constants } from "node:zlib";
 import { describe, expect, it } from "vitest";
 import { assembleSite, cataloguePath, documentHtml, sitePages } from "../build/site.ts";
 import type { StaticPage } from "../src/render.tsx";
@@ -69,6 +70,20 @@ describe("assembleSite", () => {
     expect(() =>
       assembleSite({ pages: sitePages(CATALOGUE), renderBody: render, css: "p{}", headers: HEADERS }),
     ).toThrow(/hash/);
+  });
+
+  it("measures the CSS budget at Cloudflare's edge levels, failing a sheet under 10 KB only at Brotli 11 (N5)", () => {
+    let css = "";
+    let seed = 7;
+    for (let i = 0; i < 800; i++) {
+      seed = (seed * 48271) % 2147483647;
+      css += `.c${seed.toString(36)}{margin:${seed % 97}px ${seed % 13}rem;color:#${(seed % 0xffffff).toString(16).padStart(6, "0")}}`;
+    }
+    const best = brotliCompressSync(css, { params: { [constants.BROTLI_PARAM_QUALITY]: 11 } }).length;
+    expect(best).toBeLessThan(10_000);
+    expect(() => assembleSite({ pages: sitePages(CATALOGUE), renderBody: fakeRender, css, headers: HEADERS })).toThrow(
+      /10 KB/,
+    );
   });
 
   it("throws when the stylesheet is over the 10 KB whole-site CSS budget compressed", () => {
