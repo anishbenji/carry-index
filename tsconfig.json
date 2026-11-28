@@ -1,0 +1,35 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "packages/schema"
+    },
+    {
+      "path": "packages/pipeline"
+    },
+    {
+      "path": "packages/checks"
+    },
+    {
+      "path": "apps/web"
+    },
+    {
+      "path": "apps/web/tsconfig.node.json"
+    },
+    {
+      "path": "apps/kit"
+    },
+    {
+      "path": "apps/kit/tsconfig.node.json"
+    },
+    {
+      "path": "workers/web"
+    },
+    {
+      "path": "workers/kit"
+    },
+    {
+      "path": "tsconfig.e2e.json"
+    }
+  ]
+}
