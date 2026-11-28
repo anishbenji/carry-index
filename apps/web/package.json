@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "bun ../../packages/pipeline/src/cli/export.ts dist/catalogue.json && vite build",
+    "build": "vite build",
     "test": "vitest run"
   },
   "dependencies": {

@@ -8,10 +8,9 @@ const app = fileURLToPath(new URL(".", import.meta.url).href);
 const repo = fileURLToPath(new URL("../../", import.meta.url).href);
 
 /**
- * The static-first public site (ADR-0015), built in two steps by `bun run build` (package.json):
- * 1. `packages/pipeline/src/cli/export.ts` validates the public catalogue and writes `dist/catalogue.json`;
- * 2. `vite build` builds the site stylesheet, and `staticSite` renders every page with it inlined into
- *    `dist/client`, the folder the deploy gate checks and seals. No script reaches the site.
+ * The static-first public site (ADR-0015). `vite build` builds the site stylesheet; `staticSite` runs the pipeline's
+ * catalogue export (`packages/pipeline/src/cli/export.ts`, into `dist/catalogue.json`) and renders every page with
+ * the stylesheet inlined into `dist/client`, the folder the deploy gate checks and seals. No script reaches the site.
  */
 export default defineConfig({
   // moduleGraph: the build fails on any private module it resolved, and writes the report the deploy gate requires
@@ -19,7 +18,12 @@ export default defineConfig({
   plugins: [
     solid(),
     moduleGraph({ repoRoot: repo }),
-    staticSite({ root: app, catalogue: `${app}dist/catalogue.json`, headers: `${app}public/_headers` }),
+    staticSite({
+      root: app,
+      catalogue: `${app}dist/catalogue.json`,
+      exporter: `${repo}packages/pipeline/src/cli/export.ts`,
+      headers: `${app}public/_headers`,
+    }),
   ],
   // packages/deploy (privacy-wall design v2) copies only allow-listed files from the build into the sealed artifact.
   // Loopback only: Vite 8.3.8 bundles a ws release open to a reply-flood DoS, and no fixed Vite 8 exists yet.

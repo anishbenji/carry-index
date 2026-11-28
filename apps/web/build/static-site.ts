@@ -1,3 +1,4 @@
+import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import type { CatalogueExport } from "@cj/schema";
 import solid from "@solidjs/vite-plugin";
@@ -9,8 +10,10 @@ import { assembleSite, sitePages } from "./site.ts";
 export interface StaticSiteOptions {
   /** The Vite root, `apps/web`. */
   root: string;
-  /** The public catalogue export written by `packages/pipeline/src/cli/export.ts`. */
+  /** Where `packages/pipeline/src/cli/export.ts` writes the public catalogue export for this build. */
   catalogue: string;
+  /** That export script; the build runs it with Bun (apps/web may not import the pipeline's code). */
+  exporter: string;
   /** The `_headers` source, `public/_headers`; the build replaces its CSP line. */
   headers: string;
 }
@@ -19,7 +22,7 @@ export interface StaticSiteOptions {
  * The static-first site (ADR-0015's fallback, as spike PR 8 built it), written by the client build itself so the
  * build-graph report (`moduleGraph`) lists every page with its SHA-256.
  *
- * - `buildStart` loads `src/render.tsx` through Vite's module runner, compiled by the Solid plugin for the server in
+ * - `buildStart` runs the pipeline's catalogue export, then loads `src/render.tsx` through Vite's module runner, compiled by the Solid plugin for the server in
  *   its non-hydratable mode, and passes it and every file it loaded to `addWatchFile`: `moduleGraph` records watched files,
  *   so the build fails if the page code reached anything private, as it does for the bundle's own modules.
  * - The build's only input is the site stylesheet. `generateBundle` takes Vite's processed CSS out of the bundle,
@@ -35,6 +38,9 @@ export function staticSite(options: StaticSiteOptions): Plugin {
     apply: "build",
     enforce: "post",
     async buildStart() {
+      // A fresh export for every build, so a page can never be made from a stale or hand-edited file.
+      const exported = spawnSync("bun", [options.exporter, options.catalogue], { stdio: "inherit" });
+      if (exported.status !== 0) this.error("cj-static-site: the catalogue export failed (see above)");
       const entry = `${options.root}src/render.tsx`;
       const loaded = await runnerImport<{ renderBody: typeof renderBody }>(entry, {
         configFile: false,

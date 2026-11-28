@@ -34,7 +34,8 @@ builds.
 
 ## Build
 
-`bun run build` runs the export, then `vite build` in `apps/web`:
+`bun run build` runs `vite build` in `apps/web`, whose `staticSite` plugin first runs the export with Bun, so every
+build makes its pages from a fresh export:
 
 - The build's only input is `src/styles.css`. The `staticSite` plugin (`apps/web/build/static-site.ts`) loads
   `src/render.tsx` through Vite's module runner (`runnerImport`), compiled by the Solid plugin for the server in its
