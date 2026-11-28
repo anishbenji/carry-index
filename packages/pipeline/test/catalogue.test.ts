@@ -1,4 +1,5 @@
-import { readdirSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { bagSchema } from "@cj/schema";
@@ -199,6 +200,32 @@ describe("readCatalogue", () => {
     for (const model of models) {
       expect(model.builds.length).toBeGreaterThan(0);
       for (const build of model.builds) expect(bagSchema.parse(build)).toEqual(build);
+    }
+  });
+});
+
+describe("readCatalogue on a file that is not valid YAML (N13)", () => {
+  const cases: [string, Record<string, string>][] = [
+    ["data/bags/x/broken.yaml", { "data/bags/x/broken.yaml": 'model:\n  id: "unclosed\n  label: x\n' }],
+    ["data/brands.yaml", { "data/brands.yaml": "example-maker:\n  name: [unclosed\n" }],
+  ];
+
+  it.each(cases)("names %s", (path, broken) => {
+    const root = mkdtempSync(join(tmpdir(), "cj-catalogue-"));
+    try {
+      const files = {
+        "data/brands.yaml": BRANDS,
+        "data/materials.yaml": MATERIALS,
+        "data/bags/x/ok.yaml": SECOND,
+        ...broken,
+      };
+      for (const [file, text] of Object.entries(files)) {
+        mkdirSync(join(root, file, ".."), { recursive: true });
+        writeFileSync(join(root, file), text);
+      }
+      expect(() => readCatalogue(root)).toThrow(new RegExp(`^${path.replace(/[./]/g, "\\$&")}: `));
+    } finally {
+      rmSync(root, { recursive: true, force: true });
     }
   });
 });

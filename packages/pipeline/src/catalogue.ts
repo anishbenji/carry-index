@@ -46,8 +46,15 @@ export function fabricOf(id: string, material: { fibre?: string | undefined; fam
   return fabric;
 }
 
+/** Parses and validates one file; a YAML syntax error or a schema failure throws, naming the file. */
 function parseYaml<T extends z.ZodType>(schema: T, path: string, text: string): z.infer<T> {
-  const result = schema.safeParse(parse(text));
+  let doc: unknown;
+  try {
+    doc = parse(text);
+  } catch (error) {
+    throw new Error(`${path}: ${error instanceof Error ? error.message : String(error)}`, { cause: error });
+  }
+  const result = schema.safeParse(doc);
   if (!result.success) throw new Error(`${path}: ${result.error.message}`);
   return result.data;
 }
