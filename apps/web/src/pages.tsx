@@ -50,15 +50,24 @@ export function ListingPage(props: { models: readonly CatalogueModel[] }) {
               <h2>
                 <a href={bagPath(card.model.slug)}>{card.build.name}</a>
               </h2>
+              {/* One div per label and value, so a pair wraps as a unit and never splits from its neighbour. */}
               <dl>
-                <dt>Maker</dt>
-                <dd>{card.build.brand}</dd>
-                <dt>Weight</dt>
-                <dd>{formatWeight(card.build.weightGrams)}</dd>
-                <dt>Capacity</dt>
-                <dd>{formatCapacity(card.build.capacityLitres)}</dd>
-                <dt>Fabric</dt>
-                <dd>{formatFabric(card.build.fabric)}</dd>
+                <div>
+                  <dt>Maker</dt>
+                  <dd>{card.build.brand}</dd>
+                </div>
+                <div>
+                  <dt>Weight</dt>
+                  <dd>{formatWeight(card.build.weightGrams)}</dd>
+                </div>
+                <div>
+                  <dt>Capacity</dt>
+                  <dd>{formatCapacity(card.build.capacityLitres)}</dd>
+                </div>
+                <div>
+                  <dt>Fabric</dt>
+                  <dd>{formatFabric(card.build.fabric)}</dd>
+                </div>
               </dl>
             </li>
           )}

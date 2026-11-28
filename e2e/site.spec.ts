@@ -191,6 +191,33 @@ test("no page scrolls sideways at 320 px wide with the text size at 200% (N12)",
   }
 });
 
+test("each card keeps its labels with their values at phone widths (G1)", async ({ page }) => {
+  for (const width of [360, 400]) {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto(LISTING);
+    const problems = await page.locator("main ol > li dl").evaluateAll((lists) =>
+      lists.flatMap((dl) => {
+        const terms = [...dl.querySelectorAll("dt")];
+        return terms.flatMap((dt, i) => {
+          const dd = dt.nextElementSibling;
+          if (!dd || dd.tagName !== "DD") return [`${dt.textContent}: no value after the label`];
+          const t = dt.getBoundingClientRect();
+          const d = dd.getBoundingClientRect();
+          const sameLine = Math.abs(d.top - t.top) < 2 && d.left >= t.right - 1;
+          const below = d.top >= t.bottom - 1 && Math.abs(d.left - t.left) < 2;
+          const next = terms[i + 1]?.getBoundingClientRect();
+          const out: string[] = [];
+          if (!sameLine && !below) out.push(`${dt.textContent}: value neither beside nor directly below its label`);
+          if (next && next.top < Math.max(t.bottom, d.bottom) - 1)
+            out.push(`${dt.textContent}: next label on its line`);
+          return out;
+        });
+      }),
+    );
+    expect(problems, `${width} px`).toEqual([]);
+  }
+});
+
 test("both templates restore from the back/forward cache (N10)", async ({ playwright, browserName }, testInfo) => {
   test.skip(browserName !== "chromium", "the browser is launched here with Chromium's back/forward cache enabled");
   // Playwright starts Chromium with --disable-back-forward-cache, and its headless shell never caches, so this test
