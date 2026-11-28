@@ -1,6 +1,6 @@
 # Amendment to ADR-0014: does R2 ask for a payment card?
 
-- **Status:** Proposed (spike results, 2026-11-26)
+- **Status:** Accepted (owner, spike gate, 2026-11-28)
 - **Amends:** [ADR-0014](../0014-free-tier.md). ADR-0014 itself is unchanged until the user decides.
 - **Source:** a read-only scout of Cloudflare's docs by the director, 25 Nov 2026 (no account used, nothing
   enabled); the user's dashboard look (pending)

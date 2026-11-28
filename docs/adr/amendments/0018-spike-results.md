@@ -1,6 +1,6 @@
 # Amendment to ADR-0018: inlined CSS and the hash-based CSP, spike numbers
 
-- **Status:** Proposed (spike results, 2026-11-26)
+- **Status:** Accepted (owner, spike gate, 2026-11-28)
 - **Amends:** [ADR-0018](../0018-inline-css.md) (N3). ADR-0018 itself is unchanged until the user decides.
 - **Source:** spike PR 7, `docs/spike/deploy-hydrated.md` on `spike/07-deploy-hydrated` at `4c2c820`; spike
   PR 8, `docs/spike/static-csp.md` on `spike/08-static-csp` at `b0f40c4`

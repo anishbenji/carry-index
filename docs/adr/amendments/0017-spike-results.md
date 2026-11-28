@@ -1,6 +1,6 @@
 # Amendment to ADR-0017: the size gate counts inline scripts
 
-- **Status:** Proposed (spike results, 2026-11-26)
+- **Status:** Accepted (owner, spike gate, 2026-11-28)
 - **Amends:** [ADR-0017](../0017-budgets.md) (N2). ADR-0017 itself is unchanged until the user decides. No budget
   changes.
 - **Source:** PR 7 review (P2, budgets must count inline scripts); spike PR 8, `docs/spike/static-csp.md` on

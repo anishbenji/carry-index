@@ -1,6 +1,6 @@
 # ADR-0047: Toolchain: TypeScript 7, Biome, Vitest, Bun workspaces
 
-- **Status:** Proposed (spike results, 2026-11-26)
+- **Status:** Accepted (owner, spike gate, 2026-11-28)
 - **Date:** 2026-11-26
 - **Source:** spike PR 4, `docs/spike/toolchain.md` on branch `spike/04-scaffold`, read at `12e775a` (first draft from `463dbf8`); summary in
   [`docs/spike/results.md`](../spike/results.md) (Q7)

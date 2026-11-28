@@ -1,6 +1,6 @@
 # Amendment to ADR-0020: no JPEG XL numbers from the spike
 
-- **Status:** Proposed (spike results, 2026-11-26)
+- **Status:** Accepted (owner, spike gate, 2026-11-28)
 - **Amends:** [ADR-0020](../0020-jpeg-xl.md) (N5). ADR-0020 itself is unchanged.
 - **Source:** the user's answer of 25 Nov 2026 (USER #3 in the director's decision list)
 

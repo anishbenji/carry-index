@@ -1,6 +1,6 @@
 # Amendment to ADR-0036: Kit Watch's Worker and hostnames
 
-- **Status:** Proposed (spike results, 2026-11-26)
+- **Status:** Accepted (owner, spike gate, 2026-11-28)
 - **Amends:** [ADR-0036](../0036-private-hostname.md). ADR-0036 itself is unchanged until the user decides.
 - **Source:** spike PR 9, `docs/spike/kit-access-d1-mcp.md` on `spike/09-kit-access-d1-mcp` at `65c11a6`
   (decision #16 and review round 3)

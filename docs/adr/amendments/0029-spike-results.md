@@ -1,6 +1,6 @@
 # Amendment to ADR-0029: where source maps are kept
 
-- **Status:** Proposed (spike results, 2026-11-26)
+- **Status:** Accepted (owner, spike gate, 2026-11-28)
 - **Amends:** [ADR-0029](../0029-source-maps.md). ADR-0029 itself is unchanged until the user decides.
 - **Source:** a read-only scout of Cloudflare's docs by the director, 25 Nov 2026; the user's dashboard look
   (pending). See the [ADR-0014 amendment](0014-spike-results.md).

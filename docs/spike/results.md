@@ -1,5 +1,7 @@
 # Spike results, for the Thursday gate
 
+Gate: passed on all 15 items, owner, 2026-11-28
+
 Draft for the gate on Thursday 26 Nov 2026, 20:00 IST. This draft freezes at 18:00 IST. Every ADR change below
 is **Proposed — for the user at the gate** unless it is marked Accepted: the privacy-wall and deploy decisions the
 user accepted on 26 Nov, and the decisions the director took overnight under the user's instruction (the user may

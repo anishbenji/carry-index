@@ -1,6 +1,6 @@
 # ADR-0046: The public Worker is assets-only; the beacon is its own Worker
 
-- **Status:** Proposed (spike results, 2026-11-26)
+- **Status:** Accepted (owner, spike gate, 2026-11-28)
 - **Date:** 2026-11-26
 - **Source:** spike PR 7, `docs/spike/deploy-hydrated.md` on `spike/07-deploy-hydrated` at `4c2c820`; summary in
   [`docs/spike/results.md`](../spike/results.md) (Q1, Q4, Q6)

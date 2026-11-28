@@ -1,6 +1,6 @@
 # Amendment to ADR-0015: static first, spike numbers
 
-- **Status:** Proposed (spike results, 2026-11-26)
+- **Status:** Accepted (owner, spike gate, 2026-11-28)
 - **Amends:** [ADR-0015](../0015-static-first.md) (N1). ADR-0015 itself is unchanged until the user decides.
 - **Source:** spike PR 7, `docs/spike/deploy-hydrated.md` on `spike/07-deploy-hydrated` at `4c2c820`; spike
   PR 8, `docs/spike/static-csp.md` on `spike/08-static-csp` at `b0f40c4`
