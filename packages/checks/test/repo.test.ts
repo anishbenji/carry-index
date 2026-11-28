@@ -1,7 +1,9 @@
-import { readFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join, matchesGlob, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
+import { readCatalogue } from "../../pipeline/src/catalogue.ts";
 import { listFiles } from "../src/files.ts";
 import { scanImports } from "../src/imports.ts";
 import { publicDirs, TYPE_ONLY_MODULES, TYPE_ONLY_PATHS } from "../src/policy.ts";
@@ -48,13 +50,10 @@ describe("size budgets", () => {
   const LISTING_BUDGET = 40_000;
   const CONTENT_BUDGET = 14_000;
 
-  /** The pages the build writes, each with its N2 budget: the listing, one per data/bags model, and 404.html. */
-  function builtPages(): { path: string; budget: number }[] {
-    const models = listFiles(ROOT, "data/bags", (name) => name.endsWith(".yaml")).map((file) => {
-      const id = /^model:\n(?: {2}.*\n)*? {2}id: ([a-z0-9-]+)$/m.exec(readFileSync(join(ROOT, file), "utf8"))?.[1];
-      if (!id) throw new Error(`${file}: no model id`);
-      return id;
-    });
+  /** The pages the build writes, each with its N2 budget: the listing, one per catalogue model, and 404.html. */
+  function builtPages(root: string = ROOT): { path: string; budget: number }[] {
+    // The build's own reader (packages/pipeline), so the routes are the ones the build writes, from validated data.
+    const models = readCatalogue(root).map((model) => model.slug);
     return [
       { path: `${DIST}/uhmwpe-backpacks.html`, budget: LISTING_BUDGET },
       ...models.map((id) => ({ path: `${DIST}/bags/${id}.html`, budget: CONTENT_BUDGET })),
@@ -95,6 +94,41 @@ describe("size budgets", () => {
     const pages = builtPages();
     expect(pages.filter((p) => p.path.includes("/bags/")).length).toBeGreaterThan(0);
     expect(budgetGaps(pkg["size-limit"], pages)).toEqual([]);
+  });
+
+  it("finds the bag routes as the build does, whatever the YAML spelling of a model id (G3)", () => {
+    const root = mkdtempSync(join(tmpdir(), "cj-budget-routes-"));
+    try {
+      const files: Record<string, string> = {
+        "data/brands.yaml": "example-maker:\n  name: Example Maker\n",
+        "data/materials.yaml": "test-uhmwpe:\n  name: Test UHMWPE\n  fibre: UHMWPE\n",
+        "data/bags/example/quoted.yaml": [
+          "model:",
+          '  id: "example-pack-30l"',
+          "  brand: example-maker",
+          "  label: Example Pack 30L",
+          "variants:",
+          "- id: example-pack-30l",
+          "  name: Example Pack 30L",
+          "  fabric:",
+          "    shell: [test-uhmwpe]",
+          "  volume_l: 30",
+          "  weight_g: 812",
+          "",
+        ].join("\n"),
+      };
+      for (const [file, text] of Object.entries(files)) {
+        mkdirSync(join(root, file, ".."), { recursive: true });
+        writeFileSync(join(root, file), text);
+      }
+      expect(builtPages(root).map((p) => p.path)).toEqual([
+        `${DIST}/uhmwpe-backpacks.html`,
+        `${DIST}/bags/example-pack-30l.html`,
+        `${DIST}/404.html`,
+      ]);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
   });
 
   it("finds a page with no row, a row over budget, and a missing compression (the check above is not vacuous)", () => {
