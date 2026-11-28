@@ -42,11 +42,13 @@ builds.
 build makes its pages from a fresh export:
 
 - The build's only input is `src/styles.css`. The `staticSite` plugin (`apps/web/build/static-site.ts`) loads
-  `src/render.tsx` through Vite's module runner (`runnerImport`), compiled by the Solid plugin for the server in its
-  non-hydratable mode, and renders each page with `renderToString(..., { noScripts: true })`: no hydration keys, no
-  Solid script.
+  `src/render.tsx` through a Vite module runner it sets up itself (`createRunnableDevEnvironment`, with nothing
+  external), compiled by the Solid plugin for the server in its non-hydratable mode, and renders each page with
+  `renderToString(..., { noScripts: true })`: no hydration keys, no Solid script.
 - Every file the renderer loaded is passed to `addWatchFile`, so `moduleGraph` (`packages/deploy`) fails the build if
-  the page code reached anything private, and lists those files in `dist/client.module-graph.json`.
+  the page code reached anything private, and lists those files in `dist/client.module-graph.json`. A module the
+  runner loads outside the graph (a specifier built at run time, or a `data:` URL) fails the build unless
+  `isBuiltin` from `node:module` accepts it as a Node built-in.
 - The plugin takes the processed CSS out of the bundle, inlines it into every page, and emits the pages,
   `_redirects` and `_headers` through the bundle, so the graph report lists each with its SHA-256. A chunk with code fails the build:
   the site ships no script.
