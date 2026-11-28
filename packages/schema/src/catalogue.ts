@@ -15,5 +15,8 @@ export interface CatalogueModel {
 
 /** The public catalogue export the site build reads (`packages/pipeline/src/cli/export.ts`). */
 export interface CatalogueExport {
+  /** Every model with all its listed builds: the bag pages. */
   models: CatalogueModel[];
+  /** The UHMWPE section listing: the same models with only the builds the section's rule admits. */
+  listing: CatalogueModel[];
 }

@@ -26,10 +26,13 @@ describe("sitePages", () => {
     ]);
     expect(new Set(pages.map((p) => p.description)).size).toBe(pages.length);
     expect(pages[1]?.page).toEqual({ kind: "bag", model: CATALOGUE.models[0] });
+    // The listing shows the section's builds; bag pages keep every build (G2).
+    expect(pages[0]?.page).toEqual({ kind: "listing", models: CATALOGUE.listing });
   });
 
   it("throws when two models share a slug", () => {
-    const twice = { models: [CATALOGUE.models[0], CATALOGUE.models[0]].filter((m) => m !== undefined) };
+    const models = [CATALOGUE.models[0], CATALOGUE.models[0]].filter((m) => m !== undefined);
+    const twice = { models, listing: models };
     expect(() => sitePages(twice)).toThrow(/example-pack-30l/);
   });
 });

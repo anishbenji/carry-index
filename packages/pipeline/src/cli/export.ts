@@ -1,7 +1,7 @@
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { CatalogueExport } from "@cj/schema";
-import { readCatalogue } from "../catalogue.ts";
+import { readExport } from "../catalogue.ts";
 import { writeAtomically } from "../write.ts";
 
 /**
@@ -15,7 +15,8 @@ if (out === undefined || out === "" || out.startsWith("-") || rest.length > 0) {
   process.exit(2);
 }
 const repo = fileURLToPath(new URL("../../../../", import.meta.url));
-const data: CatalogueExport = { models: readCatalogue(repo) };
+const data: CatalogueExport = readExport(repo);
 writeAtomically(resolve(out), `${JSON.stringify(data, null, 2)}\n`);
 const builds = data.models.reduce((n, model) => n + model.builds.length, 0);
-console.log(`catalogue export: ${data.models.length} models, ${builds} builds`);
+const listed = data.listing.reduce((n, model) => n + model.builds.length, 0);
+console.log(`catalogue export: ${data.models.length} models, ${builds} builds, ${listed} in the section listing`);

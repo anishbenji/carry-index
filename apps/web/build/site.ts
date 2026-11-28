@@ -51,7 +51,8 @@ export function sitePages(catalogue: CatalogueExport): PageSpec[] {
       file: LISTING_FILE,
       title: `Backpacks · ${SITE}`,
       description: "Every backpack in the Carry Journal catalogue, with each build's weight, capacity and fabric.",
-      page: { kind: "listing", models: catalogue.models },
+      // The section's builds only (G2); every build still has its bag page.
+      page: { kind: "listing", models: catalogue.listing },
     },
     ...bags,
     {

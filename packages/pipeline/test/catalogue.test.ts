@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { bagSchema } from "@cj/schema";
 import { describe, expect, it } from "vitest";
-import { catalogueFrom, fabricOf, readCatalogue } from "../src/catalogue.ts";
+import { catalogueFrom, exportFrom, fabricOf, readCatalogue, readExport } from "../src/catalogue.ts";
 
 // Synthetic catalogue: made-up makers, bags and fabrics in the shape of `data/`.
 const BRANDS = `
@@ -227,5 +227,71 @@ describe("readCatalogue on a file that is not valid YAML (N13)", () => {
     } finally {
       rmSync(root, { recursive: true, force: true });
     }
+  });
+});
+
+describe("exportFrom: the section listing (G2)", () => {
+  // Synthetic: test-uhmwpe-a is in the section, test-uhmwpe-b is out.
+  const SECTION_MATERIALS = `
+test-uhmwpe-a:
+  name: Test UHMWPE A
+  fibre: UHMWPE
+  in_uhmwpe_section:
+    decision: in
+test-uhmwpe-b:
+  name: Test UHMWPE B
+  fibre: UHMWPE
+  in_uhmwpe_section:
+    decision: out
+test-nylon:
+  name: Test nylon
+  family: nylon
+`;
+  const SECTION = `
+id: uhmwpe-backpacks
+title: Synthetic section
+rule:
+  category: backpack
+  shell_material: in_uhmwpe_section.decision == in
+`;
+  const inSection = (text: string) => text.replace("  label:", "  category: backpack\n  label:");
+  const input = {
+    brands: BRANDS,
+    materials: SECTION_MATERIALS,
+    section: SECTION,
+    models: files(inSection(MODEL), inSection(SECOND)),
+  };
+
+  it("lists only builds whose shell materials are all in the section, and keeps every build for the bag pages", () => {
+    const { models, listing } = exportFrom(input);
+    expect(models.map((m) => [m.slug, m.builds.map((b) => b.slug)])).toEqual([
+      ["example-pack-30l", ["example-pack-30l-light", "example-pack-30l-heavy"]],
+      ["another-bag-20l", ["another-bag-20l"]],
+    ]);
+    // example-pack-30l-light has test-uhmwpe-b in its shell, and another-bag-20l's only build is test-uhmwpe-b.
+    expect(listing.map((m) => [m.slug, m.builds.map((b) => b.slug)])).toEqual([
+      ["example-pack-30l", ["example-pack-30l-heavy"]],
+    ]);
+  });
+
+  it("lists nothing from a model outside the section's category", () => {
+    const { listing } = exportFrom({
+      ...input,
+      models: files(MODEL.replace("  label:", "  category: sling\n  label:")),
+    });
+    expect(listing).toEqual([]);
+  });
+
+  it("throws naming the section file when its rule is not the one this build applies", () => {
+    const other = SECTION.replace("decision == in", "decision != out");
+    expect(() => exportFrom({ ...input, section: other })).toThrow(/data\/sections\/uhmwpe-backpacks\.yaml/);
+  });
+
+  it("lists every build of today's catalogue", () => {
+    const repo = fileURLToPath(new URL("../../../", import.meta.url));
+    const { models, listing } = readExport(repo);
+    const count = (list: typeof models) => list.reduce((n, m) => n + m.builds.length, 0);
+    expect(count(listing)).toBe(count(models));
+    expect(count(listing)).toBeGreaterThan(0);
   });
 });

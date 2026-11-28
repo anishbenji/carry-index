@@ -8,7 +8,7 @@ step, no Solid start mode, the stylesheet inlined (ADR-0018), one CSP hash set f
 
 | Route | File in `apps/web/dist/client` | Shows |
 | --- | --- | --- |
-| `/uhmwpe-backpacks` | `uhmwpe-backpacks.html` | Every listed build of every bag, lightest first: name (linking to its bag page), maker, weight, capacity, fabric |
+| `/uhmwpe-backpacks` | `uhmwpe-backpacks.html` | Every build the UHMWPE section's rule admits, lightest first: name (linking to its bag page), maker, weight, capacity, fabric |
 | `/` | `_redirects`: `/ /uhmwpe-backpacks 302` | A temporary redirect to the listing until there is a home page |
 | `/bags/<slug>` | `bags/<slug>.html` | One bag: maker, name, and a table of its builds (weight, capacity, fabric) |
 | any other path | `404.html` | "Page not found", with a link to the listing |
@@ -31,7 +31,11 @@ builds.
    that fails, naming it. A build's fabric is the listed fabric its shell materials belong to (a UHMWPE fibre is
    `uhmwpe`; otherwise the material's family). Builds marked `record: comparison` are left out, as README-data
    says they are listed nowhere.
-2. It writes the export atomically beside the build's output folder, `<outDir>.catalogue.json`
+2. It applies the section rule in `data/sections/uhmwpe-backpacks.yaml` for the listing (G2): a build is listed
+   when its model's category is the rule's and every shell material has `in_uhmwpe_section.decision: in`. The rule
+   text is matched as written, so a changed rule stops the build until the code applies it. Bag pages keep every
+   build. The decision only filters; no page shows it, so the public surface is unchanged.
+3. It writes the export atomically beside the build's output folder, `<outDir>.catalogue.json`
    (`apps/web/dist/client.catalogue.json` for the normal build), which the build reads once and removes (types
    `CatalogueExport` and `CatalogueModel` in `packages/schema`).
    `apps/web` reads that file; it imports schema and pipeline types only (the import ban, `bun run lint`).
