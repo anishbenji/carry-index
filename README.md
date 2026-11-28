@@ -78,3 +78,8 @@ Gemini inputs per bag (style reference first) are kept in `drawings/gemini-input
 `drawings/generator/runbag.sh` runs the whole vectorise → split → render → diff step for one sheet (erase boxes for fabric-crease lines, optional quadrant rescale via xform.py).
 
 Pipeline details: the project doc `technical-drawings.md` in the claude.ai project.
+
+## Licence
+
+Code is MIT; the catalogue data is CC BY 4.0; drawings and written content are all rights reserved. Which
+licence covers which path: [`LICENSE-NOTICE.md`](LICENSE-NOTICE.md).
