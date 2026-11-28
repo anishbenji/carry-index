@@ -3,6 +3,7 @@ import { cpSync, lstatSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, r
 import { tmpdir } from "node:os";
 import { dirname, join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import { GRAPH_REPORT_FORMAT, graphReportPath } from "../src/graph-plugin.ts";
 
 export const REPO_ROOT = fileURLToPath(new URL("../../../", import.meta.url));
 export const FIXTURES = fileURLToPath(new URL("./fixtures/", import.meta.url));
@@ -122,4 +123,44 @@ export async function sealedTag(siteDir: string): Promise<string> {
   if (!result.ok) throw new Error(`sealedTag: the site does not seal: ${JSON.stringify(result.problems)}`);
   rmSync(result.bundle.dir, { recursive: true, force: true });
   return manifestTag(result.bundle.manifest);
+}
+
+/**
+ * Writes the build-graph report the public build writes beside its output (`<siteDir>.module-graph.json`), listing
+ * every page and `assets/` file now in `siteDir` with its SHA-256 and one public module: what `deploy` and `triggers`
+ * require of a site that holds either (N2).
+ */
+export function writeGraphReport(siteDir: string): void {
+  const outputs = listEntries(siteDir)
+    .filter((e) => e.kind === "file" && (e.path.startsWith("assets/") || e.path.endsWith(".html")))
+    .map((e) => ({
+      path: e.path,
+      sha256: createHash("sha256")
+        .update(readFileSync(join(siteDir, e.path)))
+        .digest("hex"),
+    }));
+  const report = {
+    format: GRAPH_REPORT_FORMAT,
+    modules: ["apps/web/src/render.tsx"],
+    outputs,
+    checks: { workerImports: true },
+  };
+  writeFileSync(graphReportPath(siteDir), JSON.stringify(report));
+}
+
+/**
+ * `minimalSite` as the public build leaves it: with its build-graph report beside it (`writeGraphReport`), removed
+ * again by `cleanup`. Tests of later gate stages start from this; a test that adds a page afterwards calls
+ * `writeGraphReport` again.
+ */
+export function builtSite(files: Readonly<Record<string, string | Uint8Array>> = {}): TempDir {
+  const site = minimalSite(files);
+  writeGraphReport(site.root);
+  return {
+    root: site.root,
+    cleanup: () => {
+      rmSync(graphReportPath(site.root), { force: true });
+      site.cleanup();
+    },
+  };
 }

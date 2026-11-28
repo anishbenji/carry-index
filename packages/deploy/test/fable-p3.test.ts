@@ -8,7 +8,7 @@ import { neverPublicFields } from "../src/surface.ts";
 import { ENV, fakeCloudflare, UPLOADED } from "./fake-cloudflare.ts";
 import { fakeIo } from "./gate-io.ts";
 import type { TempDir } from "./helpers.ts";
-import { MINIMAL_HEADERS, minimalSite, tempDir, writeTree } from "./helpers.ts";
+import { builtSite, MINIMAL_HEADERS, tempDir, writeTree } from "./helpers.ts";
 
 const temps: TempDir[] = [];
 afterEach(() => {
@@ -49,7 +49,7 @@ describe("P3: bare scheme sources in default-src and script-src are weak", () =>
 
 describe("P3: a tail consumer found after promotion is reported, not rolled back", () => {
   test("a tail consumer attached after promotion fails the deploy with no rollback", async () => {
-    const site = minimalSite();
+    const site = builtSite();
     temps.push(site);
     const cf = fakeCloudflare({ previous: { bindings: [] }, tailConsumersAfterPromotion: [{ service: "kit-watch" }] });
     const fake = fakeIo({ env: ENV, spawn: cf.spawn, fetch: cf.fetch });

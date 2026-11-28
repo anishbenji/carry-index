@@ -12,7 +12,7 @@ import type { FakeCloudflareOptions, FakeState } from "./fake-cloudflare.ts";
 import { ACCOUNT, D1, ENV, fakeCloudflare, PREVIOUS, SCRIPT, TOKEN, UPLOADED } from "./fake-cloudflare.ts";
 import { fakeIo } from "./gate-io.ts";
 import type { TempDir } from "./helpers.ts";
-import { minimalSite } from "./helpers.ts";
+import { builtSite } from "./helpers.ts";
 
 const temps: TempDir[] = [];
 afterEach(() => {
@@ -20,7 +20,7 @@ afterEach(() => {
 });
 
 async function deploy(options: FakeCloudflareOptions) {
-  const site = minimalSite();
+  const site = builtSite();
   temps.push(site);
   const cf = fakeCloudflare(options);
   const fake = fakeIo({ env: ENV, spawn: cf.spawn, fetch: cf.fetch });

@@ -12,7 +12,7 @@ import type { FakeCloudflareOptions } from "./fake-cloudflare.ts";
 import { D1, ENV, fakeCloudflare, SCRIPT } from "./fake-cloudflare.ts";
 import { FAKE_WRANGLER, fakeIo } from "./gate-io.ts";
 import type { TempDir } from "./helpers.ts";
-import { minimalSite, sealedTag } from "./helpers.ts";
+import { builtSite, sealedTag } from "./helpers.ts";
 
 /** Written here, not imported: the test must not agree with the gate by sharing its constant. */
 const ALLOWED_ENV = [
@@ -37,7 +37,7 @@ interface TriggersOptions extends FakeCloudflareOptions {
 }
 
 async function triggers(options: TriggersOptions = {}) {
-  const site = minimalSite(options.files ?? {});
+  const site = builtSite(options.files ?? {});
   temps.push(site);
   // S5-5: the live version carries this build's sealed tag, as after the first deploy (a site that does not seal
   // has none: the gate stops before any spawn or fetch).

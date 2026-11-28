@@ -57,17 +57,17 @@ function readReport(path: string): string | undefined {
 }
 
 /**
- * The build-graph check (security-sol r2, S2-4), for `deploy` and `triggers`. A site with bundled code (any
- * `assets/` file) must have the `moduleGraph` plugin's report beside its build folder (`<siteDir>.module-graph.json`)
- * for that same build: every output it lists must be in the sealed manifest with the same SHA-256, and every sealed
- * `assets/` file must be listed (`module-graph-mismatch`, at the file's path). The modules it lists are checked
+ * The build-graph check (security-sol r2, S2-4), for `deploy` and `triggers`. A site with built output (any
+ * `assets/` file or page, N2) must have the `moduleGraph` plugin's report beside its build folder
+ * (`<siteDir>.module-graph.json`) for that same build: every output it lists must be in the sealed manifest with the
+ * same SHA-256, and every sealed `assets/` file and page must be listed (`module-graph-mismatch`, at the file's path). The modules it lists are checked
  * again here (`private-module`, `worker-import`), and every check the build ran with must have been on
  * (`graph-checks-disabled` otherwise, or when the report does not say). An absent, linked, oversized or malformed report is `module-graph-missing`. A site
- * with no bundled code has no build graph to check.
+ * with no built output has no build graph to check.
  */
 export function checkModuleGraph(siteDir: string, manifest: readonly ManifestEntry[]): Problem[] {
-  const code = manifest.filter((entry) => entry.path.startsWith("assets/"));
-  if (code.length === 0) return [];
+  const built = manifest.filter((entry) => entry.path.startsWith("assets/") || entry.path.endsWith(".html"));
+  if (built.length === 0) return [];
   const text = readReport(graphReportPath(siteDir));
   let parsed: z.infer<typeof reportSchema> | undefined;
   try {
@@ -88,7 +88,7 @@ export function checkModuleGraph(siteDir: string, manifest: readonly ManifestEnt
     listed.add(output.path);
     if (sealed.get(output.path) !== output.sha256) problems.push({ path: output.path, rule: "module-graph-mismatch" });
   }
-  for (const entry of code) {
+  for (const entry of built) {
     if (!listed.has(entry.path)) problems.push({ path: entry.path, rule: "module-graph-mismatch" });
   }
   for (const module of parsed.modules) {

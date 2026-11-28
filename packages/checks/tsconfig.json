@@ -4,5 +4,6 @@
     "outDir": ".tsbuild",
     "types": ["bun"]
   },
-  "include": ["src", "test"]
+  "include": ["src", "test"],
+  "references": [{ "path": "../pipeline" }]
 }

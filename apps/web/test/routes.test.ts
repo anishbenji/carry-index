@@ -1,0 +1,26 @@
+import { describe, expect, it } from "vitest";
+import { bagFile, bagPath, HOME_REDIRECT, LISTING_FILE, LISTING_PATH, NOT_FOUND_FILE } from "../src/routes.ts";
+
+describe("routes", () => {
+  it("serves the listing at /uhmwpe-backpacks (ADR-0023) and the 404 page from 404.html", () => {
+    expect(LISTING_PATH).toBe("/uhmwpe-backpacks");
+    expect(LISTING_FILE).toBe("uhmwpe-backpacks.html");
+    expect(NOT_FOUND_FILE).toBe("404.html");
+  });
+
+  it("sends / to the listing with a temporary redirect, written as a _redirects rule", () => {
+    expect(HOME_REDIRECT).toBe("/ /uhmwpe-backpacks 302\n");
+  });
+
+  it("puts a bag at /bags/<slug>, written as bags/<slug>.html (drop-trailing-slash serves it there)", () => {
+    expect(bagPath("example-pack-30l")).toBe("/bags/example-pack-30l");
+    expect(bagFile("example-pack-30l")).toBe("bags/example-pack-30l.html");
+  });
+
+  it("refuses a slug that is not lowercase kebab-case, so no slug can name another path", () => {
+    for (const slug of ["", "../index", "a/b", "Example", "a--b", "-a", "a-", "a.html", "a b"]) {
+      expect(() => bagPath(slug)).toThrow(/slug/);
+      expect(() => bagFile(slug)).toThrow(/slug/);
+    }
+  });
+});

@@ -13,7 +13,7 @@ import {
 import { ENV, fakeCloudflare } from "./fake-cloudflare.ts";
 import { fakeIo } from "./gate-io.ts";
 import type { TempDir } from "./helpers.ts";
-import { MINIMAL_HEADERS, minimalSite, tempDir, writeTree } from "./helpers.ts";
+import { builtSite, MINIMAL_HEADERS, tempDir, writeTree } from "./helpers.ts";
 
 const temps: TempDir[] = [];
 afterEach(() => {
@@ -48,7 +48,7 @@ describe("P3: a failed Wrangler run prints only Cloudflare error codes", () => {
   const SENTINEL = "S3NT1NELwrangler0123456789abcdef";
 
   test("an upload refused with [code: 10000] logs wrangler-error: code 10000 and none of the message", async () => {
-    const site = minimalSite();
+    const site = builtSite();
     temps.push(site);
     const cf = fakeCloudflare({ previous: { bindings: [] } });
     const fake = fakeIo({

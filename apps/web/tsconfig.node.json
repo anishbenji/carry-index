@@ -7,7 +7,7 @@
     "jsx": "preserve",
     "jsxImportSource": "@solidjs/web"
   },
-  "include": ["vite.config.ts", "vitest.config.ts", "test"],
+  "include": ["vite.config.ts", "vitest.config.ts", "build", "test"],
   "references": [
     {
       "path": "./tsconfig.json"

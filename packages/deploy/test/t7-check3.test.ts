@@ -14,7 +14,7 @@ import { BEACON, PUBLIC_SITE } from "../src/workers.ts";
 import { fakeCloudflare, UPLOADED } from "./fake-cloudflare.ts";
 import { FAKE_WRANGLER, fakeIo } from "./gate-io.ts";
 import type { TempDir } from "./helpers.ts";
-import { FIXTURES, minimalSite } from "./helpers.ts";
+import { builtSite, FIXTURES } from "./helpers.ts";
 
 const SITE_DRY_RUN = readFileSync(join(FIXTURES, "dry-run", "site.txt"), "utf8");
 const BEACON_DRY_RUN = readFileSync(join(FIXTURES, "dry-run", "beacon.txt"), "utf8");
@@ -230,7 +230,7 @@ describe("T7 the gate blocks before upload", () => {
   }
 
   test("T7 a dry run showing a binding stops the deploy: nothing is uploaded, nothing is fetched, the exit code fails", async () => {
-    const site = minimalSite();
+    const site = builtSite();
     temps.push(site);
     const fake = fakeIo({ env, spawn: answer(SITE_DRY_RUN.replace("No bindings found.\n", D1_ROWS)) });
     const code = await main(["deploy", site.root], fake.io);
@@ -242,7 +242,7 @@ describe("T7 the gate blocks before upload", () => {
   });
 
   test("T7 a clean run goes dry run, then upload, then the version check, then promotion, and exits 0 (positive control)", async () => {
-    const site = minimalSite();
+    const site = builtSite();
     temps.push(site);
     const cf = fakeCloudflare({ previous: { bindings: [] } });
     const fake = fakeIo({ env, spawn: cf.spawn, fetch: cf.fetch });
@@ -263,7 +263,7 @@ describe("T7 the gate blocks before upload", () => {
   });
 
   test("T7 a check that finds a binding on the uploaded version fails the job: it is never promoted, so nothing is rolled back", async () => {
-    const site = minimalSite();
+    const site = builtSite();
     temps.push(site);
     const cf = fakeCloudflare({ previous: { bindings: [] }, uploadBindings: [{ type: "d1", name: "DB", id: "0" }] });
     const fake = fakeIo({ env, spawn: cf.spawn, fetch: cf.fetch });
@@ -275,7 +275,7 @@ describe("T7 the gate blocks before upload", () => {
   });
 
   test("T7 a site that fails the seal is never dry-run or uploaded", async () => {
-    const site = minimalSite({ ".dev.vars": "SECRET=synthetic\n" });
+    const site = builtSite({ ".dev.vars": "SECRET=synthetic\n" });
     temps.push(site);
     const fake = fakeIo({ env, spawn: answer(SITE_DRY_RUN) });
     const code = await main(["deploy", site.root], fake.io);

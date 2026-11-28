@@ -1,12 +1,14 @@
 # Security headers for the public site (architecture doc, "Security headers"; unified brief: COOP and CORP).
-# Vite copies public/ into dist/client unchanged; packages/deploy's gate requires this file and checks every rule
+# Vite copies public/ into dist/client; packages/deploy's gate requires this file and checks every rule
 # (packages/deploy/src/headers.ts). Format and host patterns:
 # https://developers.cloudflare.com/workers/static-assets/headers/ (a host placeholder matches anything but ".").
-# The scaffold serves no HTML and no inline script or style, so the CSP allows same-origin files only. When pages
-# arrive, add the hash of each inline script or style; never 'unsafe-inline'. Never auto-merged: the owner merges.
+# The build (apps/web/build/static-site.ts) copies this file into the site with the CSP line replaced: the same policy,
+# with the hashes of the inline stylesheet (and any inline script) every page shares; the build fails if pages need
+# different hashes. The line below is that policy with no hashes. Never 'unsafe-inline'. Never auto-merged: the
+# owner merges.
 
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'
+  Content-Security-Policy: default-src 'none'; script-src 'none'; style-src 'none'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin

@@ -13,7 +13,7 @@ import { PUBLIC_SITE } from "../src/workers.ts";
 import { ACCOUNT, ENV, fakeCloudflare, SCRIPT, TOKEN, UPLOADED } from "./fake-cloudflare.ts";
 import { fakeIo } from "./gate-io.ts";
 import type { TempDir } from "./helpers.ts";
-import { minimalSite } from "./helpers.ts";
+import { builtSite } from "./helpers.ts";
 
 const temps: TempDir[] = [];
 afterEach(() => {
@@ -69,7 +69,7 @@ describe("streaming tail consumers and logpush (S3-6)", () => {
   });
 
   async function gate(command: "deploy" | "triggers", extra: Record<string, unknown>) {
-    const site = minimalSite();
+    const site = builtSite();
     temps.push(site);
     const cf = fakeCloudflare({ previous: { bindings: [] } });
     const fetch = async (url: string, init: Parameters<typeof cf.fetch>[1]) => {

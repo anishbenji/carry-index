@@ -4,13 +4,14 @@
  * real apps/web build writes a report the gate accepts for that build.
  */
 import { spawnSync } from "node:child_process";
-import { rmSync } from "node:fs";
+import { readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { afterEach, describe, expect, test } from "vitest";
 import { checkModuleGraph } from "../src/graph-check.ts";
 import { graphReportPath } from "../src/graph-plugin.ts";
 import { findPrivateImports } from "../src/imports.ts";
+import type { ManifestEntry } from "../src/seal.ts";
 import { seal } from "../src/seal.ts";
 import { PUBLIC_SITE } from "../src/workers.ts";
 import type { TempDir } from "./helpers.ts";
@@ -20,6 +21,65 @@ const WEB = join(REPO_ROOT, "apps", "web");
 const VITE = join(WEB, "node_modules", ".bin", "vite");
 const PLUGIN = pathToFileURL(join(REPO_ROOT, "packages", "deploy", "src", "graph-plugin.ts")).href;
 const SLOW = { timeout: 120_000 };
+const STATIC_SITE = pathToFileURL(join(REPO_ROOT, "apps", "web", "build", "static-site.ts")).href;
+
+/**
+ * A temp repository whose public site is built by the real `staticSite` plugin (apps/web) with `moduleGraph`, as
+ * apps/web's own config does, from the given page code. Its catalogue export is a stub that writes no bags.
+ */
+function staticSiteRepo(files: Record<string, string>): TempDir {
+  const repo = tempDir("cj-graph-static-");
+  temps.push(repo);
+  writeTree(repo.root, {
+    "export.mjs": [
+      'import { mkdirSync, writeFileSync } from "node:fs";',
+      'import { dirname } from "node:path";',
+      "mkdirSync(dirname(process.argv[2]), { recursive: true });",
+      "writeFileSync(process.argv[2], '{\"models\":[]}');",
+      "",
+    ].join("\n"),
+    "apps/web/headers.txt": "/*\n  Content-Security-Policy: default-src 'none'\n",
+    "apps/web/src/styles.css": "p{margin:0}\n",
+    "apps/web/vite.config.mjs": [
+      `import { moduleGraph } from ${JSON.stringify(PLUGIN)};`,
+      `import { staticSite } from ${JSON.stringify(STATIC_SITE)};`,
+      `const root = \`\${import.meta.dirname}/\`;`,
+      `export default { root, logLevel: "silent", plugins: [moduleGraph({ repoRoot: ${JSON.stringify(repo.root)} }),`,
+      `  staticSite({ root, exporter: ${JSON.stringify(join(repo.root, "export.mjs"))}, headers: \`\${root}headers.txt\` })],`,
+      '  build: { outDir: "dist/client", emptyOutDir: true, rollupOptions: { input: "src/styles.css" } } };',
+    ].join("\n"),
+    ...files,
+  });
+  return repo;
+}
+
+function buildStaticSite(repo: TempDir) {
+  extra.push(graphReportPath(join(repo.root, "apps/web/dist/client")));
+  return spawnSync(VITE, ["build", "--config", join(repo.root, "apps/web/vite.config.mjs")], {
+    cwd: join(repo.root, "apps/web"),
+    encoding: "utf8",
+  });
+}
+
+/**
+ * The positive control's precondition (owner decision #22, 2026-11-28, option (a)): the sealed site is not vacuous
+ * (it holds the listing page and at least one bag page), and the build-graph report lists every sealed page with the
+ * sealed file's SHA-256. Returns what is wrong, empty when nothing is.
+ */
+function pageCoverage(manifest: readonly ManifestEntry[], report: unknown): string[] {
+  const problems: string[] = [];
+  const pages = manifest.filter((entry) => entry.path.endsWith(".html"));
+  if (!pages.some((entry) => entry.path === "uhmwpe-backpacks.html")) problems.push("no listing page");
+  if (!pages.some((entry) => entry.path.startsWith("bags/"))) problems.push("no bag page");
+  const outputs = (report as { outputs?: { path: string; sha256: string }[] } | null)?.outputs ?? [];
+  const listed = new Map(outputs.map((output) => [output.path, output.sha256]));
+  for (const page of pages) {
+    const sha256 = listed.get(page.path);
+    if (sha256 === undefined) problems.push(`${page.path}: not in the report`);
+    else if (sha256 !== page.sha256) problems.push(`${page.path}: report hash differs`);
+  }
+  return problems;
+}
 
 const temps: TempDir[] = [];
 const extra: string[] = [];
@@ -74,8 +134,113 @@ describe("[slow] the build-graph check with the real Vite (S2-4)", () => {
       const sealed = await seal(out.root, PUBLIC_SITE);
       if (!sealed.ok) throw new Error(`seal failed: ${JSON.stringify(sealed.problems)}`);
       extra.push(sealed.bundle.dir);
-      expect(sealed.bundle.manifest.some((e) => e.path.startsWith("assets/"))).toBe(true);
+      const report: unknown = JSON.parse(readFileSync(graphReportPath(out.root), "utf8"));
+      expect(pageCoverage(sealed.bundle.manifest, report)).toEqual([]);
       expect(checkModuleGraph(out.root, sealed.bundle.manifest)).toEqual([]);
     },
   );
+});
+
+describe("the positive control's precondition (owner decision #22)", () => {
+  const sha = (c: string) => c.repeat(64);
+  const entry = (path: string, sha256: string): ManifestEntry => ({ path, size: 1, sha256 });
+  const manifest = [
+    entry("uhmwpe-backpacks.html", sha("a")),
+    entry("bags/x.html", sha("b")),
+    entry("404.html", sha("c")),
+  ];
+  const report = { outputs: manifest.map(({ path, sha256 }) => ({ path, sha256 })) };
+
+  test("passes a site with the listing and a bag page, every page listed with its hash", () => {
+    expect(pageCoverage(manifest, report)).toEqual([]);
+  });
+
+  test("fails a site with no bag page or no listing page", () => {
+    expect(
+      pageCoverage(
+        manifest.filter((e) => !e.path.startsWith("bags/")),
+        report,
+      ),
+    ).toEqual(["no bag page"]);
+    expect(pageCoverage(manifest.slice(1), report)).toEqual(["no listing page"]);
+    expect(pageCoverage([], { outputs: [] })).toEqual(["no listing page", "no bag page"]);
+  });
+
+  test("fails a sealed page the report does not list, or lists with another hash", () => {
+    const unlisted = { outputs: report.outputs.filter((o) => o.path !== "bags/x.html") };
+    expect(pageCoverage(manifest, unlisted)).toEqual(["bags/x.html: not in the report"]);
+    const changed = { outputs: report.outputs.map((o) => (o.path === "404.html" ? { ...o, sha256: sha("d") } : o)) };
+    expect(pageCoverage(manifest, changed)).toEqual(["404.html: report hash differs"]);
+    expect(pageCoverage(manifest, null)).toHaveLength(3);
+  });
+});
+
+describe("[slow] page code the static site renders is held to the build-graph check (N3)", () => {
+  test(
+    "[slow] page code reaching a private workspace package by bare specifier through a shared helper fails the build",
+    SLOW,
+    () => {
+      const repo = staticSiteRepo({
+        "apps/web/src/render.tsx": `import { label } from "../../../packages/shared/src/helper.js";\nexport function renderBody() {\n  return \`<main>\${label}</main>\`;\n}\n`,
+        "packages/shared/src/helper.js": 'export { label } from "@cj/kit";\n',
+        "node_modules/@cj/kit/package.json": '{ "name": "@cj/kit", "type": "module", "exports": "./index.js" }\n',
+        "node_modules/@cj/kit/index.js": 'export const label = "synthetic private label";\n',
+      });
+      const result = buildStaticSite(repo);
+      expect(result.status).not.toBe(0);
+      expect(`${result.stdout}\n${result.stderr}`).toContain("node_modules/@cj/kit/index.js");
+    },
+  );
+
+  test("[slow] render code dynamically importing a private file fails the build", SLOW, () => {
+    const repo = staticSiteRepo({
+      "apps/web/src/render.tsx": `const { label } = await import("../../kit/src/owned.js");\nexport function renderBody() {\n  return \`<main>\${label}</main>\`;\n}\n`,
+      "apps/kit/src/owned.js": 'export const label = "synthetic private label";\n',
+    });
+    const result = buildStaticSite(repo);
+    expect(result.status).not.toBe(0);
+    expect(`${result.stdout}\n${result.stderr}`).toContain("apps/kit/src/owned.js");
+  });
+
+  // N9: a specifier built at run time cannot be rewritten by Vite, so the runner hands it to Node as an external.
+  test.each([
+    ["joined from strings", 'const name = "@cj/" + "kit";\nexport const { label } = await import(name);\n'],
+    ["a template literal", `const pkg = "kit";\nexport const { label } = await import(\`@cj/\${pkg}\`);\n`],
+  ])(
+    "[slow] a shared helper dynamically importing a private package by a specifier %s fails the build",
+    SLOW,
+    (_form, helper) => {
+      const repo = staticSiteRepo({
+        "apps/web/src/render.tsx": `import { label } from "../../../packages/shared/src/helper.js";\nexport function renderBody() {\n  return \`<main>\${label}</main>\`;\n}\n`,
+        "packages/shared/src/helper.js": helper,
+        "node_modules/@cj/kit/package.json": '{ "name": "@cj/kit", "type": "module", "exports": "./index.js" }\n',
+        "node_modules/@cj/kit/index.js": 'export const label = "synthetic private label";\n',
+      });
+      const result = buildStaticSite(repo);
+      expect(result.status).not.toBe(0);
+      expect(`${result.stdout}\n${result.stderr}`).toContain("node_modules/@cj/kit/index.js");
+    },
+  );
+
+  // N16: a data: URL module is code no file holds, so the graph check could never vouch for it.
+  test.each([
+    ["statically", 'import { label } from "data:text/javascript,export const label = 1;";\n'],
+    ["dynamically", 'const { label } = await import("data:text/javascript,export const label = 1;");\n'],
+  ])("[slow] page code importing a data: URL module %s fails the build", SLOW, (_how, head) => {
+    const repo = staticSiteRepo({
+      "apps/web/src/render.tsx": `${head}export function renderBody() {\n  return \`<main>\${label}</main>\`;\n}\n`,
+    });
+    const result = buildStaticSite(repo);
+    expect(result.status).not.toBe(0);
+    expect(`${result.stdout}\n${result.stderr}`).toContain("data:text/javascript");
+  });
+
+  test("[slow] public page code builds (positive control)", SLOW, () => {
+    const repo = staticSiteRepo({
+      "apps/web/src/render.tsx": 'export function renderBody() {\n  return "<main>public</main>";\n}\n',
+    });
+    const result = buildStaticSite(repo);
+    expect(`${result.stdout}\n${result.stderr}`).toBe("\n");
+    expect(result.status).toBe(0);
+  });
 });

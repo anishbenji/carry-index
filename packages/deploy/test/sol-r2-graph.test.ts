@@ -6,7 +6,7 @@
  * The real-Vite cases are in `sol-r2-graph.slow.test.ts`.
  */
 import { createHash } from "node:crypto";
-import { mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import { readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { afterEach, describe, expect, test } from "vitest";
 import { main } from "../src/cli.ts";
@@ -21,7 +21,7 @@ import {
 import { ENV, fakeCloudflare, UPLOADED } from "./fake-cloudflare.ts";
 import { fakeIo } from "./gate-io.ts";
 import type { TempDir } from "./helpers.ts";
-import { minimalSite, REPO_ROOT, tempDir, writeTree } from "./helpers.ts";
+import { MINIMAL_PAGE, minimalSite, REPO_ROOT, tempDir, writeGraphReport, writeTree } from "./helpers.ts";
 
 const temps: TempDir[] = [];
 const extraFiles: string[] = [];
@@ -38,7 +38,11 @@ function report(overrides: Partial<GraphReport> = {}): GraphReport {
   return {
     format: GRAPH_REPORT_FORMAT,
     modules: ["apps/web/src/main.tsx"],
-    outputs: [{ path: ASSET, sha256: sha256(CODE) }],
+    // The asset, and the page every minimal site holds: both are built output the report must list (N2).
+    outputs: [
+      { path: "404.html", sha256: sha256(MINIMAL_PAGE) },
+      { path: ASSET, sha256: sha256(CODE) },
+    ],
     // The check settings the build ran with (S4-1 hardening); every check on.
     checks: { workerImports: true },
     ...overrides,
@@ -131,7 +135,11 @@ describe("the moduleGraph plugin (S2-4)", () => {
     const plugin = moduleGraph({ repoRoot: REPO_ROOT });
     const ctx = context([join(REPO_ROOT, "apps/web/src/main.tsx")]);
     plugin.generateBundle.call(ctx, { dir: out.root });
-    plugin.writeBundle.call(ctx, { dir: out.root }, { [ASSET]: { type: "chunk", code: CODE } });
+    plugin.writeBundle.call(
+      ctx,
+      { dir: out.root },
+      { [ASSET]: { type: "chunk", code: CODE }, "404.html": { type: "asset", source: MINIMAL_PAGE } },
+    );
     expect(readReport(out.root)).toEqual(report());
   });
 });
@@ -217,12 +225,50 @@ describe("deploy and triggers require the graph report for the same build (S2-4)
     expect(code).toBe(0);
   });
 
-  test("a site with no bundled code needs no report (positive control)", async () => {
-    const site = minimalSite();
+  // N2 (owner decision #22, 2026-11-28): pages are built output too, so a site with pages and no bundled code needs
+  // the report, and every page must be listed in it with the sealed file's SHA-256.
+  const PAGE = "<!doctype html><title>x</title>\n";
+  function pagesOnly(): string {
+    const site = minimalSite({ "bags/example.html": PAGE });
     temps.push(site);
-    mkdirSync(join(site.root, "bags"));
-    writeFileSync(join(site.root, "bags", "example.html"), "<!doctype html><title>x</title>\n");
-    const { code } = await run("deploy", site.root);
+    extraFiles.push(graphReportPath(site.root));
+    return site.root;
+  }
+
+  test.each(["deploy", "triggers"] as const)(
+    "%s: a site with pages but no bundled code and no report stops before any spawn (N2)",
+    async (command) => {
+      const { code, fake, has } = await run(command, pagesOnly());
+      expect(code).toBe(1);
+      expect(fake.spawned).toEqual([]);
+      expect(has("module-graph-missing")).toBe(true);
+    },
+  );
+
+  test("deploy: a page changed after the build is a mismatch and stops before any spawn (N2)", async () => {
+    const site = pagesOnly();
+    writeGraphReport(site);
+    writeFileSync(join(site, "bags", "example.html"), "<!doctype html><title>tampered</title>\n");
+    const { code, fake, has } = await run("deploy", site);
+    expect(code).toBe(1);
+    expect(fake.spawned).toEqual([]);
+    expect(has("module-graph-mismatch")).toBe(true);
+  });
+
+  test("deploy: a page the report does not list is a mismatch and stops before any spawn (N2)", async () => {
+    const site = pagesOnly();
+    writeGraphReport(site);
+    writeFileSync(join(site, "bags", "added.html"), PAGE);
+    const { code, fake, has } = await run("deploy", site);
+    expect(code).toBe(1);
+    expect(fake.spawned).toEqual([]);
+    expect(has("module-graph-mismatch")).toBe(true);
+  });
+
+  test("deploy: a site with pages and no bundled code deploys with a matching report (positive control)", async () => {
+    const site = pagesOnly();
+    writeGraphReport(site);
+    const { code } = await run("deploy", site);
     expect(code).toBe(0);
   });
 });
