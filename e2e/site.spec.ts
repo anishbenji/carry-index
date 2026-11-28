@@ -218,6 +218,12 @@ test("each card keeps its labels with their values at phone widths (G1)", async 
   }
 });
 
+test("the card list keeps its list role where its markers are hidden (G4)", async ({ page }) => {
+  await page.goto(LISTING);
+  await expect(page.locator("main ol.cards")).toHaveAttribute("role", "list");
+  await expect(page.getByRole("list")).toHaveCount(1);
+});
+
 test("both templates restore from the back/forward cache (N10)", async ({ playwright, browserName }, testInfo) => {
   test.skip(browserName !== "chromium", "the browser is launched here with Chromium's back/forward cache enabled");
   // Playwright starts Chromium with --disable-back-forward-cache, and its headless shell never caches, so this test

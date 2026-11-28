@@ -43,7 +43,9 @@ export function ListingPage(props: { models: readonly CatalogueModel[] }) {
       <p class="count">
         {cards.length} builds of {props.models.length} bags, lightest first.
       </p>
-      <ol class="cards">
+      {/* role="list": Safari drops the list role from a list styled with list-style: none (G4). */}
+      {/* biome-ignore lint/a11y/noRedundantRoles: the role is not redundant in Safari, see above. */}
+      <ol class="cards" role="list">
         <For each={cards}>
           {(card) => (
             <li class="card">
