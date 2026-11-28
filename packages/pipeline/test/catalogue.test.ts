@@ -223,7 +223,14 @@ describe("readCatalogue on a file that is not valid YAML (N13)", () => {
         mkdirSync(join(root, file, ".."), { recursive: true });
         writeFileSync(join(root, file), text);
       }
-      expect(() => readCatalogue(root)).toThrow(new RegExp(`^${path.replace(/[./]/g, "\\$&")}: `));
+      let message = "";
+      try {
+        readCatalogue(root);
+      } catch (error) {
+        message = error instanceof Error ? error.message : String(error);
+      }
+      // A plain prefix check: the file path is data, so it is never turned into a pattern.
+      expect(message.startsWith(`${path}: `), message).toBe(true);
     } finally {
       rmSync(root, { recursive: true, force: true });
     }
