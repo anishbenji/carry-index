@@ -173,6 +173,24 @@ test("no page scrolls sideways at 320 px wide", async ({ page }) => {
   }
 });
 
+test("no page scrolls sideways at 320 px wide with the text size at 200% (N12)", async ({ page, browserName }) => {
+  test.skip(browserName !== "chromium", "the browser's text size is set through the Chromium DevTools protocol");
+  const bags = await bagPaths(page);
+  await page.setViewportSize({ width: 320, height: 640 });
+  // The browser's own text-size setting, as a visitor would raise it: 32 px default instead of 16 px.
+  const cdp = await page.context().newCDPSession(page);
+  await cdp.send("Page.setFontSizes", { fontSizes: { standard: 32 } });
+  for (const path of [LISTING, ...bags, "/no-such-page"]) {
+    await page.goto(path);
+    const { width, rootFont } = await page.evaluate(() => ({
+      width: document.documentElement.scrollWidth,
+      rootFont: getComputedStyle(document.documentElement).fontSize,
+    }));
+    expect(rootFont, path).toBe("32px");
+    expect(width, path).toBeLessThanOrEqual(320);
+  }
+});
+
 test("the page follows the system colour scheme", async ({ page }, testInfo) => {
   await page.goto(LISTING);
   const dark = testInfo.project.name.endsWith("-dark");
