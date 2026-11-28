@@ -67,8 +67,10 @@ form-action 'none'; frame-ancestors 'none'
   under 14 kB, Brotli, CSS included), measured again at Cloudflare's edge levels. The gate fails on a built page with
   no target, so a new bag needs a row in the root `package.json`. The JavaScript budgets have no file to measure:
   the build refuses any script chunk and the e2e test asserts no page has a `<script>`.
-- `node packages/deploy/src/bin.ts check apps/web/dist/client`: the deploy gate's allow-list, canary and email scans,
-  headers and build graph.
+- `node packages/deploy/src/bin.ts check apps/web/dist/client`: the deploy gate's schema check, seal and allow-list,
+  canary and email scans, and headers. It does not run the build-graph check: `deploy` and `triggers` do, and since
+  N2 they require `apps/web/dist/client.module-graph.json` for any site with pages or `assets/` files, with every
+  page and asset listed at the sealed file's SHA-256.
 - `bun run test:e2e` (`playwright.config.ts`, `e2e/site.spec.ts`): `e2e/serve.ts` seals the build with the gate's own
   `seal` and `PUBLIC_SITE` config into the system temp folder and serves it with `wrangler dev` on 127.0.0.1:8818.
   In light and dark, at desktop and phone sizes (Chromium): every page loads with no script, one `h1` and headings
