@@ -52,7 +52,7 @@ build makes its pages from a fresh export:
   the site ships no script.
 - `build/site.ts` hashes every inline `<script>` and `<style>` of every page, fails unless all pages share one set,
   and writes `_headers` from `public/_headers` with the CSP line replaced. It also fails if the stylesheet is over
-  the whole-site CSS budget (10 KB in Brotli).
+  the whole-site CSS budget: 10 KB at Cloudflare's edge compression levels, the larger of Brotli 4 and gzip 8.
 
 The policy (today one style hash, no script):
 
@@ -63,10 +63,11 @@ form-action 'none'; frame-ancestors 'none'
 
 ## Checks
 
-- `bun run size`: one size-limit target per built page (the listing under 40 kB, each bag page and the 404 page
-  under 14 kB, Brotli, CSS included), measured again at Cloudflare's edge levels. The gate fails on a built page with
-  no target, so a new bag needs a row in the root `package.json`. The JavaScript budgets have no file to measure:
-  the build refuses any script chunk and the e2e test asserts no page has a `<script>`.
+- `bun run size`: two size-limit targets per built page, one gzip and one Brotli (the listing under 40 kB, each bag
+  page and the 404 page under 14 kB, CSS included), measured again at Cloudflare's edge levels. The gate fails on a
+  built page with no target, and `packages/checks/test/repo.test.ts` fails unless every page has both rows, so a new
+  bag needs two rows in the root `package.json`. The JavaScript budgets have no file to measure: the build refuses
+  any script chunk (`apps/web/test/static-site.test.ts`) and the e2e test asserts no page has a `<script>`.
 - `node packages/deploy/src/bin.ts check apps/web/dist/client`: the deploy gate's schema check, seal and allow-list,
   canary and email scans, and headers. It does not run the build-graph check: `deploy` and `triggers` do, and since
   N2 they require `apps/web/dist/client.module-graph.json` for any site with pages or `assets/` files, with every
@@ -76,8 +77,9 @@ form-action 'none'; frame-ancestors 'none'
   In light and dark, at desktop and phone sizes (Chromium): every page loads with no script, one `h1` and headings
   in order, with no console error or CSP violation; the 404 status and page; the `/` redirect (302) and the trailing-slash redirects; the
   security headers and a hash-only CSP; axe (WCAG 2.2 AA and best practices) on each template; the keyboard reaches
-  every link in order with a visible focus ring; no sideways scroll at 320 px; the theme follows the system setting;
-  pages are complete with scripts off.
+  every link in order with a visible focus ring; no sideways scroll at 320 px, also with the text size at 200%; both
+  templates restore from the back/forward cache (in full Chromium launched without Playwright's
+  `--disable-back-forward-cache`); the theme follows the system setting; pages are complete with scripts off.
 
 ## Not in this slice
 
