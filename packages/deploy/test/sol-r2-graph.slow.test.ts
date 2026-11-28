@@ -21,6 +21,46 @@ const WEB = join(REPO_ROOT, "apps", "web");
 const VITE = join(WEB, "node_modules", ".bin", "vite");
 const PLUGIN = pathToFileURL(join(REPO_ROOT, "packages", "deploy", "src", "graph-plugin.ts")).href;
 const SLOW = { timeout: 120_000 };
+const STATIC_SITE = pathToFileURL(join(REPO_ROOT, "apps", "web", "build", "static-site.ts")).href;
+
+/**
+ * A temp repository whose public site is built by the real `staticSite` plugin (apps/web) with `moduleGraph`, as
+ * apps/web's own config does, from the given page code. Its catalogue export is a stub that writes no bags.
+ */
+function staticSiteRepo(files: Record<string, string>): TempDir {
+  const repo = tempDir("cj-graph-static-");
+  temps.push(repo);
+  writeTree(repo.root, {
+    "export.mjs": [
+      'import { mkdirSync, writeFileSync } from "node:fs";',
+      'import { dirname } from "node:path";',
+      "mkdirSync(dirname(process.argv[2]), { recursive: true });",
+      "writeFileSync(process.argv[2], '{\"models\":[]}');",
+      "",
+    ].join("\n"),
+    "apps/web/headers.txt": "/*\n  Content-Security-Policy: default-src 'none'\n",
+    "apps/web/src/styles.css": "p{margin:0}\n",
+    "apps/web/vite.config.mjs": [
+      `import { moduleGraph } from ${JSON.stringify(PLUGIN)};`,
+      `import { staticSite } from ${JSON.stringify(STATIC_SITE)};`,
+      "const root = `${import.meta.dirname}/`;",
+      `export default { root, logLevel: "silent", plugins: [moduleGraph({ repoRoot: ${JSON.stringify(repo.root)} }),`,
+      `  staticSite({ root, exporter: ${JSON.stringify(join(repo.root, "export.mjs"))}, headers: \`\${root}headers.txt\` })],`,
+      '  build: { outDir: "dist/client", emptyOutDir: true, rollupOptions: { input: "src/styles.css" } } };',
+    ].join("\n"),
+    ...files,
+  });
+  return repo;
+}
+
+function buildStaticSite(repo: TempDir) {
+  extra.push(graphReportPath(join(repo.root, "apps/web/dist/client")));
+  return spawnSync(VITE, ["build", "--config", join(repo.root, "apps/web/vite.config.mjs")], {
+    cwd: join(repo.root, "apps/web"),
+    encoding: "utf8",
+  });
+}
+
 /**
  * The positive control's precondition (owner decision #22, 2026-11-28, option (a)): the sealed site is not vacuous
  * (it holds the listing page and at least one bag page), and the build-graph report lists every sealed page with the
@@ -132,5 +172,44 @@ describe("the positive control's precondition (owner decision #22)", () => {
     const changed = { outputs: report.outputs.map((o) => (o.path === "404.html" ? { ...o, sha256: sha("d") } : o)) };
     expect(pageCoverage(manifest, changed)).toEqual(["404.html: report hash differs"]);
     expect(pageCoverage(manifest, null)).toHaveLength(3);
+  });
+});
+
+describe("[slow] page code the static site renders is held to the build-graph check (N3)", () => {
+  test(
+    "[slow] page code reaching a private workspace package by bare specifier through a shared helper fails the build",
+    SLOW,
+    () => {
+      const repo = staticSiteRepo({
+        "apps/web/src/render.tsx":
+          'import { label } from "../../../packages/shared/src/helper.js";\nexport function renderBody() {\n  return `<main>${label}</main>`;\n}\n',
+        "packages/shared/src/helper.js": 'export { label } from "@cj/kit";\n',
+        "node_modules/@cj/kit/package.json": '{ "name": "@cj/kit", "type": "module", "exports": "./index.js" }\n',
+        "node_modules/@cj/kit/index.js": 'export const label = "synthetic private label";\n',
+      });
+      const result = buildStaticSite(repo);
+      expect(result.status).not.toBe(0);
+      expect(`${result.stdout}\n${result.stderr}`).toContain("node_modules/@cj/kit/index.js");
+    },
+  );
+
+  test("[slow] render code dynamically importing a private file fails the build", SLOW, () => {
+    const repo = staticSiteRepo({
+      "apps/web/src/render.tsx":
+        'const { label } = await import("../../kit/src/owned.js");\nexport function renderBody() {\n  return `<main>${label}</main>`;\n}\n',
+      "apps/kit/src/owned.js": 'export const label = "synthetic private label";\n',
+    });
+    const result = buildStaticSite(repo);
+    expect(result.status).not.toBe(0);
+    expect(`${result.stdout}\n${result.stderr}`).toContain("apps/kit/src/owned.js");
+  });
+
+  test("[slow] public page code builds (positive control)", SLOW, () => {
+    const repo = staticSiteRepo({
+      "apps/web/src/render.tsx": 'export function renderBody() {\n  return "<main>public</main>";\n}\n',
+    });
+    const result = buildStaticSite(repo);
+    expect(`${result.stdout}\n${result.stderr}`).toBe("\n");
+    expect(result.status).toBe(0);
   });
 });

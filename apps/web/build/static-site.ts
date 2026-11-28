@@ -39,6 +39,9 @@ export async function loadRenderer(root: string): Promise<{ render: typeof rende
     root,
     mode: "production",
     logLevel: "warn",
+    // Nothing external: an externalized import (any bare specifier, by default) is loaded by Node and left out of
+    // `dependencies`, so a private package reached through a shared helper would escape the graph check (N3).
+    environments: { inline: { resolve: { noExternal: true } } },
     // runnerImport resolves its config as `serve`, where the Solid plugin would otherwise pick development builds.
     plugins: [solid({ dev: false })],
   });
