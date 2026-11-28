@@ -195,7 +195,8 @@ test("both templates restore from the back/forward cache (N10)", async ({ playwr
   test.skip(browserName !== "chromium", "the browser is launched here with Chromium's back/forward cache enabled");
   // Playwright starts Chromium with --disable-back-forward-cache, and its headless shell never caches, so this test
   // launches full Chromium (new headless) without that switch. A restored page fires pageshow with persisted set and
-  // no load event, so navigation waits only for commit and then for the page's own pageshow record.
+  // no load event, so navigation waits only for commit and then for the page's own pageshow record. Each page clears
+  // its record on pagehide, so it enters the cache with none and a record seen later is from its own restore (N15).
   const browser = await playwright.chromium.launch({
     channel: "chromium",
     ignoreDefaultArgs: ["--disable-back-forward-cache"],
@@ -204,6 +205,9 @@ test("both templates restore from the back/forward cache (N10)", async ({ playwr
     const { baseURL, colorScheme } = testInfo.project.use;
     const page = await browser.newPage({ baseURL: baseURL ?? "", colorScheme: colorScheme ?? "light" });
     await page.addInitScript(() => {
+      addEventListener("pagehide", () => {
+        delete document.documentElement.dataset.persisted;
+      });
       addEventListener("pageshow", (event) => {
         document.documentElement.dataset.persisted = String((event as PageTransitionEvent).persisted);
       });
@@ -211,20 +215,14 @@ test("both templates restore from the back/forward cache (N10)", async ({ playwr
     const [bag = ""] = await bagPaths(page);
     const shown = async (path: string) => {
       await page.waitForFunction(
-        (expected) => location.pathname === expected && document.documentElement.dataset.persisted !== "pending",
+        (expected) => location.pathname === expected && document.documentElement.dataset.persisted !== undefined,
         path,
       );
       return page.evaluate(() => document.documentElement.dataset.persisted);
     };
     await page.goto(bag);
-    await page.evaluate(() => {
-      document.documentElement.dataset.persisted = "pending";
-    });
     await page.goBack({ waitUntil: "commit" });
     expect(await shown(LISTING), "listing, back").toBe("true");
-    await page.evaluate(() => {
-      document.documentElement.dataset.persisted = "pending";
-    });
     await page.goForward({ waitUntil: "commit" });
     expect(await shown(bag), "bag page, forward").toBe("true");
   } finally {
