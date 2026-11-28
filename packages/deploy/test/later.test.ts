@@ -1,10 +1,10 @@
-/** T10 to T13 are Release 1.1 or run only at the edge (privacy-wall design v2, "Tests that prove each guarantee"). */
+/**
+ * T11 to T13 are Release 1.1 or run only at the edge (privacy-wall design v2, "Tests that prove each guarantee").
+ * T10 is real now, in t10-workflows.test.ts.
+ */
 import { describe, test } from "vitest";
 
-describe("T10 to T13, not in the Saturday minimum", () => {
-  test.todo(
-    "T10 (1.1) credentials stay where they belong: build job has no environment or secrets, token only in the gate step's env, actions pinned by SHA, install uses --ignore-scripts",
-  );
+describe("T11 to T13, not in the Saturday minimum", () => {
   test.todo(
     "T11 (1.1) repo policy: no tracked wrangler*, .dev.vars* or .env* file (except .env.example) and no tracked symlink",
   );

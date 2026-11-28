@@ -1,0 +1,197 @@
+# Deploys the public site (ADR-0049, privacy-wall design v2 sections 3, 7 and 8). Three jobs:
+#   build     no credentials and no environment: builds the site, runs the gate's check on it, uploads it with the
+#             build's module-graph report beside it (the gate's deploy and triggers require that report).
+#   deploy    main only, in environment public-production: downloads the build; the gate seals, scans, runs the
+#             dry run, uploads a version tagged with the sealed manifest's hash and no traffic, checks that version,
+#             promotes it, confirms it live, and rolls back only to a verified previous version.
+#   triggers  once, after the first deploy, on a manual run with apply_triggers on the same commit, instead of
+#             deploy: the gate turns workers.dev on and preview URLs off (wrangler triggers deploy) only if the live
+#             Worker is this build's version alone at 100% (S5-5), and uploads nothing.
+# The Cloudflare token reaches only the two gate steps, through each step's env. The structure is tested by
+# packages/deploy/test/t10-workflows.test.ts; docs/deploy.md is the owner's guide.
+name: deploy-public
+
+on:
+  push:
+    branches: [main]
+  # Daily rebuild and redeploy, so /performance stays current (decision #17, 3A).
+  schedule:
+    - cron: "17 4 * * *"
+  # First deploys, and redeploys by hand; the deploy job still runs only on main.
+  workflow_dispatch:
+    inputs:
+      apply_triggers:
+        description: "Once, after the first deploy, on the same commit: turn workers.dev on for the live build (wrangler triggers deploy); no upload"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+# One deploy at a time per ref; a running deploy is never cancelled (a newer run waits). Per ref, so a manual run on
+# another branch cannot displace a main deploy that is waiting. queue: max keeps every waiting run, up to 100, in the
+# order they started waiting, instead of replacing the one waiting run, so a re-run of an old run cannot evict a
+# newer one (Sol security re-run, C5-5); the tip-of-main guard then stops each stale run before the gate.
+concurrency:
+  group: deploy-public-${{ github.ref }}
+  cancel-in-progress: false
+  queue: max
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: 1.4.2
+          no-cache: true
+      - name: Install (frozen lockfile, no package scripts)
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Build
+        run: bun run build
+      # The gate reads the build-graph report at `<siteDir>.module-graph.json`, beside the site folder. Both are
+      # renamed together, so the artifact holds public-site/ and public-site.module-graph.json side by side.
+      - name: Name the site folder and its build-graph report for the artifact
+        run: |
+          set -euo pipefail
+          mv apps/web/dist/client apps/web/dist/public-site
+          mv apps/web/dist/client.module-graph.json apps/web/dist/public-site.module-graph.json
+      - name: Deploy gate check (checks 1 and 2, seal and scan; spawns nothing)
+        run: node packages/deploy/src/bin.ts check apps/web/dist/public-site
+      # Only these two paths: never the run temp folder, where a failing gate writes its private diagnostics.
+      - name: Upload the checked site and its build-graph report
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: public-site
+          path: |
+            apps/web/dist/public-site
+            apps/web/dist/public-site.module-graph.json
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 3
+
+  deploy:
+    needs: build
+    # An apply_triggers run only applies triggers, to the build an earlier deploy-public run promoted (S5-5).
+    if: github.ref == 'refs/heads/main' && !inputs.apply_triggers
+    runs-on: ubuntu-24.04
+    # The rollback path at worst: four Wrangler runs (dry run, upload, promote, rollback) at the gate's 10-minute
+    # limit each, API reads of up to 60 s with three tries on an error, and after each write up to seven reads (five
+    # while the deployment converges, two more on API errors, Neon N5 and N12): about 4,810 s, or 80 minutes, plus
+    # up to five minutes of setup.
+    timeout-minutes: 90
+    environment: public-production
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: 1.4.2
+          no-cache: true
+      - name: Install (frozen lockfile, no package scripts)
+        run: bun install --frozen-lockfile --ignore-scripts
+      # Unpacks public-site/ and public-site.module-graph.json into the run temp folder, side by side.
+      - name: Download the checked site and its build-graph report
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: public-site
+          path: ${{ runner.temp }}
+          digest-mismatch: error
+      # A re-run keeps its run's commit (and, for failed jobs, its artifact), so re-running an older run would put an
+      # older commit back live. Stop unless this run's commit is still the tip of main (security review r2, C2-2).
+      # Environment variables only; the public repository is read without a token.
+      - name: Stop unless this commit is still the tip of main
+        run: |
+          set -euo pipefail
+          if ! [[ "$GITHUB_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "deploy-public: GITHUB_SHA is not a commit id" >&2
+            exit 1
+          fi
+          tip=$(git ls-remote "https://github.com/$GITHUB_REPOSITORY" refs/heads/main | cut -f1)
+          if [ "$tip" != "$GITHUB_SHA" ]; then
+            echo "deploy-public: this run is for $GITHUB_SHA, but main is now at ${tip:-nothing}; run the workflow again from main" >&2
+            exit 1
+          fi
+      - name: Deploy through the gate (seal, scan, dry run, upload, verify, promote, live check)
+        run: node packages/deploy/src/bin.ts deploy "${{ runner.temp }}/public-site"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+
+  # Once, after the first deploy (S5-5): `wrangler versions deploy` applies none of the config's triggers, so the gate
+  # runs `wrangler triggers deploy` on the sealed config to turn workers.dev on, but only when the active deployment
+  # is one version at 100% whose workers/tag is this build's manifest tag: the build the first run promoted, so run
+  # it on the same commit. Runs only when a manual run on main asks for it, instead of deploy, in the same
+  # environment.
+  triggers:
+    needs: [build]
+    if: github.event_name == 'workflow_dispatch' && inputs.apply_triggers && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    # The gate's worst case with one active version: API reads of up to 60 s with three tries each, and
+    # wrangler triggers deploy at its 10-minute limit, sum to about 1,584 s (60 + 186 + 366 + 600 + 186 + 186);
+    # S5-5 adds two single reads (the live version's tag, then the active deployment again), 120 s; the dry run's
+    # 10-minute limit comes on top: about 2,304 s, or 38.4 minutes, plus up to five minutes of setup.
+    timeout-minutes: 45
+    environment: public-production
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: 1.4.2
+          no-cache: true
+      - name: Install (frozen lockfile, no package scripts)
+        run: bun install --frozen-lockfile --ignore-scripts
+      # Unpacks public-site/ and public-site.module-graph.json into the run temp folder, side by side.
+      - name: Download the checked site and its build-graph report
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: public-site
+          path: ${{ runner.temp }}
+          digest-mismatch: error
+      # A re-run keeps its run's commit (and, for failed jobs, its artifact), so re-running an older run would put an
+      # older commit back live. Stop unless this run's commit is still the tip of main (security review r2, C2-2).
+      # Environment variables only; the public repository is read without a token.
+      - name: Stop unless this commit is still the tip of main
+        run: |
+          set -euo pipefail
+          if ! [[ "$GITHUB_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "deploy-public: GITHUB_SHA is not a commit id" >&2
+            exit 1
+          fi
+          tip=$(git ls-remote "https://github.com/$GITHUB_REPOSITORY" refs/heads/main | cut -f1)
+          if [ "$tip" != "$GITHUB_SHA" ]; then
+            echo "deploy-public: this run is for $GITHUB_SHA, but main is now at ${tip:-nothing}; run the workflow again from main" >&2
+            exit 1
+          fi
+      - name: Apply triggers through the gate (seal, scan, dry run, triggers deploy, live check)
+        run: node packages/deploy/src/bin.ts triggers "${{ runner.temp }}/public-site"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
