@@ -35,15 +35,33 @@
   },
   "size-limit": [
     {
+      "name": "apps/web listing HTML with its inlined CSS and no script, gzip (N2 listing HTML under 40 KB; JavaScript 0 B, under 15 KB, ADR-0017)",
+      "path": "apps/web/dist/client/uhmwpe-backpacks.html",
+      "gzip": true,
+      "limit": "40 kB"
+    },
+    {
       "name": "apps/web listing HTML with its inlined CSS and no script, Brotli (N2 listing HTML under 40 KB; JavaScript 0 B, under 15 KB, ADR-0017)",
       "path": "apps/web/dist/client/uhmwpe-backpacks.html",
       "brotli": true,
       "limit": "40 kB"
     },
     {
+      "name": "apps/web bag page aer-city-pack-pro-2-24l with its inlined CSS and no script, gzip (N2 content HTML under 14 KB; JavaScript 0 B, under 8 KB, ADR-0017)",
+      "path": "apps/web/dist/client/bags/aer-city-pack-pro-2-24l.html",
+      "gzip": true,
+      "limit": "14 kB"
+    },
+    {
       "name": "apps/web bag page aer-city-pack-pro-2-24l with its inlined CSS and no script, Brotli (N2 content HTML under 14 KB; JavaScript 0 B, under 8 KB, ADR-0017)",
       "path": "apps/web/dist/client/bags/aer-city-pack-pro-2-24l.html",
       "brotli": true,
+      "limit": "14 kB"
+    },
+    {
+      "name": "apps/web bag page aer-travel-pack-4-28l with its inlined CSS and no script, gzip (N2 content HTML under 14 KB; JavaScript 0 B, under 8 KB, ADR-0017)",
+      "path": "apps/web/dist/client/bags/aer-travel-pack-4-28l.html",
+      "gzip": true,
       "limit": "14 kB"
     },
     {
@@ -53,9 +71,21 @@
       "limit": "14 kB"
     },
     {
+      "name": "apps/web bag page ctactical-ct15-lite with its inlined CSS and no script, gzip (N2 content HTML under 14 KB; JavaScript 0 B, under 8 KB, ADR-0017)",
+      "path": "apps/web/dist/client/bags/ctactical-ct15-lite.html",
+      "gzip": true,
+      "limit": "14 kB"
+    },
+    {
       "name": "apps/web bag page ctactical-ct15-lite with its inlined CSS and no script, Brotli (N2 content HTML under 14 KB; JavaScript 0 B, under 8 KB, ADR-0017)",
       "path": "apps/web/dist/client/bags/ctactical-ct15-lite.html",
       "brotli": true,
+      "limit": "14 kB"
+    },
+    {
+      "name": "apps/web bag page ctactical-ct15-plus with its inlined CSS and no script, gzip (N2 content HTML under 14 KB; JavaScript 0 B, under 8 KB, ADR-0017)",
+      "path": "apps/web/dist/client/bags/ctactical-ct15-plus.html",
+      "gzip": true,
       "limit": "14 kB"
     },
     {
@@ -65,9 +95,21 @@
       "limit": "14 kB"
     },
     {
+      "name": "apps/web bag page ctactical-ct21-lite with its inlined CSS and no script, gzip (N2 content HTML under 14 KB; JavaScript 0 B, under 8 KB, ADR-0017)",
+      "path": "apps/web/dist/client/bags/ctactical-ct21-lite.html",
+      "gzip": true,
+      "limit": "14 kB"
+    },
+    {
       "name": "apps/web bag page ctactical-ct21-lite with its inlined CSS and no script, Brotli (N2 content HTML under 14 KB; JavaScript 0 B, under 8 KB, ADR-0017)",
       "path": "apps/web/dist/client/bags/ctactical-ct21-lite.html",
       "brotli": true,
+      "limit": "14 kB"
+    },
+    {
+      "name": "apps/web bag page ctactical-ct21-plus with its inlined CSS and no script, gzip (N2 content HTML under 14 KB; JavaScript 0 B, under 8 KB, ADR-0017)",
+      "path": "apps/web/dist/client/bags/ctactical-ct21-plus.html",
+      "gzip": true,
       "limit": "14 kB"
     },
     {
@@ -77,9 +119,21 @@
       "limit": "14 kB"
     },
     {
+      "name": "apps/web bag page db-weigh-lighter-hugger-30l with its inlined CSS and no script, gzip (N2 content HTML under 14 KB; JavaScript 0 B, under 8 KB, ADR-0017)",
+      "path": "apps/web/dist/client/bags/db-weigh-lighter-hugger-30l.html",
+      "gzip": true,
+      "limit": "14 kB"
+    },
+    {
       "name": "apps/web bag page db-weigh-lighter-hugger-30l with its inlined CSS and no script, Brotli (N2 content HTML under 14 KB; JavaScript 0 B, under 8 KB, ADR-0017)",
       "path": "apps/web/dist/client/bags/db-weigh-lighter-hugger-30l.html",
       "brotli": true,
+      "limit": "14 kB"
+    },
+    {
+      "name": "apps/web bag page evergoods-civic-travel-bag-26l with its inlined CSS and no script, gzip (N2 content HTML under 14 KB; JavaScript 0 B, under 8 KB, ADR-0017)",
+      "path": "apps/web/dist/client/bags/evergoods-civic-travel-bag-26l.html",
+      "gzip": true,
       "limit": "14 kB"
     },
     {
@@ -89,9 +143,21 @@
       "limit": "14 kB"
     },
     {
+      "name": "apps/web bag page matador-edx with its inlined CSS and no script, gzip (N2 content HTML under 14 KB; JavaScript 0 B, under 8 KB, ADR-0017)",
+      "path": "apps/web/dist/client/bags/matador-edx.html",
+      "gzip": true,
+      "limit": "14 kB"
+    },
+    {
       "name": "apps/web bag page matador-edx with its inlined CSS and no script, Brotli (N2 content HTML under 14 KB; JavaScript 0 B, under 8 KB, ADR-0017)",
       "path": "apps/web/dist/client/bags/matador-edx.html",
       "brotli": true,
+      "limit": "14 kB"
+    },
+    {
+      "name": "apps/web bag page tortuga-superlite-backpack with its inlined CSS and no script, gzip (N2 content HTML under 14 KB; JavaScript 0 B, under 8 KB, ADR-0017)",
+      "path": "apps/web/dist/client/bags/tortuga-superlite-backpack.html",
+      "gzip": true,
       "limit": "14 kB"
     },
     {
@@ -101,15 +167,33 @@
       "limit": "14 kB"
     },
     {
+      "name": "apps/web bag page ula-cicada-22l with its inlined CSS and no script, gzip (N2 content HTML under 14 KB; JavaScript 0 B, under 8 KB, ADR-0017)",
+      "path": "apps/web/dist/client/bags/ula-cicada-22l.html",
+      "gzip": true,
+      "limit": "14 kB"
+    },
+    {
       "name": "apps/web bag page ula-cicada-22l with its inlined CSS and no script, Brotli (N2 content HTML under 14 KB; JavaScript 0 B, under 8 KB, ADR-0017)",
       "path": "apps/web/dist/client/bags/ula-cicada-22l.html",
       "brotli": true,
       "limit": "14 kB"
     },
     {
+      "name": "apps/web bag page ula-dragonfly-30l with its inlined CSS and no script, gzip (N2 content HTML under 14 KB; JavaScript 0 B, under 8 KB, ADR-0017)",
+      "path": "apps/web/dist/client/bags/ula-dragonfly-30l.html",
+      "gzip": true,
+      "limit": "14 kB"
+    },
+    {
       "name": "apps/web bag page ula-dragonfly-30l with its inlined CSS and no script, Brotli (N2 content HTML under 14 KB; JavaScript 0 B, under 8 KB, ADR-0017)",
       "path": "apps/web/dist/client/bags/ula-dragonfly-30l.html",
       "brotli": true,
+      "limit": "14 kB"
+    },
+    {
+      "name": "apps/web 404 page with its inlined CSS and no script, gzip (N2 content HTML under 14 KB; JavaScript 0 B, under 8 KB, ADR-0017)",
+      "path": "apps/web/dist/client/404.html",
+      "gzip": true,
       "limit": "14 kB"
     },
     {

@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { join, relative, sep } from "node:path";
+import { join, matchesGlob, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { listFiles } from "../src/files.ts";
@@ -39,13 +39,73 @@ describe("Vite dev servers", () => {
 });
 
 describe("size budgets", () => {
-  it("hold apps/web client JavaScript to the N2 listing limit in both gzip and Brotli, so the larger one gates", () => {
-    // Cloudflare recompresses at gzip level 8 or Brotli level 4 (blog.cloudflare.com/this-is-brotli-from-origin);
-    // size-limit measures gzip at level 9 and Brotli at quality 11, so both are reported and both must pass.
+  // Owner decision #23 (2026-11-28), option (a): the static-first site ships no script, so the budgets are held per
+  // page. Every built page needs a gzip and a Brotli size-limit row at or under its N2 HTML budget (Cloudflare
+  // recompresses at gzip 8 or Brotli 4, size-limit measures gzip 9 and Brotli 11, so both are reported and both must
+  // pass). The JavaScript budgets have no file to measure: apps/web/test/static-site.test.ts shows the build refuses
+  // any script chunk, and e2e/site.spec.ts asserts no page has a <script>.
+  const DIST = "apps/web/dist/client";
+  const LISTING_BUDGET = 40_000;
+  const CONTENT_BUDGET = 14_000;
+
+  /** The pages the build writes, each with its N2 budget: the listing, one per data/bags model, and 404.html. */
+  function builtPages(): { path: string; budget: number }[] {
+    const models = listFiles(ROOT, "data/bags", (name) => name.endsWith(".yaml")).map((file) => {
+      const id = /^model:\n(?: {2}.*\n)*? {2}id: ([a-z0-9-]+)$/m.exec(readFileSync(join(ROOT, file), "utf8"))?.[1];
+      if (!id) throw new Error(`${file}: no model id`);
+      return id;
+    });
+    return [
+      { path: `${DIST}/uhmwpe-backpacks.html`, budget: LISTING_BUDGET },
+      ...models.map((id) => ({ path: `${DIST}/bags/${id}.html`, budget: CONTENT_BUDGET })),
+      { path: `${DIST}/404.html`, budget: CONTENT_BUDGET },
+    ];
+  }
+
+  /** "<page> <gzip|brotli>" for every page with no row of that compression covering it within its budget. */
+  function budgetGaps(rows: unknown, pages: { path: string; budget: number }[]): string[] {
+    const list = (Array.isArray(rows) ? rows : []) as { path?: unknown; limit?: unknown; [key: string]: unknown }[];
+    return pages.flatMap((page) =>
+      (["gzip", "brotli"] as const)
+        .filter(
+          (compression) =>
+            !list.some(
+              (row) =>
+                row[compression] === true &&
+                (Array.isArray(row.path) ? row.path : [row.path]).some(
+                  (glob) => typeof glob === "string" && (glob === page.path || matchesGlob(page.path, glob)),
+                ) &&
+                typeof row.limit === "string" &&
+                kiloBytes(row.limit) <= page.budget,
+            ),
+        )
+        .map((compression) => `${page.path} ${compression}`),
+    );
+  }
+
+  /** size-limit's reading of a limit: kB is 1,000 bytes. Anything else counts as over every budget. */
+  function kiloBytes(limit: string): number {
+    const match = /^(\d+(?:\.\d+)?)\s*kB$/.exec(limit.trim());
+    return match ? Number(match[1]) * 1000 : Number.POSITIVE_INFINITY;
+  }
+
+  it("hold every built page to its N2 HTML budget in both gzip and Brotli, so the larger one gates", () => {
     const pkg = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8")) as { "size-limit"?: unknown };
-    const path = "apps/web/dist/client/assets/*.js";
-    expect(pkg["size-limit"]).toContainEqual(expect.objectContaining({ path, gzip: true, limit: "15 kB" }));
-    expect(pkg["size-limit"]).toContainEqual(expect.objectContaining({ path, brotli: true, limit: "15 kB" }));
+    const pages = builtPages();
+    expect(pages.filter((p) => p.path.includes("/bags/")).length).toBeGreaterThan(0);
+    expect(budgetGaps(pkg["size-limit"], pages)).toEqual([]);
+  });
+
+  it("finds a page with no row, a row over budget, and a missing compression (the check above is not vacuous)", () => {
+    const page = { path: `${DIST}/bags/x.html`, budget: CONTENT_BUDGET };
+    const row = (extra: object) => ({ path: page.path, limit: "14 kB", ...extra });
+    expect(budgetGaps([row({ gzip: true }), row({ brotli: true })], [page])).toEqual([]);
+    expect(budgetGaps([], [page])).toEqual([`${page.path} gzip`, `${page.path} brotli`]);
+    expect(budgetGaps([row({ gzip: true }), { ...row({ brotli: true }), limit: "15 kB" }], [page])).toEqual([
+      `${page.path} brotli`,
+    ]);
+    expect(budgetGaps([row({ brotli: true })], [page])).toEqual([`${page.path} gzip`]);
+    expect(budgetGaps([{ path: `${DIST}/bags/*.html`, limit: "14 kB", gzip: true, brotli: true }], [page])).toEqual([]);
   });
 });
 
