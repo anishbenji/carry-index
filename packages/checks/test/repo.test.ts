@@ -71,7 +71,8 @@ describe("size budgets", () => {
           (compression) =>
             !list.some(
               (row) =>
-                row[compression] === true &&
+                // @size-limit/file takes gzip over brotli: a row with both flags measures gzip only.
+                (compression === "gzip" ? row.gzip === true : row.brotli === true && row.gzip !== true) &&
                 (Array.isArray(row.path) ? row.path : [row.path]).some(
                   (glob) => typeof glob === "string" && (glob === page.path || matchesGlob(page.path, glob)),
                 ) &&
@@ -105,7 +106,18 @@ describe("size budgets", () => {
       `${page.path} brotli`,
     ]);
     expect(budgetGaps([row({ brotli: true })], [page])).toEqual([`${page.path} gzip`]);
-    expect(budgetGaps([{ path: `${DIST}/bags/*.html`, limit: "14 kB", gzip: true, brotli: true }], [page])).toEqual([]);
+    const glob = { path: `${DIST}/bags/*.html`, limit: "14 kB" };
+    expect(
+      budgetGaps(
+        [
+          { ...glob, gzip: true },
+          { ...glob, brotli: true },
+        ],
+        [page],
+      ),
+    ).toEqual([]);
+    // @size-limit/file measures gzip whenever gzip is true, ignoring brotli: a combined row is a gzip row only (N17).
+    expect(budgetGaps([{ ...glob, gzip: true, brotli: true }], [page])).toEqual([`${page.path} brotli`]);
   });
 });
 
