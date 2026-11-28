@@ -1,0 +1,79 @@
+# The public site build (milestone 2, first slice)
+
+`apps/web` builds Carry Journal as static HTML with no script (ADR-0015, static first), using the approach spike
+PR 8 measured (`docs/spike/static-csp.md` on branch `spike/08-static-csp`): a plain Vite build plus a prerender
+step, no Solid start mode, the stylesheet inlined (ADR-0018), one CSP hash set for every page.
+
+## Pages
+
+| Route | File in `apps/web/dist/client` | Shows |
+| --- | --- | --- |
+| `/` | `index.html` | Every listed build of every bag, lightest first: name (linking to its bag page), maker, weight, capacity, fabric |
+| `/bags/<slug>` | `bags/<slug>.html` | One bag: maker, name, and a table of its builds (weight, capacity, fabric) |
+| any other path | `404.html` | "Page not found", with a link to the listing |
+
+The deployed Worker serves assets with `html_handling: "drop-trailing-slash"` and `not_found_handling: "404-page"`
+(`packages/deploy/src/workers.ts`), so `bags/<slug>.html` is served at `/bags/<slug>`, `/bags/<slug>/` redirects
+there, and an unknown path gets `404.html` with status 404. These are the only page names the gate's allow-list
+accepts (`packages/deploy/src/allow-list.ts`).
+
+## Data
+
+Pages show only the public surface (`packages/deploy/public-surface.json`): a build is a `Bag` (`slug`, `name`,
+`brand`, `weightGrams`, `capacityLitres`, `fabric`), and a bag page is a model's slug, name and maker plus its
+builds.
+
+1. `packages/pipeline/src/cli/export.ts` reads `data/brands.yaml`, `data/materials.yaml` and every
+   `data/bags/<maker>/*.yaml` (`readCatalogue` in `src/catalogue.ts`). Stripping shapes read only the keys a `Bag`
+   is made from; every build is then checked against the strict `bagSchema`, and the build stops on the first file
+   that fails, naming it. A build's fabric is the listed fabric its shell materials belong to (a UHMWPE fibre is
+   `uhmwpe`; otherwise the material's family). Builds marked `record: comparison` are left out, as README-data
+   says they are listed nowhere.
+2. It writes `apps/web/dist/catalogue.json` (types `CatalogueExport` and `CatalogueModel` in `packages/schema`).
+   `apps/web` reads that file; it imports schema and pipeline types only (the import ban, `bun run lint`).
+
+## Build
+
+`bun run build` runs the export, then `vite build` in `apps/web`:
+
+- The build's only input is `src/styles.css`. The `staticSite` plugin (`apps/web/build/static-site.ts`) loads
+  `src/render.tsx` through Vite's module runner (`runnerImport`), compiled by the Solid plugin for the server in its
+  non-hydratable mode, and renders each page with `renderToString(..., { noScripts: true })`: no hydration keys, no
+  Solid script.
+- Every file the renderer loaded is passed to `addWatchFile`, so `moduleGraph` (`packages/deploy`) fails the build if
+  the page code reached anything private, and lists those files in `dist/client.module-graph.json`.
+- The plugin takes the processed CSS out of the bundle, inlines it into every page, and emits the pages and
+  `_headers` through the bundle, so the graph report lists each with its SHA-256. A chunk with code fails the build:
+  the site ships no script.
+- `build/site.ts` hashes every inline `<script>` and `<style>` of every page, fails unless all pages share one set,
+  and writes `_headers` from `public/_headers` with the CSP line replaced. It also fails if the stylesheet is over
+  the whole-site CSS budget (10 KB in Brotli).
+
+The policy (today one style hash, no script):
+
+```
+default-src 'none'; script-src 'none'; style-src 'sha256-…'; img-src 'self'; base-uri 'none';
+form-action 'none'; frame-ancestors 'none'
+```
+
+## Checks
+
+- `bun run size`: one size-limit target per built page (the listing under 40 kB, each bag page and the 404 page
+  under 14 kB, Brotli, CSS included), measured again at Cloudflare's edge levels. The gate fails on a built page with
+  no target, so a new bag needs a row in the root `package.json`. The JavaScript budgets have no file to measure:
+  the build refuses any script chunk and the e2e test asserts no page has a `<script>`.
+- `node packages/deploy/src/bin.ts check apps/web/dist/client`: the deploy gate's allow-list, canary and email scans,
+  headers and build graph.
+- `bun run test:e2e` (`playwright.config.ts`, `e2e/site.spec.ts`): `e2e/serve.ts` seals the build with the gate's own
+  `seal` and `PUBLIC_SITE` config into the system temp folder and serves it with `wrangler dev` on 127.0.0.1:8818.
+  In light and dark, at desktop and phone sizes (Chromium): every page loads with no script, one `h1` and headings
+  in order, with no console error or CSP violation; the 404 status and page; the trailing-slash redirect; the
+  security headers and a hash-only CSP; axe (WCAG 2.2 AA and best practices) on each template; the keyboard reaches
+  every link in order with a visible focus ring; no sideways scroll at 320 px; the theme follows the system setting;
+  pages are complete with scripts off.
+
+## Not in this slice
+
+The theme and units switches, the sort island, the airline widget, line drawings, the metrics beacon, the
+`/uhmwpe-backpacks` section page, fabric pages, about, sources, sitemap and robots.txt. Theme follows the system
+setting only.
