@@ -2,18 +2,26 @@ import { fileURLToPath } from "node:url";
 import solid from "@solidjs/vite-plugin";
 import { defineConfig } from "vite";
 import { moduleGraph } from "../../packages/deploy/src/graph-plugin.ts";
+import { staticSite } from "./build/static-site.ts";
 
 const app = fileURLToPath(new URL(".", import.meta.url).href);
 const repo = fileURLToPath(new URL("../../", import.meta.url).href);
 
-// Builds the client entry only, with no index.html, so the scaffold emits no pages: the size and e2e gates
-// switch on when spike PR 7 starts emitting prerendered HTML.
+/**
+ * The static-first public site (ADR-0015), built in two steps by `bun run build` (package.json):
+ * 1. `packages/pipeline/src/cli/export.ts` validates the public catalogue and writes `dist/catalogue.json`;
+ * 2. `vite build` builds the site stylesheet, and `staticSite` renders every page with it inlined into
+ *    `dist/client`, the folder the deploy gate checks and seals. No script reaches the site.
+ */
 export default defineConfig({
   // moduleGraph: the build fails on any private module it resolved, and writes the report the deploy gate requires
   // beside the output folder (packages/deploy, security-sol r2 S2-4).
-  plugins: [solid(), moduleGraph({ repoRoot: repo })],
-  // public/ stays (Vite's default) for spike PR 7's _headers; packages/deploy (privacy-wall design v2) will copy
-  // only allow-listed files from it into the sealed deploy artifact.
+  plugins: [
+    solid(),
+    moduleGraph({ repoRoot: repo }),
+    staticSite({ root: app, catalogue: `${app}dist/catalogue.json`, headers: `${app}public/_headers` }),
+  ],
+  // packages/deploy (privacy-wall design v2) copies only allow-listed files from the build into the sealed artifact.
   // Loopback only: Vite 8.3.8 bundles a ws release open to a reply-flood DoS, and no fixed Vite 8 exists yet.
   server: {
     host: "localhost",
@@ -40,6 +48,6 @@ export default defineConfig({
     assetsInlineLimit: 0,
     outDir: "dist/client",
     emptyOutDir: true,
-    rollupOptions: { input: "src/main.tsx" },
+    rollupOptions: { input: "src/styles.css" },
   },
 });
