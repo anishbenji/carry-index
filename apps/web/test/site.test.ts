@@ -45,6 +45,12 @@ describe("documentHtml", () => {
     expect(html).toContain("<body><main>x</main></body></html>");
     expect(html).not.toContain("<script");
   });
+
+  it("refuses a stylesheet that would close its own style element (N7)", () => {
+    for (const css of ["a{}</style><script>x()</script>", 'a::after{content:"</STYLE"}']) {
+      expect(() => documentHtml({ title: "t", description: "d", body: "", css })).toThrow(/style/);
+    }
+  });
 });
 
 describe("assembleSite", () => {

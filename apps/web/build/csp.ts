@@ -16,10 +16,15 @@ export interface HashSet {
   styles: string[];
 }
 
-/** Every inline `<script>` and `<style>` body in a page, as CSP sources, deduplicated and sorted. */
+/**
+ * Every inline `<script>` and `<style>` body in a page, as CSP sources, deduplicated and sorted. Tags match in any
+ * case; a script is skipped only for a real `src` attribute, not one that merely ends in `src` (`data-src`).
+ */
 export function inlineHashes(html: string): HashSet {
   const bodies = (tag: string) =>
-    [...html.matchAll(new RegExp(`<${tag}(?![^>]*\\bsrc=)[^>]*>([\\s\\S]*?)</${tag}>`, "g"))].map((m) => m[1] ?? "");
+    [...html.matchAll(new RegExp(`<${tag}(?![^>]*[\\s/]src\\s*=)[^>]*>([\\s\\S]*?)</${tag}>`, "gi"))].map(
+      (m) => m[1] ?? "",
+    );
   const unique = (values: string[]) => [...new Set(values)].sort(byCodeUnit);
   return { scripts: unique(bodies("script").map(sha256)), styles: unique(bodies("style").map(sha256)) };
 }

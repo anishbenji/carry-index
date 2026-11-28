@@ -66,8 +66,12 @@ export function sitePages(catalogue: CatalogueExport): PageSpec[] {
 const escapeHtml = (text: string): string =>
   text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
-/** A complete page: metadata, the site stylesheet inlined (ADR-0018), and the rendered body. No script. */
+/**
+ * A complete page: metadata, the site stylesheet inlined (ADR-0018), and the rendered body. No script. Throws if the
+ * stylesheet holds `</style`, which would end its element early and let the rest be read as markup.
+ */
 export function documentHtml(options: { title: string; description: string; body: string; css: string }): string {
+  if (/<\/style/i.test(options.css)) throw new Error("the stylesheet holds </style and cannot be inlined");
   const head = [
     '<meta charset="utf-8">',
     '<meta name="viewport" content="width=device-width, initial-scale=1">',

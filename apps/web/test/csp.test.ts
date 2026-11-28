@@ -15,6 +15,14 @@ describe("inlineHashes", () => {
     });
   });
 
+  it("hashes inline code whatever the tag's case, and an attribute that only ends in src (N7)", () => {
+    const html = '<SCRIPT>a()</SCRIPT><script data-src="x">b()</script><Style>c{}</Style><script SRC="/s.js"></script>';
+    expect(inlineHashes(html)).toEqual({
+      scripts: [hash("a()"), hash("b()")].sort((x, y) => (x < y ? -1 : x > y ? 1 : 0)),
+      styles: [hash("c{}")],
+    });
+  });
+
   it("finds nothing in a page with no inline code", () => {
     expect(inlineHashes("<!DOCTYPE html><p>text</p>")).toEqual({ scripts: [], styles: [] });
   });
