@@ -168,7 +168,7 @@ def ct(vid, name, page, shell, lining, vol, g, g_text, d, d_text, lap, price):
         _checked=BASE_FIELDS + ['availability', 'fabric.lining', 'fabric.base', 'colourways'])
 
 
-ULA_CICADA = dict(volume_l=22, weight_g=799.5, dims_cm=dict(h=cm(18), w=cm(11), d=cm(5)),
+ULA_CICADA = dict(volume_l=22, weight_g=800, dims_cm=dict(h=cm(18), w=cm(11), d=cm(5)),
                   as_written=dict(weight='28.2 oz | 799.5 g', dims='18" x 11" x 5"', volume='1,342 cu in | 22 L', laptop='15.5" x 10"'),
                   laptop=dict(max_in=15.5, type='sleeve'), made_in='USA')
 ULA_DFLY = dict(volume_l=30, dims_cm=dict(h=cm(18.5), w=cm(11), d=cm(7)), laptop=dict(max_in=15, type='sleeve'), made_in='USA')

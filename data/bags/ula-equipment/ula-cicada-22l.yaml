@@ -113,7 +113,7 @@ variants:
     lining: 210D Liner
     other: UltraStretch Mesh, YKK Aquaguard zippers
   volume_l: 22
-  weight_g: 799.5
+  weight_g: 800
   dims_cm:
     h: 45.7
     w: 27.9
@@ -183,7 +183,7 @@ variants:
   units:
     weight:
       metric:
-        g: 799.5
+        g: 800
         from: maker
       imperial:
         lb: 1.76
@@ -217,7 +217,7 @@ variants:
     lining_material: ultragrid
     other: UltraStretch mesh, YKK Aquaguard zippers; two external angled UltraStretch mesh bottle pockets
   volume_l: 22
-  weight_g: 799.5
+  weight_g: 800
   dims_cm:
     h: 45.7
     w: 27.9
@@ -279,7 +279,7 @@ variants:
   units:
     weight:
       metric:
-        g: 799.5
+        g: 800
         from: maker
       imperial:
         lb: 1.76
@@ -313,7 +313,7 @@ variants:
     lining_material: ultragrid
     other: CORDURA TrueLock, UltraStretch Mesh, standard YKK zippers
   volume_l: 22
-  weight_g: 799.5
+  weight_g: 800
   dims_cm:
     h: 45.7
     w: 27.9
@@ -375,7 +375,7 @@ variants:
   units:
     weight:
       metric:
-        g: 799.5
+        g: 800
         from: maker
       imperial:
         lb: 1.76
@@ -407,7 +407,7 @@ variants:
     - x-pac-x50
     shell_as_written: X-Pac X50
   volume_l: 22
-  weight_g: 870.3
+  weight_g: 870
   dims_cm:
     h: 45.7
     w: 27.9
@@ -434,7 +434,7 @@ variants:
   units:
     weight:
       metric:
-        g: 870.3
+        g: 870
         from: maker
       imperial:
         lb: 1.92

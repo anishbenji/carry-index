@@ -43,12 +43,21 @@ class ValidatorNotesTest(unittest.TestCase):
             self.assertIn(SKIP_LINE, f.read())
 
     def test_present_notes_file_still_rejects_an_undefined_note(self):
-        # A synthetic, empty notes file: every my_note reference in the public data is now undefined.
+        # A synthetic, empty notes file plus a synthetic my_note link on the first claim of a copied bag file, so
+        # the test does not depend on which links the catalogue happens to carry.
         with open(os.path.join(self.root, 'data', 'my-notes.yaml'), 'w', encoding='utf-8') as f:
             f.write('[]\n')
+        bag = os.path.join(self.root, 'data', 'bags', 'evergoods', 'evergoods-civic-travel-bag-26l.yaml')
+        with open(bag, encoding='utf-8') as f:
+            text = f.read()
+        head, sep, tail = text.partition('\nclaims:\n- id: ')
+        self.assertTrue(sep)
+        first_id, nl, rest = tail.partition('\n')
+        with open(bag, 'w', encoding='utf-8') as f:
+            f.write(head + sep + first_id + nl + '  my_note: note-synthetic-dangling\n' + rest)
         result = self.run_validator()
         self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
-        self.assertIn('is not in my-notes.yaml', result.stdout)
+        self.assertIn('my_note "note-synthetic-dangling" is not in my-notes.yaml', result.stdout)
         self.assertNotIn(SKIP_LINE, result.stdout)
 
 
