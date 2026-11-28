@@ -13,7 +13,7 @@ import type { FakeCloudflare, FakeCloudflareOptions } from "./fake-cloudflare.ts
 import { D1, ENV, fakeCloudflare, PREVIOUS, SCRIPT, UPLOADED } from "./fake-cloudflare.ts";
 import { fakeIo } from "./gate-io.ts";
 import type { TempDir } from "./helpers.ts";
-import { minimalSite } from "./helpers.ts";
+import { builtSite } from "./helpers.ts";
 
 const temps: TempDir[] = [];
 afterEach(() => {
@@ -34,7 +34,7 @@ const staleReply = (version: string) => ({
  * Runs deploy; once `after` has run (a command name), the next `stale` deployments reads show `staleVersion`.
  */
 async function deploy(options: FakeCloudflareOptions, after: string, stale: number, staleVersion = PREVIOUS) {
-  const site = minimalSite();
+  const site = builtSite();
   temps.push(site);
   let cf: FakeCloudflare | undefined;
   let served = 0;
@@ -104,7 +104,7 @@ describe("confirmation waits for the deployment to converge (N5)", () => {
   test("an unreadable deployments reply after the promotion keeps its HTTP status", async () => {
     let promoted = false;
     let cfRef: FakeCloudflare | undefined;
-    const site = minimalSite();
+    const site = builtSite();
     temps.push(site);
     cfRef = fakeCloudflare({
       previous: { bindings: [] },
@@ -122,7 +122,7 @@ describe("confirmation waits for the deployment to converge (N5)", () => {
   test("N5b: an unreadable deployments reply after a rollback is printed with its HTTP status", async () => {
     let rolledBack = false;
     let cfRef: FakeCloudflare | undefined;
-    const site = minimalSite();
+    const site = builtSite();
     temps.push(site);
     cfRef = fakeCloudflare({
       previous: { bindings: [] },
@@ -145,7 +145,7 @@ describe("confirmation waits for the deployment to converge (N5)", () => {
     let cfRef: FakeCloudflare | undefined;
     let staleServed = 0;
     let settingsFailed = 0;
-    const site = minimalSite();
+    const site = builtSite();
     temps.push(site);
     cfRef = fakeCloudflare({
       previous: { bindings: [] },
@@ -179,7 +179,7 @@ describe("confirmation waits for the deployment to converge (N5)", () => {
   test("N12: the worst case stays bounded: 4 convergence waits and 2 API-error waits, 26 s in all", async () => {
     let cfRef: FakeCloudflare | undefined;
     let staleServed = 0;
-    const site = minimalSite();
+    const site = builtSite();
     temps.push(site);
     cfRef = fakeCloudflare({
       previous: { bindings: [] },
@@ -209,7 +209,7 @@ describe("confirmation waits for the deployment to converge (N5)", () => {
     let cfRef: FakeCloudflare | undefined;
     let staleServed = 0;
     let settingsFailed = 0;
-    const site = minimalSite();
+    const site = builtSite();
     temps.push(site);
     cfRef = fakeCloudflare({
       previous: { bindings: [] },

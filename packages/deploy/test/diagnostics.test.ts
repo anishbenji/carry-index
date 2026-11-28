@@ -9,7 +9,7 @@ import type { FakeCloudflareOptions } from "./fake-cloudflare.ts";
 import { ENV, fakeCloudflare, SCRIPT, UPLOADED } from "./fake-cloudflare.ts";
 import { fakeIo } from "./gate-io.ts";
 import type { TempDir } from "./helpers.ts";
-import { minimalSite } from "./helpers.ts";
+import { builtSite } from "./helpers.ts";
 
 const temps: TempDir[] = [];
 afterEach(() => {
@@ -19,7 +19,7 @@ afterEach(() => {
 const SENTINEL = "S3NT1NELdiag0123456789abcdef";
 
 async function deploy(options: FakeCloudflareOptions, uploadStderr?: string) {
-  const site = minimalSite();
+  const site = builtSite();
   temps.push(site);
   const cf = fakeCloudflare({ previous: { bindings: [] }, ...options });
   const fake = fakeIo({

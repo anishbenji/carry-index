@@ -11,7 +11,7 @@ import type { FakeCloudflareOptions } from "./fake-cloudflare.ts";
 import { ENV, fakeCloudflare, SCRIPT, UPLOADED } from "./fake-cloudflare.ts";
 import { fakeIo } from "./gate-io.ts";
 import type { TempDir } from "./helpers.ts";
-import { minimalSite, sealedTag } from "./helpers.ts";
+import { builtSite, sealedTag } from "./helpers.ts";
 
 const temps: TempDir[] = [];
 afterEach(() => {
@@ -19,7 +19,7 @@ afterEach(() => {
 });
 
 async function gate(command: "deploy" | "triggers", options: FakeCloudflareOptions) {
-  const site = minimalSite();
+  const site = builtSite();
   temps.push(site);
   // S5-5: for triggers, the live version carries this build's sealed tag, as after the first deploy.
   const tag = command === "triggers" && options.previous ? await sealedTag(site.root) : undefined;

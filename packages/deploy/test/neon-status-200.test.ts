@@ -10,7 +10,7 @@ import type { FakeCloudflareOptions } from "./fake-cloudflare.ts";
 import { ENV, fakeCloudflare, PREVIOUS, SCRIPT } from "./fake-cloudflare.ts";
 import { fakeIo } from "./gate-io.ts";
 import type { TempDir } from "./helpers.ts";
-import { minimalSite, sealedTag } from "./helpers.ts";
+import { builtSite, sealedTag } from "./helpers.ts";
 
 const temps: TempDir[] = [];
 afterEach(() => {
@@ -18,7 +18,7 @@ afterEach(() => {
 });
 
 async function run(command: "deploy" | "triggers", options: FakeCloudflareOptions) {
-  const site = minimalSite();
+  const site = builtSite();
   temps.push(site);
   const tag = await sealedTag(site.root);
   const cf = fakeCloudflare({ ...options, previous: { bindings: [], tag } });

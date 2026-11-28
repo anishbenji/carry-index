@@ -16,7 +16,7 @@ import type { FakeCloudflareOptions } from "./fake-cloudflare.ts";
 import { ENV, fakeCloudflare, PREVIOUS, SCRIPT, UPLOADED } from "./fake-cloudflare.ts";
 import { fakeIo } from "./gate-io.ts";
 import type { TempDir } from "./helpers.ts";
-import { MINIMAL_PAGE, minimalSite, sealedTag } from "./helpers.ts";
+import { builtSite, MINIMAL_PAGE, sealedTag } from "./helpers.ts";
 
 const temps: TempDir[] = [];
 afterEach(() => {
@@ -25,7 +25,7 @@ afterEach(() => {
 
 /** Runs the gate, recording API reads and Wrangler runs in one ordered list. */
 async function run(command: "deploy" | "triggers", options: (tag: string) => FakeCloudflareOptions) {
-  const site = minimalSite();
+  const site = builtSite();
   temps.push(site);
   const tag = await sealedTag(site.root);
   const events: string[] = [];
@@ -51,8 +51,8 @@ async function run(command: "deploy" | "triggers", options: (tag: string) => Fak
 
 describe("the manifest tag (S5-5)", () => {
   test("is 12 lower-case hex characters and follows the sealed content", async () => {
-    const a = minimalSite();
-    const b = minimalSite({ "about.html": MINIMAL_PAGE });
+    const a = builtSite();
+    const b = builtSite({ "about.html": MINIMAL_PAGE });
     temps.push(a, b);
     const tagA = await sealedTag(a.root);
     expect(tagA).toMatch(/^[0-9a-f]{12}$/);
