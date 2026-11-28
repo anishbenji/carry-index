@@ -1,5 +1,6 @@
 import { spawnSync } from "node:child_process";
 import { readFileSync, rmSync } from "node:fs";
+import { isBuiltin } from "node:module";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { CatalogueExport } from "@cj/schema";
@@ -36,8 +37,8 @@ export interface StaticSiteOptions {
  *
  * Nothing is external (N3), but a specifier built at run time (`import("@cj/" + name)`) cannot be rewritten by Vite,
  * and the runner hands it to Node as an external module, which `runnerImport` leaves out of its file list (N9). So
- * every evaluated module is inspected, and an externalized one that is not a Node built-in fails the build: the graph
- * check could not vouch for it.
+ * every evaluated module is inspected, and an externalized one that is not a Node built-in (by `isBuiltin` on its
+ * specifier, so a `data:` URL module fails too) fails the build: the graph check could not vouch for it.
  */
 export async function loadRenderer(root: string): Promise<{ render: typeof renderBody; files: string[] }> {
   const entry = `${root}src/render.tsx`;
@@ -73,7 +74,8 @@ export async function loadRenderer(root: string): Promise<{ render: typeof rende
     for (const evaluated of environment.runner.evaluatedModules.urlToIdModuleMap.values()) {
       const meta = evaluated.meta;
       if (meta && "externalize" in meta) {
-        if (meta.type !== "builtin") {
+        // Only a Node built-in may load outside the graph; Vite also marks data: URL modules "builtin" (N16).
+        if (!isBuiltin(meta.externalize)) {
           external.push(meta.externalize.startsWith("file:") ? fileURLToPath(meta.externalize) : meta.externalize);
         }
       } else if (evaluated.file && evaluated.file !== entry) {

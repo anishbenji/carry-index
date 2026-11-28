@@ -222,6 +222,19 @@ describe("[slow] page code the static site renders is held to the build-graph ch
     },
   );
 
+  // N16: a data: URL module is code no file holds, so the graph check could never vouch for it.
+  test.each([
+    ["statically", 'import { label } from "data:text/javascript,export const label = 1;";\n'],
+    ["dynamically", 'const { label } = await import("data:text/javascript,export const label = 1;");\n'],
+  ])("[slow] page code importing a data: URL module %s fails the build", SLOW, (_how, head) => {
+    const repo = staticSiteRepo({
+      "apps/web/src/render.tsx": `${head}export function renderBody() {\n  return \`<main>\${label}</main>\`;\n}\n`,
+    });
+    const result = buildStaticSite(repo);
+    expect(result.status).not.toBe(0);
+    expect(`${result.stdout}\n${result.stderr}`).toContain("data:text/javascript");
+  });
+
   test("[slow] public page code builds (positive control)", SLOW, () => {
     const repo = staticSiteRepo({
       "apps/web/src/render.tsx": 'export function renderBody() {\n  return "<main>public</main>";\n}\n',
