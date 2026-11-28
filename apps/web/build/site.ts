@@ -1,7 +1,7 @@
 import { brotliCompressSync, constants } from "node:zlib";
 import type { CatalogueExport } from "@cj/schema";
 import type { StaticPage } from "../src/render.tsx";
-import { bagFile, LISTING_FILE, NOT_FOUND_FILE } from "../src/routes.ts";
+import { bagFile, HOME_REDIRECT, LISTING_FILE, NOT_FOUND_FILE } from "../src/routes.ts";
 import { cspPolicy, inlineHashes, withCsp } from "./csp.ts";
 
 /** N2 (ADR-0017): the whole site's CSS under 10 KB compressed, read as 10,000 bytes of Brotli at quality 11. */
@@ -66,7 +66,8 @@ export function documentHtml(options: { title: string; description: string; body
 /**
  * Renders every page into its document, checks that one CSP hash set covers them all (the build fails otherwise:
  * `_headers` cannot give a page its own policy, and the 404 page is served for every unknown path), and writes
- * `_headers` with that policy. Fails if the stylesheet is over the CSS budget.
+ * `_headers` with that policy, and `_redirects` with the home redirect. Fails if the stylesheet is over the CSS
+ * budget.
  */
 export function assembleSite(options: {
   pages: readonly PageSpec[];
@@ -93,5 +94,6 @@ export function assembleSite(options: {
   if (sets.size !== 1) throw new Error(`pages need different CSP hash sets: ${[...sets].join(" | ")}`);
   const policy = cspPolicy(hashes);
   files.set("_headers", withCsp(options.headers, policy));
+  files.set("_redirects", HOME_REDIRECT);
   return { files, policy };
 }

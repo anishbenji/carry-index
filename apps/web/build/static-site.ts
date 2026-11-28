@@ -26,7 +26,7 @@ export interface StaticSiteOptions {
  *   its non-hydratable mode, and passes it and every file it loaded to `addWatchFile`: `moduleGraph` records watched files,
  *   so the build fails if the page code reached anything private, as it does for the bundle's own modules.
  * - The build's only input is the site stylesheet. `generateBundle` takes Vite's processed CSS out of the bundle,
- *   renders every page with it inlined (ADR-0018), and emits the pages and `_headers` with the one CSP hash set the
+ *   renders every page with it inlined (ADR-0018), and emits the pages, `_redirects`, and `_headers` with the one CSP hash set the
  *   pages share. The site ships no script: a chunk with code fails the build.
  */
 export function staticSite(options: StaticSiteOptions): Plugin {

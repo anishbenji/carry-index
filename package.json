@@ -36,7 +36,7 @@
   "size-limit": [
     {
       "name": "apps/web listing HTML with its inlined CSS and no script, Brotli (N2 listing HTML under 40 KB; JavaScript 0 B, under 15 KB, ADR-0017)",
-      "path": "apps/web/dist/client/index.html",
+      "path": "apps/web/dist/client/uhmwpe-backpacks.html",
       "brotli": true,
       "limit": "40 kB"
     },

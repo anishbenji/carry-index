@@ -8,13 +8,15 @@ step, no Solid start mode, the stylesheet inlined (ADR-0018), one CSP hash set f
 
 | Route | File in `apps/web/dist/client` | Shows |
 | --- | --- | --- |
-| `/` | `index.html` | Every listed build of every bag, lightest first: name (linking to its bag page), maker, weight, capacity, fabric |
+| `/uhmwpe-backpacks` | `uhmwpe-backpacks.html` | Every listed build of every bag, lightest first: name (linking to its bag page), maker, weight, capacity, fabric |
+| `/` | `_redirects`: `/ /uhmwpe-backpacks 302` | A temporary redirect to the listing until there is a home page |
 | `/bags/<slug>` | `bags/<slug>.html` | One bag: maker, name, and a table of its builds (weight, capacity, fabric) |
 | any other path | `404.html` | "Page not found", with a link to the listing |
 
 The deployed Worker serves assets with `html_handling: "drop-trailing-slash"` and `not_found_handling: "404-page"`
-(`packages/deploy/src/workers.ts`), so `bags/<slug>.html` is served at `/bags/<slug>`, `/bags/<slug>/` redirects
-there, and an unknown path gets `404.html` with status 404. These are the only page names the gate's allow-list
+(`packages/deploy/src/workers.ts`), so `uhmwpe-backpacks.html` and `bags/<slug>.html` are served at
+`/uhmwpe-backpacks` and `/bags/<slug>` (ADR-0023), the forms with a trailing slash redirect there, and an unknown path
+gets `404.html` with status 404. These are the only page names the gate's allow-list
 accepts (`packages/deploy/src/allow-list.ts`).
 
 ## Data
@@ -43,8 +45,8 @@ build makes its pages from a fresh export:
   Solid script.
 - Every file the renderer loaded is passed to `addWatchFile`, so `moduleGraph` (`packages/deploy`) fails the build if
   the page code reached anything private, and lists those files in `dist/client.module-graph.json`.
-- The plugin takes the processed CSS out of the bundle, inlines it into every page, and emits the pages and
-  `_headers` through the bundle, so the graph report lists each with its SHA-256. A chunk with code fails the build:
+- The plugin takes the processed CSS out of the bundle, inlines it into every page, and emits the pages,
+  `_redirects` and `_headers` through the bundle, so the graph report lists each with its SHA-256. A chunk with code fails the build:
   the site ships no script.
 - `build/site.ts` hashes every inline `<script>` and `<style>` of every page, fails unless all pages share one set,
   and writes `_headers` from `public/_headers` with the CSP line replaced. It also fails if the stylesheet is over
@@ -68,13 +70,12 @@ form-action 'none'; frame-ancestors 'none'
 - `bun run test:e2e` (`playwright.config.ts`, `e2e/site.spec.ts`): `e2e/serve.ts` seals the build with the gate's own
   `seal` and `PUBLIC_SITE` config into the system temp folder and serves it with `wrangler dev` on 127.0.0.1:8818.
   In light and dark, at desktop and phone sizes (Chromium): every page loads with no script, one `h1` and headings
-  in order, with no console error or CSP violation; the 404 status and page; the trailing-slash redirect; the
+  in order, with no console error or CSP violation; the 404 status and page; the `/` redirect (302) and the trailing-slash redirects; the
   security headers and a hash-only CSP; axe (WCAG 2.2 AA and best practices) on each template; the keyboard reaches
   every link in order with a visible focus ring; no sideways scroll at 320 px; the theme follows the system setting;
   pages are complete with scripts off.
 
 ## Not in this slice
 
-The theme and units switches, the sort island, the airline widget, line drawings, the metrics beacon, the
-`/uhmwpe-backpacks` section page, fabric pages, about, sources, sitemap and robots.txt. Theme follows the system
-setting only.
+The theme and units switches, the sort island, the airline widget, line drawings, the metrics beacon, a home page,
+fabric pages, about, sources, sitemap and robots.txt. Theme follows the system setting only.

@@ -21,7 +21,7 @@ export default defineConfig({
   ]),
   webServer: {
     command: `bun e2e/serve.ts ${PORT}`,
-    url: `http://127.0.0.1:${PORT}/`,
+    url: `http://127.0.0.1:${PORT}/uhmwpe-backpacks`,
     reuseExistingServer: false,
     timeout: 60_000,
   },

@@ -12,7 +12,7 @@ describe("sitePages", () => {
   it("lists the listing, one page per model and the 404 page, each with its own title and description", () => {
     const pages = sitePages(CATALOGUE);
     expect(pages.map((p) => p.file)).toEqual([
-      "index.html",
+      "uhmwpe-backpacks.html",
       "bags/example-pack-30l.html",
       "bags/test-bag-20l.html",
       "404.html",
@@ -47,15 +47,17 @@ describe("documentHtml", () => {
 });
 
 describe("assembleSite", () => {
-  it("writes every page and a _headers whose CSP holds the one stylesheet hash shared by all pages", () => {
+  it("writes every page, _redirects and a _headers whose CSP holds the one stylesheet hash shared by all pages", () => {
     const site = assembleSite({ pages: sitePages(CATALOGUE), renderBody: fakeRender, css: "p{}", headers: HEADERS });
     expect([...site.files.keys()]).toEqual([
-      "index.html",
+      "uhmwpe-backpacks.html",
       "bags/example-pack-30l.html",
       "bags/test-bag-20l.html",
       "404.html",
       "_headers",
+      "_redirects",
     ]);
+    expect(site.files.get("_redirects")).toBe("/ /uhmwpe-backpacks 302\n");
     expect(site.policy).toContain(`style-src ${hash("p{}")}`);
     expect(site.policy).toContain("script-src 'none'");
     expect(site.files.get("_headers")).toContain(`  Content-Security-Policy: ${site.policy}\n`);

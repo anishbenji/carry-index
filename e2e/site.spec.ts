@@ -2,6 +2,9 @@ import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 
+/** The listing's route (ADR-0023); `/` redirects to it. */
+const LISTING = "/uhmwpe-backpacks";
+
 /** WCAG 2.2 AA (unified brief) plus axe's best practices, which include heading order and landmarks. */
 const AXE_TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22a", "wcag22aa", "best-practice"];
 
@@ -23,7 +26,7 @@ async function watch(page: Page): Promise<string[]> {
 
 /** Every bag page the listing links to, in listing order, each once. */
 async function bagPaths(page: Page): Promise<string[]> {
-  await page.goto("/");
+  await page.goto(LISTING);
   const hrefs = await page.locator("main ol a").evaluateAll((links) => links.map((a) => a.getAttribute("href") ?? ""));
   return [...new Set(hrefs)];
 }
@@ -45,8 +48,8 @@ test("the listing and every bag page load with no script, one h1, headings in or
   const bags = await bagPaths(page);
   expect(bags.length).toBeGreaterThan(0);
   const titles = new Set<string>();
-  for (const path of ["/", ...bags]) {
-    expect(path).toMatch(/^\/(?:bags\/[a-z0-9]+(?:-[a-z0-9]+)*)?$/);
+  for (const path of [LISTING, ...bags]) {
+    expect(path).toMatch(/^\/(?:uhmwpe-backpacks|bags\/[a-z0-9]+(?:-[a-z0-9]+)*)$/);
     const response = await page.goto(path);
     expect(response?.status(), path).toBe(200);
     expect(await page.locator("script").count(), path).toBe(0);
@@ -64,26 +67,37 @@ test("a bag page lists its builds and links back to the listing", async ({ page 
   expect(await page.locator("tbody tr").count()).toBeGreaterThan(0);
   await expect(page.locator("thead th")).toHaveText(["Build", "Weight", "Capacity", "Fabric"]);
   await page.getByRole("link", { name: "All backpacks" }).click();
-  await expect(page).toHaveURL("/");
+  await expect(page).toHaveURL(LISTING);
+});
+
+test("/ redirects to the listing with a temporary redirect", async ({ page }) => {
+  const response = await page.request.get("/", { maxRedirects: 0 });
+  expect(response.status()).toBe(302);
+  expect(new URL(response.headers().location ?? "", "http://127.0.0.1").pathname).toBe(LISTING);
+  await page.goto("/");
+  expect(new URL(page.url()).pathname).toBe(LISTING);
+  await expect(page.locator("h1")).toHaveText("Backpacks");
 });
 
 test("an unknown address gets the 404 page with status 404", async ({ page }) => {
   const response = await page.goto("/bags/no-such-bag");
   expect(response?.status()).toBe(404);
   await expect(page.locator("h1")).toHaveText("Page not found");
-  await expect(page.locator('main a[href="/"]')).toBeVisible();
+  await expect(page.locator(`main a[href="${LISTING}"]`)).toBeVisible();
 });
 
-test("a bag address with a trailing slash redirects to the one without", async ({ page }) => {
-  const [first] = await bagPaths(page);
-  const response = await page.goto(`${first}/`);
-  expect(response?.status()).toBe(200);
-  expect(new URL(page.url()).pathname).toBe(first);
+test("a page address with a trailing slash redirects to the one without", async ({ page }) => {
+  const [first = ""] = await bagPaths(page);
+  for (const path of [LISTING, first]) {
+    const response = await page.goto(`${path}/`);
+    expect(response?.status(), path).toBe(200);
+    expect(new URL(page.url()).pathname).toBe(path);
+  }
 });
 
 test("every page sends the security headers, with a hash-only CSP", async ({ page }) => {
   const bags = await bagPaths(page);
-  for (const path of ["/", bags[0] ?? "/", "/no-such-page"]) {
+  for (const path of [LISTING, bags[0] ?? LISTING, "/no-such-page"]) {
     const response = await page.request.get(path);
     const headers = response.headers();
     const csp = headers["content-security-policy"] ?? "";
@@ -113,7 +127,7 @@ test("every page sends the security headers, with a hash-only CSP", async ({ pag
 
 test("axe finds no WCAG 2.2 AA or best-practice violation on each template", async ({ page }) => {
   const bags = await bagPaths(page);
-  for (const path of ["/", bags[0] ?? "/", "/no-such-page"]) {
+  for (const path of [LISTING, bags[0] ?? LISTING, "/no-such-page"]) {
     await page.goto(path);
     const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
     expect(
@@ -125,7 +139,7 @@ test("axe finds no WCAG 2.2 AA or best-practice violation on each template", asy
 
 test("the keyboard reaches every link in page order, with a visible focus ring", async ({ page }) => {
   const bags = await bagPaths(page);
-  for (const path of ["/", bags[0] ?? "/"]) {
+  for (const path of [LISTING, bags[0] ?? LISTING]) {
     await page.goto(path);
     const expected = await page
       .locator("a[href], [tabindex='0']")
@@ -152,7 +166,7 @@ test("the keyboard reaches every link in page order, with a visible focus ring",
 test("no page scrolls sideways at 320 px wide", async ({ page }) => {
   const bags = await bagPaths(page);
   await page.setViewportSize({ width: 320, height: 640 });
-  for (const path of ["/", ...bags, "/no-such-page"]) {
+  for (const path of [LISTING, ...bags, "/no-such-page"]) {
     await page.goto(path);
     const width = await page.evaluate(() => document.documentElement.scrollWidth);
     expect(width, path).toBeLessThanOrEqual(320);
@@ -160,7 +174,7 @@ test("no page scrolls sideways at 320 px wide", async ({ page }) => {
 });
 
 test("the page follows the system colour scheme", async ({ page }, testInfo) => {
-  await page.goto("/");
+  await page.goto(LISTING);
   const dark = testInfo.project.name.endsWith("-dark");
   const [r = 0, g = 0, b = 0] = await page.evaluate(() =>
     (getComputedStyle(document.body).backgroundColor.match(/\d+/g) ?? []).map(Number),
@@ -174,7 +188,7 @@ test("pages are complete with scripts off", async ({ browser, page }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   try {
     const off = await context.newPage();
-    for (const path of ["/", bags[0] ?? "/"]) {
+    for (const path of [LISTING, bags[0] ?? LISTING]) {
       await page.goto(path);
       await off.goto(new URL(path, page.url()).href);
       expect(await off.locator("main").textContent(), path).toBe(await page.locator("main").textContent());

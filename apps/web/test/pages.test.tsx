@@ -20,14 +20,14 @@ function mount(view: () => JSX.Element): { root: HTMLElement; done: () => void }
 const text = (el: Element | null | undefined) => el?.textContent?.replace(/\s+/g, " ").trim();
 
 describe("SiteLayout", () => {
-  it("puts a header with a link home before the page's main landmark", () => {
+  it("puts a header linking to the listing before the page's main landmark", () => {
     const { root, done } = mount(() => (
       <SiteLayout>
         <p>content</p>
       </SiteLayout>
     ));
     try {
-      expect(root.querySelector("header a")?.getAttribute("href")).toBe("/");
+      expect(root.querySelector("header a")?.getAttribute("href")).toBe("/uhmwpe-backpacks");
       expect(text(root.querySelector("main"))).toBe("content");
     } finally {
       done();
@@ -82,7 +82,7 @@ describe("BagPage", () => {
         ["Example Pack 30L Light", "812 g", "30 L", "UHMWPE"],
       ]);
       expect(root.querySelector("tbody th")?.getAttribute("scope")).toBe("row");
-      expect(root.querySelector('a[href="/"]')).not.toBeNull();
+      expect(root.querySelector('a[href="/uhmwpe-backpacks"]')?.textContent).toBe("All backpacks");
     } finally {
       done();
     }
@@ -94,7 +94,7 @@ describe("NotFoundPage", () => {
     const { root, done } = mount(() => <NotFoundPage />);
     try {
       expect(text(root.querySelector("h1"))).toBe("Page not found");
-      expect(root.querySelector('a[href="/"]')).not.toBeNull();
+      expect(root.querySelector('a[href="/uhmwpe-backpacks"]')).not.toBeNull();
     } finally {
       done();
     }
