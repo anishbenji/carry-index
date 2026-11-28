@@ -158,7 +158,7 @@ SIBLINGS = {
     'ula-cicada-22l': [dict(
         id='x50-cicada', name='X50 Cicada', record='comparison', page='ula-x50-cicada',
         fabric=dict(shell=['x-pac-x50'], shell_as_written='X-Pac X50'),
-        volume_l=22, weight_g=870.3, dims_cm=dict(h=45.7, w=27.9, d=12.7),
+        volume_l=22, weight_g=870, dims_cm=dict(h=45.7, w=27.9, d=12.7),
         as_written=dict(weight='30.7 OZ | 870.3 GM', dims='18″ × 11″ × 5″'),
         price=dict(amount=319.99, currency='USD', seller='ula-equipment'),
         checks=[chk('ula-x50-cicada', ['name', 'price', 'volume_l', 'weight_g', 'dims_cm', 'fabric.shell'])])],
