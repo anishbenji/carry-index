@@ -56,15 +56,16 @@ the build's JPEG XL measurement.
 
 ## Accepted at the spike gate (2026-11-28)
 
-The owner accepted each at the spike gate on 2026-11-28, except ADR-0048, which the director accepted
-overnight under the user's instruction (the user may reverse it); the evidence is
+The owner accepted each at the spike gate on 2026-11-28. ADR-0048, first accepted by the director overnight under
+the user's instruction, was confirmed by the owner on 2026-11-28 with an amendment (owner devices only; Claude's
+published addresses only); the evidence is
 in [`docs/spike/results.md`](../spike/results.md). Each amendment now applies to the ADR it amends.
 
 | Record | Proposal | Status |
 |---|---|---|
 | [0046](0046-public-site-delivery.md) | The public Worker is assets-only; the beacon is its own Worker | Accepted (owner, spike gate, 2026-11-28) |
 | [0047](0047-toolchain.md) | Toolchain: TypeScript 7, Biome, Vitest, Bun workspaces | Accepted (owner, spike gate, 2026-11-28) |
-| [0048](0048-mcp-authorization.md) | MCP authorization for Kit Watch | Accepted (director under the user's overnight instruction, 2026-11-26; user may reverse) |
+| [0048](0048-mcp-authorization.md) | MCP authorization for Kit Watch | Accepted (owner, 2026-11-28, with the device-only and Anthropic-addresses amendment) |
 | [Amends 0014](amendments/0014-spike-results.md) | R2 card question: not confirmed; the dashboard look settles it | Accepted (owner, spike gate, 2026-11-28) |
 | [Amends 0015](amendments/0015-spike-results.md) | Confirm static first, built with the fallback; page data never in an inline script | Accepted (owner, spike gate, 2026-11-28) |
 | [Amends 0017](amendments/0017-spike-results.md) | The size gate counts inline scripts per page; budgets unchanged | Accepted (owner, spike gate, 2026-11-28) |

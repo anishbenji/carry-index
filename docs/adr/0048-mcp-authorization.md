@@ -1,6 +1,7 @@
 # ADR-0048: MCP authorization for Kit Watch
 
-- **Status:** Accepted (director under the user's overnight instruction, 2026-11-26; user may reverse)
+- **Status:** Accepted (owner, 2026-11-28, with the amendment below; first accepted by the director under the user's
+  overnight instruction, 2026-11-26)
 - **Date:** 2026-11-26
 - **Source:** spike PR 9, `docs/spike/kit-access-d1-mcp.md` on `spike/09-kit-access-d1-mcp` at `65c11a6`
   (decision #16 and review round 3); PR 9's second security review round (director's `reviews/09-kit/`); the
@@ -65,9 +66,65 @@ real MCP client has connected.
   `carryjournal.com` zone, matching on path only (no hostname). Recommended: it covers `/register` and `/token`
   on the MCP host, `(http.request.uri.path in {"/register" "/token"})`, per IP, block for 10 s. `/authorize` and
   `/callback` no longer need it, because Access stops strangers there. PR 9's doc proposes `/mcp` as well
-  (20 requests per 10 s); that is left out here, so a burst of Claude tool calls is never blocked. Which routes
-  the one rule covers is open for the user, because the architecture doc also plans it for the beacon's `/api/*`
-  (see Consequences).
+  (20 requests per 10 s); that is left out here, so a burst of Claude tool calls is never blocked. The owner chose
+  this (option (a) in Consequences) on 2026-11-28.
+
+## Amendment (owner, 2026-11-28): only the owner's devices, and only Claude's addresses, reach the Worker
+
+The owner wants strangers kept from spending the account's shared daily Worker quota at all, not just refused once
+the Worker runs. Requests that Cloudflare Access or a WAF rule refuses at the edge never start the Worker, so they
+cost no Worker requests. Three layers do this:
+
+1. **The app host only from the owner's devices.** The self-hosted Access application for `kit.carryjournal.com`
+   requires the owner's identity **and** a Gateway device-posture check: the request must come from one of the
+   owner's devices enrolled with the Cloudflare One client (Mac, phone). Zero Trust free plan.
+2. **The MCP browser steps the same way.** The path-scoped Access application for `/authorize` and `/callback` on
+   `mcp.kit.carryjournal.com` uses the same identity-plus-device policy. These steps run in the owner's own browser,
+   so nothing breaks.
+3. **The rest of the MCP host only from Anthropic's published outbound ranges.** Claude's MCP calls
+   (`/register`, `/token`, `/mcp`, discovery) come from Anthropic's servers, not from the owner's device, so a device
+   check cannot apply to them. One WAF custom rule on `mcp.kit.carryjournal.com` blocks every request whose source
+   address is outside Anthropic's published outbound IPv4 ranges, except the two Access-protected browser paths.
+   Ranges at the time of writing, from <https://platform.claude.com/docs/en/api/ip-addresses> (outbound, "for
+   example, when making MCP tool calls to external servers"): `160.79.104.0/21` and `153.61.208.0/20`. Claude's
+   outbound MCP traffic is IPv4-only, so there is no IPv6 range to allow.
+
+Everything else in this ADR stays: the 50-a-day cap on new registrations, the Worker's per-IP limit, the D1
+revocation check, and the free plan's one rate-limiting rule on `/register` and `/token` (option (a) below, chosen
+by the owner).
+
+**What remains open.** Another Claude user could point Claude at this URL. Their calls come from Anthropic's
+ranges, so they pass the WAF rule. They fail at sign-in (Access allows only the owner), and new registrations stop
+at 50 a day, so the cost is a handful of Worker requests, not a flood.
+
+**Options considered.** (1) This amendment: Claude keeps working on the web, desktop and phone. (2) Use Kit Watch
+only from Claude Code on the owner's Mac through a local bridge, with the whole MCP host behind a device check:
+tighter, but loses Claude on the web and phone. (3) Anthropic's MCP tunnels, which need no public endpoint: research
+preview, Enterprise plan only, so not available.
+
+### Stale addresses: the risk and the checks
+
+If Anthropic changes or adds outbound ranges, the WAF rule blocks Claude, and Kit Watch's connector stops working
+until the rule is updated. Nothing private is exposed. The failure is closed and only stops the owner's own
+connector.
+
+Checks:
+
+- **Weekly (director):** fetch <https://platform.claude.com/docs/en/api/ip-addresses>, compare the outbound list
+  with the ranges in this ADR and in the WAF rule, and raise any difference with the owner. A range that is added
+  is added to the rule. A range that is "phased out" is removed once Anthropic's page drops it.
+- **Before every change to the rule, and after any Kit Watch connector failure:** read the same page. In the
+  Cloudflare dashboard (Security → Events, filtered to the WAF rule and `mcp.kit.carryjournal.com`), look for
+  blocked requests whose source falls in a block Anthropic owns. Those are Claude calls the rule is wrongly
+  refusing.
+- **Symptom to recognise:** Claude reports the Kit Watch connector as unreachable or failing with HTTP 403 while the
+  Kit Watch app itself still works in the browser. Check the address list first.
+- **Fail-safe while investigating:** switch the WAF rule to *Log* instead of *Block*. That is one click and
+  reversible. The connector works again and Access still protects sign-in. Switch it back once the ranges are
+  updated.
+- **Possible later automation (not built):** a scheduled job that fetches the page and opens an issue when the
+  outbound list changes. It is not in place, because it means a workflow with outbound network access on a public
+  repo. Decide it when Kit Watch ships.
 
 ## Consequences
 
@@ -87,11 +144,10 @@ real MCP client has connected.
 - **Revoked token at another location (closed locally).** The D1 check serves no revoked grant; tested by putting
   the revoked token's KV records back.
 
-**Open for the user: the one free WAF rule.** The architecture doc puts Cloudflare's one free rule on the beacon's
+**The one free rate-limiting rule (decided by the owner, 2026-11-28: option (a)).** The architecture doc puts Cloudflare's one free rule on the beacon's
 `/api/*`. A rule can combine paths with `or`, but they then share one per-IP count. Options: (a) MCP `/register`
 and `/token` only, the beacon relying on its own caps; (b) one combined rule for `/api/*`, `/register` and
-`/token`; (c) the beacon only, MCP relying on the Worker's limits and caps. Recommended: (a) for Release 1;
-revisit when the beacon Worker is built.
+`/token`; (c) the beacon only, MCP relying on the Worker's limits and caps. Chosen: (a); revisit when the beacon Worker is built.
 
 **How the shape was reached.** PR 9 first tested `/register` and `/authorize` open with a shared daily budget of
 300 requests (at `0c7e568`). PR 9's second security review round (GPT-6.2 Sol, 25 Nov) found three P1s in it:
