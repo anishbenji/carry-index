@@ -1,7 +1,7 @@
 # Amendment to ADR-0015: static first, spike numbers
 
 - **Status:** Accepted (owner, spike gate, 2026-11-28)
-- **Amends:** [ADR-0015](../0015-static-first.md) (N1). ADR-0015 itself is unchanged until the user decides.
+- **Amends:** [ADR-0015](../0015-static-first.md) (N1). Accepted at the spike gate, 2026-11-28; this amendment now applies to ADR-0015.
 - **Source:** spike PR 7, `docs/spike/deploy-hydrated.md` on `spike/07-deploy-hydrated` at `4c2c820`; spike
   PR 8, `docs/spike/static-csp.md` on `spike/08-static-csp` at `b0f40c4`
 
@@ -77,7 +77,7 @@ How it was built:
 
 ## Proposed change
 
-Proposed — for the user at the gate: **confirm ADR-0015, with the fallback as the build.**
+Accepted at the gate, 2026-11-28: **confirm ADR-0015, with the fallback as the build.**
 
 - The public site is rendered by `apps/web/build-static.ts` (plain Vite build plus prerender script), not start
   mode and not `prerender-crawler`.

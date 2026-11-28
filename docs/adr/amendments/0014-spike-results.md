@@ -1,7 +1,7 @@
 # Amendment to ADR-0014: does R2 ask for a payment card?
 
 - **Status:** Accepted (owner, spike gate, 2026-11-28)
-- **Amends:** [ADR-0014](../0014-free-tier.md). ADR-0014 itself is unchanged until the user decides.
+- **Amends:** [ADR-0014](../0014-free-tier.md). Accepted at the spike gate, 2026-11-28; this amendment now applies to ADR-0014.
 - **Source:** a read-only scout of Cloudflare's docs by the director, 25 Nov 2026 (no account used, nothing
   enabled); the user's dashboard look (pending)
 
@@ -18,7 +18,7 @@ with errors when exceeded; no official page says whether they need a card.
 
 ## Proposed change
 
-Proposed — for the user at the gate: ADR-0014's open spike item stays open until the dashboard look. Nothing
+Accepted at the gate, 2026-11-28: ADR-0014's open spike item stays open until the dashboard look. Nothing
 needs R2 in Release 1: source maps stay local to the build and are never uploaded (ADR-0029's note: CI artifacts
 are public on a public repo). If a card is required, R2 stays
 off, because R2 overage is billed rather than capped.

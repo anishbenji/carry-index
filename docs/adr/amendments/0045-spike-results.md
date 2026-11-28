@@ -1,7 +1,7 @@
 # Amendment to ADR-0045: host-scoped noindex works locally
 
 - **Status:** Accepted (owner, spike gate, 2026-11-28)
-- **Amends:** [ADR-0045](../0045-pre-launch-deploys.md). ADR-0045 itself is unchanged until the user decides.
+- **Amends:** [ADR-0045](../0045-pre-launch-deploys.md). Accepted at the spike gate, 2026-11-28; this amendment now applies to ADR-0045.
 - **Source:** spike PR 7, `docs/spike/deploy-hydrated.md` on `spike/07-deploy-hydrated` at `4c2c820`
 
 ## Result (local only)
@@ -16,7 +16,7 @@ PR 7 tested only the production workers.dev host pattern. ADR-0045 also covers t
 
 ## Proposed change
 
-Proposed — for the user at the gate: keep host-scoped `noindex`. The local result supports it. Since the user's
+Accepted at the gate, 2026-11-28: keep host-scoped `noindex`. The local result supports it. Since the user's
 26 Nov decision there are no edge previews before merge on Saturday
 ([amendment](0045-no-edge-previews.md)), so the first check at the edge runs after the first merge: the
 workers.dev host sends `noindex` and carryjournal.com does not. Preview hosts are checked once previews return in

@@ -1,7 +1,7 @@
 # Amendment to ADR-0037: how the Worker checks the Access sign-in
 
 - **Status:** Accepted (owner, spike gate, 2026-11-28)
-- **Amends:** [ADR-0037](../0037-sign-in.md). ADR-0037 itself is unchanged until the user decides.
+- **Amends:** [ADR-0037](../0037-sign-in.md). Accepted at the spike gate, 2026-11-28; this amendment now applies to ADR-0037.
 - **Source:** spike PR 9, `docs/spike/kit-access-d1-mcp.md` on `spike/09-kit-access-d1-mcp` at `65c11a6`
   (decision #16 and review round 3)
 
@@ -21,7 +21,7 @@ or not-yet-valid token, `alg` none/HS256/RS512 and a malformed token (403 each).
 
 ## Proposed change
 
-Proposed — for the user at the gate: record the checks above as how the Worker verifies the Access token. The
+Accepted at the gate, 2026-11-28: record the checks above as how the Worker verifies the Access token. The
 Worker makes the same checks on `/authorize` and `/callback` of the MCP host against the path-scoped application's
 AUD tag (`ACCESS_MCP_AUD`), before any state or KV write, so a misconfigured Access application fails closed.
 

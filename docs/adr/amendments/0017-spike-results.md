@@ -1,7 +1,7 @@
 # Amendment to ADR-0017: the size gate counts inline scripts
 
 - **Status:** Accepted (owner, spike gate, 2026-11-28)
-- **Amends:** [ADR-0017](../0017-budgets.md) (N2). ADR-0017 itself is unchanged until the user decides. No budget
+- **Amends:** [ADR-0017](../0017-budgets.md) (N2). Accepted at the spike gate, 2026-11-28; this amendment now applies to ADR-0017. No budget
   changes.
 - **Source:** PR 7 review (P2, budgets must count inline scripts); spike PR 8, `docs/spike/static-csp.md` on
   `spike/08-static-csp` at `b0f40c4`
@@ -19,6 +19,6 @@ brotli, against N2, exiting 1 on a miss, reading 1 KB as 1,000 B (the stricter r
 
 ## Proposed change
 
-Proposed — for the user at the gate: the JavaScript size gate measures **per page**, script files plus all inline
+Accepted at the gate, 2026-11-28: the JavaScript size gate measures **per page**, script files plus all inline
 scripts, brotli, against the N2 budgets. `size-limit` stays for the file budgets. The budgets themselves are
 unchanged.

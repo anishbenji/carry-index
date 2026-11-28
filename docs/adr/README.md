@@ -54,11 +54,11 @@ the build's JPEG XL measurement.
 | [0044](0044-licences.md) | Licences for code, data, drawings and writing | setup 2026-11-25 | Accepted |
 | [0045](0045-pre-launch-deploys.md) | Merges deploy to workers.dev before go-live, not indexed | setup 2026-11-25 | Accepted |
 
-## Proposed at the Thursday gate (spike results)
+## Accepted at the spike gate (2026-11-28)
 
-Each is for the user to accept or reverse at the gate on 26 Nov 2026, except ADR-0048, which the director accepted
+The owner accepted each at the spike gate on 2026-11-28, except ADR-0048, which the director accepted
 overnight under the user's instruction (the user may reverse it); the evidence is
-in [`docs/spike/results.md`](../spike/results.md). An amendment leaves its ADR unchanged until the user decides.
+in [`docs/spike/results.md`](../spike/results.md). Each amendment now applies to the ADR it amends.
 
 | Record | Proposal | Status |
 |---|---|---|

@@ -1,7 +1,7 @@
 # Amendment to ADR-0036: Kit Watch's Worker and hostnames
 
 - **Status:** Accepted (owner, spike gate, 2026-11-28)
-- **Amends:** [ADR-0036](../0036-private-hostname.md). ADR-0036 itself is unchanged until the user decides.
+- **Amends:** [ADR-0036](../0036-private-hostname.md). Accepted at the spike gate, 2026-11-28; this amendment now applies to ADR-0036.
 - **Source:** spike PR 9, `docs/spike/kit-access-d1-mcp.md` on `spike/09-kit-access-d1-mcp` at `65c11a6`
   (decision #16 and review round 3)
 
@@ -20,7 +20,7 @@ PR 9 ran everything locally (workerd through Wrangler 4.168.0); nothing reached 
 
 ## Proposed change
 
-Proposed — for the user at the gate: record that the Kit Watch Worker also serves `mcp.kit.carryjournal.com`.
+Accepted at the gate, 2026-11-28: record that the Kit Watch Worker also serves `mcp.kit.carryjournal.com`.
 That host stays **outside** the app host's Access self-hosted application, which covers `kit.carryjournal.com`
 only (a wildcard application would block Claude's registration and the MCP endpoint). A second, path-scoped
 self-hosted application on the MCP host covers only `/authorize` and `/callback` (decision #16,

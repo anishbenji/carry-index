@@ -12,5 +12,5 @@ reversed with the build's JPEG XL measurement, not at the gate.
 
 ## Proposed change
 
-Proposed — for the user at the gate: none. This note only records that the spike has no N5 numbers. Until the
+Accepted at the gate, 2026-11-28: none. This note only records that the spike has no N5 numbers. Until the
 build's measurement, AVIF and WebP are the only formats.

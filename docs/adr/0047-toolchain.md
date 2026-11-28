@@ -64,5 +64,5 @@ The privacy wall and the deploy gate are decided in [ADR-0049](0049-privacy-wall
 
 ## Why
 
-Proposed — for the user at the gate. It records what the scaffold proved, and the two places where it had to
+Accepted at the gate, 2026-11-28. It records what the scaffold proved, and the two places where it had to
 depart from the architecture doc.

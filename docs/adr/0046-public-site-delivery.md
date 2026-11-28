@@ -50,5 +50,5 @@ line stands.
 
 ## Why
 
-Proposed — for the user at the gate. It keeps the public site free of runtime code and of request costs, as the
+Accepted at the gate, 2026-11-28. It keeps the public site free of runtime code and of request costs, as the
 static-first plan (ADR-0015) intends, whichever way N1 is decided.
