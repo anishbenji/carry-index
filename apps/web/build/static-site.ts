@@ -1,10 +1,11 @@
 import { spawnSync } from "node:child_process";
 import { readFileSync, rmSync } from "node:fs";
 import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import type { CatalogueExport } from "@cj/schema";
 import solid from "@solidjs/vite-plugin";
 import type { Plugin } from "vite";
-import { runnerImport } from "vite";
+import { createRunnableDevEnvironment, resolveConfig } from "vite";
 import type { renderBody } from "../src/render.tsx";
 import { assembleSite, cataloguePath, sitePages } from "./site.ts";
 
@@ -29,23 +30,65 @@ export interface StaticSiteOptions {
  *   pages share. The site ships no script: a chunk with code fails the build.
  */
 /**
- * Loads `src/render.tsx` under `root` through Vite's module runner, compiled by the Solid plugin for the server in its
- * non-hydratable mode. Returns its `renderBody` and every file the runner loaded, the entry included.
+ * Loads `src/render.tsx` under `root` through a Vite module runner, set up as Vite's `runnerImport` sets one up, with
+ * the Solid plugin compiling for the server in its non-hydratable mode. Returns its `renderBody` and every file the
+ * runner evaluated, the entry included.
+ *
+ * Nothing is external (N3), but a specifier built at run time (`import("@cj/" + name)`) cannot be rewritten by Vite,
+ * and the runner hands it to Node as an external module, which `runnerImport` leaves out of its file list (N9). So
+ * every evaluated module is inspected, and an externalized one that is not a Node built-in fails the build: the graph
+ * check could not vouch for it.
  */
 export async function loadRenderer(root: string): Promise<{ render: typeof renderBody; files: string[] }> {
   const entry = `${root}src/render.tsx`;
-  const loaded = await runnerImport<{ renderBody: typeof renderBody }>(entry, {
-    configFile: false,
-    root,
-    mode: "production",
-    logLevel: "warn",
-    // Nothing external: an externalized import (any bare specifier, by default) is loaded by Node and left out of
-    // `dependencies`, so a private package reached through a shared helper would escape the graph check (N3).
-    environments: { inline: { resolve: { noExternal: true } } },
-    // runnerImport resolves its config as `serve`, where the Solid plugin would otherwise pick development builds.
-    plugins: [solid({ dev: false })],
+  const config = await resolveConfig(
+    {
+      configFile: false,
+      envDir: false,
+      cacheDir: process.cwd(),
+      root,
+      mode: "production",
+      logLevel: "warn",
+      environments: {
+        inline: {
+          consumer: "server",
+          dev: { moduleRunnerTransform: true },
+          resolve: { noExternal: true, mainFields: [], conditions: ["node"] },
+        },
+      },
+      // The config resolves as `serve`, where the Solid plugin would otherwise pick development builds (N6).
+      plugins: [solid({ dev: false })],
+    },
+    "serve",
+  );
+  const environment = createRunnableDevEnvironment("inline", config, {
+    runnerOptions: { hmr: { logger: false } },
+    hot: false,
   });
-  return { render: loaded.module.renderBody, files: [entry, ...loaded.dependencies] };
+  await environment.init();
+  try {
+    const module = (await environment.runner.import(entry)) as { renderBody: typeof renderBody };
+    const files = [entry];
+    const external: string[] = [];
+    for (const evaluated of environment.runner.evaluatedModules.urlToIdModuleMap.values()) {
+      const meta = evaluated.meta;
+      if (meta && "externalize" in meta) {
+        if (meta.type !== "builtin") {
+          external.push(meta.externalize.startsWith("file:") ? fileURLToPath(meta.externalize) : meta.externalize);
+        }
+      } else if (evaluated.file && evaluated.file !== entry) {
+        files.push(evaluated.file);
+      }
+    }
+    if (external.length > 0) {
+      throw new Error(
+        `cj-static-site: the page code loaded ${external.length} module(s) outside the build graph: ${external.join(", ")}`,
+      );
+    }
+    return { render: module.renderBody, files };
+  } finally {
+    await environment.close();
+  }
 }
 
 export function staticSite(options: StaticSiteOptions): Plugin {

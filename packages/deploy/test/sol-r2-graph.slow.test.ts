@@ -202,6 +202,26 @@ describe("[slow] page code the static site renders is held to the build-graph ch
     expect(`${result.stdout}\n${result.stderr}`).toContain("apps/kit/src/owned.js");
   });
 
+  // N9: a specifier built at run time cannot be rewritten by Vite, so the runner hands it to Node as an external.
+  test.each([
+    ["joined from strings", 'const name = "@cj/" + "kit";\nexport const { label } = await import(name);\n'],
+    ["a template literal", `const pkg = "kit";\nexport const { label } = await import(\`@cj/\${pkg}\`);\n`],
+  ])(
+    "[slow] a shared helper dynamically importing a private package by a specifier %s fails the build",
+    SLOW,
+    (_form, helper) => {
+      const repo = staticSiteRepo({
+        "apps/web/src/render.tsx": `import { label } from "../../../packages/shared/src/helper.js";\nexport function renderBody() {\n  return \`<main>\${label}</main>\`;\n}\n`,
+        "packages/shared/src/helper.js": helper,
+        "node_modules/@cj/kit/package.json": '{ "name": "@cj/kit", "type": "module", "exports": "./index.js" }\n',
+        "node_modules/@cj/kit/index.js": 'export const label = "synthetic private label";\n',
+      });
+      const result = buildStaticSite(repo);
+      expect(result.status).not.toBe(0);
+      expect(`${result.stdout}\n${result.stderr}`).toContain("node_modules/@cj/kit/index.js");
+    },
+  );
+
   test("[slow] public page code builds (positive control)", SLOW, () => {
     const repo = staticSiteRepo({
       "apps/web/src/render.tsx": 'export function renderBody() {\n  return "<main>public</main>";\n}\n',
