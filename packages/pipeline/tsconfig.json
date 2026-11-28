@@ -1,7 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": ".tsbuild"
+    "outDir": ".tsbuild",
+    "types": ["bun"]
   },
   "include": ["src", "test"],
   "references": [
