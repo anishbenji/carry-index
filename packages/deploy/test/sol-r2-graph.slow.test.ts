@@ -43,7 +43,7 @@ function staticSiteRepo(files: Record<string, string>): TempDir {
     "apps/web/vite.config.mjs": [
       `import { moduleGraph } from ${JSON.stringify(PLUGIN)};`,
       `import { staticSite } from ${JSON.stringify(STATIC_SITE)};`,
-      "const root = `${import.meta.dirname}/`;",
+      `const root = \`\${import.meta.dirname}/\`;`,
       `export default { root, logLevel: "silent", plugins: [moduleGraph({ repoRoot: ${JSON.stringify(repo.root)} }),`,
       `  staticSite({ root, exporter: ${JSON.stringify(join(repo.root, "export.mjs"))}, headers: \`\${root}headers.txt\` })],`,
       '  build: { outDir: "dist/client", emptyOutDir: true, rollupOptions: { input: "src/styles.css" } } };',
@@ -181,8 +181,7 @@ describe("[slow] page code the static site renders is held to the build-graph ch
     SLOW,
     () => {
       const repo = staticSiteRepo({
-        "apps/web/src/render.tsx":
-          'import { label } from "../../../packages/shared/src/helper.js";\nexport function renderBody() {\n  return `<main>${label}</main>`;\n}\n',
+        "apps/web/src/render.tsx": `import { label } from "../../../packages/shared/src/helper.js";\nexport function renderBody() {\n  return \`<main>\${label}</main>\`;\n}\n`,
         "packages/shared/src/helper.js": 'export { label } from "@cj/kit";\n',
         "node_modules/@cj/kit/package.json": '{ "name": "@cj/kit", "type": "module", "exports": "./index.js" }\n',
         "node_modules/@cj/kit/index.js": 'export const label = "synthetic private label";\n',
@@ -195,8 +194,7 @@ describe("[slow] page code the static site renders is held to the build-graph ch
 
   test("[slow] render code dynamically importing a private file fails the build", SLOW, () => {
     const repo = staticSiteRepo({
-      "apps/web/src/render.tsx":
-        'const { label } = await import("../../kit/src/owned.js");\nexport function renderBody() {\n  return `<main>${label}</main>`;\n}\n',
+      "apps/web/src/render.tsx": `const { label } = await import("../../kit/src/owned.js");\nexport function renderBody() {\n  return \`<main>\${label}</main>\`;\n}\n`,
       "apps/kit/src/owned.js": 'export const label = "synthetic private label";\n',
     });
     const result = buildStaticSite(repo);
