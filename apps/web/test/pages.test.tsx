@@ -1,7 +1,7 @@
 import type { JSX } from "@solidjs/web";
 import { render } from "@solidjs/web";
 import { describe, expect, it } from "vitest";
-import { BagPage, ListingPage, NotFoundPage, SiteLayout } from "../src/pages.tsx";
+import { BagPage, byWeight, ListingPage, NotFoundPage, SiteLayout } from "../src/pages.tsx";
 import { CATALOGUE } from "./fixtures.ts";
 
 function mount(view: () => JSX.Element): { root: HTMLElement; done: () => void } {
@@ -31,6 +31,30 @@ describe("SiteLayout", () => {
       expect(text(root.querySelector("main"))).toBe("content");
     } finally {
       done();
+    }
+  });
+});
+
+describe("byWeight", () => {
+  const build = {
+    slug: "test-bag-a",
+    name: "Test Bag",
+    brand: "Example Maker",
+    weightGrams: 900,
+    capacityLitres: 20,
+    fabric: "uhmwpe" as const,
+  };
+
+  it("is a total order: 0 on a full tie, and opposite signs either way round (N11)", () => {
+    expect(byWeight(build, { ...build })).toBe(0);
+    for (const other of [
+      { ...build, weightGrams: 901 },
+      { ...build, name: "Test Bag B" },
+      { ...build, brand: "Second Maker" },
+      { ...build, slug: "test-bag-b" },
+    ]) {
+      expect(byWeight(build, other), JSON.stringify(other)).toBeLessThan(0);
+      expect(byWeight(other, build), JSON.stringify(other)).toBeGreaterThan(0);
     }
   });
 });

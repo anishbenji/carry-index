@@ -23,7 +23,14 @@ export function SiteLayout(props: { children: JSX.Element }) {
   );
 }
 
-const byWeight = (a: Bag, b: Bag): number => a.weightGrams - b.weightGrams || (a.name < b.name ? -1 : 1);
+const byCodeUnit = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
+
+/** Lightest first, then by name, maker and slug: a total order, 0 only for builds equal in all four. */
+export const byWeight = (a: Bag, b: Bag): number =>
+  a.weightGrams - b.weightGrams ||
+  byCodeUnit(a.name, b.name) ||
+  byCodeUnit(a.brand, b.brand) ||
+  byCodeUnit(a.slug, b.slug);
 
 export function ListingPage(props: { models: readonly CatalogueModel[] }) {
   const cards = props.models
