@@ -28,6 +28,23 @@ export interface StaticSiteOptions {
  *   renders every page with it inlined (ADR-0018), and emits the pages, `_redirects`, and `_headers` with the one CSP hash set the
  *   pages share. The site ships no script: a chunk with code fails the build.
  */
+/**
+ * Loads `src/render.tsx` under `root` through Vite's module runner, compiled by the Solid plugin for the server in its
+ * non-hydratable mode. Returns its `renderBody` and every file the runner loaded, the entry included.
+ */
+export async function loadRenderer(root: string): Promise<{ render: typeof renderBody; files: string[] }> {
+  const entry = `${root}src/render.tsx`;
+  const loaded = await runnerImport<{ renderBody: typeof renderBody }>(entry, {
+    configFile: false,
+    root,
+    mode: "production",
+    logLevel: "warn",
+    // runnerImport resolves its config as `serve`, where the Solid plugin would otherwise pick development builds.
+    plugins: [solid({ dev: false })],
+  });
+  return { render: loaded.module.renderBody, files: [entry, ...loaded.dependencies] };
+}
+
 export function staticSite(options: StaticSiteOptions): Plugin {
   let catalogue: CatalogueExport | undefined;
   let render: typeof renderBody | undefined;
@@ -50,16 +67,9 @@ export function staticSite(options: StaticSiteOptions): Plugin {
       } finally {
         rmSync(exportPath, { force: true });
       }
-      const entry = `${options.root}src/render.tsx`;
-      const loaded = await runnerImport<{ renderBody: typeof renderBody }>(entry, {
-        configFile: false,
-        root: options.root,
-        mode: "production",
-        logLevel: "warn",
-        plugins: [solid()],
-      });
-      render = loaded.module.renderBody;
-      for (const file of [entry, ...loaded.dependencies, options.headers]) this.addWatchFile(file);
+      const loaded = await loadRenderer(options.root);
+      render = loaded.render;
+      for (const file of [...loaded.files, options.headers]) this.addWatchFile(file);
       headers = readFileSync(options.headers, "utf8");
     },
     generateBundle(_output, bundle) {
