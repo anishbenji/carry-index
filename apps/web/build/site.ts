@@ -9,6 +9,14 @@ export const CSS_BUDGET_BYTES = 10_000;
 
 const SITE = "Carry Journal";
 
+/**
+ * Where a build's catalogue export goes: beside its output folder, as the build-graph report is
+ * (`<outDir>.catalogue.json`), so a build with another `--outDir` never writes into this checkout's `dist/`.
+ */
+export function cataloguePath(outDir: string): string {
+  return `${outDir.replace(/\/+$/, "")}.catalogue.json`;
+}
+
 export interface PageSpec {
   file: string;
   title: string;

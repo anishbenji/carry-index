@@ -9,7 +9,7 @@ const repo = fileURLToPath(new URL("../../", import.meta.url).href);
 
 /**
  * The static-first public site (ADR-0015). `vite build` builds the site stylesheet; `staticSite` runs the pipeline's
- * catalogue export (`packages/pipeline/src/cli/export.ts`, into `dist/catalogue.json`) and renders every page with
+ * catalogue export (`packages/pipeline/src/cli/export.ts`, into `dist/client.catalogue.json`, removed once read) and renders every page with
  * the stylesheet inlined into `dist/client`, the folder the deploy gate checks and seals. No script reaches the site.
  */
 export default defineConfig({
@@ -20,7 +20,6 @@ export default defineConfig({
     moduleGraph({ repoRoot: repo }),
     staticSite({
       root: app,
-      catalogue: `${app}dist/catalogue.json`,
       exporter: `${repo}packages/pipeline/src/cli/export.ts`,
       headers: `${app}public/_headers`,
     }),

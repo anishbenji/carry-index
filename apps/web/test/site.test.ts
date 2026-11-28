@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
-import { assembleSite, documentHtml, sitePages } from "../build/site.ts";
+import { assembleSite, cataloguePath, documentHtml, sitePages } from "../build/site.ts";
 import type { StaticPage } from "../src/render.tsx";
 import { CATALOGUE } from "./fixtures.ts";
 
@@ -81,5 +81,12 @@ describe("assembleSite", () => {
     expect(() => assembleSite({ pages: sitePages(CATALOGUE), renderBody: fakeRender, css, headers: HEADERS })).toThrow(
       /10 KB/,
     );
+  });
+});
+
+describe("cataloguePath", () => {
+  it("puts the catalogue export beside the build's own output folder, wherever that is", () => {
+    expect(cataloguePath("/repo/apps/web/dist/client")).toBe("/repo/apps/web/dist/client.catalogue.json");
+    expect(cataloguePath("/tmp/cj-web-graph-x/")).toBe("/tmp/cj-web-graph-x.catalogue.json");
   });
 });

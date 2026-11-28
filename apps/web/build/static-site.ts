@@ -1,17 +1,16 @@
 import { spawnSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { readFileSync, rmSync } from "node:fs";
+import { resolve } from "node:path";
 import type { CatalogueExport } from "@cj/schema";
 import solid from "@solidjs/vite-plugin";
 import type { Plugin } from "vite";
 import { runnerImport } from "vite";
 import type { renderBody } from "../src/render.tsx";
-import { assembleSite, sitePages } from "./site.ts";
+import { assembleSite, cataloguePath, sitePages } from "./site.ts";
 
 export interface StaticSiteOptions {
   /** The Vite root, `apps/web`. */
   root: string;
-  /** Where `packages/pipeline/src/cli/export.ts` writes the public catalogue export for this build. */
-  catalogue: string;
   /** That export script; the build runs it with Bun (apps/web may not import the pipeline's code). */
   exporter: string;
   /** The `_headers` source, `public/_headers`; the build replaces its CSP line. */
@@ -33,14 +32,24 @@ export function staticSite(options: StaticSiteOptions): Plugin {
   let catalogue: CatalogueExport | undefined;
   let render: typeof renderBody | undefined;
   let headers = "";
+  let exportPath = "";
   return {
     name: "cj-static-site",
     apply: "build",
     enforce: "post",
+    configResolved(config) {
+      exportPath = cataloguePath(resolve(config.root, config.build.outDir));
+    },
     async buildStart() {
-      // A fresh export for every build, so a page can never be made from a stale or hand-edited file.
-      const exported = spawnSync("bun", [options.exporter, options.catalogue], { stdio: "inherit" });
+      // A fresh export for every build, beside this build's output folder (N4), read once and removed, so a page can
+      // never be made from a stale, shared or hand-edited file.
+      const exported = spawnSync("bun", [options.exporter, exportPath], { stdio: "inherit" });
       if (exported.status !== 0) this.error("cj-static-site: the catalogue export failed (see above)");
+      try {
+        catalogue = JSON.parse(readFileSync(exportPath, "utf8")) as CatalogueExport;
+      } finally {
+        rmSync(exportPath, { force: true });
+      }
       const entry = `${options.root}src/render.tsx`;
       const loaded = await runnerImport<{ renderBody: typeof renderBody }>(entry, {
         configFile: false,
@@ -50,8 +59,7 @@ export function staticSite(options: StaticSiteOptions): Plugin {
         plugins: [solid()],
       });
       render = loaded.module.renderBody;
-      for (const file of [entry, ...loaded.dependencies, options.catalogue, options.headers]) this.addWatchFile(file);
-      catalogue = JSON.parse(readFileSync(options.catalogue, "utf8")) as CatalogueExport;
+      for (const file of [entry, ...loaded.dependencies, options.headers]) this.addWatchFile(file);
       headers = readFileSync(options.headers, "utf8");
     },
     generateBundle(_output, bundle) {

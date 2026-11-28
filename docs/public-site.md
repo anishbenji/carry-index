@@ -31,7 +31,9 @@ builds.
    that fails, naming it. A build's fabric is the listed fabric its shell materials belong to (a UHMWPE fibre is
    `uhmwpe`; otherwise the material's family). Builds marked `record: comparison` are left out, as README-data
    says they are listed nowhere.
-2. It writes `apps/web/dist/catalogue.json` (types `CatalogueExport` and `CatalogueModel` in `packages/schema`).
+2. It writes the export atomically beside the build's output folder, `<outDir>.catalogue.json`
+   (`apps/web/dist/client.catalogue.json` for the normal build), which the build reads once and removes (types
+   `CatalogueExport` and `CatalogueModel` in `packages/schema`).
    `apps/web` reads that file; it imports schema and pipeline types only (the import ban, `bun run lint`).
 
 ## Build
