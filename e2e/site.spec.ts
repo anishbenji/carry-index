@@ -200,7 +200,7 @@ test("each card keeps its labels with their values at phone widths (G1)", async 
         const terms = [...dl.querySelectorAll("dt")];
         return terms.flatMap((dt, i) => {
           const dd = dt.nextElementSibling;
-          if (!dd || dd.tagName !== "DD") return [`${dt.textContent}: no value after the label`];
+          if (dd?.tagName !== "DD") return [`${dt.textContent}: no value after the label`];
           const t = dt.getBoundingClientRect();
           const d = dd.getBoundingClientRect();
           const sameLine = Math.abs(d.top - t.top) < 2 && d.left >= t.right - 1;
